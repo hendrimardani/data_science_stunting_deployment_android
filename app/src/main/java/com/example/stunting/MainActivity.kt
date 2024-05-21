@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.ERROR)
                 binding.tvHasil.text = "Hasil: Stunting"
 
-            }
+            }s
             // Releases model resources if no longer used.
             model.close()
         } catch (e: IOException) {
