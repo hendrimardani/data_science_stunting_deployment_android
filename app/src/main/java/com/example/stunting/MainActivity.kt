@@ -3,13 +3,20 @@ package com.example.stunting
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.Database.BabyApp
+import com.example.stunting.Database.BabyDao
+import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
 import com.example.stunting.ml.ModelStunting
+import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import www.sanju.motiontoast.MotionToast
@@ -34,26 +41,51 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val etUmur = binding.etUmur.text
-        val etJk = binding.etJk.text
-        val etTinggi = binding.etTinggi.text
+        // Call database
+        val babyDao = (application as BabyApp).db.babyDao()
 
         binding.btnSubmit.setOnClickListener {
-            if ( etUmur.isNotEmpty() && etJk.isNotEmpty() && etTinggi.isNotEmpty() ) {
+            val umur = binding.etUmur.text.toString()
+            val jk = binding.etJk.text.toString()
+            val tinggi = binding.etTinggi.text.toString()
+
+            if (umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() ) {
                 // Get data
-                val umur = etUmur.toString().toFloat()
-                val jk = etJk.toString().toFloat()
-                val tinggi = etTinggi.toString().toFloat()
-                prediction(umur, jk, tinggi)
+                val umurPred = umur.toFloat()
+                val jkPred = jk.toFloat()
+                val tinggiPred = tinggi.toFloat()
+                prediction(babyDao, umurPred, jkPred, tinggiPred)
             } else {
                 toastInfo("Gagal ☹️",
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
             }
         }
+        // Get all items
+        getAll(babyDao)
     }
 
+    private fun getAll(babyDao: BabyDao) {
+        lifecycleScope.launch {
+            babyDao.fetchAllbabies().collect {
+                val list = ArrayList(it)
+                setupListOfDataIntoRecyclerView(list)
+            }
+        }
+    }
+    private fun setupListOfDataIntoRecyclerView(babyList: ArrayList<BabyEntity>) {
+        if (babyList.isNotEmpty()) {
+            val mainAdapter = MainAdapter(babyList)
+
+            // Count item list
+            val countItem = babyList.size
+
+            binding.rvItemList.layoutManager = LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false)
+            binding.rvItemList.adapter = mainAdapter
+        }
+    }
     @SuppressLint("SuspiciousIndentation")
-    private fun prediction(umur: Float, jk: Float, tinggi: Float) {
+    private fun prediction(babyDao: BabyDao, umur: Float, jk: Float, tinggi: Float) {
         // Normalisasi data with formula => (Xi - Xmin) / (Xmax - Xmin)
         val umurNormalized = (umur - 0f) / (60f - 0f)
         val tinggiNormalized = (tinggi - 40.01f) / (128f - 40.0104370037594f)
@@ -76,15 +108,23 @@ class MainActivity : AppCompatActivity() {
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
 
+            lifecycleScope.launch {
+                babyDao.insert(BabyEntity(umur=umur.toString(), jenisKelamin=jk.toString(), tinggi=tinggi.toString()))
+                toastInfo("Data tersimpan !", "Data OK !!", MotionToastStyle.SUCCESS)
+
+                // Clear the text when data saved !!! (success)
+                binding.etUmur.text!!.clear()
+                binding.etJk.text!!.clear()
+                binding.etTinggi.text!!.clear()
+            }
+
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if ( Math.round(outputFeature0[0]) < 0.5 ) {
-                toastInfo("Selamat kondisi bayi anda normal 😍",
-                    "Pertahankan gizinya !!!.", MotionToastStyle.SUCCESS)
-                binding.tvHasil.text = "Hasil: Normal"
+                // Toast
+
             } else {
                 toastInfo("Kondisi bayi anda terkena stunting ☹️",
                     "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.ERROR)
-                binding.tvHasil.text = "Hasil: Stunting"
             }
             // Releases model resources if no longer used.
             model.close()
