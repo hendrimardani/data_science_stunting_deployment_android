@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -42,6 +43,15 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    // Kotlin extnstion for coroutine support with room
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Kotlin extension for coroutine support with activities
+    implementation("androidx.activity:activity-ktx:1.8.2")
+
     implementation("com.github.Spikeysanju:MotionToast:1.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
