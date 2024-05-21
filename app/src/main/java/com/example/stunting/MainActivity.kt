@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
                 toastInfo("Kondisi bayi anda terkena stunting ☹️",
                     "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.ERROR)
                 binding.tvHasil.text = "Hasil: Stunting"
-
             }
             // Releases model resources if no longer used.
             model.close()
