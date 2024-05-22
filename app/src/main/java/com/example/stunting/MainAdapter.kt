@@ -1,5 +1,7 @@
 package com.example.stunting
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -35,6 +37,11 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
         holder.tvJkItem.text = item.jenisKelamin
         holder.tvTinggiItem.text = item.tinggi
         holder.tvKlasifikasiItem.text = item.klasifikasi
+
+        // Change color text classification display
+        if (item.klasifikasi == "NORMAL") {
+            holder.tvKlasifikasiItem.setTextColor(Color.GREEN)
+        } else holder.tvKlasifikasiItem.setTextColor(Color.RED)
 
         if (position % 2 == 0) {
             holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))

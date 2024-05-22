@@ -15,6 +15,7 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
+import com.example.stunting.databinding.ItemAdapterBinding
 import com.example.stunting.ml.ModelStunting
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
@@ -32,11 +33,13 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private  lateinit var bindingItem: ItemAdapterBinding
     companion object Outputs {
         // For result output to display
         var classification = "NORMAL"
         var jk = "Laki-laki"
+        var umur = ""
+        var tinggi =""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +71,12 @@ class MainActivity : AppCompatActivity() {
                 val jkPred = jk.toFloat()
                 val tinggiPred = tinggi.toFloat()
 
+                // For result to int and display it.
+                Outputs.umur = umur
+                Outputs.tinggi = tinggi
+
                 // Prediction
-                prediction(babyDao, tanggal, umurPred, jkPred, tinggiPred)
+                prediction(babyDao, tanggal, Outputs.umur, umurPred, jkPred,  tinggiPred)
             } else {
                 toastInfo("Gagal ☹️",
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
@@ -110,8 +117,16 @@ class MainActivity : AppCompatActivity() {
             binding.rvItemList.adapter = mainAdapter
         }
     }
-    @SuppressLint("SuspiciousIndentation")
-    private fun prediction(babyDao: BabyDao, tanggal: String, umur: Float, jk: Float, tinggi: Float) {
+
+    @SuppressLint("SuspiciousIndentation", "ResourceAsColor")
+    private fun prediction(
+        babyDao: BabyDao,
+        tanggal: String,
+        umurOutput: String,
+        umur: Float,
+        jk: Float,
+        tinggi: Float
+    ) {
         // Normalisasi data with formula => (Xi - Xmin) / (Xmax - Xmin)
         val umurNormalized = (umur - 0f) / (60f - 0f)
         val tinggiNormalized = (tinggi - 40.01f) / (128f - 40.0104370037594f)
@@ -134,8 +149,6 @@ class MainActivity : AppCompatActivity() {
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
 
-
-
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if ( Math.round(outputFeature0[0]) < 0.5 ) {
                 toastInfo("Kondisi bay anda normal",
@@ -143,13 +156,13 @@ class MainActivity : AppCompatActivity() {
                 Outputs.classification = "NORMAL"
 
                 // Add record
-                addRecord(babyDao, tanggal, umur, Outputs.jk, tinggi, Outputs.classification)
+                addRecord(babyDao, tanggal, umurOutput, Outputs.jk, Outputs.classification)
             } else {
                 toastInfo("Kondisi bayi anda terkena stunting",
                     "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.WARNING)
                 Outputs.classification = "STUNTING"
                 // Add record
-                addRecord(babyDao, tanggal, umur, Outputs.jk, tinggi, Outputs.classification)
+                addRecord(babyDao, tanggal, umurOutput, Outputs.jk, Outputs.classification)
             }
             // Releases model resources if no longer used.
             model.close()
@@ -158,22 +171,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addRecord(
-        babyDao: BabyDao,
-        tanggal: String,
-        umur: Float,
-        jk: String,
-        tinggi: Float,
-        klasifikasi: String
-    ) {
-        tanggal
+    private fun addRecord(babyDao: BabyDao, tanggal: String, umur: String, jk: String, klasifikasi: String) {
         lifecycleScope.launch {
             babyDao.insert(
                 BabyEntity(
                     tanggal = tanggal,
-                    umur = umur.toString(),
+                    umur = umur,
                     jenisKelamin = jk,
-                    tinggi = tinggi.toString(),
+                    tinggi = Outputs.tinggi,
                     klasifikasi = klasifikasi
                 )
             )
