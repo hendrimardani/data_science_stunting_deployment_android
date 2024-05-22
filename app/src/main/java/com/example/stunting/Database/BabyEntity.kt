@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "baby-table")
 data class BabyEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    @PrimaryKey
+    var tanggal: String,
     var umur: String = "",
     var jenisKelamin: String = "",
     var tinggi: String = "",

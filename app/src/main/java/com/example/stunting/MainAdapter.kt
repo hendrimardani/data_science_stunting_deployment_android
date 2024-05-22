@@ -11,6 +11,7 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
 
     class ViewHolder(binding: ItemAdapterBinding): RecyclerView.ViewHolder(binding.root) {
         val llItem = binding.llItem
+        val tvTanggal = binding.tvItemTanggal
         val tvUmurItem = binding.tvItemUmur
         val tvJkItem = binding.tvItemJk
         val tvTinggiItem = binding.tvItemTinggi
@@ -29,6 +30,7 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
         val context = holder.itemView.context
         val item = items[position]
 
+        holder.tvTanggal.text = item.tanggal
         holder.tvUmurItem.text = item.umur
         holder.tvJkItem.text = item.jenisKelamin
         holder.tvTinggiItem.text = item.tinggi

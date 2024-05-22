@@ -22,6 +22,6 @@ interface BabyDao {
     @Query("SELECT * FROM `baby-table`")
     fun fetchAllbabies(): Flow<List<BabyEntity>>
 
-    @Query("SELECT * FROM `baby-table` WHERE id=:id")
-    fun fetchBabyById(id: Int):Flow<BabyEntity>
+    @Query("SELECT * FROM `baby-table` WHERE tanggal=:tanggal")
+    fun fetchBabyById(tanggal: String):Flow<BabyEntity>
 }

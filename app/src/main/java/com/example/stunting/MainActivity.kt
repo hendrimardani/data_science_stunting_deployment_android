@@ -25,11 +25,19 @@ import java.io.IOException
 import java.nio.BufferOverflowException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var OUTPUT: String // For result output classification
+
+    companion object Outputs {
+        // For result output to display
+        var classification = "NORMAL"
+        var jk = "Laki-laki"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +54,13 @@ class MainActivity : AppCompatActivity() {
         val babyDao = (application as BabyApp).db.babyDao()
 
         binding.btnSubmit.setOnClickListener {
+            val tanggal = addDateToDatabase()
             val umur = binding.etUmur.text.toString()
             val jk = binding.etJk.text.toString()
             val tinggi = binding.etTinggi.text.toString()
+
+            // Check for rename 0 for male and 1 for female
+            if (jk == "0") Outputs.jk = "Laki-laki" else Outputs.jk = "Perempuan"
 
             if (umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() ) {
                 // Get data
@@ -57,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 val tinggiPred = tinggi.toFloat()
 
                 // Prediction
-                prediction(babyDao, umurPred, jkPred, tinggiPred)
+                prediction(babyDao, tanggal, umurPred, jkPred, tinggiPred)
             } else {
                 toastInfo("Gagal ☹️",
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
@@ -65,6 +77,16 @@ class MainActivity : AppCompatActivity() {
         }
         // Get all items
         getAll(babyDao)
+    }
+
+    private fun addDateToDatabase(): String {
+        val c = Calendar.getInstance()
+        val dateTime =c.time
+
+        // 10-03-2024 Min 14:59:11
+        val sdf =SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
+        val date =sdf.format(dateTime)
+        return date
     }
 
     private fun getAll(babyDao: BabyDao) {
@@ -75,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun setupListOfDataIntoRecyclerView(babyList: ArrayList<BabyEntity>) {
         if (babyList.isNotEmpty()) {
             val mainAdapter = MainAdapter(babyList)
@@ -88,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     @SuppressLint("SuspiciousIndentation")
-    private fun prediction(babyDao: BabyDao, umur: Float, jk: Float, tinggi: Float) {
+    private fun prediction(babyDao: BabyDao, tanggal: String, umur: Float, jk: Float, tinggi: Float) {
         // Normalisasi data with formula => (Xi - Xmin) / (Xmax - Xmin)
         val umurNormalized = (umur - 0f) / (60f - 0f)
         val tinggiNormalized = (tinggi - 40.01f) / (128f - 40.0104370037594f)
@@ -115,20 +138,18 @@ class MainActivity : AppCompatActivity() {
 
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if ( Math.round(outputFeature0[0]) < 0.5 ) {
-                // Toast
+                toastInfo("Kondisi bay anda normal",
+                            "Pertahankan asupan gizinya !!!", MotionToastStyle.SUCCESS)
+                Outputs.classification = "NORMAL"
 
-                // Set Classification to "Normal Stunting"
-                OUTPUT = "NORMAL"
                 // Add record
-                addRecord(babyDao, umur, jk, tinggi, OUTPUT)
+                addRecord(babyDao, tanggal, umur, Outputs.jk, tinggi, Outputs.classification)
             } else {
-                toastInfo("Kondisi bayi anda terkena stunting ☹️",
-                    "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.ERROR)
-                // Set Classification to "Stunted"
-                OUTPUT = "STUNTING"
+                toastInfo("Kondisi bayi anda terkena stunting",
+                    "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.WARNING)
+                Outputs.classification = "STUNTING"
                 // Add record
-                addRecord(babyDao, umur, jk, tinggi, OUTPUT)
-
+                addRecord(babyDao, tanggal, umur, Outputs.jk, tinggi, Outputs.classification)
             }
             // Releases model resources if no longer used.
             model.close()
@@ -137,12 +158,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun addRecord(babyDao: BabyDao, umur: Float, jk: Float, tinggi: Float, klasifikasi: String) {
+    private fun addRecord(
+        babyDao: BabyDao,
+        tanggal: String,
+        umur: Float,
+        jk: String,
+        tinggi: Float,
+        klasifikasi: String
+    ) {
+        tanggal
         lifecycleScope.launch {
             babyDao.insert(
                 BabyEntity(
+                    tanggal = tanggal,
                     umur = umur.toString(),
-                    jenisKelamin = jk.toString(),
+                    jenisKelamin = jk,
                     tinggi = tinggi.toString(),
                     klasifikasi = klasifikasi
                 )
@@ -163,6 +193,7 @@ class MainActivity : AppCompatActivity() {
             info,
             MotionToast.GRAVITY_BOTTOM,
             MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helveticabold))
+            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helveticabold)
+        )
     }
 }
