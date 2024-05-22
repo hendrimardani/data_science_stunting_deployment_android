@@ -33,7 +33,7 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private  lateinit var bindingItem: ItemAdapterBinding
+
     companion object Outputs {
         // For result output to display
         var classification = "NORMAL"
