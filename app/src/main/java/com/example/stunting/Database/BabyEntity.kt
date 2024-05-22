@@ -9,5 +9,6 @@ data class BabyEntity(
     var id: Int = 0,
     var umur: String = "",
     var jenisKelamin: String = "",
-    var tinggi: String = ""
+    var tinggi: String = "",
+    var klasifikasi: String = ""
 )

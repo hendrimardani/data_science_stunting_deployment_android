@@ -14,6 +14,7 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
         val tvUmurItem = binding.tvItemUmur
         val tvJkItem = binding.tvItemJk
         val tvTinggiItem = binding.tvItemTinggi
+        val tvKlasifikasi = binding.tvKlasifikasi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +32,7 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
         holder.tvUmurItem.text = item.umur
         holder.tvJkItem.text = item.jenisKelamin
         holder.tvTinggiItem.text = item.jenisKelamin
+        holder.tvKlasifikasi.text = item.klasifikasi
 
         if (position % 2 == 0) {
             holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))

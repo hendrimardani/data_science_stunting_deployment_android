@@ -5,7 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [BabyEntity::class], version = 3)
+// If you change the structure database you have to change parameter version with increase
+@Database(entities = [BabyEntity::class], version = 4)
 abstract class BabyDatabase: RoomDatabase() {
 
     abstract fun babyDao(): BabyDao

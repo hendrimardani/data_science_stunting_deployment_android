@@ -29,6 +29,7 @@ import java.nio.ByteOrder
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var OUTPUT: String // For result output classification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                 val umurPred = umur.toFloat()
                 val jkPred = jk.toFloat()
                 val tinggiPred = tinggi.toFloat()
+
+                // Prediction
                 prediction(babyDao, umurPred, jkPred, tinggiPred)
             } else {
                 toastInfo("Gagal ☹️",
@@ -108,28 +111,48 @@ class MainActivity : AppCompatActivity() {
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
 
-            lifecycleScope.launch {
-                babyDao.insert(BabyEntity(umur=umur.toString(), jenisKelamin=jk.toString(), tinggi=tinggi.toString()))
-                toastInfo("Data tersimpan !", "Data OK !!", MotionToastStyle.SUCCESS)
 
-                // Clear the text when data saved !!! (success)
-                binding.etUmur.text!!.clear()
-                binding.etJk.text!!.clear()
-                binding.etTinggi.text!!.clear()
-            }
 
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if ( Math.round(outputFeature0[0]) < 0.5 ) {
                 // Toast
 
+                // Set Classification to "Normal Stunting"
+                OUTPUT = "NORMAL"
+                // Add record
+                addRecord(babyDao, umur, jk, tinggi, OUTPUT)
             } else {
                 toastInfo("Kondisi bayi anda terkena stunting ☹️",
                     "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.ERROR)
+                // Set Classification to "Stunted"
+                OUTPUT = "STUNTING"
+                // Add record
+                addRecord(babyDao, umur, jk, tinggi, OUTPUT)
+
             }
             // Releases model resources if no longer used.
             model.close()
         } catch (e: IOException) {
             // TODO Handle the exception
+        }
+    }
+
+    private fun addRecord(babyDao: BabyDao, umur: Float, jk: Float, tinggi: Float, klasifikasi: String) {
+        lifecycleScope.launch {
+            babyDao.insert(
+                BabyEntity(
+                    umur = umur.toString(),
+                    jenisKelamin = jk.toString(),
+                    tinggi = tinggi.toString(),
+                    klasifikasi = klasifikasi
+                )
+            )
+            toastInfo("Data tersimpan !", "Data OK !!", MotionToastStyle.SUCCESS)
+
+            // Clear the text when data saved !!! (success)
+            binding.etUmur.text!!.clear()
+            binding.etJk.text!!.clear()
+            binding.etTinggi.text!!.clear()
         }
     }
 
