@@ -31,7 +31,7 @@
         tools:text="120" />
 
     <TextView
-        android:id="@+id/tv_klasifikasi"
+        android:id="@+id/tv_item_klasifikasi"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
