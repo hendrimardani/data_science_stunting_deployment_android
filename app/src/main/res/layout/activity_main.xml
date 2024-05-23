@@ -104,19 +104,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_tinggi">
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_width="180dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:text="Kirim"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="10dp" />
+            android:layout_marginEnd="5dp" />
 
         <Button
             android:id="@+id/btn_export"
-            android:layout_width="190dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:text="Ekspor file ke CSV" />
     </LinearLayout>

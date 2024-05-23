@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    // Library csv
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3") // for JVM platform
+
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 

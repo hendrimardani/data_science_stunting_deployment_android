@@ -1,9 +1,8 @@
 package com.example.stunting
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -15,19 +14,20 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
-import com.example.stunting.databinding.ItemAdapterBinding
 import com.example.stunting.ml.ModelStunting
+import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import java.io.File
 import java.io.IOException
-import java.nio.BufferOverflowException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 
@@ -82,8 +82,51 @@ class MainActivity : AppCompatActivity() {
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
             }
         }
+
+        binding.btnExport.setOnClickListener {
+            // Export to CSV
+            lifecycleScope.launch {
+                exportDatabaseToCSV(applicationContext, babyDao)
+
+            }
+            toastInfo("BERHASIL", "SUDAH", MotionToastStyle.SUCCESS)
+        }
+
         // Get all items
         getAll(babyDao)
+    }
+
+    private suspend fun exportDatabaseToCSV(context: Context, babyDao: BabyDao) {
+        // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
+        // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
+
+        var dataResult: ArrayList<List<String>> = ArrayList()
+        val fileName = "data_user_${SimpleDateFormat("yyyyMMDD_HHmmss").format(Date())}.csv"
+        val fileDir = "/storage/emulated/0/Download/"
+        try {
+            val file = File(fileDir, fileName)
+            dataResult.add(
+                listOf("tanggal", "umur(bulan)", "jenis_kelamin", "tinggi(cm)", "hasil")
+            )
+            babyDao.fetchAllbabies().collect {
+                for (item in it) {
+                    dataResult.add(
+                        listOf("${item.tanggal}", "${item.umur}", "${item.jenisKelamin}", "${item.tinggi}", "${item.klasifikasi}")
+                    )
+                    csvWriter().writeAll(dataResult, file.outputStream())
+                }
+            }
+        } catch (e: IOException) {
+            // TODO FAILED
+        }
+//        val data = listOf(
+//            listOf("Nama", "Usia", "Kota"),
+//            listOf("Hendri", "Mardani", "Tasikmalaya")
+//        )
+//
+//        val file = File(fileDir, "test1.csv")
+//        csvWriter().writeAll(data, file.outputStream())
+//        Log.e("LOKASI", "${fileDir}")
     }
 
     private fun addDateToDatabase(): String {
@@ -151,15 +194,11 @@ class MainActivity : AppCompatActivity() {
 
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if ( Math.round(outputFeature0[0]) < 0.5 ) {
-                toastInfo("Kondisi bay anda normal",
-                            "Pertahankan asupan gizinya !!!", MotionToastStyle.SUCCESS)
                 Outputs.classification = "NORMAL"
 
                 // Add record
                 addRecord(babyDao, tanggal, umurOutput, Outputs.jk, Outputs.classification)
             } else {
-                toastInfo("Kondisi bayi anda terkena stunting",
-                    "Perbaiki lagi asupan gizi anaknya !!!", MotionToastStyle.WARNING)
                 Outputs.classification = "STUNTING"
                 // Add record
                 addRecord(babyDao, tanggal, umurOutput, Outputs.jk, Outputs.classification)
