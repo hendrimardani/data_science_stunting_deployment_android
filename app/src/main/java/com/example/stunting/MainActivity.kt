@@ -1,10 +1,13 @@
 package com.example.stunting
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,6 +17,7 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
+import com.example.stunting.databinding.DialogCustomeExportDataBinding
 import com.example.stunting.ml.ModelStunting
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
@@ -84,24 +88,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnExport.setOnClickListener {
-            // Export to CSV
-            lifecycleScope.launch {
-                exportDatabaseToCSV(applicationContext, babyDao)
-
-            }
-            toastInfo("BERHASIL", "SUDAH", MotionToastStyle.SUCCESS)
+            customDialog(babyDao)
         }
 
         // Get all items
         getAll(babyDao)
     }
 
-    private suspend fun exportDatabaseToCSV(context: Context, babyDao: BabyDao) {
+    private suspend fun exportDatabaseToCSV(babyDao: BabyDao) {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
 
         var dataResult: ArrayList<List<String>> = ArrayList()
-        val fileName = "data_user_${SimpleDateFormat("yyyyMMDD_HHmmss").format(Date())}.csv"
+        val fileName = "data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
         val fileDir = "/storage/emulated/0/Download/"
         try {
             val file = File(fileDir, fileName)
@@ -117,16 +116,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } catch (e: IOException) {
-            // TODO FAILED
+            e.printStackTrace()
+            toastInfo("Gagal Mengekspor File !", "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
         }
-//        val data = listOf(
-//            listOf("Nama", "Usia", "Kota"),
-//            listOf("Hendri", "Mardani", "Tasikmalaya")
-//        )
-//
-//        val file = File(fileDir, "test1.csv")
-//        csvWriter().writeAll(data, file.outputStream())
-//        Log.e("LOKASI", "${fileDir}")
     }
 
     private fun addDateToDatabase(): String {
@@ -205,8 +197,9 @@ class MainActivity : AppCompatActivity() {
             }
             // Releases model resources if no longer used.
             model.close()
-        } catch (e: IOException) {
-            // TODO Handle the exception
+        } catch (e: Exception) {
+            e.printStackTrace()
+            toastInfo("Gagal Mengekspor File !", "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
         }
     }
 
@@ -221,13 +214,44 @@ class MainActivity : AppCompatActivity() {
                     klasifikasi = klasifikasi
                 )
             )
-            toastInfo("Data tersimpan !", "Data OK !!", MotionToastStyle.SUCCESS)
+            toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
 
             // Clear the text when data saved !!! (success)
             binding.etUmur.text!!.clear()
             binding.etJk.text!!.clear()
             binding.etTinggi.text!!.clear()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun customDialog(babyDao: BabyDao) {
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
+
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Set text
+        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
+        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
+                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
+                "hari ini Cth: data_user_2024Mei24_005247.csv"
+
+        dialogBinding.tvYes.setOnClickListener {
+            // Export to CSV
+            lifecycleScope.launch {
+                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan !", MotionToastStyle.SUCCESS)
+                exportDatabaseToCSV(babyDao)
+            }
+            customDialog.dismiss()
+        }
+        dialogBinding.tvNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        // Display dialog
+        customDialog.show()
     }
 
     private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
