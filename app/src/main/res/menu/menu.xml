@@ -5,8 +5,8 @@
     <item
         android:id="@+id/menu_about"
         android:title="Tentang Saya"
-        app:showAsAction="never" />
-
+        app:showAsAction="always"
+        android:icon="@drawable/ic_info_24" />
     <item
         android:id="@+id/menu_export_to_csv"
         android:title="Ekspor file ke csv"
