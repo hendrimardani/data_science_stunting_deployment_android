@@ -1,13 +1,9 @@
 package com.example.stunting
 
 import android.annotation.SuppressLint
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,7 +13,6 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
-import com.example.stunting.databinding.DialogCustomeExportDataBinding
 import com.example.stunting.ml.ModelStunting
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
@@ -57,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        setToolBar()
+
         // Call database
         val babyDao = (application as BabyApp).db.babyDao()
 
@@ -87,12 +84,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnExport.setOnClickListener {
-            customDialog(babyDao)
-        }
+//        binding.btnExport.setOnClickListener {
+//            customDialog(babyDao)
+//        }
 
         // Get all items
         getAll(babyDao)
+    }
+
+    private fun setToolBar() {
+        // Call object actionBar
+        setSupportActionBar(binding.tbMain)
+        supportActionBar!!.title = "Stunting Prediksi"
+        // Change font style text
+        binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
     }
 
     private suspend fun exportDatabaseToCSV(babyDao: BabyDao) {
@@ -141,11 +146,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupListOfDataIntoRecyclerView(babyList: ArrayList<BabyEntity>) {
+        val dataNormal: ArrayList<String> = ArrayList()
+        val dataStunting: ArrayList<String> = ArrayList()
+
         if (babyList.isNotEmpty()) {
             val mainAdapter = MainAdapter(babyList)
 
             // Count item list
             val countItem = babyList.size
+            binding.tvTotalData.text = "Ada sebanyak ${countItem}"
+
+            // Count classification data
+            babyList.forEach {
+                if (it.klasifikasi == "NORMAL") dataNormal.add(it.klasifikasi)
+                else dataStunting.add(it.klasifikasi)
+            }
+            binding.tvNormalData.text = "Data normal ada ${dataNormal.size}"
+            binding.tvStuntingData.text = "Data stunting ada ${dataStunting.size}"
+
 
             binding.rvItemList.layoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
@@ -224,35 +242,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun customDialog(babyDao: BabyDao) {
-        val customDialog = Dialog(this)
-        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
-
-        customDialog.setContentView(dialogBinding.root)
-        customDialog.setCanceledOnTouchOutside(false)
-        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        // Set text
-        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
-        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
-                "hari ini Cth: data_user_2024Mei24_005247.csv"
-
-        dialogBinding.tvYes.setOnClickListener {
-            // Export to CSV
-            lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan !", MotionToastStyle.SUCCESS)
-                exportDatabaseToCSV(babyDao)
-            }
-            customDialog.dismiss()
-        }
-        dialogBinding.tvNo.setOnClickListener {
-            customDialog.dismiss()
-        }
-        // Display dialog
-        customDialog.show()
-    }
+//    private fun customDialog(babyDao: BabyDao) {
+//        val customDialog = Dialog(this)
+//        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
+//
+//        customDialog.setContentView(dialogBinding.root)
+//        customDialog.setCanceledOnTouchOutside(false)
+//        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//        // Set text
+//        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
+//        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
+//                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+//                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
+//                "hari ini Cth: data_user_2024Mei24_005247.csv"
+//
+//        dialogBinding.tvYes.setOnClickListener {
+//            // Export to CSV
+//            lifecycleScope.launch {
+//                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan !", MotionToastStyle.SUCCESS)
+//                exportDatabaseToCSV(babyDao)
+//            }
+//            customDialog.dismiss()
+//        }
+//        dialogBinding.tvNo.setOnClickListener {
+//            customDialog.dismiss()
+//        }
+//        // Display dialog
+//        customDialog.show()
+//    }
 
     private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
         MotionToast.createToast(this,

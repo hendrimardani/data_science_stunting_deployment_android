@@ -7,16 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="STUNTING PREDIKSI"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/bluePrimary"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -27,7 +24,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@id/tb_main" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_umur"
@@ -106,7 +103,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_tinggi">
@@ -116,13 +112,33 @@
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:text="Kirim"
-            android:layout_marginEnd="5dp" />
+            android:backgroundTint="@color/blueSecond"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="30dp" />
 
-        <Button
-            android:id="@+id/btn_export"
-            android:layout_width="170dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ekspor file ke CSV" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_normal_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="total normal data" />
+
+            <TextView
+                android:id="@+id/tv_stunting_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="total stunting data" />
+
+            <TextView
+                android:id="@+id/tv_total_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="total data" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
