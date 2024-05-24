@@ -1,9 +1,15 @@
 package com.example.stunting
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,6 +19,7 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
+import com.example.stunting.databinding.DialogCustomeExportDataBinding
 import com.example.stunting.ml.ModelStunting
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
@@ -32,6 +39,7 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var babyDao: BabyDao
 
     companion object Outputs {
         // For result output to display
@@ -52,10 +60,10 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        setToolBar()
-
         // Call database
-        val babyDao = (application as BabyApp).db.babyDao()
+        babyDao = (application as BabyApp).db.babyDao()
+
+        setToolBar()
 
         binding.btnSubmit.setOnClickListener {
             val tanggal = addDateToDatabase()
@@ -84,12 +92,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        binding.btnExport.setOnClickListener {
-//            customDialog(babyDao)
-//        }
-
         // Get all items
         getAll(babyDao)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_about -> {
+                // TODO Menu about
+            }
+            R.id.menu_export_to_csv -> {
+                // Export database to CSV
+                customDialog(babyDao)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setToolBar() {
@@ -154,15 +176,15 @@ class MainActivity : AppCompatActivity() {
 
             // Count item list
             val countItem = babyList.size
-            binding.tvTotalData.text = "Ada sebanyak ${countItem}"
+            binding.tvTotalData.text = "Total ${countItem} data"
 
             // Count classification data
             babyList.forEach {
                 if (it.klasifikasi == "NORMAL") dataNormal.add(it.klasifikasi)
                 else dataStunting.add(it.klasifikasi)
             }
-            binding.tvNormalData.text = "Data normal ada ${dataNormal.size}"
-            binding.tvStuntingData.text = "Data stunting ada ${dataStunting.size}"
+            binding.tvNormalData.text = "Data normal ${dataNormal.size} data"
+            binding.tvStuntingData.text = "Data stunting ${dataStunting.size} data"
 
 
             binding.rvItemList.layoutManager = LinearLayoutManager(this,
@@ -242,35 +264,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-//    private fun customDialog(babyDao: BabyDao) {
-//        val customDialog = Dialog(this)
-//        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
-//
-//        customDialog.setContentView(dialogBinding.root)
-//        customDialog.setCanceledOnTouchOutside(false)
-//        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//        // Set text
-//        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
-//        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
-//                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-//                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
-//                "hari ini Cth: data_user_2024Mei24_005247.csv"
-//
-//        dialogBinding.tvYes.setOnClickListener {
-//            // Export to CSV
-//            lifecycleScope.launch {
-//                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan !", MotionToastStyle.SUCCESS)
-//                exportDatabaseToCSV(babyDao)
-//            }
-//            customDialog.dismiss()
-//        }
-//        dialogBinding.tvNo.setOnClickListener {
-//            customDialog.dismiss()
-//        }
-//        // Display dialog
-//        customDialog.show()
-//    }
+    private fun customDialog(babyDao: BabyDao) {
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
+
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Set text
+        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
+        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
+                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
+                " hari ini Cth: data_user_2024Mei24_005247.csv"
+
+        dialogBinding.tvYes.setOnClickListener {
+            // Export to CSV
+            lifecycleScope.launch {
+                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                exportDatabaseToCSV(babyDao)
+            }
+            customDialog.dismiss()
+        }
+        dialogBinding.tvNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        // Display dialog
+        customDialog.show()
+    }
 
     private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
         MotionToast.createToast(this,
