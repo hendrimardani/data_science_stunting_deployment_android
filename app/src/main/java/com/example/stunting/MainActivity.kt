@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,7 +19,8 @@ import com.example.stunting.Database.BabyApp
 import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
-import com.example.stunting.databinding.DialogCustomeExportDataBinding
+import com.example.stunting.databinding.DialogCustomAboutBinding
+import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.ml.ModelStunting
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
@@ -106,11 +106,12 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.menu_about -> {
                 // Menu
-                Toast.makeText(this, "TEST", Toast.LENGTH_LONG).show()
+                customDialogAbout()
+
             }
             R.id.menu_export_to_csv -> {
                 // Export database to CSV
-                customDialog(babyDao)
+                customDialogExportData(babyDao)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -265,10 +266,47 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun customDialog(babyDao: BabyDao) {
+    private fun customDialogAbout() {
         val customDialog = Dialog(this)
-        val dialogBinding = DialogCustomeExportDataBinding.inflate(layoutInflater)
+        val dialogBinding = DialogCustomAboutBinding.inflate(layoutInflater)
+
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Set text
+        dialogBinding.tvDescription.text =
+            "Jika anda mengalami permasalah pada aplikasi anda silahkan hubungi pembuat aplikasi " +
+                    "dibawah ini, atau jika ingin ada yang ditanyakan karena proses pembuatan aplikasi" +
+                    " ini masih tahap percobaan dan belum sebenuhnya sempurna.\nSilahkan hubungi Kotak dibawah ini :"
+
+        // Link to linkedin
+        dialogBinding.ivLinkedin.setOnClickListener {
+            // TODO
+        }
+
+        // Link to WA
+        dialogBinding.ivWa.setOnClickListener {
+            // TODO
+        }
+
+        // Link to Email
+        dialogBinding.ivEmail.setOnClickListener {
+            // TODO
+        }
+
+        dialogBinding.tvOk.setOnClickListener {
+           // Close
+            customDialog.dismiss()
+        }
+        // Display dialog
+        customDialog.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun customDialogExportData(babyDao: BabyDao) {
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomExportDataBinding.inflate(layoutInflater)
 
         customDialog.setContentView(dialogBinding.root)
         customDialog.setCanceledOnTouchOutside(false)
