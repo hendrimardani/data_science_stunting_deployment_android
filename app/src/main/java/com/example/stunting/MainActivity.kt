@@ -2,8 +2,10 @@ package com.example.stunting
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -186,8 +188,10 @@ class MainActivity : AppCompatActivity() {
                 if (it.klasifikasi == "NORMAL") dataNormal.add(it.klasifikasi)
                 else dataStunting.add(it.klasifikasi)
             }
-            binding.tvNormalData.text = "Data normal ${dataNormal.size} data"
-            binding.tvStuntingData.text = "Data stunting ${dataStunting.size} data"
+
+            // Display output data
+            binding.tvNumberNormalData.text = "${dataNormal.size} data"
+            binding.tvNumberStuntingData.text = "${dataStunting.size} data"
 
 
             binding.rvItemList.layoutManager = LinearLayoutManager(this,
@@ -282,17 +286,26 @@ class MainActivity : AppCompatActivity() {
 
         // Link to linkedin
         dialogBinding.ivLinkedin.setOnClickListener {
-            // TODO
+            val url = "https://www.linkedin.com/in/hendri-mardani-1b6ba61a8/"
+            linkToWebBrowser(url)
         }
 
         // Link to WA
         dialogBinding.ivWa.setOnClickListener {
-            // TODO
+            val url = "https://api.whatsapp.com/send?phone=6281388372075"
+            linkToWebBrowser(url)
         }
 
         // Link to Email
         dialogBinding.ivEmail.setOnClickListener {
-            // TODO
+            val url = "https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRvxmkxPlXNnrdQHFnTpMFwwGQFsRbBzClXRqRrMbKBBgxdXmgPxVTVNKmFGBHJTdgpsnsV"
+            linkToWebBrowser(url)
+        }
+
+        // Link to Instagral
+        dialogBinding.ivIg.setOnClickListener {
+            val url = "https://www.instagram.com/hendri.mardani/"
+            linkToWebBrowser(url)
         }
 
         dialogBinding.tvOk.setOnClickListener {
@@ -301,6 +314,12 @@ class MainActivity : AppCompatActivity() {
         }
         // Display dialog
         customDialog.show()
+    }
+
+    private fun linkToWebBrowser(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
     }
 
     @SuppressLint("SetTextI18n")

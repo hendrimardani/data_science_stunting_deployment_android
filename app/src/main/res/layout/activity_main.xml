@@ -95,52 +95,64 @@
             android:hint="Cnth: 90" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_btn"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/blueSecond"
+        android:text="Kirim"
+        app:layout_constraintStart_toStartOf="@id/til_tinggi"
+        app:layout_constraintTop_toBottomOf="@id/til_tinggi" />
+
+    <TextView
+        android:id="@+id/tv_normal_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="data normal"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_tinggi">
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@id/btn_submit"
+        app:layout_constraintTop_toBottomOf="@id/til_tinggi"/>
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:text="Kirim"
-            android:backgroundTint="@color/blueSecond"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp" />
+    <TextView
+        android:id="@+id/tv_number_normal_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="6"
+        android:textColor="@color/green"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_normal_data"
+        app:layout_constraintTop_toTopOf="@id/tv_normal_data" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_stunting_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="data stunting"
+        app:layout_constraintStart_toEndOf="@id/btn_submit"
+        app:layout_constraintTop_toBottomOf="@id/tv_normal_data" />
 
-            <TextView
-                android:id="@+id/tv_normal_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="total normal data" />
+    <TextView
+        android:id="@+id/tv_number_stunting_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="6"
+        android:textColor="@color/red"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/tv_stunting_data"
+        app:layout_constraintTop_toTopOf="@id/tv_stunting_data" />
 
-            <TextView
-                android:id="@+id/tv_stunting_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="total stunting data" />
-
-            <TextView
-                android:id="@+id/tv_total_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                tools:text="total data" />
-        </LinearLayout>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_total_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        tools:text="total data"
+        app:layout_constraintStart_toStartOf="@id/tv_stunting_data"
+        app:layout_constraintTop_toBottomOf="@id/tv_stunting_data"/>
 
     <LinearLayout
         android:id="@+id/ll_header"
@@ -150,7 +162,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/rv_item_list"
-        app:layout_constraintTop_toBottomOf="@id/ll_btn">
+        app:layout_constraintTop_toBottomOf="@id/tv_total_data">
 
         <TextView
             android:layout_width="wrap_content"

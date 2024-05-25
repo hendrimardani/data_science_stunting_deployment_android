@@ -69,10 +69,19 @@
             android:layout_marginStart="10dp" />
 
         <ImageView
+            android:id="@+id/iv_ig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/instagram"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp" />
+
+        <ImageView
             android:id="@+id/iv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/envelope_regular"
+            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp" />
     </LinearLayout>
 

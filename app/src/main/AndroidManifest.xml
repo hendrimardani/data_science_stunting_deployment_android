@@ -5,6 +5,9 @@
     <!-- For permission write external -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- For permission internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!--We add name .Database.BabyApp -->
     <application
         android:name=".Database.BabyApp"
