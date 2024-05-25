@@ -78,17 +78,23 @@ class MainActivity : AppCompatActivity() {
             if (jk == "0") Outputs.jk = "Laki-laki" else Outputs.jk = "Perempuan"
 
             if (umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() ) {
-                // Get data
-                val umurPred = umur.toFloat()
-                val jkPred = jk.toFloat()
-                val tinggiPred = tinggi.toFloat()
 
-                // For result to int and display it.
-                Outputs.umur = umur
-                Outputs.tinggi = tinggi
+                // Checking if there is no contains 0 (laki-laki) or 1 (perempuan)
+                if (jk.contains("0") or jk.contains("1")) {
+                    // Get data
+                    val umurPred = umur.toFloat()
+                    val jkPred = jk.toFloat()
+                    val tinggiPred = tinggi.toFloat()
 
-                // Prediction
-                prediction(babyDao, tanggal, Outputs.umur, umurPred, jkPred,  tinggiPred)
+                    // For result to int and display it.
+                    Outputs.umur = umur
+                    Outputs.tinggi = tinggi
+
+                    // Prediction
+                    prediction(babyDao, tanggal, Outputs.umur, umurPred, jkPred,  tinggiPred)
+                } else {
+                    toastInfo("Data Jenis Kelamin Tidak Ada", "Silahkan masukkan kode jenis kelamin yang sesuai", MotionToastStyle.ERROR)
+                }
             } else {
                 toastInfo("Gagal ☹️",
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
@@ -261,13 +267,13 @@ class MainActivity : AppCompatActivity() {
                     klasifikasi = klasifikasi
                 )
             )
-            toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
-
-            // Clear the text when data saved !!! (success)
-            binding.etUmur.text!!.clear()
-            binding.etJk.text!!.clear()
-            binding.etTinggi.text!!.clear()
         }
+        toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
+
+        // Clear the text when data saved !!! (success)
+        binding.etUmur.text!!.clear()
+        binding.etJk.text!!.clear()
+        binding.etTinggi.text!!.clear()
     }
 
     private fun customDialogAbout() {
