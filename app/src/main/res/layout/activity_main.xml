@@ -32,6 +32,8 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="136dp"
+        app:boxStrokeColor="@color/bluePrimary"
+        app:hintTextColor="@color/blueSecond"
         app:layout_constraintStart_toStartOf="@id/tv_umur"
         app:layout_constraintTop_toBottomOf="@id/tv_umur">
 
@@ -58,6 +60,8 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="136dp"
+        app:boxStrokeColor="@color/bluePrimary"
+        app:hintTextColor="@color/blueSecond"
         app:layout_constraintStart_toStartOf="@id/tv_jk"
         app:layout_constraintTop_toBottomOf="@id/tv_jk">
 
@@ -84,6 +88,8 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="136dp"
+        app:boxStrokeColor="@color/bluePrimary"
+        app:hintTextColor="@color/blueSecond"
         app:layout_constraintStart_toStartOf="@id/tv_tinggi"
         app:layout_constraintTop_toBottomOf="@id/tv_tinggi">
 
@@ -102,6 +108,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/blueSecond"
         android:text="Kirim"
+        app:boxStrokeColor="@color/bluePrimary"
         app:layout_constraintStart_toStartOf="@id/til_tinggi"
         app:layout_constraintTop_toBottomOf="@id/til_tinggi" />
 

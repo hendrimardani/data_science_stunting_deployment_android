@@ -23,7 +23,7 @@ import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.ml.ModelStunting
+import com.example.stunting.ml.ModelRegularizer
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
@@ -161,11 +161,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun addDateToDatabase(): String {
         val c = Calendar.getInstance()
-        val dateTime =c.time
+        val dateTime = c.time
 
         // 10-03-2024 Min 14:59:11
-        val sdf =SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-        val date =sdf.format(dateTime)
+        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
+        val date = sdf.format(dateTime)
         return date
     }
 
@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
             byteBuffer.putFloat(jk)
             byteBuffer.putFloat(tinggiNormalized)
 
-            val model = ModelStunting.newInstance(this)
+            val model = ModelRegularizer.newInstance(this)
 
             // Creates inputs for reference.
             val inputFeature0 =
@@ -341,7 +341,7 @@ class MainActivity : AppCompatActivity() {
         dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
         dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
                 "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv" +
+                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv di folder Download/Unduhan" +
                 " hari ini Cth: data_user_2024Mei24_005247.csv"
 
         dialogBinding.tvYes.setOnClickListener {
@@ -351,12 +351,21 @@ class MainActivity : AppCompatActivity() {
                 exportDatabaseToCSV(babyDao)
             }
             customDialog.dismiss()
+            // Goto link directory download
+            linkToDirectory()
+            // Destroying when exported successfully
+            finish()
         }
         dialogBinding.tvNo.setOnClickListener {
             customDialog.dismiss()
         }
         // Display dialog
         customDialog.show()
+    }
+
+    private fun linkToDirectory() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
     }
 
     private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
