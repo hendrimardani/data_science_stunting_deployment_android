@@ -1,6 +1,5 @@
 package com.example.stunting.Database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -19,6 +18,9 @@ interface BabyDao {
 
     @Delete
     suspend fun delete(babyEntity: BabyEntity)
+
+    @Query("DELETE FROM `baby-table`")
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM `baby-table`")
     fun fetchAllbabies(): Flow<List<BabyEntity>>

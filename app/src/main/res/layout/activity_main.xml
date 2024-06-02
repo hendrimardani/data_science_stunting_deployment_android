@@ -103,7 +103,7 @@
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="170dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/blueSecond"
@@ -126,7 +126,7 @@
         android:id="@+id/tv_number_normal_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="6"
+        android:text ="0 data"
         android:textColor="@color/green"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@+id/tv_normal_data"
@@ -145,7 +145,7 @@
         android:id="@+id/tv_number_stunting_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="6"
+        android:text="0 data"
         android:textColor="@color/red"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@id/tv_stunting_data"
@@ -157,15 +157,26 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="20sp"
-        tools:text="total data"
+        android:text="total 0 data"
         app:layout_constraintStart_toStartOf="@id/tv_stunting_data"
         app:layout_constraintTop_toBottomOf="@id/tv_stunting_data"/>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@id/tv_number_stunting_data"
+        app:layout_constraintTop_toTopOf="@id/tv_number_stunting_data"
+        app:layout_constraintBottom_toBottomOf="@id/tv_number_stunting_data" />
 
     <LinearLayout
         android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/rv_item_list"

@@ -10,7 +10,7 @@
         android:id="@+id/iv_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_export"
+        android:src="@drawable/ic_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.027"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Kamu yakin ?"
-        android:textColor="@color/green"
+        android:textColor="@color/red"
         android:textSize="30dp"
 
         android:textStyle="bold"
@@ -63,7 +63,7 @@
             android:backgroundTint="@color/light_gray"
             android:text="YES"
             android:textSize="25sp"
-            android:textColor="#37FF00"
+            android:textColor="@color/red"
             android:textStyle="bold"
             android:layout_marginStart="150dp"
             android:layout_marginEnd="50dp"/>

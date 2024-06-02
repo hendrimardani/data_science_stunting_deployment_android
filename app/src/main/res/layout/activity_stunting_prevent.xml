@@ -27,6 +27,7 @@
         android:text="langkah-langkah"
         android:textSize="20sp"
         android:layout_margin="10dp"
+        android:justificationMode="inter_word"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"

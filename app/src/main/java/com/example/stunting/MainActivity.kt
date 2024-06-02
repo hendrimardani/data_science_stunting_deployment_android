@@ -9,9 +9,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,6 +22,7 @@ import com.example.stunting.Database.BabyDao
 import com.example.stunting.Database.BabyEntity
 import com.example.stunting.databinding.ActivityMainBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
+import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.ml.ModelRegularizer
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
@@ -99,6 +100,11 @@ class MainActivity : AppCompatActivity() {
                 toastInfo("Gagal ☹️",
                     "Tidak boleh ada data yang kosong !", MotionToastStyle.ERROR)
             }
+        }
+
+        binding.ivDelete.setOnClickListener {
+            // Delete all items
+            customDialogDeleteAll(babyDao)
         }
 
         // Get all items
@@ -191,6 +197,8 @@ class MainActivity : AppCompatActivity() {
         val dataStunting: ArrayList<String> = ArrayList()
 
         if (babyList.isNotEmpty()) {
+            binding.llHeader.visibility = View.VISIBLE
+            binding.ivDelete.visibility = View.VISIBLE
             val mainAdapter = MainAdapter(babyList)
 
             // Count item list
@@ -211,6 +219,9 @@ class MainActivity : AppCompatActivity() {
             binding.rvItemList.layoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
             binding.rvItemList.adapter = mainAdapter
+        } else {
+            binding.llHeader.visibility = View.INVISIBLE
+            binding.ivDelete.visibility = View.INVISIBLE
         }
     }
 
@@ -346,11 +357,10 @@ class MainActivity : AppCompatActivity() {
         customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // Set text
-        dialogBinding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.red))
         dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
                 "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
                 "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv di folder Download/Unduhan" +
-                " hari ini Cth: data_user_2024Mei24_005247.csv"
+                " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
 
         dialogBinding.tvYes.setOnClickListener {
             // Export to CSV
@@ -371,9 +381,42 @@ class MainActivity : AppCompatActivity() {
         customDialog.show()
     }
 
+    private fun deleteAllDates(babyDao: BabyDao) {
+        lifecycleScope.launch {
+            babyDao.deleteAll()
+        }
+        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
+    }
+
     private fun linkToDirectory() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
         startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
+    }
+
+    private fun customDialogDeleteAll(babyDao: BabyDao) {
+        val customDialog = Dialog(this@MainActivity)
+        val dialogBinding = DialogCustomDeleteBinding.inflate(layoutInflater)
+
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+
+        // Set text
+        dialogBinding.tvDescription.text = "Apakah anda yakin ingin menghapus semua histori ?, " +
+                "Jika anda belum membackup histori datanya silahkan export dulu !! Untuk eksport ada " +
+                "di pojok kanan atas."
+
+        dialogBinding.tvYes.setOnClickListener {
+            deleteAllDates(babyDao)
+            // We will destroy activity
+            finish()
+            customDialog.dismiss()
+        }
+        dialogBinding.tvNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        // Display dialog
+        customDialog.show()
     }
 
     private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
