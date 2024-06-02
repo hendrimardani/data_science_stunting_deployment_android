@@ -138,6 +138,8 @@ class MainActivity : AppCompatActivity() {
         // Call object actionBar
         setSupportActionBar(binding.tbMain)
         supportActionBar!!.title = "Stunting Prediksi"
+        // Set icon
+        supportActionBar!!.setIcon(R.drawable.icon_stunting)
         // Change font style text
         binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
     }
