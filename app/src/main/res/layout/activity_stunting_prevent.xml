@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".StuntingPreventActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_mencegah_stunting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bluePrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_langkah_langkah"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="langkah-langkah"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_mencegah_stunting" />
+
+    <TextView
+        android:id="@+id/tv_kehamilan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Sebelum Kehamilan: "
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintStart_toStartOf="@id/tv_langkah_langkah"
+        app:layout_constraintTop_toBottomOf="@id/tv_langkah_langkah" />
+
+    <TextView
+        android:id="@+id/tv_title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 1"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_kehamilan" />
+
+    <TextView
+        android:id="@+id/tv_value_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 1"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_1" />
+
+    <TextView
+        android:id="@+id/tv_title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 2"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_1" />
+
+    <TextView
+        android:id="@+id/tv_value_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 2"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_2" />
+
+    <TextView
+        android:id="@+id/tv_title_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 3"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_2" />
+
+    <TextView
+        android:id="@+id/tv_value_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 3"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_3" />
+
+    <TextView
+        android:id="@+id/tv_title_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 4"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_3" />
+
+    <TextView
+        android:id="@+id/tv_value_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 4"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_4" />
+
+    <TextView
+        android:id="@+id/tv_title_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 5"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_4" />
+
+    <TextView
+        android:id="@+id/tv_value_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 5"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_5" />
+
+    <TextView
+        android:id="@+id/tv_saat_kehamilan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Saat Kehamilan: "
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintStart_toStartOf="@id/tv_langkah_langkah"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_5" />
+
+    <TextView
+        android:id="@+id/tv_title_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 6"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_saat_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_saat_kehamilan" />
+
+    <TextView
+        android:id="@+id/tv_value_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 6"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_6" />
+
+    <TextView
+        android:id="@+id/tv_title_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 7"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_saat_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_6" />
+
+    <TextView
+        android:id="@+id/tv_value_7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 7"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_7" />
+
+    <TextView
+        android:id="@+id/tv_title_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 8"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_saat_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_7" />
+
+    <TextView
+        android:id="@+id/tv_value_8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 8"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_8" />
+
+    <TextView
+        android:id="@+id/tv_title_9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 9"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_saat_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_8" />
+
+    <TextView
+        android:id="@+id/tv_value_9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 9"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_9" />
+
+    <TextView
+        android:id="@+id/tv_setelah_kehamilan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Setelah Kehamilan: "
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintStart_toStartOf="@id/tv_langkah_langkah"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_9" />
+
+    <TextView
+        android:id="@+id/tv_title_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 10"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_setelah_kehamilan" />
+
+    <TextView
+        android:id="@+id/tv_value_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 10"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_10" />
+
+    <TextView
+        android:id="@+id/tv_title_11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 11"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_10" />
+
+    <TextView
+        android:id="@+id/tv_value_11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 11"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_11" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

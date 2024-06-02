@@ -113,13 +113,16 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_about -> {
-                // Menu
+                // About
                 customDialogAbout()
-
             }
             R.id.menu_export_to_csv -> {
                 // Export database to CSV
                 customDialogExportData(babyDao)
+            }
+            R.id.menu_mencegah_stunting -> {
+                // Mencegah stunting
+                stuntingPreventInfo()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -131,6 +134,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.title = "Stunting Prediksi"
         // Change font style text
         binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
+    }
+
+    private fun stuntingPreventInfo() {
+        val intent = Intent(this, StuntingPreventActivity::class.java)
+        startActivity(intent)
     }
 
     private suspend fun exportDatabaseToCSV(babyDao: BabyDao) {

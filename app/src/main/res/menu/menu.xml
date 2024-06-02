@@ -11,4 +11,9 @@
         android:id="@+id/menu_export_to_csv"
         android:title="Ekspor file ke csv"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_mencegah_stunting"
+        android:title="Tips mencegah stunting ?"
+        app:showAsAction="never" />
 </menu>
