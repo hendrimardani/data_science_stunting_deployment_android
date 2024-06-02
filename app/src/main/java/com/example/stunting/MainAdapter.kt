@@ -36,7 +36,6 @@ class MainAdapter(val items: ArrayList<BabyEntity>): RecyclerView.Adapter<MainAd
         holder.tvJkItem.text = item.jenisKelamin
         holder.tvTinggiItem.text = item.tinggi
         holder.tvKlasifikasiItem.text = item.klasifikasi
-
         // Change color text classification display
         if (item.klasifikasi == "NORMAL") {
             holder.tvKlasifikasiItem.setTextColor(Color.GREEN)

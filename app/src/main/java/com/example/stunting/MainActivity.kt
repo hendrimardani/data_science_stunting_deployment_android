@@ -219,6 +219,9 @@ class MainActivity : AppCompatActivity() {
             binding.rvItemList.layoutManager = LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false)
             binding.rvItemList.adapter = mainAdapter
+
+            // When input data automatically to last index
+            binding.rvItemList.layoutManager!!.smoothScrollToPosition(binding.rvItemList, null, countItem - 1)
         } else {
             binding.llHeader.visibility = View.INVISIBLE
             binding.ivDelete.visibility = View.INVISIBLE
