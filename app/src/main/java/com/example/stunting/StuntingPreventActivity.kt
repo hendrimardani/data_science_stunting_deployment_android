@@ -69,5 +69,13 @@ class StuntingPreventActivity : AppCompatActivity() {
         binding.tvValue10.text = "Berikan ASI eksklusif kepada bayi selama 6 bulan pertama. ASI adalah makanan terbaik untuk bayi dan dapat membantu mencegah stunting."
         binding.tvTitle11.text = "2. Berikan MPASI yang bergizi: "
         binding.tvValue11.text = "Setelah usia 6 bulan, berikan MPASI yang bergizi seimbang kepada bayi. Konsultasikan dengan dokter atau ahli gizi untuk mendapatkan panduan tentang pemberian MPASI yang tepat."
+        binding.tvTitle12.text = "3. Pantau pertumbuhan dan perkembangan anak: "
+        binding.tvValue12.text = "Rutin pantau pertumbuhan dan perkembangan anak di posyandu atau puskesmas."
+        binding.tvTitle13.text = "4. Jaga kebersihan lingkungan: "
+        binding.tvValue13.text = "Pastikan lingkungan tempat tinggal anak bersih dan sehat untuk mencegah penyakit."
+        binding.tvTitle14.text = "5. Berikan imunisasi lengkap: "
+        binding.tvValue14.text = "Berikan imunisasi lengkap kepada anak untuk mencegah penyakit infeksi."
+        binding.tvTitle15.text = "6. Berikan stimulan yang tepat: "
+        binding.tvValue15.text = "Berikan stimulasi yang tepat untuk mendukung tumbuh kembang anak."
     }
 }

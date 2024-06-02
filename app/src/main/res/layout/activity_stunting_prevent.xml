@@ -331,5 +331,101 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_11" />
+
+    <TextView
+        android:id="@+id/tv_title_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 12"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_11" />
+
+    <TextView
+        android:id="@+id/tv_value_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 12"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_12" />
+
+    <TextView
+        android:id="@+id/tv_title_13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 13"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_12" />
+
+    <TextView
+        android:id="@+id/tv_value_13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 13"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_13" />
+
+    <TextView
+        android:id="@+id/tv_title_14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 14"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_13" />
+
+    <TextView
+        android:id="@+id/tv_value_14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 14"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_14" />
+
+    <TextView
+        android:id="@+id/tv_title_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JUDUL 15"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="@id/tv_setelah_kehamilan"
+        app:layout_constraintTop_toBottomOf="@id/tv_value_14" />
+
+    <TextView
+        android:id="@+id/tv_value_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALUE 15"
+        android:layout_marginStart="20sp"
+        android:layout_marginEnd="10sp"
+        android:justificationMode="inter_word"
+        android:background="@color/light_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_15" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
