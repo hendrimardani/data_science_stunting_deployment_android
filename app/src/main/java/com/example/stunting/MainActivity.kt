@@ -161,7 +161,6 @@ class MainActivity : AppCompatActivity() {
             dataResult.add(
                 listOf("tanggal", "umur(bulan)", "jenis_kelamin", "tinggi(cm)", "hasil")
             )
-            s
             babyDao.fetchAllbabies().collect {
                 for (item in it) {
                     dataResult.add(
