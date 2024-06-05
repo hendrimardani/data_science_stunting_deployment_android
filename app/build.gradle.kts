@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.stunting"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -43,6 +43,10 @@ android {
 }
 
 dependencies {
+    // Library excel
+    // have to minSdk = 26
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
+
     // Library csv
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.3") // for JVM platform
 

@@ -27,11 +27,13 @@ import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.ml.ModelRegularizer
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import kotlinx.coroutines.launch
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -124,7 +126,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_export_to_csv -> {
                 // Export database to CSV
-                customDialogExportData(babyDao)
+                customDialogExportData(babyDao, "csv")
+            }
+            R.id.menu_export_to_xlsx -> {
+                // Export database to XLS
+                customDialogExportData(babyDao, "xlsx")
             }
             R.id.menu_mencegah_stunting -> {
                 // Mencegah stunting
@@ -167,6 +173,48 @@ class MainActivity : AppCompatActivity() {
                         listOf("${item.tanggal}", "${item.umur}", "${item.jenisKelamin}", "${item.tinggi}", "${item.klasifikasi}")
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            toastInfo("Gagal Mengekspor File !", "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+        }
+    }
+
+    private suspend fun exportDatabaseToExcel(babyDao: BabyDao) {
+        // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
+        // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
+
+        val fileName = "data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
+        val fileDir = "/storage/emulated/0/Download/"
+
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Data")
+
+        try {
+            val file = File(fileDir, fileName)
+            // Buat header tabel
+            val headerRow = sheet.createRow(0)
+            headerRow.createCell(0).setCellValue("tanggal")
+            headerRow.createCell(1).setCellValue("umur(bulan)")
+            headerRow.createCell(2).setCellValue("jenis_kelamin")
+            headerRow.createCell(3).setCellValue("tinggi(cm)")
+            headerRow.createCell(4).setCellValue("hasil")
+
+            // Isi data ke dalam tabel
+            var rowNum = 1
+            babyDao.fetchAllbabies().collect {
+                for (item in it) {
+                    val row = sheet.createRow(rowNum++)
+                    row.createCell(0).setCellValue(item.tanggal)
+                    row.createCell(1).setCellValue(item.umur)
+                    row.createCell(2).setCellValue(item.jenisKelamin)
+                    row.createCell(3).setCellValue(item.tinggi)
+                    row.createCell(4).setCellValue(item.klasifikasi)
+
+                    val fileOutputStream = FileOutputStream(file)
+                    workbook.write(fileOutputStream)
+                    fileOutputStream.close()
                 }
             }
         } catch (e: IOException) {
@@ -353,7 +401,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun customDialogExportData(babyDao: BabyDao) {
+    private fun customDialogExportData(babyDao: BabyDao, fileType: String) {
         val customDialog = Dialog(this)
         val dialogBinding = DialogCustomExportDataBinding.inflate(layoutInflater)
 
@@ -361,29 +409,57 @@ class MainActivity : AppCompatActivity() {
         customDialog.setCanceledOnTouchOutside(false)
         customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // Set text
-        dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv di folder Download/Unduhan" +
-                " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
+        if (fileType == "csv") {
+            // File type CSV
+            // Set text
+            dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke CSV pada " +
+                    "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+                    "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).csv di folder Download/Unduhan" +
+                    " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
 
-        dialogBinding.tvYes.setOnClickListener {
-            // Export to CSV
-            lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
-                exportDatabaseToCSV(babyDao)
+            dialogBinding.tvYes.setOnClickListener {
+                // Export to CSV
+                lifecycleScope.launch {
+                    toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                    exportDatabaseToCSV(babyDao)
+                }
+                customDialog.dismiss()
+                // Goto link directory download
+                linkToDirectory()
+                // Destroying when exported successfully
+                finish()
             }
-            customDialog.dismiss()
-            // Goto link directory download
-            linkToDirectory()
-            // Destroying when exported successfully
-            finish()
+            dialogBinding.tvNo.setOnClickListener {
+                customDialog.dismiss()
+            }
+            // Display dialog
+            customDialog.show()
+        } else {
+            // File type excel
+            // Set text
+            dialogBinding.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
+                    "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+                    "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
+                    " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
+
+            dialogBinding.tvYes.setOnClickListener {
+                // Export to Xlsx
+                lifecycleScope.launch {
+                    toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                    exportDatabaseToExcel(babyDao)
+                }
+                customDialog.dismiss()
+                // Goto link directory download
+                linkToDirectory()
+                // Destroying when exported successfully
+                finish()
+            }
+            dialogBinding.tvNo.setOnClickListener {
+                customDialog.dismiss()
+            }
+            // Display dialog
+            customDialog.show()
         }
-        dialogBinding.tvNo.setOnClickListener {
-            customDialog.dismiss()
-        }
-        // Display dialog
-        customDialog.show()
     }
 
     private fun deleteAllDates(babyDao: BabyDao) {
