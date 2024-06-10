@@ -23,8 +23,17 @@ class MainActivity : AppCompatActivity() {
 
         // Toolbar
         setToolBar()
+
         binding.cvBumil.setOnClickListener {
             val intent = Intent(this, BumilActivity::class.java)
+            startActivity(intent)
+        }
+        binding.cvCalonPengantin.setOnClickListener {
+            val intent = Intent(this, CalonPengantinActivity::class.java)
+            startActivity(intent)
+        }
+        binding.cvRemajaPutri.setOnClickListener {
+            val intent = Intent(this, RemajaPutriActivity::class.java)
             startActivity(intent)
         }
     }
