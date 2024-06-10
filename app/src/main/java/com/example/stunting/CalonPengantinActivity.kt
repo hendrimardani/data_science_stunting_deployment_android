@@ -8,22 +8,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.stunting.databinding.ActivityBumilBinding
+import com.example.stunting.databinding.ActivityCalonPengantinBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class BumilActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityBumilBinding
+class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
+    private lateinit var binding:ActivityCalonPengantinBinding
     private lateinit var cal: Calendar
     private lateinit var dataSetListener: DatePickerDialog.OnDateSetListener
-    private lateinit var statusGiziRadioButton: String
+    private lateinit var periksaKesehatanRadioButton: String
+    private lateinit var bimbinganPerkawinanRadioButton: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityBumilBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_calon_pengantin)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -33,16 +33,13 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
 
         // Set caledar and update in view result
-        setCalendar(binding.etTglLahirBumil)
-        setCalendar(binding.etHariPertamaHaidTerakhirBumil)
-        setCalendar(binding.etTglPerkiraanLahirBumil)
+        setCalendar(binding.etTglLahirCalonPengantin)
+        setCalendar(binding.etPerkiraanTanggalPernikahanCalonPengantin)
 
-        binding.etTglLahirBumil.setOnClickListener(this)
-        binding.etHariPertamaHaidTerakhirBumil.setOnClickListener(this)
-        binding.etTglPerkiraanLahirBumil.setOnClickListener(this)
-        binding.rgBumil.setOnClickListener(this)
+        binding.etTglLahirCalonPengantin.setOnClickListener(this)
+        binding.etPerkiraanTanggalPernikahanCalonPengantin.setOnClickListener(this)
 
-        binding.btnSubmitBumil.setOnClickListener(this)
+        binding.btnSubmitCalonPengantin.setOnClickListener(this)
     }
 
     private fun setCalendar(etTanggal: EditText) {
@@ -64,32 +61,37 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setToolBar() {
         // Call object actionBar
-        setSupportActionBar(binding.tbBumil)
-        supportActionBar!!.title = "Ibu Hamil"
+        setSupportActionBar(binding.tbCalonPengantin)
+        supportActionBar!!.title = "Calon Pengantin"
         // Change font style text
-        binding.tbBumil.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        binding.tbCalonPengantin.setTitleTextAppearance(this, R.style.Theme_Stunting)
 
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        binding.tbBumil.setNavigationOnClickListener {
+        binding.tbCalonPengantin.setNavigationOnClickListener {
             onBackPressed()
         }
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.et_tgl_lahir_bumil -> getDatePickerDialog()
-            R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialog()
-            R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialog()
-            R.id.rg_bumil -> {
-                when (binding.rgBumil.checkedRadioButtonId) {
-                    R.id.rb_ya_bumil -> statusGiziRadioButton = "YA"
-                    R.id.rb_tidak_bumil -> statusGiziRadioButton = "TIDAK"
+            R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialog()
+            R.id.et_perkiraan_tanggal_pernikahan_calon_pengantin -> getDatePickerDialog()
+            R.id.rg_periksa_kesehatan_calon_pengantin -> {
+                when (binding.rgPeriksaKesehatanCalonPengantin.checkedRadioButtonId) {
+                    R.id.rb_ya_periksa_kesehatan_calon_pengantin -> periksaKesehatanRadioButton = "YA"
+                    R.id.rb_tidak_periksa_kesehatan_calon_pengantin -> periksaKesehatanRadioButton = "TIDAK"
                 }
             }
-            R.id.btn_submit_bumil -> {
+            R.id.rg_bimbingan_perkawinan_calon_pengantin -> {
+                when (binding.rgBimbinganPerkawinanCalonPengantin.checkedRadioButtonId) {
+                    R.id.rb_ya_bimbingan_perkawinan_calon_pengantin -> bimbinganPerkawinanRadioButton = "YA"
+                    R.id.rb_tidak_bimbingan_perkawinan_calon_pengantin -> bimbinganPerkawinanRadioButton = "TIDAK"
+                }
+            }
+            R.id.btn_submit_calon_pengantin -> {
                 /* TODO */
             }
         }
@@ -97,7 +99,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getDatePickerDialog() {
         DatePickerDialog(
-            this@BumilActivity,
+            this@CalonPengantinActivity,
             dataSetListener,
             cal.get(Calendar.YEAR),
             cal.get(Calendar.MONTH),
