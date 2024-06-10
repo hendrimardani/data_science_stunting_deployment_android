@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, RemajaPutriActivity::class.java)
             startActivity(intent)
         }
+        binding.cvLayananKeluarga.setOnClickListener {
+            val intent = Intent(this, LayananKeluargaActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setToolBar() {

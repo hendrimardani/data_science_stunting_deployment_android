@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".LayananKeluargaActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_layanan_keluarga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bluePrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tb_layanan_keluarga"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tv_nama_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Nama Lengkap Kepala Keluarga: "
+                app:layout_constraintTop_toBottomOf="@id/tb_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@+id/tb_layanan_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_layanan_keluarga"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nama_layanan_keluarga">
+
+                <EditText
+                    android:id="@+id/et_nama_layanan_keluarga"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Cnt: Nikola Tesla" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_dusun_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Dusun:  "
+                app:layout_constraintTop_toBottomOf="@id/til_nama_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_dusun_layanan_keluarga"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_dusun_layanan_keluarga"
+                app:layout_constraintTop_toBottomOf="@+id/tv_dusun_layanan_keluarga">
+
+                <EditText
+                    android:id="@+id/et_dusun_layanan_keluarga"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Cnt: Desa kebon jeruk" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_nama_lengkap_ibu_hamil_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Nama Lengkap Ibu Hamil:  "
+                app:layout_constraintTop_toBottomOf="@id/til_dusun_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_lengkap_ibu_hamil_layanan_keluarga"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga"
+                app:layout_constraintTop_toBottomOf="@+id/tv_dusun_layanan_keluarga">
+
+                <EditText
+                    android:id="@+id/et_nama_lengkap_ibu_hamil_layanan_keluarga"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Cnt: Lulu Nurfalah"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_anak_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Anak (0 - 59 bln):  "
+                app:layout_constraintTop_toBottomOf="@id/til_nama_lengkap_ibu_hamil_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_anak_layanan_keluarga"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga"
+                app:layout_constraintTop_toBottomOf="@id/tv_anak_layanan_keluarga">
+
+                <EditText
+                    android:id="@+id/et_anak_layanan_keluarga"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Cnt: 21" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_kategori_keluarga_rentan_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Kategori Keluarga Rentan (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/til_anak_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_kategori_keluarga_rentan_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_kategori_keluarga_rentan_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_kategori_keluarga_rentan_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_kategori_keluarga_rentan_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_memiliki_kartu_keluarga_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Memiliki Kartu Keluarga (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_kategori_keluarga_rentan_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_memiliki_kartu_keluarga_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_memiliki_kartu_keluarga_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_memiliki_kartu_keluarga_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_memiliki_kartu_keluarga_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_memiliki_jamban_sehat_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Memiliki Jamban Sehat (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_kartu_keluarga_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_memiliki_jamban_sehat_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_memiliki_jamban_sehat_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_memiliki_jamban_sehat_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_memiliki_jamban_sehat_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_memiliki_sumber_air_bersih_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Memiliki Sumber Air Bersih (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_jamban_sehat_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_memiliki_sumber_air_bersih_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_memiliki_sumber_air_bersih_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_memiliki_sumber_air_bersih_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_memiliki_sumber_air_bersih_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_peserta_jaminan_kesehatan_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Peserta Jaminan Sosial (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_sumber_air_bersih_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_peserta_jaminan_kesehatan_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_peserta_jaminan_kesehatan_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_peserta_jaminan_kesehatan_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_peserta_jaminan_kesehatan_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Memiliki Akses Sanitasi Pembuangan Limbah Layak (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_peserta_jaminan_kesehatan_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Pendampingan Keluarga oleh TPK (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Peserta Kegiatan Ketahanan Pangan (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
+
+            <RadioGroup
+                android:id="@+id/rg_peserta_kegiatan_ketahanan_pangan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_peserta_kegiatan_ketahanan_pangan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_peserta_kegiatan_ketahanan_pangan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_submit_remaja_putri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueSecond"
+                android:text="Kirim" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
