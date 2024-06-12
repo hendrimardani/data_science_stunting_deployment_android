@@ -33,7 +33,7 @@
                 android:id="@+id/tv_nama_layanan_keluarga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Nama Lengkap Kepala Keluarga: "
                 app:layout_constraintTop_toBottomOf="@id/tb_layanan_keluarga"
                 app:layout_constraintStart_toStartOf="@+id/tb_layanan_keluarga" />
@@ -353,34 +353,35 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Peserta Kegiatan Ketahanan Pangan (Ya/Tidak): "
-                app:layout_constraintTop_toBottomOf="@id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga"
+                app:layout_constraintTop_toBottomOf="@id/rg_pendampingan_keluarga_oleh_tpk_layanan_keluarga"
                 app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga" />
 
             <RadioGroup
-                android:id="@+id/rg_peserta_kegiatan_ketahanan_pangan"
+                android:id="@+id/rg_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tv_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
                 app:layout_constraintStart_toStartOf="@id/tv_nama_layanan_keluarga">
 
                 <RadioButton
-                    android:id="@+id/rb_ya_peserta_kegiatan_ketahanan_pangan"
+                    android:id="@+id/rb_ya_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="YA" />
 
                 <RadioButton
-                    android:id="@+id/rb_tidak_peserta_kegiatan_ketahanan_pangan"
+                    android:id="@+id/rb_tidak_peserta_kegiatan_ketahanan_pangan_layanan_keluarga"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TIDAK" />
             </RadioGroup>
 
             <Button
-                android:id="@+id/btn_submit_remaja_putri"
+                android:id="@+id/btn_submit_layanan_keluarga"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/blueSecond"
+                android:layout_marginTop="10dp"
                 android:text="Kirim" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

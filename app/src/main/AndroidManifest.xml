@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Database.BabyApp"
+        android:name=".Database.DatabaseApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
+        <activity
+            android:name=".AnakActivity"
+            android:exported="false" />
         <activity
             android:name=".LayananKeluargaActivity"
             android:exported="false" />
@@ -36,12 +39,6 @@
         </activity>
         <activity
             android:name=".BumilActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AnakActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RematriActivity"
             android:exported="false" />
         <activity
             android:name=".StuntingPreventActivity"

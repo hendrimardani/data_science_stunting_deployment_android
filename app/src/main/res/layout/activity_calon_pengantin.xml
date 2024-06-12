@@ -33,7 +33,7 @@
                 android:id="@+id/tv_nama_calon_pengantin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Nama Calon Pengantin (Perempuan): "
                 app:layout_constraintTop_toBottomOf="@id/tb_calon_pengantin"
                 app:layout_constraintStart_toStartOf="@+id/tb_calon_pengantin" />
@@ -239,6 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/blueSecond"
+                android:layout_marginTop="10dp"
                 android:text="Kirim" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LayananKeluargaActivity::class.java)
             startActivity(intent)
         }
+        binding.cvAnak.setOnClickListener {
+            val intent = Intent(this, AnakActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setToolBar() {
@@ -48,7 +52,8 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.title = "Stunting"
         // Change font style text
         binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
-
+        // Set icon
+        supportActionBar!!.setIcon(R.drawable.icon_stunting)
 //        // Enable back button if you're in a child activity
 //        if (supportActionBar != null) {
 //            supportActionBar?.setDisplayHomeAsUpEnabled(true)

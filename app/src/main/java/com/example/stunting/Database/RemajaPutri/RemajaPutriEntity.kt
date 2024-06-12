@@ -1,0 +1,16 @@
+package com.example.stunting.Database.RemajaPutri
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "remajaPutri-table")
+data class RemajaPutriEntity(
+    @PrimaryKey
+    var tanggalRemajaPutri: String,
+    var namaRemajaPutri: String,
+    var nikRemajaPutri: String,
+    var tglLahirRemajaPutri: String,
+    var umurRemajaPutri: String,
+    var mendapatTtdRemajaPutri: String,
+    var periksaAnemiaRemajaPutri: String,
+    var hasilPeriksaAnemiaRemajaPutri: String
+)

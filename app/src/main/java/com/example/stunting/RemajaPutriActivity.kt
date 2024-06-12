@@ -65,7 +65,8 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.title = "Remaja Putri"
         // Change font style text
         binding.tbRemajaPutri.setTitleTextAppearance(this, R.style.Theme_Stunting)
-
+        // Set icon
+        supportActionBar!!.setIcon(R.drawable.remaja_putri)
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
