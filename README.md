@@ -17,4 +17,3 @@
 ![XRecorder_12062024_150605](https://github.com/hendrimardani/data_science_stunting_deployment_android/assets/49816104/23bbd2a8-ee2d-4e1a-992c-43bb45494a56)
 
 ![XRecorder_12062024_150709](https://github.com/hendrimardani/data_science_stunting_deployment_android/assets/49816104/55747940-11a9-4395-974a-62eb852790fc)
-
