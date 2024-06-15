@@ -74,10 +74,10 @@ class MainActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(view)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.swipe_up_view))
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
 
         view.findViewById<View>(R.id.swipe_up_view).setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
         bottomSheetDialog.show()
