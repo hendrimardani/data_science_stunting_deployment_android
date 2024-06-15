@@ -2,14 +2,18 @@ package com.example.stunting
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.stunting.databinding.ActivityMainBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,8 +29,9 @@ class MainActivity : AppCompatActivity() {
         setToolBar()
 
         binding.cvBumil.setOnClickListener {
-            val intent = Intent(this, BumilActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this, BumilActivity::class.java)
+//            startActivity(intent)
+            showBottomSheetDialog()
         }
         binding.cvCalonPengantin.setOnClickListener {
             val intent = Intent(this, CalonPengantinActivity::class.java)
@@ -61,5 +66,20 @@ class MainActivity : AppCompatActivity() {
 //        binding.tbMain.setNavigationOnClickListener {
 //            onBackPressed()
 //        }
+    }
+
+    private fun showBottomSheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bumil, null)
+        bottomSheetDialog.setContentView(view)
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.swipe_up_view))
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        view.findViewById<View>(R.id.swipe_up_view).setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        bottomSheetDialog.show()
     }
 }

@@ -1,7 +1,9 @@
 package com.example.stunting
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -35,26 +37,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         // Toolbar
         setToolBar()
 
-        val view = View.inflate(this, R.layout.dialog_bottom_sheet_bumil, null)
-        val dialog = BottomSheetDialog(this)
-        dialog.setContentView(view)
-        val behavior = BottomSheetBehavior.from(view.parent as View)
 
-        behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(p0: View, p1: Float) {
-
-            }
-
-            override fun onStateChanged(p0: View, p1: Int) {
-                //可以将bottomSheet的高度手动计算，设置为屏幕高度的一半。这里假设为1000
-                behavior.peekHeight = 1000
-
-                //隐藏时，销毁dialog
-                if (p1 == BottomSheetBehavior.STATE_HIDDEN) {
-                    dialog.dismiss()
-                }
-            }
-        })
 
         // Set caledar and update in view result
         setCalendar(binding.etTglLahirBumil)
@@ -114,22 +97,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.btn_submit_bumil -> {
-                showBottomSheetDialog()
             }
         }
-    }
-
-    private fun showBottomSheetDialog() {
-        bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(R.layout.dialog_bottom_sheet_bumil)
-
-        // Menambahkan fungsionalitas ke elemen di dalam Bottom Sheet Dialog
-        // ...
-
-        // Mengatur Bottom Sheet Dialog untuk bisa digeser ke atas menjadi fullscreen
-        bottomSheetDialog.behavior.maxHeight = resources.displayMetrics.heightPixels
-        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        bottomSheetDialog.show()
     }
 
     private fun getDatePickerDialog() {
