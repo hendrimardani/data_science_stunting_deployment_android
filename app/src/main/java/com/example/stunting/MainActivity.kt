@@ -74,9 +74,11 @@ class MainActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(view)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.swipe_up_view))
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        // First state
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         view.findViewById<View>(R.id.swipe_up_view).setOnClickListener {
+            // When touch the view, So it executes the second state
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
