@@ -106,4 +106,29 @@
             app:layout_constraintTop_toBottomOf="@id/tv_header_tanggal_input"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="25dp"
+            app:layout_constraintTop_toBottomOf="@id/rv_bottom_sheet_bumil"
+            app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_back" />
+
+                <TextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Info Selengkapnya"
+                    android:textSize="30sp"
+                    android:textColor="@color/blueSecond" />
+
+        </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
