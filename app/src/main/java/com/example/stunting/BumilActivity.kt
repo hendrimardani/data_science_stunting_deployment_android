@@ -1,6 +1,8 @@
 package com.example.stunting
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,14 +23,16 @@ import com.example.stunting.Database.Bumil.BumilEntity
 import com.example.stunting.Database.DatabaseApp
 import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetBumilBinding
+import com.example.stunting.databinding.DialogCustomDeleteBinding
+import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
-import kotlin.math.sign
 
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityBumilBinding
@@ -201,7 +205,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
-
         if (bumilList.isNotEmpty()) {
             val bumilAdapter = BumilAdapter(bumilList)
             // Count item list
@@ -304,10 +307,50 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             val parentViewGroup = viewBottomSheetDialog.parent as ViewGroup
             parentViewGroup.removeView(viewBottomSheetDialog)
         }
-
         // Now set the view as content for the BottomSheetDialog
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
+
+        bindingBumilBottomSheetDialog.ivDelete.setOnClickListener {
+            showCustomeDeleteDialog()
+        }
+        bindingBumilBottomSheetDialog.ivExportToXlsx.setOnClickListener {
+            showCustomeExportDataDialog()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showCustomeExportDataDialog() {
+        val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
+        val exportDialog = Dialog(this)
+        exportDialog.setContentView(viewExport.root)
+
+        viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
+                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
+                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
+                " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
+        viewExport.tvYes.setOnClickListener {
+            /* TODO EXPORT */
+        }
+        viewExport.tvNo.setOnClickListener {
+            exportDialog.dismiss()
+        }
+        exportDialog.show()
+    }
+
+    private fun showCustomeDeleteDialog() {
+        val viewDelete = DialogCustomDeleteBinding.inflate(layoutInflater)
+        val deleteDialog = Dialog(this)
+        deleteDialog.setContentView(viewDelete.root)
+
+        viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
+        viewDelete.tvYes.setOnClickListener {
+            /* TODO Delete */
+        }
+        viewDelete.tvNo.setOnClickListener {
+            deleteDialog.dismiss()
+        }
+        deleteDialog.show()
     }
 }
