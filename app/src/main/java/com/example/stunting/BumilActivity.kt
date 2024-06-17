@@ -28,6 +28,7 @@ import www.sanju.motiontoast.MotionToastStyle
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlin.math.sign
 
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityBumilBinding
@@ -37,6 +38,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
     private lateinit var dataSetListenerHariPertamaHaidTerakhir: DatePickerDialog.OnDateSetListener
     private lateinit var dataSetListenerTglPerkiraanLahir: DatePickerDialog.OnDateSetListener
+
+    var countItem = 0
     var statusGiziRadioButton = "YA"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,7 +191,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data -> {
-                showBottomSheetDialog()
+                // Data not
+                Log.e("CEK DATANA", countItem.toString())
+                if (countItem != 0) showBottomSheetDialog() else
+                    toastInfo("TAMPILKAN DATA GAGAL !",
+                        "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
             }
         }
     }
@@ -198,8 +205,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         if (bumilList.isNotEmpty()) {
             val bumilAdapter = BumilAdapter(bumilList)
             // Count item list
-            val countItem = bumilList.size
-
+            countItem = bumilList.size
+            bindingBumilBottomSheetDialog.tvTotalData.text = "$countItem Data"
             bindingBumilBottomSheetDialog.rvBottomSheetBumil.layoutManager = LinearLayoutManager(this)
             bindingBumilBottomSheetDialog.rvBottomSheetBumil.adapter = bumilAdapter
             // To scrolling automatic when data entered
