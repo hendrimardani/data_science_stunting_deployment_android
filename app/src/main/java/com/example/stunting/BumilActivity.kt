@@ -46,6 +46,10 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     var countItem = 0
     var statusGiziRadioButton = "YA"
 
+    companion object {
+        const val NAME = "bumil_data_"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -328,8 +332,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
                 "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan format data_user_(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: data_user_${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
+                "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
+                " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
         viewExport.tvYes.setOnClickListener {
             /* TODO EXPORT */
         }
