@@ -7,24 +7,21 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.Adapter.BumilAdapter
 import com.example.stunting.Database.Bumil.BumilDao
 import com.example.stunting.Database.Bumil.BumilEntity
 import com.example.stunting.Database.DatabaseApp
 import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetBumilBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToast
@@ -67,6 +64,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setCalendarHariPertamaHaidTerakhir(binding.etHariPertamaHaidTerakhirBumil)
         setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
 
+        // getRadioButtomValue
+        getRadioButtonValue(R.id.rg_bumil)
+
         binding.etTglLahirBumil.setOnClickListener(this)
         binding.etHariPertamaHaidTerakhirBumil.setOnClickListener(this)
         binding.etTglPerkiraanLahirBumil.setOnClickListener(this)
@@ -76,6 +76,28 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Get all items
         getAll(bumilDao)
+    }
+
+    private fun getRadioButtonValue(bindingRadioGroup: Int) {
+        val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
+        // Get all the RadioButtons within the RadioGroup
+        val radioButtons = radioGroup.childCount
+        // Set a listener for each RadioButton
+        for (i in 0 until radioButtons) {
+            val radioButton = radioGroup.getChildAt(i) as RadioButton
+            radioButton.setOnCheckedChangeListener { button, isChecked ->
+                if (isChecked) {
+                    // Handle the selected RadioButton
+                    val selectedRadioButtonText = button.text.toString()
+                    if (selectedRadioButtonText == "YA") {
+                        statusGiziRadioButton = selectedRadioButtonText
+                    } else {
+                        statusGiziRadioButton = selectedRadioButtonText
+                    }
+                    Log.e("Selected RadioButton:", selectedRadioButtonText)
+                }
+            }
+        }
     }
 
     private fun setCalendarTglLahir(etTanggal: EditText) {
@@ -150,12 +172,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             R.id.et_tgl_lahir_bumil -> getDatePickerDialogTglLahir()
             R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
             R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
-            R.id.rg_bumil -> {
-                when (binding.rgBumil.checkedRadioButtonId) {
-                    R.id.rb_ya_bumil -> statusGiziRadioButton = "YA"
-                    R.id.rb_tidak_bumil -> statusGiziRadioButton = "TIDAK"
-                }
-            }
             R.id.btn_submit_bumil -> {
                 val tanggal = addDateToDatabase()
                 val nama = binding.etNamaBumil.text.toString()
