@@ -269,6 +269,15 @@
                 android:backgroundTint="@color/blueSecond"
                 android:layout_marginTop="10dp"
                 android:text="Kirim" />
+
+            <Button
+                android:id="@+id/btn_tampil_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueSecond"
+                android:layout_marginTop="10dp"
+                android:text="Tampilkan Data" />
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -23,8 +23,8 @@ interface CalonPengantinDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `calonPengantin-table`")
-    fun fetchAllbabies(): Flow<List<CalonPengantinEntity>>
+    fun fetchAllCalonPengantin(): Flow<List<CalonPengantinEntity>>
 
     @Query("SELECT * FROM `calonPengantin-table` WHERE tanggalCalonPengantin=:tanggal")
-    fun fetchBabyById(tanggal: String):Flow<CalonPengantinEntity>
+    fun fetchCalonPengantinById(tanggal: String):Flow<CalonPengantinEntity>
 }

@@ -23,8 +23,8 @@ interface BumilDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `bumil-table`")
-    fun fetchAllbabies(): Flow<List<BumilEntity>>
+    fun fetchAllBumil(): Flow<List<BumilEntity>>
 
     @Query("SELECT * FROM `bumil-table` WHERE tanggalBumil=:tanggal")
-    fun fetchBabyById(tanggal: String):Flow<BumilEntity>
+    fun fetchBumilById(tanggal: String):Flow<BumilEntity>
 }

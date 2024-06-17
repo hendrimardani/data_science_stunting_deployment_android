@@ -23,8 +23,8 @@ interface RemajaPutriDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `remajaPutri-table`")
-    fun fetchAllbabies(): Flow<List<RemajaPutriEntity>>
+    fun fetchAllRemajaPutri(): Flow<List<RemajaPutriEntity>>
 
     @Query("SELECT * FROM `remajaPutri-table` WHERE tanggalRemajaPutri=:tanggal")
-    fun fetchBabyById(tanggal: String):Flow<RemajaPutriEntity>
+    fun fetchRemajaPutriById(tanggal: String):Flow<RemajaPutriEntity>
 }

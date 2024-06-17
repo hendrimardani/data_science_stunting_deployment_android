@@ -29,9 +29,8 @@ class MainActivity : AppCompatActivity() {
         setToolBar()
 
         binding.cvBumil.setOnClickListener {
-//            val intent = Intent(this, BumilActivity::class.java)
-//            startActivity(intent)
-            showBottomSheetDialog()
+            val intent = Intent(this, BumilActivity::class.java)
+            startActivity(intent)
         }
         binding.cvCalonPengantin.setOnClickListener {
             val intent = Intent(this, CalonPengantinActivity::class.java)
@@ -66,22 +65,5 @@ class MainActivity : AppCompatActivity() {
 //        binding.tbMain.setNavigationOnClickListener {
 //            onBackPressed()
 //        }
-    }
-
-    private fun showBottomSheetDialog() {
-        val bottomSheetDialog = BottomSheetDialog(this)
-        val view = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bumil, null)
-        bottomSheetDialog.setContentView(view)
-
-        val bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.swipe_up_view))
-        // First state
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-        view.findViewById<View>(R.id.swipe_up_view).setOnClickListener {
-            // When touch the view, So it executes the second state
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        }
-
-        bottomSheetDialog.show()
     }
 }

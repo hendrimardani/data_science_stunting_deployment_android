@@ -23,8 +23,8 @@ interface LayananKeluargaDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `layananKeluarga-table`")
-    fun fetchAllbabies(): Flow<List<LayananKeluargaEntity>>
+    fun fetchAllLayananKeluarga(): Flow<List<LayananKeluargaEntity>>
 
     @Query("SELECT * FROM `layananKeluarga-table` WHERE tanggalLayananKeluarga=:tanggal")
-    fun fetchBabyById(tanggal: String):Flow<LayananKeluargaEntity>
+    fun fetchLayananKeluargaById(tanggal: String):Flow<LayananKeluargaEntity>
 }
