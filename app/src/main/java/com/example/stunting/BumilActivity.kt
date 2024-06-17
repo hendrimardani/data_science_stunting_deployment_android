@@ -58,9 +58,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         // Call database
         bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
 
-//        // Set datetime current
-//        tanggal = addDateToDatabase()
-
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
         setCalendarHariPertamaHaidTerakhir(binding.etHariPertamaHaidTerakhirBumil)
@@ -195,17 +192,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
-//    private fun addDateToDatabase(): String {
-//        val c = Calendar.getInstance()
-//        val dateTime = c.time
-//
-//        // 10-03-2024 Min 14:59:11
-//        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-//        val date = sdf.format(dateTime)
-//        return date
-//    }
-
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
 
