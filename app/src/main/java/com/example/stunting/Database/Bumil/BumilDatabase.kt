@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // If you change the structure database you have to change parameter version with increase
-@Database(entities = [BumilEntity::class], version = 1, exportSchema = true)
+@Database(entities = [BumilEntity::class], version = 2, exportSchema = true)
 abstract class BumilDatabase: RoomDatabase() {
 
     abstract fun bumilDao(): BumilDao

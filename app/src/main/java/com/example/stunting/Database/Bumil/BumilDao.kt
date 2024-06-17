@@ -25,6 +25,6 @@ interface BumilDao {
     @Query("SELECT * FROM `bumil-table`")
     fun fetchAllBumil(): Flow<List<BumilEntity>>
 
-    @Query("SELECT * FROM `bumil-table` WHERE tanggalBumil=:tanggal")
+    @Query("SELECT * FROM `bumil-table` WHERE tanggal=:tanggal")
     fun fetchBumilById(tanggal: String):Flow<BumilEntity>
 }

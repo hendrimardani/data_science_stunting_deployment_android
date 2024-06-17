@@ -1,7 +1,6 @@
 package com.example.stunting
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -58,6 +57,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Call database
         bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
+
+//        // Set datetime current
+//        tanggal = addDateToDatabase()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
@@ -173,7 +175,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
             R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
             R.id.btn_submit_bumil -> {
-                val tanggal = addDateToDatabase()
                 val nama = binding.etNamaBumil.text.toString()
                 val nik = binding.etNikBumil.text.toString()
                 val tglLahir = binding.etTglLahirBumil.text.toString()
@@ -183,8 +184,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
                 val statusGiziKesehatan = statusGiziRadioButton
 
-                addRecord(bumilDao, tanggal, nama, nik, tglLahir, umur,
-                    hariPertamaHaidTerakhir, tanggalPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+                if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+                    umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tanggalPerkiraanLahir.isNotEmpty() &&
+                    umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
+                    addRecord(bumilDao, nama, nik, tglLahir, umur, hariPertamaHaidTerakhir, tanggalPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data -> {
                 showBottomSheetDialog()
@@ -192,15 +196,15 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun addDateToDatabase(): String {
-        val c = Calendar.getInstance()
-        val dateTime = c.time
-
-        // 10-03-2024 Min 14:59:11
-        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-        val date = sdf.format(dateTime)
-        return date
-    }
+//    private fun addDateToDatabase(): String {
+//        val c = Calendar.getInstance()
+//        val dateTime = c.time
+//
+//        // 10-03-2024 Min 14:59:11
+//        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
+//        val date = sdf.format(dateTime)
+//        return date
+//    }
 
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
@@ -251,13 +255,25 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         ).show()
     }
 
-    private fun addRecord(bumilDao: BumilDao, tanggal: String, nama: String, nik: String, tglLahir: String,
+    private fun getDateTimePrimaryKey(): String {
+        val c = Calendar.getInstance()
+        val dateTime = c.time
+
+        // 10-03-2024 Min 14:59:11
+        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
+        val date = sdf.format(dateTime)
+        return date
+    }
+    private fun addRecord(bumilDao: BumilDao, nama: String, nik: String, tglLahir: String,
                           umur: String, hariPertamaHaidTerakhir: String, tanggalPerkiraanLahir: String,
                           umurKehamilan: String, statusGiziKesehatan: String) {
+
+        val date = getDateTimePrimaryKey()
+
         lifecycleScope.launch {
             bumilDao.insert(
                 BumilEntity(
-                    tanggalBumil = tanggal, namaBumil = nama, nikBumil = nik, tglLahirBumil = tglLahir,
+                    tanggal = date, namaBumil = nama, nikBumil = nik, tglLahirBumil = tglLahir,
                     umurBumil = umur, hariPertamaHaidTerakhirBumil = hariPertamaHaidTerakhir,
                     tanggalPerkiraanLahirBumil = tanggalPerkiraanLahir, umurKehamilanBumil = umurKehamilan,
                     statusGiziKesehatanBumil = statusGiziKesehatan

@@ -30,7 +30,8 @@ class BumilAdapter(val items: ArrayList<BumilEntity>) : RecyclerView.Adapter<Bum
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.tglBumil.text = item.tglLahirBumil
+
+        holder.tglBumil.text = item.tanggal
         holder.nikBumil.text = item.nikBumil
         holder.namaBumil.text = item.namaBumil
 
