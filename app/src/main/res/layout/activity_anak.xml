@@ -195,7 +195,7 @@
                     android:inputType="number"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:hint="Cnth: 44" />
+                    android:hint="Cnth: 46" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -231,6 +231,14 @@
                 android:backgroundTint="@color/blueSecond"
                 android:layout_marginTop="10dp"
                 android:text="Kirim" />
+
+            <Button
+                android:id="@+id/btn_tampil_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueSecond"
+                android:text="Tampilkan Data"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -204,7 +204,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data -> {
-                // Data not
+                // Data not empty
                 Log.e("CEK DATANA", countItem.toString())
                 if (countItem != 0) showBottomSheetDialog() else
                     toastInfo("TAMPILKAN DATA GAGAL !",
@@ -214,6 +214,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
+        val dataNormal: ArrayList<String> = ArrayList()
+        val dataStunting: ArrayList<String> = ArrayList()
+
         if (bumilList.isNotEmpty()) {
             val bumilAdapter = BumilAdapter(bumilList)
             // Count item list
@@ -269,6 +272,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         val date = sdf.format(dateTime)
         return date
     }
+
     private fun addRecord(bumilDao: BumilDao, nama: String, nik: String, tglLahir: String,
                           umur: String, hariPertamaHaidTerakhir: String, tanggalPerkiraanLahir: String,
                           umurKehamilan: String, statusGiziKesehatan: String) {
@@ -327,7 +331,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bindingBumilBottomSheetDialog.ivExportToXlsx.setOnClickListener {
             showCustomeExportDataDialog()
         }
-        bindingBumilBottomSheetDialog.llInfo.setOnClickListener {
+        bindingBumilBottomSheetDialog.ivArrow.setOnClickListener {
             showCustomeInfoDilog()
         }
     }

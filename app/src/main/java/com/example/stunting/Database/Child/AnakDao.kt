@@ -23,8 +23,8 @@ interface AnakDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `anak-table`")
-    fun fetchAllbabies(): Flow<List<AnakEntity>>
+    fun fetchAllAnak(): Flow<List<AnakEntity>>
 
-    @Query("SELECT * FROM `anak-table` WHERE tanggalAnak=:tanggal")
-    fun fetchBabyById(tanggal: String):Flow<AnakEntity>
+    @Query("SELECT * FROM `anak-table` WHERE tanggal=:tanggal")
+    fun fetchAnakById(tanggal: String):Flow<AnakEntity>
 }

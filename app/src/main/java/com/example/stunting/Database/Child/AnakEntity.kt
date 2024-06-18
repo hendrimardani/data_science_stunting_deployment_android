@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "anak-table")
 data class AnakEntity(
     @PrimaryKey
-    var tanggalAnak: String,
+    var tanggal: String,
     var namaAnak: String,
     var jkAnak: String,
     var nikAnak: String,
