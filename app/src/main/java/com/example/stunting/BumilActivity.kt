@@ -3,6 +3,7 @@ package com.example.stunting
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -25,10 +26,14 @@ import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetBumilBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
+import com.example.stunting.databinding.DialogCustomeInfoBinding
+import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -322,6 +327,31 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bindingBumilBottomSheetDialog.ivExportToXlsx.setOnClickListener {
             showCustomeExportDataDialog()
         }
+        bindingBumilBottomSheetDialog.llInfo.setOnClickListener {
+            showCustomeInfoDilog()
+        }
+    }
+
+    private fun showCustomeInfoDilog() {
+        val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
+        // Check if the view already has a parent
+        val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
+
+        val infoDialog = Dialog(this)
+        infoDialog.setContentView(viewBottomSheetDialog)
+        // Set content
+        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
+        bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
+            infoDialog.dismiss()
+        }
+        infoDialog.show()
+    }
+
+    private fun deleteAllDates(bumilDao: BumilDao) {
+        lifecycleScope.launch {
+            bumilDao.deleteAll()
+        }
+        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
     }
 
     @SuppressLint("SetTextI18n")
@@ -335,12 +365,56 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
                 " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
         viewExport.tvYes.setOnClickListener {
-            /* TODO EXPORT */
+            // Export to CSV
+            lifecycleScope.launch {
+                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                exportDatabaseToCSV(bumilDao)
+            }
+            exportDialog.dismiss()
+            // Goto link directory download
+            linkToDirectory()
+            // Destroying when exported successfully
+            finish()
         }
         viewExport.tvNo.setOnClickListener {
             exportDialog.dismiss()
         }
         exportDialog.show()
+    }
+
+    private fun linkToDirectory() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
+    }
+
+    private suspend fun exportDatabaseToCSV(bumilDao: BumilDao) {
+        // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
+        // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
+
+        var dataResult: ArrayList<List<String>> = ArrayList()
+        val fileName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
+        val fileDir = "/storage/emulated/0/Download/"
+        try {
+            val file = File(fileDir, fileName)
+            dataResult.add(
+                listOf("tanggal", "Nama Bumil", "Tgl Lahir Bumil", "Umur Bumil",
+                    "Hari Pertama Haid Terakhir", "Tanggal Perkiraan Lahir Bumil", "Umur Kehamilan Bumil", "Status Gizi Kesehatan (YA/TIDAK)")
+            )
+            bumilDao.fetchAllBumil().collect {
+                for (item in it) {
+                    dataResult.add(
+                        listOf("${item.tanggal}", "${item.namaBumil}", "${item.tglLahirBumil}",
+                            "${item.tglLahirBumil}", "${item.umurBumil}", "${item.hariPertamaHaidTerakhirBumil}",
+                            "${item.tanggalPerkiraanLahirBumil}", "${item.umurKehamilanBumil}", "${item.statusGiziKesehatanBumil}")
+                    )
+                    csvWriter().writeAll(dataResult, file.outputStream())
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            toastInfo("Gagal Mengekspor File !",
+                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+        }
     }
 
     private fun showCustomeDeleteDialog() {
@@ -350,7 +424,10 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
         viewDelete.tvYes.setOnClickListener {
-            /* TODO Delete */
+            deleteAllDates(bumilDao)
+            // We will destroy activity
+            finish()
+            deleteDialog.dismiss()
         }
         viewDelete.tvNo.setOnClickListener {
             deleteDialog.dismiss()
