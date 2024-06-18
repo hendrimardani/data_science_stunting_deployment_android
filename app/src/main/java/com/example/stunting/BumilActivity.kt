@@ -334,6 +334,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bindingBumilBottomSheetDialog.ivArrow.setOnClickListener {
             showCustomeInfoDilog()
         }
+        bindingBumilBottomSheetDialog.tvInfo.setOnClickListener {
+            showCustomeInfoDilog()
+        }
     }
 
     private fun showCustomeInfoDilog() {

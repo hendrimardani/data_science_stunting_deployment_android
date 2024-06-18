@@ -144,6 +144,9 @@ class AnakActivity : AppCompatActivity() {
         bindingAnakBottomSheetDialog.ivArrow.setOnClickListener {
 //            showCustomeInfoDilog()
         }
+        bindingAnakBottomSheetDialog.tvInfo.setOnClickListener {
+//            showCustomeInfoDilog()
+        }
     }
 
     private fun setupListOfDataIntoRecyclerView(anakList: ArrayList<AnakEntity>) {
