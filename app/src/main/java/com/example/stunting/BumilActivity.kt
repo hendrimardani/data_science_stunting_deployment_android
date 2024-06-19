@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import com.example.stunting.Adapter.BumilAdapter
 import com.example.stunting.Database.Bumil.BumilDao
 import com.example.stunting.Database.Bumil.BumilEntity

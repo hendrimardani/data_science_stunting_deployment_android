@@ -101,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="620dp"
         android:rotationX="-360"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintTop_toBottomOf="@id/tv_header_tanggal_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/iv_arrow"
@@ -112,7 +113,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back"
             android:layout_marginStart="100dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_info"
             app:layout_constraintTop_toBottomOf="@id/rv_bottom_sheet_anak" />
 
         <TextView
@@ -120,10 +121,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Info Selengkapnya"
-            android:textSize="30sp"
+            android:textSize="25sp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/blueSecond"
             app:layout_constraintTop_toTopOf="@id/iv_arrow"
-            app:layout_constraintBottom_toBottomOf="@id/iv_arrow"
-            app:layout_constraintStart_toEndOf="@id/iv_arrow" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iv_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
