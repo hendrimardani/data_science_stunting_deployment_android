@@ -233,7 +233,7 @@
                 android:text="Kirim" />
 
             <Button
-                android:id="@+id/btn_tampil_data"
+                android:id="@+id/btn_tampil_data_anak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/blueSecond"

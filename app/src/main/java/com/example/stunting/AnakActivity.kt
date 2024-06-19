@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.log
 
 class AnakActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnakBinding
@@ -112,7 +113,7 @@ class AnakActivity : AppCompatActivity() {
             } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
         }
 
-        binding.btnTampilData.setOnClickListener {
+        binding.btnTampilDataAnak.setOnClickListener {
             // Data not empty
             Log.e("CEK DATANA", countItem.toString())
             if (countItem != 0) showBottomSheetDialog() else
@@ -153,23 +154,23 @@ class AnakActivity : AppCompatActivity() {
             showCustomeExportDataDialog()
         }
         bindingAnakBottomSheetDialog.ivArrow.setOnClickListener {
-            showCustomeInfoDilog()
+            showCustomeInfoAnakDialog()
         }
         bindingAnakBottomSheetDialog.tvInfo.setOnClickListener {
-            showCustomeInfoDilog()
+            showCustomeInfoAnakDialog()
         }
     }
 
-    private fun showCustomeInfoDilog() {
-        val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
+    private fun showCustomeInfoAnakDialog() {
+        val bindingAnakBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
         // Check if the view already has a parent
-        val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
+        val viewBottomSheetDialog: View = bindingAnakBottomSheetDialog.root
 
         val infoDialog = Dialog(this)
         infoDialog.setContentView(viewBottomSheetDialog)
         // Set content
-        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
-        bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
+        bindingAnakBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
+        bindingAnakBottomSheetDialog.tvYes.setOnClickListener {
             infoDialog.dismiss()
         }
         infoDialog.show()

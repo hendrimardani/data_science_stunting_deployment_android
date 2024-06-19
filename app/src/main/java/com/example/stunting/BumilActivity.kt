@@ -18,13 +18,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import com.example.stunting.Adapter.BumilAdapter
 import com.example.stunting.Database.Bumil.BumilDao
 import com.example.stunting.Database.Bumil.BumilEntity
 import com.example.stunting.Database.DatabaseApp
 import com.example.stunting.databinding.ActivityBumilBinding
-import com.example.stunting.databinding.DialogBottomSheetBumilBinding
+import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.databinding.DialogCustomeInfoBinding
@@ -43,7 +42,7 @@ import java.util.Locale
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityBumilBinding
     private lateinit var bumilDao: BumilDao
-    private lateinit var bindingBumilBottomSheetDialog: DialogBottomSheetBumilBinding
+    private lateinit var bindingBumilBottomSheetDialog: DialogBottomSheetAllBinding
     private lateinit var cal: Calendar
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
     private lateinit var dataSetListenerHariPertamaHaidTerakhir: DatePickerDialog.OnDateSetListener
@@ -66,11 +65,12 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Binding BumilBottomSheetDialog for retrieve xml id
-        bindingBumilBottomSheetDialog = DialogBottomSheetBumilBinding.inflate(layoutInflater)
-
         // Toolbar
         setToolBar()
+
+        // Binding BumilBottomSheetDialog for retrieve xml id
+        bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
+        bindingBumilBottomSheetDialog.tvListData.text = "List Data Bumil"
 
         // Call database
         bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
@@ -88,7 +88,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.etTglPerkiraanLahirBumil.setOnClickListener(this)
         binding.rgBumil.setOnClickListener(this)
         binding.btnSubmitBumil.setOnClickListener(this)
-        binding.btnTampilData.setOnClickListener(this)
+        binding.btnTampilDataBumil.setOnClickListener(this)
 
         // Get all items
         getAll(bumilDao)
@@ -204,7 +204,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     addRecord(bumilDao, nama, nik, tglLahir, umur, hariPertamaHaidTerakhir, tanggalPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
                 } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
-            R.id.btn_tampil_data -> {
+            R.id.btn_tampil_data_bumil -> {
                 // Data not empty
                 Log.e("CEK DATANA", countItem.toString())
                 if (countItem != 0) showBottomSheetDialog() else
@@ -215,24 +215,22 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
-        val dataNormal: ArrayList<String> = ArrayList()
-        val dataStunting: ArrayList<String> = ArrayList()
 
         if (bumilList.isNotEmpty()) {
-            val bumilAdapter = BumilAdapter(bumilList)
+            val allAdapter = BumilAdapter(bumilList)
             // Count item list
             countItem = bumilList.size
             bindingBumilBottomSheetDialog.tvTotalData.text = "$countItem Data"
-            bindingBumilBottomSheetDialog.rvBottomSheetBumil.layoutManager = LinearLayoutManager(this)
-            bindingBumilBottomSheetDialog.rvBottomSheetBumil.adapter = bumilAdapter
+            bindingBumilBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
+            bindingBumilBottomSheetDialog.rvBottomSheet.adapter = allAdapter
             // To scrolling automatic when data entered
-            bindingBumilBottomSheetDialog.rvBottomSheetBumil
+            bindingBumilBottomSheetDialog.rvBottomSheet
                 .smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
-            bindingBumilBottomSheetDialog.rvBottomSheetBumil
+            bindingBumilBottomSheetDialog.rvBottomSheet
                 .layoutManager!!.smoothScrollToPosition(bindingBumilBottomSheetDialog
-                    .rvBottomSheetBumil, null, countItem - 1)
+                    .rvBottomSheet, null, countItem - 1)
         }
         Log.e("HASILNA", bumilList.toString())
     }

@@ -2,16 +2,12 @@ package com.example.stunting.Adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.Database.Bumil.BumilEntity
 import com.example.stunting.Database.Child.AnakEntity
 import com.example.stunting.R
 import com.example.stunting.databinding.ItemAnakAdapterBinding
-import com.example.stunting.databinding.ItemBumilAdapterBinding
 
 class AnakAdapter(val items: ArrayList<AnakEntity>) : RecyclerView.Adapter<AnakAdapter.ViewHolder>() {
 

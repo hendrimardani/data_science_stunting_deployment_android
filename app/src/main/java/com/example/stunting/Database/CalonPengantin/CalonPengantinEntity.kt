@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "calonPengantin-table")
 data class CalonPengantinEntity(
     @PrimaryKey
-    var tanggalCalonPengantin: String,
+    var tanggal: String,
     var namaCalonPengantin: String,
     var nikCalonPengantin: String,
     var tglLahirCalonPengantin: String,

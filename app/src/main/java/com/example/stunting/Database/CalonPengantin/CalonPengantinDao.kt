@@ -25,6 +25,6 @@ interface CalonPengantinDao {
     @Query("SELECT * FROM `calonPengantin-table`")
     fun fetchAllCalonPengantin(): Flow<List<CalonPengantinEntity>>
 
-    @Query("SELECT * FROM `calonPengantin-table` WHERE tanggalCalonPengantin=:tanggal")
+    @Query("SELECT * FROM `calonPengantin-table` WHERE tanggal=:tanggal")
     fun fetchCalonPengantinById(tanggal: String):Flow<CalonPengantinEntity>
 }
