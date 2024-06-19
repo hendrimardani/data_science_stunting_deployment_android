@@ -16,6 +16,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.Adapter.CalonPengantinAdapter
+import com.example.stunting.Adapter.RemajaPutriAdapter
 import com.example.stunting.Database.CalonPengantin.CalonPengantinDao
 import com.example.stunting.Database.CalonPengantin.CalonPengantinEntity
 import com.example.stunting.Database.DatabaseApp
@@ -25,6 +28,7 @@ import com.example.stunting.databinding.ActivityRemajaPutriBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
+import com.example.stunting.databinding.DialogCustomeInfoBinding
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
@@ -71,7 +75,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
 
         // Binding BumilBottomSheetDialog for retrieve xml id
         bindingRemajaPutriBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
-        bindingRemajaPutriBottomSheetDialog.tvListData.text = "List Data Rematri"
+        bindingRemajaPutriBottomSheetDialog.tvListData.text = "List Data       \nRematri"
 
         // Call database
         remajaPutriDao = (application as DatabaseApp).dbRemajaPutriDatabase.remajaPutriDao()
@@ -86,6 +90,10 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         binding.etTglLahirRemajaPutri.setOnClickListener(this)
 
         binding.btnSubmitRemajaPutri.setOnClickListener(this)
+        binding.btnTampilDataRemajaPutri.setOnClickListener(this)
+
+        // Get all items
+        getAll(remajaPutriDao)
     }
 
     private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
@@ -179,6 +187,36 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun getAll(remajaPutriDao: RemajaPutriDao) {
+        lifecycleScope.launch {
+            remajaPutriDao.fetchAllRemajaPutri().collect {
+                val list = ArrayList(it)
+                setupListOfDataIntoRecyclerView(list)
+            }
+        }
+    }
+
+    private fun setupListOfDataIntoRecyclerView(remajaPutriList: ArrayList<RemajaPutriEntity>) {
+
+        if (remajaPutriList.isNotEmpty()) {
+            val remajaPutriAdapter = RemajaPutriAdapter(remajaPutriList)
+            // Count item list
+            countItem = remajaPutriList.size
+            bindingRemajaPutriBottomSheetDialog.tvTotalData.text = "$countItem Data"
+            bindingRemajaPutriBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
+            bindingRemajaPutriBottomSheetDialog.rvBottomSheet.adapter = remajaPutriAdapter
+            // To scrolling automatic when data entered
+            bindingRemajaPutriBottomSheetDialog.rvBottomSheet
+                .smoothScrollToPosition(countItem - 1)
+
+            // When input data automatically to last index
+            bindingRemajaPutriBottomSheetDialog.rvBottomSheet
+                .layoutManager!!.smoothScrollToPosition(bindingRemajaPutriBottomSheetDialog
+                    .rvBottomSheet, null, countItem - 1)
+        }
+        Log.e("HASILNA", remajaPutriList.toString())
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.et_tgl_lahir_remaja_putri -> getDatePickerDialog()
@@ -192,6 +230,9 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                     addRecord(remajaPutriDao, nama, nik, tglLahir, umur, mendapatTtdRadioButton,
                         periksaAnemiaRadioButton, hasilPeriksaAnemiaRadioButton)
                 }
+            }
+            R.id.btn_tampil_data_remaja_putri -> {
+                showBottomSheetDialog()
             }
         }
     }
@@ -216,11 +257,26 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
             showCustomeExportDataDialog()
         }
         bindingRemajaPutriBottomSheetDialog.ivArrow.setOnClickListener {
-//            showCustomeInfoDilog()
+            showCustomeInfoDilog()
         }
         bindingRemajaPutriBottomSheetDialog.tvInfo.setOnClickListener {
 //            showCustomeInfoDilog()
         }
+    }
+
+    private fun showCustomeInfoDilog() {
+        val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
+        // Check if the view already has a parent
+        val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
+
+        val infoDialog = Dialog(this)
+        infoDialog.setContentView(viewBottomSheetDialog)
+        // Set content
+        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
+        bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
+            infoDialog.dismiss()
+        }
+        infoDialog.show()
     }
 
     private fun showCustomeExportDataDialog() {
@@ -274,7 +330,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                 for (item in it) {
                     dataResult.add(
                         listOf("${item.tanggal}", "${item.namaRemajaPutri}", "${item.nikRemajaPutri}",
-                            "${item.umurRemajaPutri}", "${item.mendapatTtdRemajaPutri}",
+                            "${item.tglLahirRemajaPutri}","${item.umurRemajaPutri}", "${item.mendapatTtdRemajaPutri}",
                             "${item.periksaAnemiaRemajaPutri}", "${item.hasilPeriksaAnemiaRemajaPutri}"
                         )
                     )
