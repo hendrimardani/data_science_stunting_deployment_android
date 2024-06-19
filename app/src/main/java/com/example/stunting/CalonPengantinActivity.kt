@@ -41,10 +41,10 @@ import java.util.Locale
 class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCalonPengantinBinding
     private lateinit var bindingCalonPengantinBottomSheetDialog: DialogBottomSheetAllBinding
-
     private lateinit var calonPengantinDao: CalonPengantinDao
     private lateinit var cal: Calendar
-    private lateinit var dataSetListener: DatePickerDialog.OnDateSetListener
+    private lateinit var dataSetListenerTglLahir: DatePickerDialog.OnDateSetListener
+    private lateinit var dataSetListenerPerkiraanTglPernikahan: DatePickerDialog.OnDateSetListener
 
     var countItem = 0
     var periksaKesehatanButton = "YA"
@@ -77,8 +77,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         calonPengantinDao = (application as DatabaseApp).dbCalonPengantinDatabase.calonPengantinDao()
 
         // Set caledar and update in view result
-        setCalendar(binding.etTglLahirCalonPengantin)
-        setCalendar(binding.etPerkiraanTanggalPernikahanCalonPengantin)
+        setCalendarTglLahir(binding.etTglLahirCalonPengantin)
+        setCalendarPerkiraanTanggalPernikahan(binding.etPerkiraanTanggalPernikahanCalonPengantin)
 
         getRadioButtonValue(R.id.rg_periksa_kesehatan_calon_pengantin, PERIKSA_KESEHATAN)
         getRadioButtonValue(R.id.rg_bimbingan_perkawinan_calon_pengantin, BIMBINGAN_PERKAWINAN)
@@ -255,18 +255,35 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
     }
 
-    private fun setCalendar(etTanggal: EditText) {
+    private fun setCalendarTglLahir(etTanggal: EditText) {
         cal = Calendar.getInstance()
-        dataSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        dataSetListenerTglLahir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateInView(etTanggal)
+            updateDateInViewCalendarTglLahir(etTanggal)
         }
-        updateDateInView(etTanggal)
+        updateDateInViewCalendarTglLahir(etTanggal)
     }
 
-    private fun updateDateInView(etTanggal: EditText) {
+    private fun updateDateInViewCalendarTglLahir(etTanggal: EditText) {
+        val myFormat = "yyyy/MM/dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
+        etTanggal.setText(sdf.format(cal.time).toString())
+    }
+
+    private fun setCalendarPerkiraanTanggalPernikahan(etTanggal: EditText) {
+        cal = Calendar.getInstance()
+        dataSetListenerPerkiraanTglPernikahan = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, month)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInViewPerkiraanTanggalPernikahan(etTanggal)
+        }
+        updateDateInViewPerkiraanTanggalPernikahan(etTanggal)
+    }
+
+    private fun updateDateInViewPerkiraanTanggalPernikahan(etTanggal: EditText) {
         val myFormat = "yyyy/MM/dd"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         etTanggal.setText(sdf.format(cal.time).toString())
@@ -290,8 +307,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialog()
-            R.id.et_perkiraan_tanggal_pernikahan_calon_pengantin -> getDatePickerDialog()
+            R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialogTglLahir()
+            R.id.et_perkiraan_tanggal_pernikahan_calon_pengantin -> getDatePickerDialogPerkiraanTglPernikahan()
             R.id.btn_submit_calon_pengantin -> {
                 val nama = binding.etNamaCalonPengantin.text.toString()
                 val nik = binding.etNikCalonPengantin.text.toString()
@@ -350,12 +367,12 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun getRadioButtonValue(bindingRadioGroup: Int, radioGroupString: String) {
+    private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
         val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (radioGroupString == "periksaKesehatanButton") {
+        if (resultRadioButton == "periksaKesehatanRadioButton") {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -403,10 +420,16 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    private fun getDatePickerDialog() {
-        DatePickerDialog(
-            this@CalonPengantinActivity,
-            dataSetListener,
+    private fun getDatePickerDialogTglLahir() {
+        DatePickerDialog(this@CalonPengantinActivity, dataSetListenerTglLahir,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun getDatePickerDialogPerkiraanTglPernikahan() {
+        DatePickerDialog(this@CalonPengantinActivity, dataSetListenerPerkiraanTglPernikahan,
             cal.get(Calendar.YEAR),
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)

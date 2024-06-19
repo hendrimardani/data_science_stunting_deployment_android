@@ -25,6 +25,6 @@ interface RemajaPutriDao {
     @Query("SELECT * FROM `remajaPutri-table`")
     fun fetchAllRemajaPutri(): Flow<List<RemajaPutriEntity>>
 
-    @Query("SELECT * FROM `remajaPutri-table` WHERE tanggalRemajaPutri=:tanggal")
+    @Query("SELECT * FROM `remajaPutri-table` WHERE tanggal=:tanggal")
     fun fetchRemajaPutriById(tanggal: String):Flow<RemajaPutriEntity>
 }

@@ -53,6 +53,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val NAME = "bumil_data_"
+        const val STATUS_GIZI = "statusGiziRadioButton"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +82,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
 
         // getRadioButtomValue
-        getRadioButtonValue(R.id.rg_bumil)
+        getRadioButtonValue(R.id.rg_bumil, STATUS_GIZI)
 
         binding.etTglLahirBumil.setOnClickListener(this)
         binding.etHariPertamaHaidTerakhirBumil.setOnClickListener(this)
@@ -94,23 +95,26 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         getAll(bumilDao)
     }
 
-    private fun getRadioButtonValue(bindingRadioGroup: Int) {
+    private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
         val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
-        // Set a listener for each RadioButton
-        for (i in 0 until radioButtons) {
-            val radioButton = radioGroup.getChildAt(i) as RadioButton
-            radioButton.setOnCheckedChangeListener { button, isChecked ->
-                if (isChecked) {
-                    // Handle the selected RadioButton
-                    val selectedRadioButtonText = button.text.toString()
-                    if (selectedRadioButtonText == "YA") {
-                        statusGiziRadioButton = selectedRadioButtonText
-                    } else {
-                        statusGiziRadioButton = selectedRadioButtonText
+
+        if (resultRadioButton == "statusGiziRadioButton") {
+            // Set a listener for each RadioButton
+            for (i in 0 until radioButtons) {
+                val radioButton = radioGroup.getChildAt(i) as RadioButton
+                radioButton.setOnCheckedChangeListener { button, isChecked ->
+                    if (isChecked) {
+                        // Handle the selected RadioButton
+                        val selectedRadioButtonText = button.text.toString()
+                        if (selectedRadioButtonText == "YA") {
+                            statusGiziRadioButton = selectedRadioButtonText
+                        } else {
+                            statusGiziRadioButton = selectedRadioButtonText
+                        }
+                        Log.e("Selected RadioButton:", selectedRadioButtonText)
                     }
-                    Log.e("Selected RadioButton:", selectedRadioButtonText)
                 }
             }
         }
