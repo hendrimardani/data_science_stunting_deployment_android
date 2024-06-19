@@ -229,7 +229,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                 if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() && umur.isNotEmpty()) {
                     addRecord(remajaPutriDao, nama, nik, tglLahir, umur, mendapatTtdRadioButton,
                         periksaAnemiaRadioButton, hasilPeriksaAnemiaRadioButton)
-                }
+                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data_remaja_putri -> {
                 // Data not empty

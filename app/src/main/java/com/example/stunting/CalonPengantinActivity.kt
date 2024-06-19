@@ -319,7 +319,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                 if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
                     umur.isNotEmpty() && perkiraanTglPernikahan.isNotEmpty()) {
                     addRecord(calonPengantinDao, nama, nik, tglLahir, umur, perkiraanTglPernikahan, periksaKesehatanButton, bimbinganPerkawinanButton)
-                }
+                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data_calon_pengantin -> {
                 // Data not empty
