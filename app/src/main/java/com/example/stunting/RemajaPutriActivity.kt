@@ -232,7 +232,11 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.btn_tampil_data_remaja_putri -> {
-                showBottomSheetDialog()
+                // Data not empty
+                Log.e("CEK DATANA", countItem.toString())
+                if (countItem != 0) showBottomSheetDialog() else
+                    toastInfo("TAMPILKAN DATA GAGAL !",
+                        "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
             }
         }
     }
