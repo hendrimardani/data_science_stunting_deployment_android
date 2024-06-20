@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.Database.Bumil.BumilEntity
 import com.example.stunting.Database.CalonPengantin.CalonPengantinEntity
+import com.example.stunting.Database.LayananKeluarga.LayananKeluargaEntity
 import com.example.stunting.Database.RemajaPutri.RemajaPutriEntity
 import com.example.stunting.R
 import com.example.stunting.databinding.ItemAllAdapterBinding
@@ -114,3 +115,4 @@ class RemajaPutriAdapter(val items: ArrayList<RemajaPutriEntity>) : RecyclerView
         }
     }
 }
+

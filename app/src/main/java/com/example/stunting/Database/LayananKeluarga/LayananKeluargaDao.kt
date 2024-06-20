@@ -25,6 +25,6 @@ interface LayananKeluargaDao {
     @Query("SELECT * FROM `layananKeluarga-table`")
     fun fetchAllLayananKeluarga(): Flow<List<LayananKeluargaEntity>>
 
-    @Query("SELECT * FROM `layananKeluarga-table` WHERE tanggalLayananKeluarga=:tanggal")
+    @Query("SELECT * FROM `layananKeluarga-table` WHERE tanggal=:tanggal")
     fun fetchLayananKeluargaById(tanggal: String):Flow<LayananKeluargaEntity>
 }

@@ -264,7 +264,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
             showCustomeInfoDilog()
         }
         bindingRemajaPutriBottomSheetDialog.tvInfo.setOnClickListener {
-//            showCustomeInfoDilog()
+            showCustomeInfoDilog()
         }
     }
 
