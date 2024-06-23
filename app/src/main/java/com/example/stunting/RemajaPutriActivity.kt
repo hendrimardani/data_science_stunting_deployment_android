@@ -55,9 +55,9 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         const val NAME = "remajaPutri_data_"
-        const val MENDAPAT_TTD = "mendapatTtdRadioButton"
-        const val PERIKSA_ANEMIA = "periksaAnemiaRadioButton"
-        const val HASIL_PERIKSA_ANEMIA = "hasilPeriksaAnemiaRadioButton"
+        const val MENDAPAT_TTD = "mendapatTtdButton"
+        const val PERIKSA_ANEMIA = "periksaAnemiaButton"
+        const val HASIL_PERIKSA_ANEMIA = "hasilPeriksaAnemiaButton"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +101,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "mendapatTtdRadioButton") {
+        if (resultRadioButton == "mendapatTtdButton") {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -118,7 +118,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             }
-        } else if (resultRadioButton == "periksaAnemiaRadioButton") {
+        } else if (resultRadioButton == "periksaAnemiaButton") {
             // periksaAnemiaRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -334,7 +334,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
                 for (item in it) {
                     dataResult.add(
                         listOf("${item.tanggal}", "${item.namaRemajaPutri}", "${item.nikRemajaPutri}",
-                            "${item.tglLahirRemajaPutri}","${item.umurRemajaPutri}", "${item.mendapatTtdRemajaPutri}",
+                            "${item.tglLahirRemajaPutri}", "${item.umurRemajaPutri}", "${item.mendapatTtdRemajaPutri}",
                             "${item.periksaAnemiaRemajaPutri}", "${item.hasilPeriksaAnemiaRemajaPutri}"
                         )
                     )

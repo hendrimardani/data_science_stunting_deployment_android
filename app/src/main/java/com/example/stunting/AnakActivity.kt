@@ -227,7 +227,7 @@ class AnakActivity : AppCompatActivity() {
                 for (item in it) {
                     dataResult.add(
                         listOf("${item.tanggal}", "${item.namaAnak}", "${item.jkAnak}",
-                            "${item.nikAnak}", "${item.tinggiAnak}", "${item.umurAnak}",
+                            "${item.nikAnak}", "${item.tglLahirAnak}", "${item.umurAnak}",
                             "${item.tinggiAnak}", "${item.ortuAnak}", "${item.klasifikasiAnak}")
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())

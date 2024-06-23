@@ -52,19 +52,19 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     var memilikiSumberAirBersihRadioButton = "YA"
     var pesertaJaminanKeshatanRadioButton = "YA"
     var memilikiAksesSanitasiPembuanganLimbahLayakRadioButton = "YA"
-    var pendampinganKeluargaOlehTPKRadioButton = "YA"
+    var pendampinganKeluargaOlehTpkRadioButton = "YA"
     var pesertaKegiatanKetahananPanganRadioButton = "YA"
 
     companion object {
         const val NAME = "layananKeluarga_data_"
-        const val KATEGORI_KELUARGA_RENTAN = "kategoriKeluargaRentanRadioButton"
-        const val MEMILIKI_KARTU_KELUARGA = "memilikiKartuKeluargaRadioButton"
-        const val MEMILIKI_JAMBAN_SEHAT = "memilikiJambanSehatRadioButton"
-        const val MEMILIKI_SUMBER_AIR_BERSIH = "memilikiSumberAirBersihRadioButton"
-        const val PESERTA_JAMINANA_KESEHATAN = "pesertaJaminanKeshatanRadioButton"
-        const val MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK = "memilikiAksesSanitasiPembuanganLimbahLayakRadioButton"
-        const val PENDAMPINGAN_KELUARGA_OLEH_TPK = "pendampinganKeluargaOlehTPKRadioButton"
-        const val PESERTA_KEGIATAN_KETAHANAN_PANGAN = "pesertaKegiatanKetahananPanganRadioButton"
+        const val KATEGORI_KELUARGA_RENTAN = "kategoriKeluargaRentanButton"
+        const val MEMILIKI_KARTU_KELUARGA = "memilikiKartuKeluargaButton"
+        const val MEMILIKI_JAMBAN_SEHAT = "memilikiJambanSehatButton"
+        const val MEMILIKI_SUMBER_AIR_BERSIH = "memilikiSumberAirBersihButton"
+        const val PESERTA_JAMINANA_KESEHATAN = "pesertaJaminanKeshatanButton"
+        const val MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK = "memilikiAksesSanitasiPembuanganLimbahLayakButton"
+        const val PENDAMPINGAN_KELUARGA_OLEH_TPK = "pendampinganKeluargaOlehTpkButton"
+        const val PESERTA_KEGIATAN_KETAHANAN_PANGAN = "pesertaKegiatanKetahananPanganButton"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,7 +137,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "kategoriKeluargaRentanRadioButton") {
+        if (resultRadioButton == "kategoriKeluargaRentanButton") {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -151,10 +151,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             kategoriKeluargaRentanRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiKartuKeluargaRadioButton") {
+        } else if (resultRadioButton == "memilikiKartuKeluargaButton") {
             // periksaAnemiaRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -168,10 +169,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             memilikiKartuKeluargaRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiJambanSehatRadioButton") {
+        } else if (resultRadioButton == "memilikiJambanSehatButton") {
             // hasilPeriksaAnemiaRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -185,10 +187,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             memilikiJambanSehatRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiSumberAirBersihRadioButton") {
+        } else if (resultRadioButton == "memilikiSumberAirBersihButton") {
             // memilikiSumberAirBersihRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -202,10 +205,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             memilikiSumberAirBersihRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "pesertaJaminanKeshatanRadioButton") {
+        } else if (resultRadioButton == "pesertaJaminanKeshatanButton") {
             // pesertaJaminanKeshatanRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -219,10 +223,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             pesertaJaminanKeshatanRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiAksesSanitasiPembuanganLimbahLayakRadioButton") {
+        } else if (resultRadioButton == "memilikiAksesSanitasiPembuanganLimbahLayakButton") {
             // memilikiAksesSanitasiPembuanganLimbahLayakRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -236,10 +241,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             memilikiAksesSanitasiPembuanganLimbahLayakRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "pendampinganKeluargaOlehTPKRadioButton") {
+        } else if (resultRadioButton == "pendampinganKeluargaOlehTpkButton") {
             // pendampinganKeluargaOlehTPKRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -248,11 +254,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         // Handle the selected RadioButton
                         val selectedRadioButtonText = button.text.toString()
                         if (selectedRadioButtonText == "YA") {
-                            pendampinganKeluargaOlehTPKRadioButton = selectedRadioButtonText
+                            pendampinganKeluargaOlehTpkRadioButton = selectedRadioButtonText
                         } else {
-                            pendampinganKeluargaOlehTPKRadioButton = selectedRadioButtonText
+                            pendampinganKeluargaOlehTpkRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
@@ -270,6 +277,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                             pesertaKegiatanKetahananPanganRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
@@ -294,15 +302,6 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.btn_submit_layanan_keluarga -> {
-                var kategoriKeluargaRentanRadioButton = "YA"
-                var memilikiKartuKeluargaRadioButton = "YA"
-                var memilikiJambanSehatRadioButton = "YA"
-                var memilikiSumberAirBersihRadioButton = "YA"
-                var pesertaJaminanKeshatanRadioButton = "YA"
-                var memilikiAksesSanitasiPembuanganLimbahLayakRadioButton = "YA"
-                var pendampinganKeluargaOlehTPKRadioButton = "YA"
-                var pesertaKegiatanKetahananPanganRadioButton = "YA"
-
                 val namaAyah= binding.etNamaLayananKeluarga.text.toString()
                 val dusun = binding.etDusunLayananKeluarga.text.toString()
                 val namaIbu = binding.etNamaLengkapIbuHamilLayananKeluarga.text.toString()
@@ -312,7 +311,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                     addRecord(layananKeluargaDao, namaAyah, dusun, namaIbu, anak, kategoriKeluargaRentanRadioButton,
                         memilikiKartuKeluargaRadioButton, memilikiJambanSehatRadioButton, memilikiSumberAirBersihRadioButton,
                         pesertaJaminanKeshatanRadioButton, memilikiAksesSanitasiPembuanganLimbahLayakRadioButton,
-                        pendampinganKeluargaOlehTPKRadioButton, pesertaKegiatanKetahananPanganRadioButton)
+                        pendampinganKeluargaOlehTpkRadioButton, pesertaKegiatanKetahananPanganRadioButton)
                 } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
                 }
             R.id.btn_tampil_data_layanan_keluarga -> {

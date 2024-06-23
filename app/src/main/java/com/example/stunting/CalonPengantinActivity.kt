@@ -47,8 +47,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var dataSetListenerPerkiraanTglPernikahan: DatePickerDialog.OnDateSetListener
 
     var countItem = 0
-    var periksaKesehatanButton = "YA"
-    var bimbinganPerkawinanButton = "YA"
+    var periksaKesehatanRadioButton = "YA"
+    var bimbinganPerkawinanRadioButton = "YA"
 
     companion object {
         const val NAME = "calonPengantin_data_"
@@ -216,8 +216,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                 for (item in it) {
                     dataResult.add(
                         listOf("${item.tanggal}", "${item.namaCalonPengantin}", "${item.nikCalonPengantin}",
-                            "${item.umurCalonPengantin}", "${item.periksaKesehatanCalonPengantin}",
-                            "${item.bimbinganPerkawinanCalonPengantin}"
+                            "${item.tglLahirCalonPengantin}", "${item.umurCalonPengantin}", "${item.perkiraanTanggalPernikahanCalonPengantin}",
+                            "${item.periksaKesehatanCalonPengantin}", "${item.bimbinganPerkawinanCalonPengantin}"
                         )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
@@ -318,7 +318,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
 
                 if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
                     umur.isNotEmpty() && perkiraanTglPernikahan.isNotEmpty()) {
-                    addRecord(calonPengantinDao, nama, nik, tglLahir, umur, perkiraanTglPernikahan, periksaKesehatanButton, bimbinganPerkawinanButton)
+                    addRecord(calonPengantinDao, nama, nik, tglLahir, umur, perkiraanTglPernikahan, periksaKesehatanRadioButton, bimbinganPerkawinanRadioButton)
                 } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data_calon_pengantin -> {
@@ -372,7 +372,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "periksaKesehatanRadioButton") {
+        if (resultRadioButton == "periksaKesehatanButton") {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -381,15 +381,16 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                         // Handle the selected RadioButton
                         val selectedRadioButtonText = button.text.toString()
                         if (selectedRadioButtonText == "YA") {
-                            periksaKesehatanButton = selectedRadioButtonText
+                            periksaKesehatanRadioButton = selectedRadioButtonText
                         } else {
-                            periksaKesehatanButton = selectedRadioButtonText
+                            periksaKesehatanRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else {
+        } else  {
             // bimbinganPerkawinanButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -398,11 +399,12 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                         // Handle the selected RadioButton
                         val selectedRadioButtonText = button.text.toString()
                         if (selectedRadioButtonText == "YA") {
-                            bimbinganPerkawinanButton = selectedRadioButtonText
+                            bimbinganPerkawinanRadioButton = selectedRadioButtonText
                         } else {
-                            bimbinganPerkawinanButton = selectedRadioButtonText
+                            bimbinganPerkawinanRadioButton = selectedRadioButtonText
                         }
                         Log.e("Selected RadioButton:", selectedRadioButtonText)
+                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
