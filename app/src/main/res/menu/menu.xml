@@ -6,5 +6,5 @@
         android:id="@+id/menu_about"
         android:title="Tentang Saya"
         app:showAsAction="always"
-        android:icon="@drawable/ic_info_24" />
+        android:icon="@drawable/ic_info_36" />
 </menu>
