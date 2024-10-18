@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- For permission write external -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- For permission internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".database.DatabaseApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Stunting"
+        tools:targetApi="31">
+        <activity
+            android:name=".AnakActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LayananKeluargaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemajaPutriActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CalonPengantinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".BumilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StuntingPreventActivity"
+            android:exported="false" /> <!-- We need this atribute for splash screen -->
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

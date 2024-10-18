@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".RemajaPutriActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_remaja_putri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bluePrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tb_remaja_putri"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/tv_nama_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Nama Remaja Putri: "
+                app:layout_constraintTop_toBottomOf="@id/tb_remaja_putri"
+                app:layout_constraintStart_toStartOf="@+id/tb_remaja_putri" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_remaja_putri"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nama_remaja_putri">
+
+                <EditText
+                    android:id="@+id/et_nama_remaja_putri"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Cnt: Siti Nurjanah" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_nik_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Nomor Induk Kependudukan (NIK):  "
+                app:layout_constraintTop_toBottomOf="@id/til_nama_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nik_remaja_putri"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_nik_remaja_putri"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nik_remaja_putri">
+
+                <EditText
+                    android:id="@+id/et_nik_remaja_putri"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Cnt: 327806290301011" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_tgl_lahir_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Tanggal Lahir Remaja Putri:  "
+                app:layout_constraintTop_toBottomOf="@id/til_nik_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_tgl_lahir_remaja_putri"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_tgl_lahir_remaja_putri"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tgl_lahir_remaja_putri">
+
+                <!--- We set atributes foucsable and focusableInTouchMode to false for dateTime Calender Active
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" -->
+                <EditText
+                    android:id="@+id/et_tgl_lahir_remaja_putri"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="Cnt: 2001/03/29"
+                    android:inputType="datetime" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_umur_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Umur:  "
+                app:layout_constraintTop_toBottomOf="@id/til_tgl_lahir_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_umur_remaja_putri"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/bluePrimary"
+                app:hintTextColor="@color/blueSecond"
+                app:layout_constraintStart_toStartOf="@id/tv_umur_remaja_putri"
+                app:layout_constraintTop_toBottomOf="@+id/tv_umur_remaja_putri">
+
+                <EditText
+                    android:id="@+id/et_umur_remaja_putri"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Cnt: 21" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_mendapat_ttd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Mendapat TTD (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/til_umur_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <RadioGroup
+                android:id="@+id/rg_mendapat_ttd_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_mendapat_ttd"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_mendapat_ttd_remaja_putri"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_mendapat_ttd_remaja_putri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_periksa_anemia_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Periksa Anemia (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_mendapat_ttd_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <RadioGroup
+                android:id="@+id/rg_periksa_anemia_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_periksa_anemia_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_periksa_anemia_remaja_putri"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_periksa_anemia_remaja_putri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_hasil_periksa_anemia_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Hasil Periksa Anemia (Ya/Tidak): "
+                app:layout_constraintTop_toBottomOf="@id/rg_periksa_anemia_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri" />
+
+            <RadioGroup
+                android:id="@+id/rg_hasil_periksa_anemia_remaja_putri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_hasil_periksa_anemia_remaja_putri"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_remaja_putri">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_hasil_periksa_anemia_remaja_putri"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="YA" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_hasil_periksa_anemia_remaja_putri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TIDAK" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_submit_remaja_putri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueSecond"
+                android:layout_marginTop="10dp"
+                android:text="Kirim" />
+
+            <Button
+                android:id="@+id/btn_tampil_data_remaja_putri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blueSecond"
+                android:layout_marginTop="10dp"
+                android:text="Tampilkan Data" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
