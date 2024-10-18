@@ -35,7 +35,7 @@ class AnakAdapter(val items: ArrayList<AnakEntity>) : RecyclerView.Adapter<AnakA
         holder.klasifikasi.text = item.klasifikasiAnak
 
         // Change color text classification display
-        if (item.klasifikasiAnak == "NORMAL") {
+        if (item.klasifikasiAnak == ContextCompat.getString(holder.itemView.context, R.string.classification_normal)) {
             holder.klasifikasi.setTextColor(Color.GREEN)
         } else holder.klasifikasi.setTextColor(Color.RED)
 

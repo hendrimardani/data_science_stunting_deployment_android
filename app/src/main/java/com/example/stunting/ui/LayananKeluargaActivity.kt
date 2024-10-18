@@ -1,4 +1,4 @@
-package com.example.stunting
+package com.example.stunting.ui
 
 import LayananKeluargaAdapter
 import android.app.Dialog
@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.R
 import com.example.stunting.database.DatabaseApp
 import com.example.stunting.database.LayananKeluarga.LayananKeluargaDao
 import com.example.stunting.database.LayananKeluarga.LayananKeluargaEntity
@@ -369,8 +370,8 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
 
         viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
                 "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan ${NAME}(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: ${NAME}${SimpleDateFormat("yyyyMMMdd_HHmmss").format(
+                "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
+                " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(
                     Date()
                 )}.xlsx"
         viewExport.tvYes.setOnClickListener {
@@ -401,7 +402,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
 
         var dataResult: ArrayList<List<String>> = ArrayList()
-        val fileName = "${NAME}${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
+        val fileName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
         val fileDir = "/storage/emulated/0/Download/"
         try {
             val file = File(fileDir, fileName)

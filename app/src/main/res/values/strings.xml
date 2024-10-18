@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Stunting</string>
+    <string name="classification_normal">NORMAL</string>
+    <string name="title_show_data_failed">TAMPILKAN DATA GAGAL !</string>
+    <string name="description_show_data_failed">Data masih kosong tidak ada yang ditampilkan, silahkan input data.</string>
+    <string name="description_detail_info">Untuk melihat detail data bisa eksport terlebih dahulu datanya.</string>
+    <string name="description_export_dialog">Apakah anda yakin ingin mengeksport data ke Excel pada %s Untuk melihat hasilnya silahkan cek dengan %s.xlsx di folder Download/Unduhan hari ini Cth: %s.xlsx</string>
+    <string name="title_export_success">DATA BERHASIL DI EKSPOR</string>
+    <string name="description_export_success">Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !</string>
+    <string name="title_export_failed">Gagal Mengekspor File !</string>
+    <string name="description_export_failed">Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !</string>
+    <string name="description_delete_dialog">Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu.</string>
+    <string name="title_history">HISTORI BERHASIL DIHAPUS SEMUA</string>
+    <string name="description_history">Silahkan jalankan kembali aplikasinya.</string>
+    <string name="setup_recycler_view_sum_data">%i Data</string>
+    <string name="classification_stunting">STUNTING</string>
+    <string name="title_saved_data">DATA TERSIMPAN !</string>
+    <string name="description_saved_data">Data berhasil di simpan di database !!</string>
+    <string name="app_name_layanan_anak">Layanan Anak</string>
+    <string name="list_data_bumil">List Data Bumil</string>
+    <string name="app_name_ibu_hamil">Ibu Hamil</string>
+    <string name="title_input_failed">INPUT GAGAL !</string>
+    <string name="description_input_failed">Data tidak boleh ada yang kosong !</string>
+
 </resources>

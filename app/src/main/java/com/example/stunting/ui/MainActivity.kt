@@ -1,8 +1,7 @@
-package com.example.stunting
+package com.example.stunting.ui
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -13,11 +12,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.R
 import com.example.stunting.databinding.ActivityMainBinding
 import com.example.stunting.databinding.DialogBottomSheetCegahStuntingBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MainActivity : AppCompatActivity() {

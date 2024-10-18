@@ -9,7 +9,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LayananKeluargaActivity">
+        tools:context=".ui.LayananKeluargaActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_layanan_keluarga"

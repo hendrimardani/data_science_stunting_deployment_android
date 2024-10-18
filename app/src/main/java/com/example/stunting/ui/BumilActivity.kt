@@ -1,4 +1,4 @@
-package com.example.stunting
+package com.example.stunting.ui
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.R
 import com.example.stunting.adapter.BumilAdapter
 import com.example.stunting.database.Bumil.BumilDao
 import com.example.stunting.database.Bumil.BumilEntity
@@ -27,6 +28,7 @@ import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.databinding.DialogCustomeInfoBinding
+import com.example.stunting.ui.AnakActivity.Companion
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
@@ -51,11 +53,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     var countItem = 0
     var statusGiziRadioButton = "YA"
 
-    companion object {
-        const val NAME = "bumil_data_"
-        const val STATUS_GIZI = "statusGiziRadioButton"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,7 +68,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Binding BumilBottomSheetDialog for retrieve xml id
         bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
-        bindingBumilBottomSheetDialog.tvListData.text = "List Data Bumil"
+        bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
 
         // Call database
         bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
@@ -82,7 +79,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
 
         // getRadioButtomValue
-        getRadioButtonValue(R.id.rg_bumil, STATUS_GIZI)
+        getRadioButtonValue(R.id.rg_bumil)
 
         binding.etTglLahirBumil.setOnClickListener(this)
         binding.etHariPertamaHaidTerakhirBumil.setOnClickListener(this)
@@ -95,26 +92,24 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         getAll(bumilDao)
     }
 
-    private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
+    private fun getRadioButtonValue(bindingRadioGroup: Int) {
         val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "statusGiziRadioButton") {
-            // Set a listener for each RadioButton
-            for (i in 0 until radioButtons) {
-                val radioButton = radioGroup.getChildAt(i) as RadioButton
-                radioButton.setOnCheckedChangeListener { button, isChecked ->
-                    if (isChecked) {
-                        // Handle the selected RadioButton
-                        val selectedRadioButtonText = button.text.toString()
-                        if (selectedRadioButtonText == "YA") {
-                            statusGiziRadioButton = selectedRadioButtonText
-                        } else {
-                            statusGiziRadioButton = selectedRadioButtonText
-                        }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+        // Set a listener for each RadioButton
+        for (i in 0 until radioButtons) {
+            val radioButton = radioGroup.getChildAt(i) as RadioButton
+            radioButton.setOnCheckedChangeListener { button, isChecked ->
+                if (isChecked) {
+                    // Handle the selected RadioButton
+                    val selectedRadioButtonText = button.text.toString()
+                    if (selectedRadioButtonText == "YA") {
+                        statusGiziRadioButton = selectedRadioButtonText
+                    } else {
+                        statusGiziRadioButton = selectedRadioButtonText
                     }
+//                    Log.e("Selected RadioButton:", selectedRadioButtonText)
                 }
             }
         }
@@ -174,7 +169,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbBumil)
-        supportActionBar!!.title = "Ibu Hamil"
+        supportActionBar!!.title = getString(R.string.app_name_ibu_hamil)
         // Change font style text
         binding.tbBumil.setTitleTextAppearance(this, R.style.Theme_Stunting)
 
@@ -206,25 +201,24 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tanggalPerkiraanLahir.isNotEmpty() &&
                     umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
                     addRecord(bumilDao, nama, nik, tglLahir, umur, hariPertamaHaidTerakhir, tanggalPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
-                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
+                } else toastInfo(getString(R.string.title_input_failed), getString(R.string.description_input_failed), MotionToastStyle.ERROR)
             }
             R.id.btn_tampil_data_bumil -> {
                 // Data not empty
-                Log.e("CEK DATANA", countItem.toString())
+//                Log.e("CEK DATANA", countItem.toString())
                 if (countItem != 0) showBottomSheetDialog() else
-                    toastInfo("TAMPILKAN DATA GAGAL !",
-                        "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
+                    toastInfo(getString(R.string.title_show_data_failed),
+                        getString(R.string.description_show_data_failed), MotionToastStyle.ERROR)
             }
         }
     }
 
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
-
         if (bumilList.isNotEmpty()) {
             val allAdapter = BumilAdapter(bumilList)
             // Count item list
             countItem = bumilList.size
-            bindingBumilBottomSheetDialog.tvTotalData.text = "$countItem Data"
+            bindingBumilBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data)
             bindingBumilBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
             bindingBumilBottomSheetDialog.rvBottomSheet.adapter = allAdapter
             // To scrolling automatic when data entered
@@ -236,7 +230,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 .layoutManager!!.smoothScrollToPosition(bindingBumilBottomSheetDialog
                     .rvBottomSheet, null, countItem - 1)
         }
-        Log.e("HASILNA", bumilList.toString())
+//        Log.e("HASILNA", bumilList.toString())
     }
 
     private fun getAll(bumilDao: BumilDao) {
@@ -292,7 +286,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 )
             )
         }
-        toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
+        toastInfo(getString(R.string.title_saved_data), getString(R.string.description_saved_data), MotionToastStyle.SUCCESS)
 
         // Clear the text when data saved !!! (success)
         binding.etNamaBumil.text!!.clear()
@@ -328,17 +322,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingBumilBottomSheetDialog.ivDelete.setOnClickListener {
-            showCustomeDeleteDialog()
-        }
-        bindingBumilBottomSheetDialog.ivExportToXlsx.setOnClickListener {
-            showCustomeExportDataDialog()
-        }
-        bindingBumilBottomSheetDialog.ivArrow.setOnClickListener {
-            showCustomeInfoDilog()
-        }
-        bindingBumilBottomSheetDialog.tvInfo.setOnClickListener {
-            showCustomeInfoDilog()
+        bindingBumilBottomSheetDialog.apply {
+            ivDelete.setOnClickListener { showCustomeDeleteDialog() }
+            ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
+            ivArrow.setOnClickListener { showCustomeInfoDilog() }
+            tvInfo.setOnClickListener { showCustomeInfoDilog() }
         }
     }
 
@@ -350,7 +338,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         val infoDialog = Dialog(this)
         infoDialog.setContentView(viewBottomSheetDialog)
         // Set content
-        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
+        bindingBumilBottomSheetDialog.tvDescription.text = getString(R.string.description_detail_info)
         bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
             infoDialog.dismiss()
         }
@@ -361,23 +349,24 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         lifecycleScope.launch {
             bumilDao.deleteAll()
         }
-        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
+        toastInfo(getString(R.string.title_history), getString(R.string.description_history), MotionToastStyle.SUCCESS)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun showCustomeExportDataDialog() {
         val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
         val exportDialog = Dialog(this)
         exportDialog.setContentView(viewExport.root)
 
-        viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.xlsx"
+        val result = "$NAME(tahunbulantanggal_jammenitdetik)"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())
+        val resultName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}"
+        viewExport.tvDescription.text = getString(R.string.description_export_dialog, simpleDateFormat, result, resultName)
+
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                toastInfo(getString(R.string.title_export_success), getString(R.string.description_export_success), MotionToastStyle.SUCCESS)
                 exportDatabaseToCSV(bumilDao)
             }
             exportDialog.dismiss()
@@ -397,6 +386,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private suspend fun exportDatabaseToCSV(bumilDao: BumilDao) {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
@@ -413,17 +403,19 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             bumilDao.fetchAllBumil().collect {
                 for (item in it) {
                     dataResult.add(
-                        listOf("${item.tanggal}", "${item.namaBumil}", "${item.tglLahirBumil}",
-                            "${item.tglLahirBumil}", "${item.umurBumil}", "${item.hariPertamaHaidTerakhirBumil}",
-                            "${item.tanggalPerkiraanLahirBumil}", "${item.umurKehamilanBumil}", "${item.statusGiziKesehatanBumil}")
+                        listOf(
+                            item.tanggal, item.namaBumil, item.tglLahirBumil,
+                            item.tglLahirBumil, item.umurBumil, item.hariPertamaHaidTerakhirBumil,
+                            item.tanggalPerkiraanLahirBumil, item.umurKehamilanBumil, item.statusGiziKesehatanBumil
+                        )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            toastInfo("Gagal Mengekspor File !",
-                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+            toastInfo(getString(R.string.title_export_failed),
+                getString(R.string.description_export_dialog), MotionToastStyle.ERROR)
         }
     }
 
@@ -432,7 +424,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         val deleteDialog = Dialog(this)
         deleteDialog.setContentView(viewDelete.root)
 
-        viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
+        viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
             deleteAllDates(bumilDao)
             // We will destroy activity
@@ -443,5 +435,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             deleteDialog.dismiss()
         }
         deleteDialog.show()
+    }
+
+    companion object {
+        private const val NAME = "bumil_data_"
     }
 }

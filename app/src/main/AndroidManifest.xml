@@ -17,19 +17,19 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
-            android:name=".AnakActivity"
+            android:name=".ui.AnakActivity"
             android:exported="false" />
         <activity
-            android:name=".LayananKeluargaActivity"
+            android:name=".ui.LayananKeluargaActivity"
             android:exported="false" />
         <activity
-            android:name=".RemajaPutriActivity"
+            android:name=".ui.RemajaPutriActivity"
             android:exported="false" />
         <activity
-            android:name=".CalonPengantinActivity"
+            android:name=".ui.CalonPengantinActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +38,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BumilActivity"
+            android:name=".ui.BumilActivity"
             android:exported="false" />
         <activity
             android:name=".StuntingPreventActivity"
             android:exported="false" /> <!-- We need this atribute for splash screen -->
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".ui.SplashScreenActivity"
             android:exported="false" />
     </application>
 

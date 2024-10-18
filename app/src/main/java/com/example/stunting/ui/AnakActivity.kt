@@ -1,5 +1,6 @@
-package com.example.stunting
+package com.example.stunting.ui
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stunting.R
 import com.example.stunting.adapter.AnakAdapter
 import com.example.stunting.database.Child.AnakDao
 import com.example.stunting.database.Child.AnakEntity
@@ -51,10 +53,6 @@ class AnakActivity : AppCompatActivity() {
     var countItem = 0
     var classification = "NORMAL"
     var jkOutput = "Laki-laki"
-
-    companion object {
-        const val NAME = "anak_data_"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,11 +109,11 @@ class AnakActivity : AppCompatActivity() {
         }
 
         binding.btnTampilDataAnak.setOnClickListener {
-            // Data not empty
-            Log.e("CEK DATANA", countItem.toString())
+//            // Data not empty
+//            Log.e("CEK DATANA", countItem.toString())
             if (countItem != 0) showBottomSheetDialog() else
-                toastInfo("TAMPILKAN DATA GAGAL !",
-                    "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
+                toastInfo(getString(R.string.title_show_data_failed),
+                    getString(R.string.description_show_data_failed), MotionToastStyle.ERROR)
         }
 
         // Get all items
@@ -144,29 +142,21 @@ class AnakActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingAnakBottomSheetDialog.ivDelete.setOnClickListener {
-            showCustomeDeleteDialog()
-        }
-        bindingAnakBottomSheetDialog.ivExportToXlsx.setOnClickListener {
-            showCustomeExportDataDialog()
-        }
-        bindingAnakBottomSheetDialog.ivArrow.setOnClickListener {
-            showCustomeInfoAnakDialog()
-        }
-        bindingAnakBottomSheetDialog.tvInfo.setOnClickListener {
-            showCustomeInfoAnakDialog()
+        bindingAnakBottomSheetDialog.apply {
+            ivDelete.setOnClickListener { showCustomeDeleteDialog() }
+            ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
+            ivArrow.setOnClickListener { showCustomeInfoDialog() }
+            tvInfo.setOnClickListener { showCustomeInfoDialog() }
         }
     }
 
-    private fun showCustomeInfoAnakDialog() {
+    private fun showCustomeInfoDialog() {
         val bindingAnakBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
-        // Check if the view already has a parent
         val viewBottomSheetDialog: View = bindingAnakBottomSheetDialog.root
 
         val infoDialog = Dialog(this)
         infoDialog.setContentView(viewBottomSheetDialog)
-        // Set content
-        bindingAnakBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
+        bindingAnakBottomSheetDialog.tvDescription.text = getString(R.string.description_detail_info)
         bindingAnakBottomSheetDialog.tvYes.setOnClickListener {
             infoDialog.dismiss()
         }
@@ -178,21 +168,21 @@ class AnakActivity : AppCompatActivity() {
         startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun showCustomeExportDataDialog() {
         val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
         val exportDialog = Dialog(this)
         exportDialog.setContentView(viewExport.root)
 
-        viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan ${NAME}(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: ${NAME}${SimpleDateFormat("yyyyMMMdd_HHmmss").format(
-                    Date()
-                )}.xlsx"
+        val result = "$NAME(tahunbulantanggal_jammenitdetik)"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())
+        val resultName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}"
+        viewExport.tvDescription.text = getString(R.string.description_export_dialog, simpleDateFormat, result, resultName)
+
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                toastInfo(getString(R.string.title_export_success), getString(R.string.description_export_success), MotionToastStyle.SUCCESS)
                 exportDatabaseToCSV(anakDao)
             }
             exportDialog.dismiss()
@@ -207,12 +197,13 @@ class AnakActivity : AppCompatActivity() {
         exportDialog.show()
     }
 
+    @SuppressLint("SimpleDateFormat")
     private suspend fun exportDatabaseToCSV(anakDao: AnakDao) {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
 
-        var dataResult: ArrayList<List<String>> = ArrayList()
-        val fileName = "${NAME}${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
+        val dataResult: ArrayList<List<String>> = ArrayList()
+        val fileName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
         val fileDir = "/storage/emulated/0/Download/"
         try {
             val file = File(fileDir, fileName)
@@ -223,17 +214,19 @@ class AnakActivity : AppCompatActivity() {
             anakDao.fetchAllAnak().collect {
                 for (item in it) {
                     dataResult.add(
-                        listOf("${item.tanggal}", "${item.namaAnak}", "${item.jkAnak}",
-                            "${item.nikAnak}", "${item.tglLahirAnak}", "${item.umurAnak}",
-                            "${item.tinggiAnak}", "${item.ortuAnak}", "${item.klasifikasiAnak}")
+                        listOf(
+                            item.tanggal, item.namaAnak, item.jkAnak,
+                            item.nikAnak, item.tglLahirAnak, item.umurAnak,
+                            item.tinggiAnak, item.ortuAnak, item.klasifikasiAnak
+                        )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            toastInfo("Gagal Mengekspor File !",
-                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+            toastInfo(getString(R.string.title_export_failed),
+                getString(R.string.description_export_failed), MotionToastStyle.ERROR)
         }
     }
 
@@ -242,7 +235,7 @@ class AnakActivity : AppCompatActivity() {
         val deleteDialog = Dialog(this)
         deleteDialog.setContentView(viewDelete.root)
 
-        viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
+        viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
             deleteAllDates(anakDao)
             // We will destroy activity
@@ -259,7 +252,7 @@ class AnakActivity : AppCompatActivity() {
         lifecycleScope.launch {
             anakDao.deleteAll()
         }
-        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
+        toastInfo(getString(R.string.title_history), getString(R.string.description_history), MotionToastStyle.SUCCESS)
     }
 
     private fun setupListOfDataIntoRecyclerView(anakList: ArrayList<AnakEntity>) {
@@ -267,7 +260,7 @@ class AnakActivity : AppCompatActivity() {
             val anakAdapter = AnakAdapter(anakList)
             // Count item list
             countItem = anakList.size
-            bindingAnakBottomSheetDialog.tvTotalData.text = "$countItem Data"
+            bindingAnakBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem)
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.layoutManager = LinearLayoutManager(this)
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.adapter = anakAdapter
             // To scrolling automatic when data entered
@@ -279,7 +272,7 @@ class AnakActivity : AppCompatActivity() {
                 .layoutManager!!.smoothScrollToPosition(bindingAnakBottomSheetDialog
                     .rvBottomSheetAnak, null, countItem - 1)
         }
-        Log.e("HASILNA", anakList.toString())
+//        Log.e("HASILNA", anakList.toString())
     }
 
     private fun prediction(anakDao: AnakDao, nama: String, jk: String, nik: String, tglLahir: String,
@@ -309,12 +302,12 @@ class AnakActivity : AppCompatActivity() {
 
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
             if (Math.round(outputFeature0[0]) < 0.5) {
-                classification = "NORMAL"
+                classification = getString(R.string.classification_normal)
 
                 // Add record
                 addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
             } else {
-                classification = "STUNTING"
+                classification = getString(R.string.classification_stunting)
                 // Add record
                 addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
             }
@@ -323,8 +316,8 @@ class AnakActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             toastInfo(
-                "Gagal Mengekspor File !",
-                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !",
+                getString(R.string.title_export_failed),
+                getString(R.string.description_export_failed),
                 MotionToastStyle.ERROR
             )
         }
@@ -373,7 +366,7 @@ class AnakActivity : AppCompatActivity() {
                 )
             )
         }
-        toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
+        toastInfo(getString(R.string.title_saved_data), getString(R.string.description_saved_data), MotionToastStyle.SUCCESS)
 
         // Clear the text when data saved !!! (success)
         binding.etNamaAnak.text!!.clear()
@@ -409,7 +402,7 @@ class AnakActivity : AppCompatActivity() {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbAnak)
-        supportActionBar!!.title = "Layanan Anak"
+        supportActionBar!!.title = getString(R.string.app_name_layanan_anak)
         // Change font style text
         binding.tbAnak.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Enable back button if you're in a child activity
@@ -419,5 +412,9 @@ class AnakActivity : AppCompatActivity() {
         binding.tbAnak.setNavigationOnClickListener {
             onBackPressed()
         }
+    }
+
+    companion object {
+        private const val NAME = "anak_data_"
     }
 }
