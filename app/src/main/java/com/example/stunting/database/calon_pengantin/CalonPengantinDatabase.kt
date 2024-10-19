@@ -1,4 +1,4 @@
-package com.example.stunting.database.CalonPengantin
+package com.example.stunting.database.calon_pengantin
 
 import android.content.Context
 import androidx.room.Database

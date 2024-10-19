@@ -1,4 +1,4 @@
-package com.example.stunting.database.Bumil
+package com.example.stunting.database.remaja_putri
 
 import android.content.Context
 import androidx.room.Database
@@ -6,24 +6,24 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // If you change the structure database you have to change parameter version with increase
-@Database(entities = [BumilEntity::class], version = 4, exportSchema = true)
-abstract class BumilDatabase: RoomDatabase() {
+@Database(entities = [RemajaPutriEntity::class], version = 1, exportSchema = true)
+abstract class RemajaPutriDatabase: RoomDatabase() {
 
-    abstract fun bumilDao(): BumilDao
+    abstract fun remajaPutriDao(): RemajaPutriDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: BumilDatabase? = null
+        private var INSTANCE: RemajaPutriDatabase? = null
 
-        fun getInstance(context: Context): BumilDatabase {
+        fun getInstance(context: Context): RemajaPutriDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        BumilDatabase::class.java,
-                        "bumil_database"
+                        RemajaPutriDatabase::class.java,
+                        "remajaPutri_database"
                     ).fallbackToDestructiveMigration().build()
                 }
 

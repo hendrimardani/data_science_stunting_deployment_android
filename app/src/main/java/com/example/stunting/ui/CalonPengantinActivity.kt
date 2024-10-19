@@ -1,8 +1,8 @@
 package com.example.stunting.ui
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,25 +12,28 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stunting.R
 import com.example.stunting.adapter.CalonPengantinAdapter
-import com.example.stunting.database.CalonPengantin.CalonPengantinDao
-import com.example.stunting.database.CalonPengantin.CalonPengantinEntity
+import com.example.stunting.database.calon_pengantin.CalonPengantinDao
+import com.example.stunting.database.calon_pengantin.CalonPengantinEntity
 import com.example.stunting.database.DatabaseApp
 import com.example.stunting.databinding.ActivityCalonPengantinBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.databinding.DialogCustomeInfoBinding
+import com.example.stunting.functions_helper.Functions.getDatePickerDialogTglLahir
+import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
+import com.example.stunting.functions_helper.Functions.linkToDirectory
+import com.example.stunting.functions_helper.Functions.setCalendarTglLahir
+import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
+import com.example.stunting.functions_helper.Functions.toastInfo
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
-import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
@@ -44,18 +47,11 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var bindingCalonPengantinBottomSheetDialog: DialogBottomSheetAllBinding
     private lateinit var calonPengantinDao: CalonPengantinDao
     private lateinit var cal: Calendar
-    private lateinit var dataSetListenerTglLahir: DatePickerDialog.OnDateSetListener
     private lateinit var dataSetListenerPerkiraanTglPernikahan: DatePickerDialog.OnDateSetListener
 
     var countItem = 0
     var periksaKesehatanRadioButton = "YA"
     var bimbinganPerkawinanRadioButton = "YA"
-
-    companion object {
-        const val NAME = "calonPengantin_data_"
-        const val PERIKSA_KESEHATAN = "periksaKesehatanButton"
-        const val BIMBINGAN_PERKAWINAN = "bimbinganPerkawinanButton"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +68,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
 
         // Binding BumilBottomSheetDialog for retrieve xml id
         bindingCalonPengantinBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
-        bindingCalonPengantinBottomSheetDialog.tvListData.text = "List Data Catin"
+        bindingCalonPengantinBottomSheetDialog.tvListData.text = getString(R.string.list_data_catin)
 
         // Call database
         calonPengantinDao = (application as DatabaseApp).dbCalonPengantinDatabase.calonPengantinDao()
@@ -109,7 +105,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             val calonPengantinAdapter = CalonPengantinAdapter(calonPengantinList)
             // Count item list
             countItem = calonPengantinList.size
-            bindingCalonPengantinBottomSheetDialog.tvTotalData.text = "$countItem Data"
+            bindingCalonPengantinBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
             bindingCalonPengantinBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
             bindingCalonPengantinBottomSheetDialog.rvBottomSheet.adapter = calonPengantinAdapter
             // To scrolling automatic when data entered
@@ -121,7 +117,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                 .layoutManager!!.smoothScrollToPosition(bindingCalonPengantinBottomSheetDialog
                     .rvBottomSheet, null, countItem - 1)
         }
-        Log.e("HASILNA", calonPengantinList.toString())
+//        Log.e("HASILNA", calonPengantinList.toString())
     }
 
     private fun showBottomSheetDialog() {
@@ -137,55 +133,38 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingCalonPengantinBottomSheetDialog.ivDelete.setOnClickListener {
-            showCustomeDeleteDialog()
-        }
-        bindingCalonPengantinBottomSheetDialog.ivExportToXlsx.setOnClickListener {
-            showCustomeExportDataDialog()
-        }
-        bindingCalonPengantinBottomSheetDialog.ivArrow.setOnClickListener {
-            showCustomeInfoDilog()
-        }
-        bindingCalonPengantinBottomSheetDialog.tvInfo.setOnClickListener {
-            showCustomeInfoDilog()
+        bindingCalonPengantinBottomSheetDialog.apply {
+            ivDelete.setOnClickListener { showCustomeDeleteDialog() }
+            ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
+            ivArrow.setOnClickListener { showCustomeInfoDialog(this@CalonPengantinActivity, layoutInflater) }
+            tvInfo.setOnClickListener { showCustomeInfoDialog(this@CalonPengantinActivity, layoutInflater) }
         }
     }
 
-    private fun showCustomeInfoDilog() {
-        val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
-        // Check if the view already has a parent
-        val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
-
-        val infoDialog = Dialog(this)
-        infoDialog.setContentView(viewBottomSheetDialog)
-        // Set content
-        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
-        bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
-            infoDialog.dismiss()
-        }
-        infoDialog.show()
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private fun showCustomeExportDataDialog() {
         val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
         val exportDialog = Dialog(this)
         exportDialog.setContentView(viewExport.root)
 
-        viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(
-                    Date()
-                )}.xlsx"
+        val result = "$NAME(tahunbulantanggal_jammenitdetik)"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())
+        val resultName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}"
+
+        viewExport.tvDescription.text = getString(R.string.description_export_dialog, simpleDateFormat, result, resultName)
+
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                toastInfo(
+                    this@CalonPengantinActivity, getString(R.string.title_export_success),
+                    getString(R.string.description_export_success), MotionToastStyle.SUCCESS
+                )
                 exportDatabaseToCSV(calonPengantinDao)
             }
             exportDialog.dismiss()
             // Goto link directory download
-            linkToDirectory()
+            linkToDirectory(this@CalonPengantinActivity)
             // Destroying when exported successfully
             finish()
         }
@@ -195,11 +174,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         exportDialog.show()
     }
 
-    private fun linkToDirectory() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private suspend fun exportDatabaseToCSV(calonPengantinDao: CalonPengantinDao) {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
@@ -216,9 +191,10 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             calonPengantinDao.fetchAllCalonPengantin().collect {
                 for (item in it) {
                     dataResult.add(
-                        listOf("${item.tanggal}", "${item.namaCalonPengantin}", "${item.nikCalonPengantin}",
-                            "${item.tglLahirCalonPengantin}", "${item.umurCalonPengantin}", "${item.perkiraanTanggalPernikahanCalonPengantin}",
-                            "${item.periksaKesehatanCalonPengantin}", "${item.bimbinganPerkawinanCalonPengantin}"
+                        listOf(
+                            item.tanggal, item.namaCalonPengantin, item.nikCalonPengantin,
+                            item.tglLahirCalonPengantin, item.umurCalonPengantin, item.perkiraanTanggalPernikahanCalonPengantin,
+                            item.periksaKesehatanCalonPengantin, item.bimbinganPerkawinanCalonPengantin
                         )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
@@ -226,8 +202,10 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            toastInfo("Gagal Mengekspor File !",
-                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+            toastInfo(
+                this@CalonPengantinActivity, getString(R.string.title_export_failed),
+                getString(R.string.description_export_dialog), MotionToastStyle.ERROR
+            )
         }
     }
 
@@ -236,7 +214,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         val deleteDialog = Dialog(this)
         deleteDialog.setContentView(viewDelete.root)
 
-        viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
+        viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
             deleteAllDates(calonPengantinDao)
             // We will destroy activity
@@ -253,24 +231,10 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         lifecycleScope.launch {
             calonPengantinDao.deleteAll()
         }
-        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
-    }
-
-    private fun setCalendarTglLahir(etTanggal: EditText) {
-        cal = Calendar.getInstance()
-        dataSetListenerTglLahir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, month)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateInViewCalendarTglLahir(etTanggal)
-        }
-        updateDateInViewCalendarTglLahir(etTanggal)
-    }
-
-    private fun updateDateInViewCalendarTglLahir(etTanggal: EditText) {
-        val myFormat = "yyyy/MM/dd"
-        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
-        etTanggal.setText(sdf.format(cal.time).toString())
+        toastInfo(
+            this@CalonPengantinActivity, getString(R.string.title_history_delete),
+            getString(R.string.description_history_delete), MotionToastStyle.SUCCESS
+        )
     }
 
     private fun setCalendarPerkiraanTanggalPernikahan(etTanggal: EditText) {
@@ -293,7 +257,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbCalonPengantin)
-        supportActionBar!!.title = "Calon Pengantin"
+        supportActionBar!!.title = getString(R.string.app_name_catin)
         // Change font style text
         binding.tbCalonPengantin.setTitleTextAppearance(this, R.style.Theme_Stunting)
 
@@ -308,7 +272,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialogTglLahir()
+            R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialogTglLahir(this@CalonPengantinActivity)
             R.id.et_perkiraan_tanggal_pernikahan_calon_pengantin -> getDatePickerDialogPerkiraanTglPernikahan()
             R.id.btn_submit_calon_pengantin -> {
                 val nama = binding.etNamaCalonPengantin.text.toString()
@@ -320,32 +284,30 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                 if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
                     umur.isNotEmpty() && perkiraanTglPernikahan.isNotEmpty()) {
                     addRecord(calonPengantinDao, nama, nik, tglLahir, umur, perkiraanTglPernikahan, periksaKesehatanRadioButton, bimbinganPerkawinanRadioButton)
-                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
+                } else {
+                    toastInfo(
+                        this@CalonPengantinActivity, getString(R.string.title_show_data_failed),
+                        getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
+                    )
+                }
             }
             R.id.btn_tampil_data_calon_pengantin -> {
                 // Data not empty
                 Log.e("CEK DATANA", countItem.toString())
-                if (countItem != 0) showBottomSheetDialog() else
-                    toastInfo("TAMPILKAN DATA GAGAL !",
-                        "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
+                if (countItem != 0) showBottomSheetDialog() else {
+                    toastInfo(
+                        this@CalonPengantinActivity, getString(R.string.title_input_failed),
+                        getString(R.string.description_input_failed), MotionToastStyle.ERROR
+                    )
+                }
             }
         }
     }
 
-    private fun getDateTimePrimaryKey(): String {
-        val c = Calendar.getInstance()
-        val dateTime = c.time
-
-        // 10-03-2024 Min 14:59:11
-        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-        val date = sdf.format(dateTime)
-        return date
-    }
-
-    private fun addRecord(calonPengantinDao: CalonPengantinDao, nama: String, nik: String, tglLahir: String,
-                          umur: String, perkiraanTglPernikahan: String, periksaKesehatan: String,
-                          bimbinganPerkawinan: String) {
-
+    private fun addRecord(
+        calonPengantinDao: CalonPengantinDao, nama: String, nik: String, tglLahir: String,
+        umur: String, perkiraanTglPernikahan: String, periksaKesehatan: String, bimbinganPerkawinan: String
+    ) {
         val date = getDateTimePrimaryKey()
 
         lifecycleScope.launch {
@@ -357,7 +319,10 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                 )
             )
         }
-        toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
+        toastInfo(
+            this@CalonPengantinActivity, getString(R.string.title_saved_data),
+            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
+        )
 
         // Clear the text when data saved !!! (success)
         binding.etNamaCalonPengantin.text!!.clear()
@@ -367,13 +332,12 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         binding.etPerkiraanTanggalPernikahanCalonPengantin.text!!.clear()
     }
 
-
     private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
         val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "periksaKesehatanButton") {
+        if (resultRadioButton == PERIKSA_KESEHATAN) {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -386,8 +350,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             periksaKesehatanRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
@@ -404,31 +368,12 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             bimbinganPerkawinanRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
         }
-    }
-
-    private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
-        MotionToast.createToast(this,
-            title,
-            description,
-            info,
-            MotionToast.GRAVITY_BOTTOM,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helveticabold)
-        )
-    }
-
-    private fun getDatePickerDialogTglLahir() {
-        DatePickerDialog(this@CalonPengantinActivity, dataSetListenerTglLahir,
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
     }
 
     private fun getDatePickerDialogPerkiraanTglPernikahan() {
@@ -437,5 +382,11 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    companion object {
+        private const val NAME = "calonPengantin_data_"
+        private const val PERIKSA_KESEHATAN = "periksaKesehatanButton"
+        private const val BIMBINGAN_PERKAWINAN = "bimbinganPerkawinanButton"
     }
 }

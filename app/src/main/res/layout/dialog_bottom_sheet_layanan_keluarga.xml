@@ -29,11 +29,11 @@
         android:text="Total Data"
         android:layout_marginStart="25dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_data_layanan_keluarga"
+        app:layout_constraintBottom_toBottomOf="@id/tv_list_data_layanan_keluarga"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/tv_data_layanan_keluarga"
+        android:id="@+id/tv_list_data_layanan_keluarga"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="List Data Anak"
@@ -50,9 +50,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_export"
         android:layout_marginStart="25dp"
-        app:layout_constraintStart_toEndOf="@id/tv_data_layanan_keluarga"
-        app:layout_constraintTop_toTopOf="@id/tv_data_layanan_keluarga"
-        app:layout_constraintBottom_toBottomOf="@id/tv_data_layanan_keluarga" />
+        app:layout_constraintStart_toEndOf="@id/tv_list_data_layanan_keluarga"
+        app:layout_constraintTop_toTopOf="@id/tv_list_data_layanan_keluarga"
+        app:layout_constraintBottom_toBottomOf="@id/tv_list_data_layanan_keluarga" />
 
     <ImageView
         android:id="@+id/iv_delete"
@@ -72,7 +72,7 @@
         android:textStyle="bold"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_data_layanan_keluarga" />
+        app:layout_constraintTop_toBottomOf="@id/tv_list_data_layanan_keluarga" />
 
     <TextView
         android:id="@+id/tv_header_nama"

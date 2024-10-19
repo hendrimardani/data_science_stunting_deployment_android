@@ -1,4 +1,4 @@
-package com.example.stunting.database.RemajaPutri
+package com.example.stunting.database.remaja_putri
 
 import androidx.room.Dao
 import androidx.room.Delete

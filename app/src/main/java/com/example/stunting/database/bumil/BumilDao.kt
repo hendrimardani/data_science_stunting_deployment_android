@@ -1,4 +1,4 @@
-package com.example.stunting.database.Bumil
+package com.example.stunting.database.bumil
 
 import androidx.room.Dao
 import androidx.room.Delete

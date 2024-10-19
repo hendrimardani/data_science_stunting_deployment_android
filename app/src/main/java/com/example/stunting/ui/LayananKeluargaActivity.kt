@@ -1,41 +1,39 @@
 package com.example.stunting.ui
 
 import LayananKeluargaAdapter
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stunting.R
 import com.example.stunting.database.DatabaseApp
-import com.example.stunting.database.LayananKeluarga.LayananKeluargaDao
-import com.example.stunting.database.LayananKeluarga.LayananKeluargaEntity
+import com.example.stunting.database.layanan_keluarga.LayananKeluargaDao
+import com.example.stunting.database.layanan_keluarga.LayananKeluargaEntity
 import com.example.stunting.databinding.ActivityLayananKeluargaBinding
 import com.example.stunting.databinding.DialogBottomSheetLayananKeluargaBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.databinding.DialogCustomeInfoBinding
+import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
+import com.example.stunting.functions_helper.Functions.linkToDirectory
+import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
+import com.example.stunting.functions_helper.Functions.toastInfo
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
-import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityLayananKeluargaBinding
@@ -52,18 +50,6 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     var pendampinganKeluargaOlehTpkRadioButton = "YA"
     var pesertaKegiatanKetahananPanganRadioButton = "YA"
 
-    companion object {
-        const val NAME = "layananKeluarga_data_"
-        const val KATEGORI_KELUARGA_RENTAN = "kategoriKeluargaRentanButton"
-        const val MEMILIKI_KARTU_KELUARGA = "memilikiKartuKeluargaButton"
-        const val MEMILIKI_JAMBAN_SEHAT = "memilikiJambanSehatButton"
-        const val MEMILIKI_SUMBER_AIR_BERSIH = "memilikiSumberAirBersihButton"
-        const val PESERTA_JAMINANA_KESEHATAN = "pesertaJaminanKeshatanButton"
-        const val MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK = "memilikiAksesSanitasiPembuanganLimbahLayakButton"
-        const val PENDAMPINGAN_KELUARGA_OLEH_TPK = "pendampinganKeluargaOlehTpkButton"
-        const val PESERTA_KEGIATAN_KETAHANAN_PANGAN = "pesertaKegiatanKetahananPanganButton"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -78,7 +64,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
         // Binding BumilBottomSheetDialog for retrieve xml id
         bindingLayanaKeluargaBottomSheetDialog = DialogBottomSheetLayananKeluargaBinding.inflate(layoutInflater)
-        bindingLayanaKeluargaBottomSheetDialog.tvDataLayananKeluarga.text = "List Data       \nKeluarga"
+        bindingLayanaKeluargaBottomSheetDialog.tvListDataLayananKeluarga.text = getString(R.string.list_data_layanan_keluarga)
 
         // Call database
         layananKeluargaDao = (application as DatabaseApp).dbLayananKeluargaDatabase.layananKeluargaDao()
@@ -114,7 +100,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
             val layananKeluargaAdapter = LayananKeluargaAdapter(layananKeluargaList)
             // Count item list
             countItem = layananKeluargaList.size
-            bindingLayanaKeluargaBottomSheetDialog.tvTotalData.text = "$countItem Data"
+            bindingLayanaKeluargaBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
             bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.layoutManager = LinearLayoutManager(this)
             bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.adapter = layananKeluargaAdapter
             // To scrolling automatic when data entered
@@ -126,7 +112,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                 .layoutManager!!.smoothScrollToPosition(bindingLayanaKeluargaBottomSheetDialog
                     .rvBottomSheetLayananKeluarga, null, countItem - 1)
         }
-        Log.e("HASILNA", layananKeluargaList.toString())
+//        Log.e("HASILNA", layananKeluargaList.toString())
     }
 
     private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
@@ -134,7 +120,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         // Get all the RadioButtons within the RadioGroup
         val radioButtons = radioGroup.childCount
 
-        if (resultRadioButton == "kategoriKeluargaRentanButton") {
+        if (resultRadioButton == KATEGORI_KELUARGA_RENTAN) {
             // Set a listener for each RadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -147,12 +133,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             kategoriKeluargaRentanRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiKartuKeluargaButton") {
+        } else if (resultRadioButton == MEMILIKI_KARTU_KELUARGA) {
             // periksaAnemiaRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -165,12 +151,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             memilikiKartuKeluargaRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiJambanSehatButton") {
+        } else if (resultRadioButton == MEMILIKI_JAMBAN_SEHAT) {
             // hasilPeriksaAnemiaRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -183,12 +169,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             memilikiJambanSehatRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiSumberAirBersihButton") {
+        } else if (resultRadioButton == MEMILIKI_SUMBER_AIR_BERSIH) {
             // memilikiSumberAirBersihRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -201,12 +187,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             memilikiSumberAirBersihRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "pesertaJaminanKeshatanButton") {
+        } else if (resultRadioButton == PESERTA_JAMINANA_KESEHATAN) {
             // pesertaJaminanKeshatanRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -219,12 +205,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             pesertaJaminanKeshatanRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "memilikiAksesSanitasiPembuanganLimbahLayakButton") {
+        } else if (resultRadioButton == MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK) {
             // memilikiAksesSanitasiPembuanganLimbahLayakRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -237,12 +223,12 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             memilikiAksesSanitasiPembuanganLimbahLayakRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
-        } else if (resultRadioButton == "pendampinganKeluargaOlehTpkButton") {
+        } else if (resultRadioButton == PENDAMPINGAN_KELUARGA_OLEH_TPK) {
             // pendampinganKeluargaOlehTPKRadioButton
             for (i in 0 until radioButtons) {
                 val radioButton = radioGroup.getChildAt(i) as RadioButton
@@ -255,8 +241,8 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             pendampinganKeluargaOlehTpkRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
@@ -273,8 +259,8 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         } else {
                             pesertaKegiatanKetahananPanganRadioButton = selectedRadioButtonText
                         }
-                        Log.e("Selected RadioButton:", selectedRadioButtonText)
-                        Log.e("Selected RadioGroup:", resultRadioButton)
+//                        Log.e("Selected RadioButton:", selectedRadioButtonText)
+//                        Log.e("Selected RadioGroup:", resultRadioButton)
                     }
                 }
             }
@@ -284,7 +270,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbLayananKeluarga)
-        supportActionBar!!.title = "Layanan Keluarga"
+        supportActionBar!!.title = getString(R.string.app_name_layanan_keluarga)
         // Change font style text
         binding.tbLayananKeluarga.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Enable back button if you're in a child activity
@@ -309,14 +295,23 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                         memilikiKartuKeluargaRadioButton, memilikiJambanSehatRadioButton, memilikiSumberAirBersihRadioButton,
                         pesertaJaminanKeshatanRadioButton, memilikiAksesSanitasiPembuanganLimbahLayakRadioButton,
                         pendampinganKeluargaOlehTpkRadioButton, pesertaKegiatanKetahananPanganRadioButton)
-                } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
+                } else {
+                    toastInfo(
+                        this@LayananKeluargaActivity, getString(R.string.title_input_failed),
+                        getString(R.string.description_input_failed), MotionToastStyle.ERROR
+                    )
                 }
+            }
             R.id.btn_tampil_data_layanan_keluarga -> {
                 // Data not empty
-                Log.e("CEK DATANA", countItem.toString())
-                if (countItem != 0) showBottomSheetDialog() else
-                    toastInfo("TAMPILKAN DATA GAGAL !",
-                        "Data masih kosong tidak ada yang ditampilkan, silahkan input data.", MotionToastStyle.ERROR)
+//                Log.e("CEK DATANA", countItem.toString())
+                if (countItem != 0) showBottomSheetDialog()
+                else {
+                    toastInfo(
+                        this@LayananKeluargaActivity, getString(R.string.title_show_data_failed),
+                        getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
+                    )
+                }
             }
         }
     }
@@ -334,55 +329,37 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingLayanaKeluargaBottomSheetDialog.ivDelete.setOnClickListener {
-            showCustomeDeleteDialog()
-        }
-        bindingLayanaKeluargaBottomSheetDialog.ivExportToXlsx.setOnClickListener {
-            showCustomeExportDataDialog()
-        }
-        bindingLayanaKeluargaBottomSheetDialog.ivArrow.setOnClickListener {
-            showCustomeInfoDilog()
-        }
-        bindingLayanaKeluargaBottomSheetDialog.tvInfo.setOnClickListener {
-            showCustomeInfoDilog()
+        bindingLayanaKeluargaBottomSheetDialog.apply {
+            ivDelete.setOnClickListener { showCustomeDeleteDialog() }
+            ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
+            ivArrow.setOnClickListener { showCustomeInfoDialog(this@LayananKeluargaActivity, layoutInflater) }
+            tvInfo.setOnClickListener { showCustomeInfoDialog(this@LayananKeluargaActivity, layoutInflater) }
         }
     }
 
-    private fun showCustomeInfoDilog() {
-        val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
-        // Check if the view already has a parent
-        val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
-
-        val infoDialog = Dialog(this)
-        infoDialog.setContentView(viewBottomSheetDialog)
-        // Set content
-        bindingBumilBottomSheetDialog.tvDescription.text = "Untuk melihat detail data bisa eksport terlebih dahulu datanya."
-        bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
-            infoDialog.dismiss()
-        }
-        infoDialog.show()
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private fun showCustomeExportDataDialog() {
         val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
         val exportDialog = Dialog(this)
         exportDialog.setContentView(viewExport.root)
 
-        viewExport.tvDescription.text = "Apakah anda yakin ingin mengeksport data ke Excel pada " +
-                "${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())} ? " +
-                "Untuk melihat hasilnya silahkan cek dengan $NAME(tahunbulantanggal_jammenitdetik).xlsx di folder Download/Unduhan" +
-                " hari ini Cth: $NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(
-                    Date()
-                )}.xlsx"
+        val result = "$NAME(tahunbulantanggal_jammenitdetik)"
+        val simpleDateFormat = SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())
+        val resultName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}"
+
+        viewExport.tvDescription.text = getString(R.string.description_export_dialog, simpleDateFormat, result, resultName)
+
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
-                toastInfo("DATA BERHASIL DI EKSPOR", "Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !", MotionToastStyle.SUCCESS)
+                toastInfo(this@LayananKeluargaActivity, getString(R.string.title_export_failed),
+                    getString(R.string.description_export_failed), MotionToastStyle.SUCCESS
+                )
                 exportDatabaseToCSV(layananKeluargaDao)
             }
             exportDialog.dismiss()
             // Goto link directory download
-            linkToDirectory()
+            linkToDirectory(this@LayananKeluargaActivity)
             // Destroying when exported successfully
             finish()
         }
@@ -392,11 +369,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         exportDialog.show()
     }
 
-    private fun linkToDirectory() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
-    }
-
+    @SuppressLint("SimpleDateFormat")
     private suspend fun exportDatabaseToCSV(layananKeluargaDao: LayananKeluargaDao) {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
@@ -415,11 +388,16 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
             layananKeluargaDao.fetchAllLayananKeluarga().collect {
                 for (item in it) {
                     dataResult.add(
-                        listOf("${item.tanggal}", "${item.namaLayananKeluarga}", "${item.dusunLayananKeluarga}", "${item.namaLengkapIbuHamilLayananKeluarga}",
-                            "${item.anakLayananKeluarga}", "${item.kategoriKeluargaLayananKeluarga}", "${item.memilikiKartuKeluargaLayananKeluarga}",
-                            "${item.memilikiJambanSehatLayananKeluarga}", "${item.memilikiSumberAirBersihLayananKeluarga}", "${item.pesertaJaminanSosialLayananKeluarga}",
-                            "${item.memilikiAksesSanitasiPembuanganLimbahLayakLayananKeluarga}", "${item.pendampinganKeluargaOlehTpkLayananKeluarga}",
-                            "${item.pesertaKegiatanKetahananPanganLayananKeluarga}"
+                        listOf(
+                            item.tanggal, item.namaLayananKeluarga, item.dusunLayananKeluarga,
+                            item.namaLengkapIbuHamilLayananKeluarga, item.anakLayananKeluarga,
+                            item.kategoriKeluargaLayananKeluarga, item.memilikiKartuKeluargaLayananKeluarga,
+                            item.memilikiJambanSehatLayananKeluarga,
+                            item.memilikiSumberAirBersihLayananKeluarga,
+                            item.pesertaJaminanSosialLayananKeluarga,
+                            item.memilikiAksesSanitasiPembuanganLimbahLayakLayananKeluarga,
+                            item.pendampinganKeluargaOlehTpkLayananKeluarga,
+                            item.pesertaKegiatanKetahananPanganLayananKeluarga
                         )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())
@@ -427,8 +405,10 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            toastInfo("Gagal Mengekspor File !",
-                "Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !", MotionToastStyle.ERROR)
+            toastInfo(
+                this@LayananKeluargaActivity, getString(R.string.title_export_failed),
+                getString(R.string.description_export_failed), MotionToastStyle.ERROR
+            )
         }
     }
 
@@ -438,7 +418,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         val deleteDialog = Dialog(this)
         deleteDialog.setContentView(viewDelete.root)
 
-        viewDelete.tvDescription.text = "Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu."
+        viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
             deleteAllDates(layananKeluargaDao)
             // We will destroy activity
@@ -455,7 +435,10 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         lifecycleScope.launch {
             layananKeluargaDao.deleteAll()
         }
-        toastInfo("HISTORI BERHASIL DIHAPUS SEMUA", "Silahkan jalankan kembali aplikasinya.", MotionToastStyle.SUCCESS)
+        toastInfo(
+            this@LayananKeluargaActivity,getString(R.string.title_history_delete),
+            getString(R.string.description_history_delete), MotionToastStyle.SUCCESS
+        )
     }
 
     private fun addRecord(layananKeluargaDao: LayananKeluargaDao, namaAyah: String, dusun: String, namaIbu: String,
@@ -477,7 +460,10 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                 )
             )
         }
-        toastInfo("DATA TERSIMPAN !", "Data berhasil di simpan di database !!", MotionToastStyle.SUCCESS)
+        toastInfo(
+            this@LayananKeluargaActivity, getString(R.string.title_saved_data),
+            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
+        )
 
         // Clear the text when data saved !!! (success)
         binding.etNamaLayananKeluarga.text!!.clear()
@@ -486,24 +472,15 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         binding.etAnakLayananKeluarga.text!!.clear()
     }
 
-    private fun getDateTimePrimaryKey(): String {
-        val c = Calendar.getInstance()
-        val dateTime = c.time
-
-        // 10-03-2024 Min 14:59:11
-        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-        val date = sdf.format(dateTime)
-        return date
-    }
-
-    private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
-        MotionToast.createToast(this,
-            title,
-            description,
-            info,
-            MotionToast.GRAVITY_BOTTOM,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helveticabold)
-        )
+    companion object {
+        private const val NAME = "layananKeluarga_data_"
+        private const val KATEGORI_KELUARGA_RENTAN = "kategoriKeluargaRentanButton"
+        private const val MEMILIKI_KARTU_KELUARGA = "memilikiKartuKeluargaButton"
+        private const val MEMILIKI_JAMBAN_SEHAT = "memilikiJambanSehatButton"
+        private const val MEMILIKI_SUMBER_AIR_BERSIH = "memilikiSumberAirBersihButton"
+        private const val PESERTA_JAMINANA_KESEHATAN = "pesertaJaminanKeshatanButton"
+        private const val MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK = "memilikiAksesSanitasiPembuanganLimbahLayakButton"
+        private const val PENDAMPINGAN_KELUARGA_OLEH_TPK = "pendampinganKeluargaOlehTpkButton"
+        private const val PESERTA_KEGIATAN_KETAHANAN_PANGAN = "pesertaKegiatanKetahananPanganButton"
     }
 }

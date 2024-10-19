@@ -1,4 +1,4 @@
-package com.example.stunting.database.CalonPengantin
+package com.example.stunting.database.calon_pengantin
 
 import androidx.room.Dao
 import androidx.room.Delete

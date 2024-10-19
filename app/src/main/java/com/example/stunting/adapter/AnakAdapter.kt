@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.database.Child.AnakEntity
+import com.example.stunting.database.anak.AnakEntity
 import com.example.stunting.R
 import com.example.stunting.databinding.ItemAnakAdapterBinding
 

@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.database.Bumil.BumilEntity
-import com.example.stunting.database.CalonPengantin.CalonPengantinEntity
-import com.example.stunting.database.RemajaPutri.RemajaPutriEntity
+import com.example.stunting.database.bumil.BumilEntity
+import com.example.stunting.database.calon_pengantin.CalonPengantinEntity
+import com.example.stunting.database.remaja_putri.RemajaPutriEntity
 import com.example.stunting.R
 import com.example.stunting.databinding.ItemAllAdapterBinding
 

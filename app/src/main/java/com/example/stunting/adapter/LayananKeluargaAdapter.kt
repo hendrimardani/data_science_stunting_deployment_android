@@ -2,7 +2,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.database.LayananKeluarga.LayananKeluargaEntity
+import com.example.stunting.database.layanan_keluarga.LayananKeluargaEntity
 import com.example.stunting.R
 import com.example.stunting.databinding.ItemAllAdapterBinding
 

@@ -1,11 +1,11 @@
 package com.example.stunting.database
 
 import android.app.Application
-import com.example.stunting.database.Bumil.BumilDatabase
-import com.example.stunting.database.CalonPengantin.CalonPengantinDatabase
-import com.example.stunting.database.Child.AnakDatabase
-import com.example.stunting.database.LayananKeluarga.LayananKeluargaDatabase
-import com.example.stunting.database.RemajaPutri.RemajaPutriDatabase
+import com.example.stunting.database.bumil.BumilDatabase
+import com.example.stunting.database.calon_pengantin.CalonPengantinDatabase
+import com.example.stunting.database.anak.AnakDatabase
+import com.example.stunting.database.layanan_keluarga.LayananKeluargaDatabase
+import com.example.stunting.database.remaja_putri.RemajaPutriDatabase
 
 class DatabaseApp : Application() {
     val dbChildDatabase by lazy {

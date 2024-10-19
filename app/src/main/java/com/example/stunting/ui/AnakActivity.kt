@@ -1,38 +1,39 @@
 package com.example.stunting.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stunting.R
 import com.example.stunting.adapter.AnakAdapter
-import com.example.stunting.database.Child.AnakDao
-import com.example.stunting.database.Child.AnakEntity
+import com.example.stunting.database.anak.AnakDao
+import com.example.stunting.database.anak.AnakEntity
 import com.example.stunting.database.DatabaseApp
 import com.example.stunting.databinding.ActivityAnakBinding
 import com.example.stunting.databinding.DialogBottomSheetAnakBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.databinding.DialogCustomeInfoBinding
+import com.example.stunting.functions_helper.Functions.getDatePickerDialogTglLahir
+import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
+import com.example.stunting.functions_helper.Functions.linkToDirectory
+import com.example.stunting.functions_helper.Functions.setCalendarTglLahir
+import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
+import com.example.stunting.functions_helper.Functions.toastInfo
 import com.example.stunting.ml.ModelRegularizer
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
@@ -41,7 +42,6 @@ import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class AnakActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnakBinding
@@ -64,8 +64,9 @@ class AnakActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Binding BumilBottomSheetDialog for retrieve xml id
+        // Binding AnakBottomSheetDialog for retrieve xml id
         bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
+        bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
 
         // Toolbar
         setToolBar()
@@ -77,7 +78,7 @@ class AnakActivity : AppCompatActivity() {
         setCalendarTglLahir(binding.etTglAnak)
 
         binding.etTglAnak.setOnClickListener {
-            getDatePickerDialogTglLahir()
+            getDatePickerDialogTglLahir(this@AnakActivity)
         }
 
         binding.btnSubmitAnak.setOnClickListener {
@@ -104,16 +105,24 @@ class AnakActivity : AppCompatActivity() {
 
                     // Prediction
                     prediction(anakDao, nama, jk, nik, tglLahir, namaOrtu, umur, tinggi, umurPred, jkPred, tinggiPred)
-                } else toastInfo("KODE JENIS KELAMIN TIDAK VALID !", "Data jenis kelamin hanya angka 0 dan 1 !", MotionToastStyle.ERROR)
-            } else toastInfo("INPUT GAGAL !", "Data tidak boleh ada yang kosong !", MotionToastStyle.ERROR)
+                } else toastInfo(
+                    this@AnakActivity, getString(R.string.title_code_gender_not_valid),
+                    getString(R.string.description_code_gender_not_valid), MotionToastStyle.ERROR
+                )
+            } else toastInfo(
+                this@AnakActivity, getString(R.string.title_input_failed),
+                getString(R.string.description_input_failed), MotionToastStyle.ERROR
+            )
         }
 
         binding.btnTampilDataAnak.setOnClickListener {
 //            // Data not empty
 //            Log.e("CEK DATANA", countItem.toString())
             if (countItem != 0) showBottomSheetDialog() else
-                toastInfo(getString(R.string.title_show_data_failed),
-                    getString(R.string.description_show_data_failed), MotionToastStyle.ERROR)
+                toastInfo(
+                    this@AnakActivity,getString(R.string.title_show_data_failed),
+                    getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
+                )
         }
 
         // Get all items
@@ -145,27 +154,9 @@ class AnakActivity : AppCompatActivity() {
         bindingAnakBottomSheetDialog.apply {
             ivDelete.setOnClickListener { showCustomeDeleteDialog() }
             ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
-            ivArrow.setOnClickListener { showCustomeInfoDialog() }
-            tvInfo.setOnClickListener { showCustomeInfoDialog() }
+            ivArrow.setOnClickListener { showCustomeInfoDialog(this@AnakActivity, layoutInflater) }
+            tvInfo.setOnClickListener { showCustomeInfoDialog(this@AnakActivity, layoutInflater) }
         }
-    }
-
-    private fun showCustomeInfoDialog() {
-        val bindingAnakBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
-        val viewBottomSheetDialog: View = bindingAnakBottomSheetDialog.root
-
-        val infoDialog = Dialog(this)
-        infoDialog.setContentView(viewBottomSheetDialog)
-        bindingAnakBottomSheetDialog.tvDescription.text = getString(R.string.description_detail_info)
-        bindingAnakBottomSheetDialog.tvYes.setOnClickListener {
-            infoDialog.dismiss()
-        }
-        infoDialog.show()
-    }
-
-    private fun linkToDirectory() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -182,12 +173,15 @@ class AnakActivity : AppCompatActivity() {
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
-                toastInfo(getString(R.string.title_export_success), getString(R.string.description_export_success), MotionToastStyle.SUCCESS)
-                exportDatabaseToCSV(anakDao)
+                toastInfo(
+                    this@AnakActivity, getString(R.string.title_export_success),
+                    getString(R.string.description_export_success), MotionToastStyle.SUCCESS
+                )
+                exportDatabaseToCSV(this@AnakActivity, anakDao, NAME)
             }
             exportDialog.dismiss()
             // Goto link directory download
-            linkToDirectory()
+            linkToDirectory(this@AnakActivity)
             // Destroying when exported successfully
             finish()
         }
@@ -195,39 +189,6 @@ class AnakActivity : AppCompatActivity() {
             exportDialog.dismiss()
         }
         exportDialog.show()
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private suspend fun exportDatabaseToCSV(anakDao: AnakDao) {
-        // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
-        // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
-
-        val dataResult: ArrayList<List<String>> = ArrayList()
-        val fileName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
-        val fileDir = "/storage/emulated/0/Download/"
-        try {
-            val file = File(fileDir, fileName)
-            dataResult.add(
-                listOf("tanggal", "Nama Anak", "Jenis Kelamin", "NIK", "Tanggal Lahir", "Umur",
-                    "Tinggi Badan (cm)", "Nama Orang Tua", "Hasil")
-            )
-            anakDao.fetchAllAnak().collect {
-                for (item in it) {
-                    dataResult.add(
-                        listOf(
-                            item.tanggal, item.namaAnak, item.jkAnak,
-                            item.nikAnak, item.tglLahirAnak, item.umurAnak,
-                            item.tinggiAnak, item.ortuAnak, item.klasifikasiAnak
-                        )
-                    )
-                    csvWriter().writeAll(dataResult, file.outputStream())
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            toastInfo(getString(R.string.title_export_failed),
-                getString(R.string.description_export_failed), MotionToastStyle.ERROR)
-        }
     }
 
     private fun showCustomeDeleteDialog() {
@@ -252,7 +213,10 @@ class AnakActivity : AppCompatActivity() {
         lifecycleScope.launch {
             anakDao.deleteAll()
         }
-        toastInfo(getString(R.string.title_history), getString(R.string.description_history), MotionToastStyle.SUCCESS)
+        toastInfo(
+            this@AnakActivity,getString(R.string.title_history_delete),
+            getString(R.string.description_history_delete), MotionToastStyle.SUCCESS
+        )
     }
 
     private fun setupListOfDataIntoRecyclerView(anakList: ArrayList<AnakEntity>) {
@@ -260,7 +224,7 @@ class AnakActivity : AppCompatActivity() {
             val anakAdapter = AnakAdapter(anakList)
             // Count item list
             countItem = anakList.size
-            bindingAnakBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem)
+            bindingAnakBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.layoutManager = LinearLayoutManager(this)
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.adapter = anakAdapter
             // To scrolling automatic when data entered
@@ -273,6 +237,39 @@ class AnakActivity : AppCompatActivity() {
                     .rvBottomSheetAnak, null, countItem - 1)
         }
 //        Log.e("HASILNA", anakList.toString())
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    suspend fun exportDatabaseToCSV(activity: Activity, anakDao: AnakDao, name: String) {
+        // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
+        // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
+
+        val dataResult: ArrayList<List<String>> = ArrayList()
+        val fileName = "$name${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
+        val fileDir = "/storage/emulated/0/Download/"
+        try {
+            val file = File(fileDir, fileName)
+            dataResult.add(
+                listOf("tanggal", "Nama Anak", "Jenis Kelamin", "NIK", "Tanggal Lahir", "Umur",
+                    "Tinggi Badan (cm)", "Nama Orang Tua", "Hasil")
+            )
+            anakDao.fetchAllAnak().collect {
+                for (item in it) {
+                    dataResult.add(
+                        listOf(
+                            item.tanggal, item.namaAnak, item.jkAnak,
+                            item.nikAnak, item.tglLahirAnak, item.umurAnak,
+                            item.tinggiAnak, item.ortuAnak, item.klasifikasiAnak
+                        )
+                    )
+                    csvWriter().writeAll(dataResult, file.outputStream())
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            toastInfo(activity, activity.applicationContext.getString(R.string.title_export_failed),
+                activity.applicationContext.getString(R.string.description_export_failed), MotionToastStyle.ERROR)
+        }
     }
 
     private fun prediction(anakDao: AnakDao, nama: String, jk: String, nik: String, tglLahir: String,
@@ -316,34 +313,10 @@ class AnakActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             toastInfo(
-                getString(R.string.title_export_failed),
-                getString(R.string.description_export_failed),
-                MotionToastStyle.ERROR
+                this@AnakActivity, getString(R.string.title_export_failed),
+                getString(R.string.description_export_failed), MotionToastStyle.ERROR
             )
         }
-    }
-
-    private fun setCalendarTglLahir(etTanggal: EditText) {
-        cal = Calendar.getInstance()
-        dataSetListenerTgllahir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, month)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateInViewTglLahir(etTanggal)
-        }
-        updateDateInViewTglLahir(etTanggal)
-    }
-
-    private fun updateDateInViewTglLahir(etTanggal: EditText) {
-        val myFormat = "yyyy/MM/dd"
-        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
-        etTanggal.setText(sdf.format(cal.time).toString())
-    }
-
-    private fun getDatePickerDialogTglLahir() {
-        DatePickerDialog(this@AnakActivity, dataSetListenerTgllahir, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
     }
 
     private fun addRecord(anakDao: AnakDao, nama: String, nik: String, tglLahir: String,
@@ -366,7 +339,10 @@ class AnakActivity : AppCompatActivity() {
                 )
             )
         }
-        toastInfo(getString(R.string.title_saved_data), getString(R.string.description_saved_data), MotionToastStyle.SUCCESS)
+        toastInfo(
+            this@AnakActivity, getString(R.string.title_saved_data),
+            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
+        )
 
         // Clear the text when data saved !!! (success)
         binding.etNamaAnak.text!!.clear()
@@ -376,27 +352,6 @@ class AnakActivity : AppCompatActivity() {
         binding.etJkAnak.text!!.clear()
         binding.etTinggiAnak.text!!.clear()
         binding.etNamaOrtuAnak.text!!.clear()
-    }
-
-    private fun getDateTimePrimaryKey(): String {
-        val c = Calendar.getInstance()
-        val dateTime = c.time
-
-        // 10-03-2024 Min 14:59:11
-        val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
-        val date = sdf.format(dateTime)
-        return date
-    }
-
-    private fun toastInfo(title: String, description: String, info: MotionToastStyle) {
-        MotionToast.createToast(this,
-            title,
-            description,
-            info,
-            MotionToast.GRAVITY_BOTTOM,
-            MotionToast.LONG_DURATION,
-            ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helveticabold)
-        )
     }
 
     private fun setToolBar() {

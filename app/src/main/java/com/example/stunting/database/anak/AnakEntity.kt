@@ -1,4 +1,4 @@
-package com.example.stunting.database.Child
+package com.example.stunting.database.anak
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

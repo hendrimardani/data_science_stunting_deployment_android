@@ -22,27 +22,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var dialogBottomSheetCegahStunting: DialogBottomSheetCegahStuntingBinding
 
-    companion object {
-        const val TEXT_1 = "1. Konsumsi makanan bergizi seimbang yang mencakup protein hewani, sayuran, buah, dan karbohidrat kompleks."
-        const val TEXT_2 = "2. Minum suplemen kehamilan sesuai anjuran dokter."
-        const val TEXT_3 = "3. Menjaga berat badan ideal selama kehamilan."
-        const val TEXT_4 = "4. Biarkan bayi menyusu langsung pada ibu dalam 1 jam pertama setelah dilahirkan."
-        const val TEXT_5 = "5. ASI eksklusif selama 6 bulan pertama kehidupan bayi."
-        const val TEXT_6 = "6. Lanjutkan pemberian ASI hingga anak berusia 2 tahun atau lebih, dengan pendamping makanan pendamping ASI (MPASI) yang sehat dan bergizi."
-        const val TEXT_7 = "7. Mulai memberikan MPASI pada usia 6 bulan."
-        const val TEXT_8 = "8. Berikan MPASI yang terbuat dari bahan-bahan alami dan kaya nutrisi."
-        const val TEXT_9 = "9. Pastikan tekstur MPASI sesuai dengan usia dan kemampuan mengunyah bayi."
-        const val TEXT_10 = "10. Berikan MPASI secara rutin dan bervariasi."
-        const val TEXT_11 = "11. Imunisasi lengkap sesuai dengan jadwal yang dianjurkan."
-        const val TEXT_12 = "12. Imunisasi membantu melindungi anak dari penyakit infeksi yang dapat mengganggu pertumbuhannya."
-        const val TEXT_13 = "13. Cuci tangan dengan sabun dan air mengalir secara teratur."
-        const val TEXT_14 = "14. Pastikan ketersediaan air bersih dan sanitasi yang baik."
-        const val TEXT_15 = "15. Buang air besar pada tempat yang sehat."
-        const val TEXT_16 = "16. Timbang berat badan dan ukur tinggi badan anak secara rutin di posyandu atau fasilitas kesehatan."
-        const val TEXT_17 = "17. Periksa kehamilan secara rutin ke dokter atau bidan."
-        const val TEXT_18 = "18. Konsultasikan ke dokter atau tenaga kesehatan lainnya jika anak mengalami masalah kesehatan atau gangguan pertumbuhan."
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,28 +37,30 @@ class MainActivity : AppCompatActivity() {
         // Binding bottom sheet dialog cegah stunting
         dialogBottomSheetCegahStunting = DialogBottomSheetCegahStuntingBinding.inflate(layoutInflater)
 
-        binding.cvBumil.setOnClickListener {
-            val intent = Intent(this, BumilActivity::class.java)
-            startActivity(intent)
-        }
-        binding.cvCalonPengantin.setOnClickListener {
-            val intent = Intent(this, CalonPengantinActivity::class.java)
-            startActivity(intent)
-        }
-        binding.cvRemajaPutri.setOnClickListener {
-            val intent = Intent(this, RemajaPutriActivity::class.java)
-            startActivity(intent)
-        }
-        binding.cvLayananKeluarga.setOnClickListener {
-            val intent = Intent(this, LayananKeluargaActivity::class.java)
-            startActivity(intent)
-        }
-        binding.cvAnak.setOnClickListener {
-            val intent = Intent(this, AnakActivity::class.java)
-            startActivity(intent)
-        }
-        binding.cvCegahStunting.setOnClickListener {
-            showBottomSheetDialogPencegahanStunting()
+        binding.apply {
+            cvBumil.setOnClickListener {
+                val intent = Intent(this@MainActivity, BumilActivity::class.java)
+                startActivity(intent)
+            }
+            cvCalonPengantin.setOnClickListener {
+                val intent = Intent(this@MainActivity, CalonPengantinActivity::class.java)
+                startActivity(intent)
+            }
+            cvRemajaPutri.setOnClickListener {
+                val intent = Intent(this@MainActivity, RemajaPutriActivity::class.java)
+                startActivity(intent)
+            }
+            cvLayananKeluarga.setOnClickListener {
+                val intent = Intent(this@MainActivity, LayananKeluargaActivity::class.java)
+                startActivity(intent)
+            }
+            cvAnak.setOnClickListener {
+                val intent = Intent(this@MainActivity, AnakActivity::class.java)
+                startActivity(intent)
+            }
+            cvCegahStunting.setOnClickListener {
+                showBottomSheetDialogPencegahanStunting()
+            }
         }
     }
 
@@ -106,28 +87,25 @@ class MainActivity : AppCompatActivity() {
         customDialog.setCanceledOnTouchOutside(false)
 
         // Set text
-        dialogBinding.tvDescription.text =
-            "Jika anda mengalami permasalah pada aplikasi anda silahkan hubungi pembuat aplikasi " +d2
-                    "dibawah ini, atau jika ingin ada yang ditanyakan karena proses pembuatan aplikasi" +
-                    " ini masih tahap percobaan dan belum sebenuhnya sempurna.\nSilahkan hubungi Kotak dibawah ini :"
+        dialogBinding.tvDescription.text = getString(R.string.description_about)
         // Link to linkedin
         dialogBinding.ivLinkedin.setOnClickListener {
-            val url = "https://www.linkedin.com/in/hendri-mardani-1b6ba61a8/"
+            val url = getString(R.string.description_about_linkedIn)
             linkToWebBrowser(url)
         }
         // Link to WA
         dialogBinding.ivWa.setOnClickListener {
-            val url = "https://api.whatsapp.com/send?phone=6281388372075"
+            val url = getString(R.string.description_about_wa)
             linkToWebBrowser(url)
         }
         // Link to Email
         dialogBinding.ivEmail.setOnClickListener {
-            val url = "https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRvxmkxPlXNnrdQHFnTpMFwwGQFsRbBzClXRqRrMbKBBgxdXmgPxVTVNKmFGBHJTdgpsnsV"
+            val url = getString(R.string.description_about_email)
             linkToWebBrowser(url)
         }
         // Link to Instagral
         dialogBinding.ivIg.setOnClickListener {
-            val url = "https://www.instagram.com/hendri.mardani/"
+            val url = getString(R.string.description_about_ig)
             linkToWebBrowser(url)
         }
         dialogBinding.tvOk.setOnClickListener {
@@ -148,26 +126,24 @@ class MainActivity : AppCompatActivity() {
         // Check if the view already has a parent
         val viewBottomSheetDialog: View = dialogBottomSheetCegahStunting.root
 
-        dialogBottomSheetCegahStunting.tv1.text = TEXT_1
-        dialogBottomSheetCegahStunting.tv2.text = TEXT_2
-        dialogBottomSheetCegahStunting.tv3.text = TEXT_3
-        dialogBottomSheetCegahStunting.tv4.text = TEXT_4
-        dialogBottomSheetCegahStunting.tv5.text = TEXT_5
-        dialogBottomSheetCegahStunting.tv6.text = TEXT_6
-        dialogBottomSheetCegahStunting.tv7.text = TEXT_7
-        dialogBottomSheetCegahStunting.tv8.text = TEXT_8
-        dialogBottomSheetCegahStunting.tv9.text = TEXT_9
-        dialogBottomSheetCegahStunting.tv10.text = TEXT_10
-        dialogBottomSheetCegahStunting.tv11.text = TEXT_11
-        dialogBottomSheetCegahStunting.tv12.text = TEXT_12
-        dialogBottomSheetCegahStunting.tv13.text = TEXT_13
-        dialogBottomSheetCegahStunting.tv14.text = TEXT_14
-        dialogBottomSheetCegahStunting.tv15.text = TEXT_15
-        dialogBottomSheetCegahStunting.tv16.text = TEXT_16
-        dialogBottomSheetCegahStunting.tv17.text = TEXT_17
-        dialogBottomSheetCegahStunting.tv18.text = TEXT_18
-
-
+        dialogBottomSheetCegahStunting.tv1.text = getString(R.string.text_1)
+        dialogBottomSheetCegahStunting.tv2.text = getString(R.string.text_2)
+        dialogBottomSheetCegahStunting.tv3.text = getString(R.string.text_3)
+        dialogBottomSheetCegahStunting.tv4.text = getString(R.string.text_4)
+        dialogBottomSheetCegahStunting.tv5.text = getString(R.string.text_5)
+        dialogBottomSheetCegahStunting.tv6.text = getString(R.string.text_6)
+        dialogBottomSheetCegahStunting.tv7.text = getString(R.string.text_7)
+        dialogBottomSheetCegahStunting.tv8.text = getString(R.string.text_8)
+        dialogBottomSheetCegahStunting.tv9.text = getString(R.string.text_9)
+        dialogBottomSheetCegahStunting.tv10.text = getString(R.string.text_10)
+        dialogBottomSheetCegahStunting.tv11.text = getString(R.string.text_11)
+        dialogBottomSheetCegahStunting.tv12.text = getString(R.string.text_12)
+        dialogBottomSheetCegahStunting.tv13.text = getString(R.string.text_13)
+        dialogBottomSheetCegahStunting.tv14.text = getString(R.string.text_14)
+        dialogBottomSheetCegahStunting.tv15.text = getString(R.string.text_15)
+        dialogBottomSheetCegahStunting.tv16.text = getString(R.string.text_16)
+        dialogBottomSheetCegahStunting.tv17.text = getString(R.string.text_17)
+        dialogBottomSheetCegahStunting.tv18.text = getString(R.string.text_18)
 
         if (viewBottomSheetDialog.parent != null) {
             val parentViewGroup = viewBottomSheetDialog.parent as ViewGroup
@@ -183,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbMain)
-        supportActionBar!!.title = "Stunting"
+        supportActionBar!!.title = getString(R.string.app_name)
         // Change font style text
         binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Set icon
