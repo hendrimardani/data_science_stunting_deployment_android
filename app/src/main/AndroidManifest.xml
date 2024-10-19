@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.KonsultasiActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.AnakActivity"
             android:exported="false" />
         <activity

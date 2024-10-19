@@ -28,7 +28,6 @@ import com.example.stunting.functions_helper.Functions.getDatePickerDialogTglLah
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.functions_helper.Functions.linkToDirectory
 import com.example.stunting.functions_helper.Functions.setCalendarTglLahir
-import com.example.stunting.functions_helper.Functions.setCalendarTglPerkiraanLahir
 import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
 import com.example.stunting.functions_helper.Functions.toastInfo
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
@@ -233,6 +232,23 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.etHariPertamaHaidTerakhirBumil.text!!.clear()
         binding.etTglPerkiraanLahirBumil.text!!.clear()
         binding.etUmurKehamilanBumil.text!!.clear()
+    }
+
+    private fun setCalendarTglPerkiraanLahir(etTanggal: EditText) {
+        _cal = Calendar.getInstance()
+        _dataSetListenerTglPerkiraanLahir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, month)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInViewTglPerkiraanLahir(etTanggal)
+        }
+        updateDateInViewTglPerkiraanLahir(etTanggal)
+    }
+
+    fun updateDateInViewTglPerkiraanLahir(etTanggal: EditText) {
+        val myFormat = "yyyy/MM/dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
+        etTanggal.setText(sdf.format(cal.time).toString())
     }
 
     private fun setCalendarHariPertamaHaidTerakhir(etTanggal: EditText) {

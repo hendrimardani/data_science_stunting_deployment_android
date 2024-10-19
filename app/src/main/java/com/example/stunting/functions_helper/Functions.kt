@@ -20,7 +20,6 @@ import java.util.Locale
 object Functions {
     private lateinit var cal: Calendar
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
-    private lateinit var dataSetListenerTglPerkiraanLahir: DatePickerDialog.OnDateSetListener
 
     fun showCustomeInfoDialog(context: Context, layoutInflater: LayoutInflater) {
         val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
@@ -85,23 +84,6 @@ object Functions {
         val sdf = SimpleDateFormat("dd-MM-yyyy EEE HH:mm:ss", Locale.getDefault())
         val date = sdf.format(dateTime)
         return date
-    }
-
-    fun setCalendarTglPerkiraanLahir(etTanggal: EditText) {
-        cal = Calendar.getInstance()
-        dataSetListenerTglPerkiraanLahir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            cal.set(Calendar.YEAR, year)
-            cal.set(Calendar.MONTH, month)
-            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateInViewTglPerkiraanLahir(etTanggal)
-        }
-        updateDateInViewTglPerkiraanLahir(etTanggal)
-    }
-
-    fun updateDateInViewTglPerkiraanLahir(etTanggal: EditText) {
-        val myFormat = "yyyy/MM/dd"
-        val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
-        etTanggal.setText(sdf.format(cal.time).toString())
     }
 
 }
