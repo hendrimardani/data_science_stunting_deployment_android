@@ -2,7 +2,6 @@ package com.example.stunting.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
@@ -40,13 +39,15 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 
 class AnakActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAnakBinding
-    private lateinit var anakDao: AnakDao
-    private lateinit var bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding
+    private var _binding: ActivityAnakBinding? = null
+    private val binding get() = _binding!!
+    private var _anakDao: AnakDao? = null
+    private val anakDao get() = _anakDao!!
+    private var _bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding? = null
+    private val bindingAnakBottomSheetDialog get() = _bindingAnakBottomSheetDialog!!
 
     var countItem = 0
     var classification = "NORMAL"
@@ -55,7 +56,7 @@ class AnakActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityAnakBinding.inflate(layoutInflater)
+        _binding = ActivityAnakBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -63,14 +64,14 @@ class AnakActivity : AppCompatActivity() {
             insets
         }
         // Binding AnakBottomSheetDialog for retrieve xml id
-        bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
+        _bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
 
         // Toolbar
         setToolBar()
 
         // Call database
-        anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
+        _anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglAnak)
@@ -365,6 +366,13 @@ class AnakActivity : AppCompatActivity() {
         binding.tbAnak.setNavigationOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _bindingAnakBottomSheetDialog = null
+        _anakDao = null
     }
 
     companion object {

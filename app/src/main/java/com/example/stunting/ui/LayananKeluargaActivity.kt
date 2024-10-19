@@ -36,9 +36,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityLayananKeluargaBinding
-    private lateinit var bindingLayanaKeluargaBottomSheetDialog: DialogBottomSheetLayananKeluargaBinding
-    private lateinit var layananKeluargaDao: LayananKeluargaDao
+    private var _binding: ActivityLayananKeluargaBinding? = null
+    private val binding get() = _binding!!
+    private var _bindingLayananKeluargaBottomSheetDialog: DialogBottomSheetLayananKeluargaBinding? = null
+    private val bindingLayananKeluargaBottomSheetDialog get() = _bindingLayananKeluargaBottomSheetDialog!!
+    private var _layananKeluargaDao: LayananKeluargaDao? = null
+    private val layananKeluargaDao get() = _layananKeluargaDao!!
 
     var countItem = 0
     var kategoriKeluargaRentanRadioButton = "YA"
@@ -53,7 +56,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityLayananKeluargaBinding.inflate(layoutInflater)
+        _binding = ActivityLayananKeluargaBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -63,11 +66,11 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         // toolbar
         setToolBar()
         // Binding BumilBottomSheetDialog for retrieve xml id
-        bindingLayanaKeluargaBottomSheetDialog = DialogBottomSheetLayananKeluargaBinding.inflate(layoutInflater)
-        bindingLayanaKeluargaBottomSheetDialog.tvListDataLayananKeluarga.text = getString(R.string.list_data_layanan_keluarga)
+        _bindingLayananKeluargaBottomSheetDialog = DialogBottomSheetLayananKeluargaBinding.inflate(layoutInflater)
+        bindingLayananKeluargaBottomSheetDialog.tvListDataLayananKeluarga.text = getString(R.string.list_data_layanan_keluarga)
 
         // Call database
-        layananKeluargaDao = (application as DatabaseApp).dbLayananKeluargaDatabase.layananKeluargaDao()
+        _layananKeluargaDao = (application as DatabaseApp).dbLayananKeluargaDatabase.layananKeluargaDao()
 
         getRadioButtonValue(R.id.rg_kategori_keluarga_rentan_layanan_keluarga, KATEGORI_KELUARGA_RENTAN)
         getRadioButtonValue(R.id.rg_memiliki_kartu_keluarga_layanan_keluarga, MEMILIKI_KARTU_KELUARGA)
@@ -100,16 +103,16 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
             val layananKeluargaAdapter = LayananKeluargaAdapter(layananKeluargaList)
             // Count item list
             countItem = layananKeluargaList.size
-            bindingLayanaKeluargaBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
-            bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.layoutManager = LinearLayoutManager(this)
-            bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.adapter = layananKeluargaAdapter
+            bindingLayananKeluargaBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
+            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.layoutManager = LinearLayoutManager(this)
+            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.adapter = layananKeluargaAdapter
             // To scrolling automatic when data entered
-            bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga
+            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga
                 .smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
-            bindingLayanaKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga
-                .layoutManager!!.smoothScrollToPosition(bindingLayanaKeluargaBottomSheetDialog
+            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga
+                .layoutManager!!.smoothScrollToPosition(bindingLayananKeluargaBottomSheetDialog
                     .rvBottomSheetLayananKeluarga, null, countItem - 1)
         }
 //        Log.e("HASILNA", layananKeluargaList.toString())
@@ -318,7 +321,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showBottomSheetDialog() {
         // Check if the view already has a parent
-        val viewBottomSheetDialog: View = bindingLayanaKeluargaBottomSheetDialog.root
+        val viewBottomSheetDialog: View = bindingLayananKeluargaBottomSheetDialog.root
 
         if (viewBottomSheetDialog.parent != null) {
             val parentViewGroup = viewBottomSheetDialog.parent as ViewGroup
@@ -329,7 +332,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingLayanaKeluargaBottomSheetDialog.apply {
+        bindingLayananKeluargaBottomSheetDialog.apply {
             ivDelete.setOnClickListener { showCustomeDeleteDialog() }
             ivExportToXlsx.setOnClickListener { showCustomeExportDataDialog() }
             ivArrow.setOnClickListener { showCustomeInfoDialog(this@LayananKeluargaActivity, layoutInflater) }
@@ -470,6 +473,13 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         binding.etDusunLayananKeluarga.text!!.clear()
         binding.etNamaLengkapIbuHamilLayananKeluarga.text!!.clear()
         binding.etAnakLayananKeluarga.text!!.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _layananKeluargaDao = null
+        _bindingLayananKeluargaBottomSheetDialog = null
     }
 
     companion object {

@@ -36,13 +36,15 @@ import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 
 class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityRemajaPutriBinding
-    private lateinit var bindingRemajaPutriBottomSheetDialog: DialogBottomSheetAllBinding
-    private lateinit var remajaPutriDao: RemajaPutriDao
+    private var _binding: ActivityRemajaPutriBinding? = null
+    private val binding get() = _binding!!
+    private var _bindingRemajaPutriBottomSheetDialog: DialogBottomSheetAllBinding? = null
+    private val bindingRemajaPutriBottomSheetDialog get() = _bindingRemajaPutriBottomSheetDialog!!
+    private var _remajaPutriDao: RemajaPutriDao? = null
+    private val remajaPutriDao get() = _remajaPutriDao!!
 
     var countItem = 0
     var mendapatTtdRadioButton = "YA"
@@ -52,7 +54,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityRemajaPutriBinding.inflate(layoutInflater)
+        _binding = ActivityRemajaPutriBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -63,11 +65,11 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
 
         // Binding BumilBottomSheetDialog for retrieve xml id
-        bindingRemajaPutriBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
+        _bindingRemajaPutriBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingRemajaPutriBottomSheetDialog.tvListData.text = getString(R.string.list_data_rematri)
 
         // Call database
-        remajaPutriDao = (application as DatabaseApp).dbRemajaPutriDatabase.remajaPutriDao()
+        _remajaPutriDao = (application as DatabaseApp).dbRemajaPutriDatabase.remajaPutriDao()
 
         getRadioButtonValue(R.id.rg_mendapat_ttd_remaja_putri, MENDAPAT_TTD)
         getRadioButtonValue(R.id.rg_periksa_anemia_remaja_putri, PERIKSA_ANEMIA)
@@ -362,6 +364,13 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         binding.etNikRemajaPutri.text!!.clear()
         binding.etTglLahirRemajaPutri.text!!.clear()
         binding.etUmurRemajaPutri.text!!.clear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _bindingRemajaPutriBottomSheetDialog = null
+        _remajaPutriDao = null
     }
 
     companion object {

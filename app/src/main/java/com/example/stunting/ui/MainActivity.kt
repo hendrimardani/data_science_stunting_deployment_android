@@ -19,13 +19,15 @@ import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var dialogBottomSheetCegahStunting: DialogBottomSheetCegahStuntingBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+    private var _dialogBottomSheetCegahStunting: DialogBottomSheetCegahStuntingBinding? = null
+    private val dialogBottomSheetCegahStunting get() = _dialogBottomSheetCegahStunting!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         // Toolbar
         setToolBar()
         // Binding bottom sheet dialog cegah stunting
-        dialogBottomSheetCegahStunting = DialogBottomSheetCegahStuntingBinding.inflate(layoutInflater)
+        _dialogBottomSheetCegahStunting = DialogBottomSheetCegahStuntingBinding.inflate(layoutInflater)
 
         binding.apply {
             cvBumil.setOnClickListener {
@@ -171,5 +173,11 @@ class MainActivity : AppCompatActivity() {
 //        binding.tbMain.setNavigationOnClickListener {
 //            onBackPressed()
 //        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _dialogBottomSheetCegahStunting = null
     }
 }

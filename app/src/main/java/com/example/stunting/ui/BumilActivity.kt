@@ -3,7 +3,6 @@ package com.example.stunting.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,6 @@ import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.functions_helper.Functions.getDatePickerDialogHariPertamaHaidTerakhir
 import com.example.stunting.functions_helper.Functions.getDatePickerDialogTglLahir
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.functions_helper.Functions.linkToDirectory
@@ -45,12 +43,18 @@ import java.util.Date
 import java.util.Locale
 
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityBumilBinding
-    private lateinit var bumilDao: BumilDao
-    private lateinit var bindingBumilBottomSheetDialog: DialogBottomSheetAllBinding
-    private lateinit var cal: Calendar
-    private lateinit var dataSetListenerHariPertamaHaidTerakhir: DatePickerDialog.OnDateSetListener
-    private lateinit var dataSetListenerTglPerkiraanLahir: DatePickerDialog.OnDateSetListener
+    private var _binding: ActivityBumilBinding? = null
+    private val binding get() = _binding!!
+    private var _bumilDao: BumilDao? = null
+    private val bumilDao get() = _bumilDao!!
+    private var _bindingBumilBottomSheetDialog: DialogBottomSheetAllBinding? = null
+    private val bindingBumilBottomSheetDialog get() = _bindingBumilBottomSheetDialog!!
+    private var _cal: Calendar? = null
+    private val cal get() = _cal!!
+    private var _dataSetListenerHariPertamaHaidTerakhir: DatePickerDialog.OnDateSetListener? = null
+    private val dataSetListenerHariPertamaHaidTerakhir get() = _dataSetListenerHariPertamaHaidTerakhir!!
+    private var _dataSetListenerTglPerkiraanLahir: DatePickerDialog.OnDateSetListener? = null
+    private val dataSetListenerTglPerkiraanLahir get() = _dataSetListenerTglPerkiraanLahir!!
 
     var countItem = 0
     var statusGiziRadioButton = "YA"
@@ -58,7 +62,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityBumilBinding.inflate(layoutInflater)
+        _binding = ActivityBumilBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -69,11 +73,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
 
         // Binding BumilBottomSheetDialog for retrieve xml id
-        bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
+        _bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
 
         // Call database
-        bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
+        _bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
@@ -136,8 +140,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.et_tgl_lahir_bumil -> getDatePickerDialogTglLahir(this@BumilActivity)
-            R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir(this@BumilActivity)
-            R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir(this@BumilActivity)
+            R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
+            R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
             R.id.btn_submit_bumil -> {
                 val nama = binding.etNamaBumil.text.toString()
                 val nik = binding.etNikBumil.text.toString()
@@ -232,8 +236,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCalendarHariPertamaHaidTerakhir(etTanggal: EditText) {
-        cal = Calendar.getInstance()
-        dataSetListenerHariPertamaHaidTerakhir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        _cal = Calendar.getInstance()
+        _dataSetListenerHariPertamaHaidTerakhir = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -248,8 +252,14 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         etTanggal.setText(sdf.format(cal.time).toString())
     }
 
-    private fun getDatePickerDialogTglPerkiraanLahir(context: Context) {
-        DatePickerDialog(context, dataSetListenerTglPerkiraanLahir, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+    private fun getDatePickerDialogTglPerkiraanLahir() {
+        DatePickerDialog(this@BumilActivity, dataSetListenerTglPerkiraanLahir, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun getDatePickerDialogHariPertamaHaidTerakhir() {
+        DatePickerDialog(this@BumilActivity, dataSetListenerHariPertamaHaidTerakhir, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
@@ -368,6 +378,16 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             deleteDialog.dismiss()
         }
         deleteDialog.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _cal = null
+        _bumilDao = null
+        _bindingBumilBottomSheetDialog = null
+        _dataSetListenerTglPerkiraanLahir = null
+        _dataSetListenerHariPertamaHaidTerakhir = null
     }
 
     companion object {

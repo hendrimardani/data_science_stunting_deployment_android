@@ -43,11 +43,16 @@ import java.util.Date
 import java.util.Locale
 
 class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityCalonPengantinBinding
-    private lateinit var bindingCalonPengantinBottomSheetDialog: DialogBottomSheetAllBinding
-    private lateinit var calonPengantinDao: CalonPengantinDao
-    private lateinit var cal: Calendar
-    private lateinit var dataSetListenerPerkiraanTglPernikahan: DatePickerDialog.OnDateSetListener
+    private var _binding: ActivityCalonPengantinBinding? = null
+    private val binding get() = _binding!!
+    private var _bindingCalonPengantinBottomSheetDialog: DialogBottomSheetAllBinding? = null
+    private val bindingCalonPengantinBottomSheetDialog get() = _bindingCalonPengantinBottomSheetDialog!!
+    private var _calonPengantinDao: CalonPengantinDao? = null
+    private val calonPengantinDao get() = _calonPengantinDao!!
+    private var _cal: Calendar? = null
+    private val cal get() = _cal!!
+    private var _dataSetListenerPerkiraanTglPernikahan: DatePickerDialog.OnDateSetListener? = null
+    private val dataSetListenerPerkiraanTglPernikahan get() = _dataSetListenerPerkiraanTglPernikahan!!
 
     var countItem = 0
     var periksaKesehatanRadioButton = "YA"
@@ -56,7 +61,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityCalonPengantinBinding.inflate(layoutInflater)
+        _binding = ActivityCalonPengantinBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -67,11 +72,11 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
 
         // Binding BumilBottomSheetDialog for retrieve xml id
-        bindingCalonPengantinBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
+        _bindingCalonPengantinBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingCalonPengantinBottomSheetDialog.tvListData.text = getString(R.string.list_data_catin)
 
         // Call database
-        calonPengantinDao = (application as DatabaseApp).dbCalonPengantinDatabase.calonPengantinDao()
+        _calonPengantinDao = (application as DatabaseApp).dbCalonPengantinDatabase.calonPengantinDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirCalonPengantin)
@@ -238,8 +243,8 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCalendarPerkiraanTanggalPernikahan(etTanggal: EditText) {
-        cal = Calendar.getInstance()
-        dataSetListenerPerkiraanTglPernikahan = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        _cal = Calendar.getInstance()
+        _dataSetListenerPerkiraanTglPernikahan = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
             cal.set(Calendar.MONTH, month)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -382,6 +387,15 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        _bindingCalonPengantinBottomSheetDialog = null
+        _calonPengantinDao = null
+        _dataSetListenerPerkiraanTglPernikahan = null
+        _cal = null
     }
 
     companion object {
