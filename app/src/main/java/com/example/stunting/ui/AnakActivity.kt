@@ -47,8 +47,6 @@ class AnakActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnakBinding
     private lateinit var anakDao: AnakDao
     private lateinit var bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding
-    private lateinit var cal: Calendar
-    private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
 
     var countItem = 0
     var classification = "NORMAL"

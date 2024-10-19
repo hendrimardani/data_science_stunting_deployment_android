@@ -43,8 +43,6 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityRemajaPutriBinding
     private lateinit var bindingRemajaPutriBottomSheetDialog: DialogBottomSheetAllBinding
     private lateinit var remajaPutriDao: RemajaPutriDao
-    private lateinit var cal: Calendar
-    private lateinit var dataSetListener: DatePickerDialog.OnDateSetListener
 
     var countItem = 0
     var mendapatTtdRadioButton = "YA"
