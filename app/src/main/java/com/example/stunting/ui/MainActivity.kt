@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity() {
             cvCegahStunting.setOnClickListener {
                 showBottomSheetDialogPencegahanStunting()
             }
+            fab.setOnClickListener {
+                startActivity(Intent(this@MainActivity, KonsultasiActivity::class.java))
+            }
         }
     }
 

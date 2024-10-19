@@ -5,6 +5,6 @@
         <item name="colorPrimary">@color/bluePrimary</item>
         <item name="colorSecondary">@color/blueSecond</item>
     </style>
-
+    
     <style name="Theme.Stunting" parent="Base.Theme.Stunting" />
 </resources>
