@@ -180,8 +180,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
             bindingRemajaPutriBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
             bindingRemajaPutriBottomSheetDialog.rvBottomSheet.adapter = remajaPutriAdapter
             // To scrolling automatic when data entered
-            bindingRemajaPutriBottomSheetDialog.rvBottomSheet
-                .smoothScrollToPosition(countItem - 1)
+            bindingRemajaPutriBottomSheetDialog.rvBottomSheet.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
             bindingRemajaPutriBottomSheetDialog.rvBottomSheet

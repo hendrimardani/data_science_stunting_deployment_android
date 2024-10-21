@@ -27,7 +27,7 @@ import com.example.stunting.functions_helper.Functions.linkToDirectory
 import com.example.stunting.functions_helper.Functions.setCalendarTglLahir
 import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
 import com.example.stunting.functions_helper.Functions.toastInfo
-import com.example.stunting.ml.ModelRegularizer
+import com.example.stunting.ml.ModelRegularizerCategorical
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
@@ -227,8 +227,7 @@ class AnakActivity : AppCompatActivity() {
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.layoutManager = LinearLayoutManager(this)
             bindingAnakBottomSheetDialog.rvBottomSheetAnak.adapter = anakAdapter
             // To scrolling automatic when data entered
-            bindingAnakBottomSheetDialog.rvBottomSheetAnak
-                .smoothScrollToPosition(countItem - 1)
+            bindingAnakBottomSheetDialog.rvBottomSheetAnak.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
             bindingAnakBottomSheetDialog.rvBottomSheetAnak
@@ -271,9 +270,10 @@ class AnakActivity : AppCompatActivity() {
         }
     }
 
-    private fun prediction(anakDao: AnakDao, nama: String, jk: String, nik: String, tglLahir: String,
-        namaOrtu: String, umur: String, tinggi: String, umurFloat: Float, jkFloat: Float, tinggiFloat: Float) {
-
+    private fun prediction(
+        anakDao: AnakDao, nama: String, jk: String, nik: String, tglLahir: String,
+        namaOrtu: String, umur: String, tinggi: String, umurFloat: Float, jkFloat: Float, tinggiFloat: Float
+    ) {
         // Normalisasi data with formula => (Xi - Xmin) / (Xmax - Xmin)
         val umurNormalized = (umurFloat - 0f) / (60f - 0f)
         val tinggiNormalized = (tinggiFloat - 40.01f) / (128f - 40.0104370037594f)
@@ -285,25 +285,42 @@ class AnakActivity : AppCompatActivity() {
             byteBuffer.putFloat(jkFloat)
             byteBuffer.putFloat(tinggiNormalized)
 
-            val model = ModelRegularizer.newInstance(this)
+            val model = ModelRegularizerCategorical.newInstance(this@AnakActivity)
 
             // Creates inputs for reference.
-            val inputFeature0 =
-                TensorBuffer.createFixedSize(intArrayOf(1, 3), DataType.FLOAT32)
+            val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 3), DataType.FLOAT32)
             inputFeature0.loadBuffer(byteBuffer)
 
             // Runs model inference and gets result.
             val outputs = model.process(inputFeature0)
             val outputFeature0 = outputs.outputFeature0AsTensorBuffer.floatArray
+            val categoryList = outputFeature0
+
+            // Result 0 : Normal, 1 : Stunting Kurus, 2 : Stunting, 3 : Stunting Tinggi
+            var maxIndex = 0
+            var maxValue = categoryList[0]
+            for (i in categoryList.indices) {
+                if (categoryList[i] > maxValue) {
+                    maxValue = categoryList[i]
+                    maxIndex = i
+                }
+            }
 
             // If the result value is less than 0.5 then Normal, otherwise is Stunting
-            if (Math.round(outputFeature0[0]) < 0.5) {
+            if (maxIndex == 0) {
                 classification = getString(R.string.classification_normal)
-
+                // Add record
+                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
+            } else if (maxIndex == 1) {
+                classification = getString(R.string.classification_stunting_kurus)
+                // Add record
+                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
+            } else if (maxIndex == 2) {
+                classification = getString(R.string.classification_stunting)
                 // Add record
                 addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
             } else {
-                classification = getString(R.string.classification_stunting)
+                classification = getString(R.string.classification_stunting_tinggi)
                 // Add record
                 addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification)
             }
@@ -318,9 +335,10 @@ class AnakActivity : AppCompatActivity() {
         }
     }
 
-    private fun addRecord(anakDao: AnakDao, nama: String, nik: String, tglLahir: String,
-        umur: String, jk: String, tinggi: String, namaOrtu: String, hasil: String) {
-
+    private fun addRecord(
+        anakDao: AnakDao, nama: String, nik: String, tglLahir: String,
+        umur: String, jk: String, tinggi: String, namaOrtu: String, hasil: String
+    ) {
         val date = getDateTimePrimaryKey()
 
         lifecycleScope.launch {

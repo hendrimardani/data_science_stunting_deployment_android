@@ -306,9 +306,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_message_40"
-        app:backgroundTint="@color/blueSecond"
-        android:backgroundTint="@color/blueSecond"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        app:elevation="5dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_margin="@dimen/dimen_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     // Library excel
     // have to minSdk = 26
     implementation("org.apache.poi:poi-ooxml:5.2.2")

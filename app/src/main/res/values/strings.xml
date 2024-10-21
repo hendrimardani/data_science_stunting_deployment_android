@@ -24,7 +24,7 @@
     <string name="list_data_catin">List Data Catin</string>
     <string name="title_code_gender_not_valid">KODE JENIS KELAMIN TIDAK VALID !</string>
     <string name="description_code_gender_not_valid">Data jenis kelamin hanya angka 0 dan 1 !</string>
-    <string name="list_data_layanan_keluarga">List Data       \\nKeluarga</string>
+    <string name="list_data_layanan_keluarga">List Data Keluarga</string>
     <string name="list_data_anak">List Data Anak</string>
     <string name="app_name_layanan_keluarga">Layanan Keluarga</string>
     <string name="app_name_catin">Calon Pengantin</string>
@@ -46,12 +46,14 @@
     <string name="text_16">16. Timbang berat badan dan ukur tinggi badan anak secara rutin di posyandu atau fasilitas kesehatan.</string>
     <string name="text_17">17. Periksa kehamilan secara rutin ke dokter atau bidan.</string>
     <string name="text_18">18. Konsultasikan ke dokter atau tenaga kesehatan lainnya jika anak mengalami masalah kesehatan atau gangguan pertumbuhan.</string>
-    <string name="description_about">Jika anda mengalami permasalah pada aplikasi anda silahkan hubungi pembuat aplikasi \" +\n                    \"dibawah ini, atau jika ingin ada yang ditanyakan karena proses pembuatan aplikasi\" +\n                    \" ini masih tahap percobaan dan belum sebenuhnya sempurna.\\nSilahkan hubungi Kotak dibawah ini :</string>
+    <string name="description_about">Jika anda mengalami permasalah pada aplikasi anda silahkan hubungi pembuat aplikasi dibawah ini, atau jika ingin ada yang ditanyakan karena proses pembuatan aplikasi ini masih tahap percobaan dan belum sebenuhnya sempurna. Silahkan hubungi Kotak dibawah ini :</string>
     <string name="description_about_linkedIn">https://www.linkedin.com/in/hendri-mardani-1b6ba61a8/</string>
     <string name="description_about_wa">https://api.whatsapp.com/send?phone=6281388372075</string>
     <string name="description_about_email">https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRvxmkxPlXNnrdQHFnTpMFwwGQFsRbBzClXRqRrMbKBBgxdXmgPxVTVNKmFGBHJTdgpsnsV</string>
     <string name="description_about_ig">https://www.instagram.com/hendri.mardani/</string>
-    <string name="list_data_rematri">List Data       \\nRematri</string>
+    <string name="list_data_rematri">List Data Rematri</string>
     <string name="app_name_rematri">Remaja Putri</string>
     <string name="konsultasi">Mau tanya apa ?</string>
+    <string name="classification_stunting_kurus">STUNTING\nKURUS</string>
+    <string name="classification_stunting_tinggi">STUNTING\nTINGGI</string>
 </resources>

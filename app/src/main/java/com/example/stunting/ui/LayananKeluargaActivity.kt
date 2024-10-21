@@ -107,8 +107,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
             bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.layoutManager = LinearLayoutManager(this)
             bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.adapter = layananKeluargaAdapter
             // To scrolling automatic when data entered
-            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga
-                .smoothScrollToPosition(countItem - 1)
+            bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
             bindingLayananKeluargaBottomSheetDialog.rvBottomSheetLayananKeluarga

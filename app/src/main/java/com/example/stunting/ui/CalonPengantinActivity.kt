@@ -114,8 +114,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             bindingCalonPengantinBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
             bindingCalonPengantinBottomSheetDialog.rvBottomSheet.adapter = calonPengantinAdapter
             // To scrolling automatic when data entered
-            bindingCalonPengantinBottomSheetDialog.rvBottomSheet
-                .smoothScrollToPosition(countItem - 1)
+            bindingCalonPengantinBottomSheetDialog.rvBottomSheet.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
             bindingCalonPengantinBottomSheetDialog.rvBottomSheet

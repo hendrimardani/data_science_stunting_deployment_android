@@ -183,8 +183,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             bindingBumilBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
             bindingBumilBottomSheetDialog.rvBottomSheet.adapter = allAdapter
             // To scrolling automatic when data entered
-            bindingBumilBottomSheetDialog.rvBottomSheet
-                .smoothScrollToPosition(countItem - 1)
+            bindingBumilBottomSheetDialog.rvBottomSheet.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
             bindingBumilBottomSheetDialog.rvBottomSheet
