@@ -13,13 +13,14 @@ import com.example.stunting.BuildConfig
 import com.example.stunting.R
 import com.example.stunting.adapter.KonsultasiAdapter
 import com.example.stunting.database.DatabaseApp
-import com.example.stunting.database.layanan_keluarga.LayananKeluargaDao
 import com.example.stunting.database.messages.MessageDao
 import com.example.stunting.database.messages.MessageEntity
 import com.example.stunting.databinding.ActivityKonsultasiBinding
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
+import com.example.stunting.functions_helper.Functions.toastInfo
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.launch
+import www.sanju.motiontoast.MotionToastStyle
 
 class KonsultasiActivity : AppCompatActivity() {
     private var _binding: ActivityKonsultasiBinding? = null
@@ -46,11 +47,12 @@ class KonsultasiActivity : AppCompatActivity() {
         _messageDao = (application as DatabaseApp).dbMessage.messageDao()
 
         binding.ivKonsultasi.setOnClickListener {
-            val input = binding.etKonsultasi.text.toString()
+            val input = binding.etKonsultasi.text
             // Add record
-            addRecord(input, true)
+            addRecord(input.toString(), true)
 
-            generativeModel(input)
+            generativeModel(input.toString())
+            input.clear()
             setupListOfDataIntoRecyclerView(messageList)
         }
 
@@ -59,11 +61,26 @@ class KonsultasiActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_konsultasi, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_konsultasi_delete_chat -> deleteChat()
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteChat() {
+        lifecycleScope.launch {
+            messageDao.deleteAll()
+        }
+        toastInfo(
+            this@KonsultasiActivity, "Chat berhasil dihapus",
+            "Silahkan buka kembali", MotionToastStyle.SUCCESS
+        )
+        finish()
     }
 
     private fun addRecord(input: String, isSent: Boolean) {
@@ -103,12 +120,7 @@ class KonsultasiActivity : AppCompatActivity() {
     }
 
     private fun generativeModel(prompt: String) {
-        val generativeModel = GenerativeModel(
-            // For text-only input, use the gemini-pro model
-            modelName = "gemini-1.5-flash",
-            // Accessmpt your API key as a Build Configuration variable (see "Set up your API key" above)
-            apiKey = BuildConfig.API_KEY
-        )
+        val generativeModel = GenerativeModel(modelName = "gemini-1.5-flash", apiKey = BuildConfig.API_KEY)
 
         lifecycleScope.launch {
             val response = generativeModel.generateContent(prompt).text.toString()

@@ -76,10 +76,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_about -> {
-                // Menu About
-                customDialogAbout()
-            }
+            R.id.menu_main_about -> customDialogAbout()
         }
         return super.onOptionsItemSelected(item)
     }

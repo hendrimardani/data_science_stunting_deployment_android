@@ -57,4 +57,5 @@
     <string name="classification_stunting_kurus">STUNTING\nKURUS</string>
     <string name="classification_stunting_tinggi">STUNTING\nTINGGI</string>
     <string name="app_neural_network">Neural Network Bot</string>
+    <string name="menu_name_delete_chat">Hapus Semua Chat</string>
 </resources>

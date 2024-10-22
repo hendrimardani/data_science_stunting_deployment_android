@@ -1,12 +1,10 @@
 package com.example.stunting.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
 import com.example.stunting.database.messages.MessageEntity
@@ -19,6 +17,7 @@ class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerVie
 
     class ReceivedMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvReceivedMessage = itemView.findViewById<TextView>(R.id.tv_received_konsultasi)
+        val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -44,6 +43,9 @@ class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerVie
         if (holder is SentMessageViewHolder) {
             holder.tvSentMessage.text = message.text
         } else if (holder is ReceivedMessageViewHolder) {
+            if (IS_LOADING) holder.progressBar.visibility = View.VISIBLE
+            else holder.progressBar.visibility = View.GONE
+
             holder.tvReceivedMessage.text = message.text
         }
     }
@@ -51,17 +53,6 @@ class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerVie
     companion object {
         private const val VIEW_TYPE_SENT = 1
         private const val VIEW_TYPE_RECEIVED = 2
-
-//        val DIFF_CALLBACK: DiffUtil.ItemCallback<MessageEntity> =
-//            object : DiffUtil.ItemCallback<MessageEntity>() {
-//                override fun areItemsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
-//                    return oldItem.id == newItem.id
-//                }
-//
-//                @SuppressLint("DiffUtilEquals")
-//                override fun areContentsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
-//                    return oldItem == newItem
-//                }
-//            }
+        var IS_LOADING = false
     }
 }
