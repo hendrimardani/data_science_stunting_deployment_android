@@ -13,18 +13,9 @@ interface BumilDao {
     @Insert
     suspend fun insert(bumilEntity: BumilEntity)
 
-    @Update
-    suspend fun update(bumilEntity: BumilEntity)
-
-    @Delete
-    suspend fun delete(bumilEntity: BumilEntity)
-
     @Query("DELETE FROM `bumil-table`")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `bumil-table`")
     fun fetchAllBumil(): Flow<List<BumilEntity>>
-
-    @Query("SELECT * FROM `bumil-table` WHERE tanggal=:tanggal")
-    fun fetchBumilById(tanggal: String):Flow<BumilEntity>
 }

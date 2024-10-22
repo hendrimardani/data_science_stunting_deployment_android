@@ -21,19 +21,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_person_40"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_sent_konsultasi"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/tv_sent_konsultasi" />
 
+        <!-- Fungsi android:maxEms akan dibatasi hingga 10 em lebar.
+        Ini berarti bahwa teks tidak akan meluas melebihi batas yang ditentukan -->
         <TextView
             android:id="@+id/tv_sent_konsultasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dimen_4"
+            android:maxEms="18"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_profile"
+            app:layout_constraintEnd_toStartOf="@id/tv_sent_konsultasi"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.086"
             tools:text="Teks" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,18 +13,9 @@ interface AnakDao {
     @Insert
     suspend fun insert(anakEntity: AnakEntity)
 
-    @Update
-    suspend fun update(anakEntity: AnakEntity)
-
-    @Delete
-    suspend fun delete(anakEntity: AnakEntity)
-
     @Query("DELETE FROM `anak-table`")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `anak-table`")
     fun fetchAllAnak(): Flow<List<AnakEntity>>
-
-    @Query("SELECT * FROM `anak-table` WHERE tanggal=:tanggal")
-    fun fetchAnakById(tanggal: String):Flow<AnakEntity>
 }

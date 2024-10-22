@@ -1,15 +1,17 @@
 package com.example.stunting.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.Messages
 import com.example.stunting.R
+import com.example.stunting.database.messages.MessageEntity
 
-class KonsultasiAdapter(val messageList: ArrayList<Messages>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class SentMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvSentMessage = itemView.findViewById<TextView>(R.id.tv_sent_konsultasi)
@@ -49,5 +51,17 @@ class KonsultasiAdapter(val messageList: ArrayList<Messages>) : RecyclerView.Ada
     companion object {
         private const val VIEW_TYPE_SENT = 1
         private const val VIEW_TYPE_RECEIVED = 2
+
+//        val DIFF_CALLBACK: DiffUtil.ItemCallback<MessageEntity> =
+//            object : DiffUtil.ItemCallback<MessageEntity>() {
+//                override fun areItemsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
+//                    return oldItem.id == newItem.id
+//                }
+//
+//                @SuppressLint("DiffUtilEquals")
+//                override fun areContentsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
+//                    return oldItem == newItem
+//                }
+//            }
     }
 }

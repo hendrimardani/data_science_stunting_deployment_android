@@ -13,18 +13,9 @@ interface RemajaPutriDao {
     @Insert
     suspend fun insert(remajaPutriEntity: RemajaPutriEntity)
 
-    @Update
-    suspend fun update(calonPengantinEntity: RemajaPutriEntity)
-
-    @Delete
-    suspend fun delete(remajaPutriEntity: RemajaPutriEntity)
-
     @Query("DELETE FROM `remajaPutri-table`")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `remajaPutri-table`")
     fun fetchAllRemajaPutri(): Flow<List<RemajaPutriEntity>>
-
-    @Query("SELECT * FROM `remajaPutri-table` WHERE tanggal=:tanggal")
-    fun fetchRemajaPutriById(tanggal: String):Flow<RemajaPutriEntity>
 }

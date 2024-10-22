@@ -21,22 +21,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/neural_network_40"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.113"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/tv_received_konsultasi"
+            app:layout_constraintTop_toTopOf="@id/tv_received_konsultasi" />
 
+        <!-- Fungsi android:maxEms akan dibatasi hingga 10 em lebar.
+        Ini berarti bahwa teks tidak akan meluas melebihi batas yang ditentukan -->
         <TextView
             android:id="@+id/tv_received_konsultasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_4"
-            app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-            app:layout_constraintStart_toEndOf="@id/iv_profile"
-            app:layout_constraintTop_toTopOf="@id/iv_profile"
+            android:maxEms="18"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Teks" />
+            app:layout_constraintHorizontal_bias="0.63"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.086"
+            tools:text="Teks " />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

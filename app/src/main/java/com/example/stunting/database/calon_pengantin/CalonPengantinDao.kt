@@ -13,18 +13,9 @@ interface CalonPengantinDao {
     @Insert
     suspend fun insert(calonPengantinEntity: CalonPengantinEntity)
 
-    @Update
-    suspend fun update(calonPengantinEntity: CalonPengantinEntity)
-
-    @Delete
-    suspend fun delete(calonPengantinEntity: CalonPengantinEntity)
-
     @Query("DELETE FROM `calonPengantin-table`")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `calonPengantin-table`")
     fun fetchAllCalonPengantin(): Flow<List<CalonPengantinEntity>>
-
-    @Query("SELECT * FROM `calonPengantin-table` WHERE tanggal=:tanggal")
-    fun fetchCalonPengantinById(tanggal: String):Flow<CalonPengantinEntity>
 }

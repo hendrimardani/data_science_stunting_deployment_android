@@ -5,6 +5,7 @@ import com.example.stunting.database.bumil.BumilDatabase
 import com.example.stunting.database.calon_pengantin.CalonPengantinDatabase
 import com.example.stunting.database.anak.AnakDatabase
 import com.example.stunting.database.layanan_keluarga.LayananKeluargaDatabase
+import com.example.stunting.database.messages.MessageDatabase
 import com.example.stunting.database.remaja_putri.RemajaPutriDatabase
 
 class DatabaseApp : Application() {
@@ -22,5 +23,8 @@ class DatabaseApp : Application() {
     }
     val dbLayananKeluargaDatabase by lazy {
         LayananKeluargaDatabase.getInstance(this)
+    }
+    val dbMessage by lazy {
+        MessageDatabase.getInstance(this)
     }
 }

@@ -13,18 +13,9 @@ interface LayananKeluargaDao {
     @Insert
     suspend fun insert(layananKeluargaEntity: LayananKeluargaEntity)
 
-    @Update
-    suspend fun update(layananKeluargaEntity: LayananKeluargaEntity)
-
-    @Delete
-    suspend fun delete(layananKeluargaEntity: LayananKeluargaEntity)
-
     @Query("DELETE FROM `layananKeluarga-table`")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM `layananKeluarga-table`")
     fun fetchAllLayananKeluarga(): Flow<List<LayananKeluargaEntity>>
-
-    @Query("SELECT * FROM `layananKeluarga-table` WHERE tanggal=:tanggal")
-    fun fetchLayananKeluargaById(tanggal: String):Flow<LayananKeluargaEntity>
 }
