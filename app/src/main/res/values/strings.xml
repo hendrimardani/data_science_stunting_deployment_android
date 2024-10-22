@@ -56,4 +56,5 @@
     <string name="konsultasi">Mau tanya apa ?</string>
     <string name="classification_stunting_kurus">STUNTING\nKURUS</string>
     <string name="classification_stunting_tinggi">STUNTING\nTINGGI</string>
+    <string name="app_neural_network">Neural Network Bot</string>
 </resources>

@@ -7,12 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.KonsultasiActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_konsultasi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_konsultasi"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_sent_konsultasi_adapter"
         app:layout_constraintBottom_toTopOf="@id/cv_konsultasi"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_konsultasi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -47,8 +57,8 @@
                 android:id="@+id/iv_konsultasi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_45"
-                android:layout_marginTop="@dimen/dimen_12" />
+                android:src="@drawable/ic_send_40"
+                android:layout_marginTop="@dimen/dimen_8" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

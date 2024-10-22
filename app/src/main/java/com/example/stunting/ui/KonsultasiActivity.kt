@@ -1,6 +1,8 @@
 package com.example.stunting.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,7 +29,6 @@ class KonsultasiActivity : AppCompatActivity() {
 
     val messageList = ArrayList<MessageEntity>()
     var countItem = 0
-    var id = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +40,8 @@ class KonsultasiActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Toolbar
+        setToolBar()
 
         _messageDao = (application as DatabaseApp).dbMessage.messageDao()
 
@@ -53,6 +56,14 @@ class KonsultasiActivity : AppCompatActivity() {
 
         // Get all items
         getAll(messageDao)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
     }
 
     private fun addRecord(input: String, isSent: Boolean) {
@@ -105,8 +116,26 @@ class KonsultasiActivity : AppCompatActivity() {
         }
     }
 
+    private fun setToolBar() {
+        // Call object actionBar
+        setSupportActionBar(binding.tbKonsultasi)
+        supportActionBar!!.title = getString(R.string.app_neural_network)
+        // Change font style text
+        binding.tbKonsultasi.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        // Set icon
+        supportActionBar!!.setIcon(R.drawable.neural_network_40)
+        // Enable back button if you're in a child activity
+        if (supportActionBar != null) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.tbKonsultasi.setNavigationOnClickListener {
+            onBackPressed()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        _messageDao = null
     }
 }
