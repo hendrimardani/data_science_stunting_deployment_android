@@ -18,7 +18,8 @@ roomRuntime = "2.6.1"
 roomKtx = "2.6.1"
 activityKtx = "1.8.2"
 generativeVersion = "0.7.0"
-motionToast = "1.4"
+motionToastVersion = "1.4"
+sweetAlertVersion = "1.5.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,8 +38,9 @@ kotlin-csv-jvm = { module = "com.github.doyaaaaaken:kotlin-csv-jvm", version.ref
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
-motionToast = { module = "com.github.Spikeysanju:MotionToast", version.ref = "motionToast" }
+motionToast = { module = "com.github.Spikeysanju:MotionToast", version.ref = "motionToastVersion" }
 com-google-ai-client-generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeVersion" }
+com-github-f0ris-sweetalert = { module = "com.github.f0ris.sweetalert:library", version.ref = "sweetAlertVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

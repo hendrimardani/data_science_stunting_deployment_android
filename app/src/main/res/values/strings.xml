@@ -58,4 +58,6 @@
     <string name="classification_stunting_tinggi">STUNTING\nTINGGI</string>
     <string name="app_neural_network">Neural Network Bot</string>
     <string name="menu_name_delete_chat">Hapus Semua Chat</string>
+    <string name="title_chat_deleted">Chat berhasil dihapus</string>
+    <string name="description_chat_deleted">Silahkan buka kembali</string>
 </resources>
