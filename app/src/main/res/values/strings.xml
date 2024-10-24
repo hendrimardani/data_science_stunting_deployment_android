@@ -60,4 +60,6 @@
     <string name="menu_name_delete_chat">Hapus Semua Chat</string>
     <string name="title_chat_deleted">Chat berhasil dihapus</string>
     <string name="description_chat_deleted">Silahkan buka kembali</string>
+    <string name="title_loading">Loading</string>
+    <string name="description_loading">Harap tunggu !</string>
 </resources>

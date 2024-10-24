@@ -60,8 +60,8 @@ class KonsultasiActivity : AppCompatActivity() {
                 )
             } else {
                 val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
-                    progressBar.setTitleText("Loading")
-                    progressBar.setContentText("Harap tunggu !")
+                    progressBar.setTitleText(getString(R.string.title_loading))
+                    progressBar.setContentText(getString(R.string.description_loading))
                         .progressHelper.barColor = Color.parseColor("#73D1FA")
                     progressBar.show()
                 lifecycleScope.launch {
@@ -142,8 +142,8 @@ class KonsultasiActivity : AppCompatActivity() {
     private fun generativeModel(prompt: String) {
         val generativeModel = GenerativeModel(modelName = "gemini-1.5-flash", apiKey = BuildConfig.API_KEY)
         val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText("Loading")
-            progressBar.setContentText("Harap tunggu !")
+            progressBar.setTitleText(getString(R.string.title_loading))
+            progressBar.setContentText(getString(R.string.description_loading))
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.show()
         lifecycleScope.launch {
