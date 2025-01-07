@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +26,8 @@ import com.example.stunting.databinding.DialogInfoKonsultasiBinding
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.functions_helper.Functions.toastInfo
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.QuotaExceededException
+import com.google.ai.client.generativeai.type.UnknownException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToastStyle
@@ -85,8 +88,8 @@ class KonsultasiActivity : AppCompatActivity() {
         } catch (e: SQLiteConstraintException) {
             toastInfo(
                 this@KonsultasiActivity,
-                getString(R.string.title_error_request_api),
-                getString(R.string.description_error_request_api_client),
+                getString(R.string.title_error_internet_request_api),
+                getString(R.string.description_error_internet_request_api),
                 MotionToastStyle.ERROR
             )
         }
@@ -173,7 +176,7 @@ class KonsultasiActivity : AppCompatActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun generativeModel(prompt: String) {
-        val generativeModel = GenerativeModel(modelName = "gemini-1.5-flash", apiKey = BuildConfig.API_KEY)
+        val generativeModel = GenerativeModel(modelName = "gemini-2.0-flash-exp", apiKey = BuildConfig.API_KEY)
         val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
             progressBar.setTitleText(getString(R.string.title_loading))
             progressBar.setContentText(getString(R.string.description_loading))
@@ -185,11 +188,18 @@ class KonsultasiActivity : AppCompatActivity() {
                 val response = generativeModel.generateContent(prompt).text.toString()
                 addRecord(response, false)
                 progressBar.dismiss()
-            } catch (e: Exception) {
+            } catch (e: UnknownException) {
                 toastInfo(
                     this@KonsultasiActivity,
-                    getString(R.string.title_error_request_api),
-                    getString(R.string.description_error_request_api),
+                    getString(R.string.title_error_internet_request_api),
+                    getString(R.string.description_error_internet_request_api),
+                    MotionToastStyle.ERROR
+                )
+            } catch (e : QuotaExceededException) {
+                toastInfo(
+                    this@KonsultasiActivity,
+                    getString(R.string.title_error_quotaExceeded_request_api),
+                    getString(R.string.description_error_quotaExceeded_request_api),
                     MotionToastStyle.ERROR
                 )
             }

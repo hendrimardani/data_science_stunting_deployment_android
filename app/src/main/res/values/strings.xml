@@ -54,9 +54,8 @@
     <string name="description_loading">Harap tunggu !</string>
     <string name="title_info_konsultasi">Wajib Mengaktifkan\nData Internet</string>
     <string name="description_info_konsultasi">Hal ini karena data akan dikirimkan lewat jaringan internet</string>
-    <string name="title_error_request_api">Permintaan Gagal !</string>
-    <string name="description_error_request_api">Silahkan aktifkan data internet anda, atau cek kondisi lingkungan jaringan anda</string>
-    <string name="description_error_request_api_client">Harap Tunggu</string>
+    <string name="title_error_internet_request_api">Permintaan Gagal !</string>
+    <string name="description_error_internet_request_api">Silahkan aktifkan data internet anda, atau cek kondisi lingkungan jaringan anda</string>
     <string name="pencegahan_stunting_tidak_ada">Pertahankan nutrisi dan pola asuh yang diberikan.</string>
     <string name="pencegahan_stunting_kurus">Tingkatkan lagi pemenuhan kebutuhan gizi pada anak, seperti asupan protein dan pemberian vitamin, atau jika kondisi ini terus berlanjut bisa hubungi dokter pada ahli gizi</string>
     <string name="pencegahan_stunting">Tingkatkan kualitas kesehatan pada anak secara rutin seperti melakukan imunisasi</string>
@@ -65,4 +64,6 @@
     <string name="title_pencegahan_stunting_tinggi">Kondisi anak anda mengalami stunting tinggi !</string>
     <string name="title_pencegahan_stunting">Kondisi Anak Anda Mengalami Stunting Secara Umum</string>
     <string name="title_pencegahan_stunting_kurus">Kondisi Anak Anda Mengalami Stunting Kurus</string>
+    <string name="title_error_quotaExceeded_request_api">Gagal Merespons !</string>
+    <string name="description_error_quotaExceeded_request_api">Silahkan hubungi pengembang aplikasi</string>
 </resources>
