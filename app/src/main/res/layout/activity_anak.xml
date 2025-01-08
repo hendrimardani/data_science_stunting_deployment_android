@@ -2,22 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:id="@+id/main">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:fitsSystemWindows="true"
             app:collapsedTitleTextColor="@color/white"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
@@ -68,208 +67,300 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/ll_anak"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+                <ImageView
+                    android:id="@+id/iv_name"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/til_nama_anak"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_nama_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nama Anak: "
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/tb_anak"
-                app:layout_constraintStart_toStartOf="@+id/tb_anak" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_anak"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nama_anak">
-
-                <EditText
-                    android:id="@+id/et_nama_anak"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_nama_anak"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Cnt: Siti Nurjanah" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:elevation="5dp"
+                    android:hint="Nama anda"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/blueSecond_200"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_name"
+                    app:layout_constraintTop_toTopOf="@id/iv_name"
+                    app:shapeAppearance="@style/Rounded">
 
-            <TextView
-                android:id="@+id/tv_jk_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Masukkan Jenis Kelamin dengan Angka"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintTop_toBottomOf="@id/til_nama_anak"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nama_anak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_jk"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="136dp"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak"
-                app:layout_constraintTop_toBottomOf="@id/tv_jk_anak">
+                <ImageView
+                    android:id="@+id/iv_jk"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_jk"
+                    app:layout_constraintEnd_toStartOf="@id/til_jk"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_name" />
 
-                <EditText
-                    android:id="@+id/et_jk_anak"
-                    android:inputType="number"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_jk"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:hint="0: laki-laki, 1: perempuan"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:elevation="5dp"
+                    android:hint="Jenis kelamin (0: L, 1: P)"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/blueSecond_200"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_jk"
+                    app:layout_constraintStart_toEndOf="@id/iv_jk"
+                    app:layout_constraintTop_toTopOf="@id/iv_jk"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:shapeAppearance="@style/Rounded">
 
-            <TextView
-                android:id="@+id/tv_nik_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Nomor Induk Kependudukan (NIK):  "
-                app:layout_constraintTop_toBottomOf="@id/til_nama_anak"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_jk_anak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nik_anak"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nik_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nik_anak">
+                <ImageView
+                    android:id="@+id/iv_nik"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_nik"
+                    app:layout_constraintEnd_toStartOf="@id/til_nik"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_jk" />
 
-                <EditText
-                    android:id="@+id/et_nik_anak"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_nik"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Cnt: 327806290301011" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:elevation="5dp"
+                    android:hint="Nomor Induk Kependudukan"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/blueSecond_200"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_nik"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_nik"
+                    app:layout_constraintTop_toTopOf="@id/iv_nik"
+                    app:shapeAppearance="@style/Rounded">
 
-            <TextView
-                android:id="@+id/tv_tgl_lahir_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Tanggal Lahir Anak:  "
-                app:layout_constraintTop_toBottomOf="@id/til_nik_anak"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_nik_anak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_tgl_lahir_anak"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_tgl_lahir_anak">
+                <ImageView
+                    android:id="@+id/iv_tgl_lahir_anak"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_tgl_lahir"
+                    app:layout_constraintEnd_toStartOf="@id/til_tgl_lahir_anak"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_nik" />
 
-                <!--- We set atributes foucsable and focusableInTouchMode to false for dateTime Calender Active
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_tgl_lahir_anak"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:hint="Tanggal lahir"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxStrokeColor="@color/bluePrimary"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_anak"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_tgl_lahir_anak"
+                    app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_anak"
+                    app:shapeAppearance="@style/Rounded">
+
+                    <!--- Atur atribut bernama foucsable dan focusableInTouchMode ke false supaya dateTime Calendar aktif
                         android:focusable="false"
                         android:focusableInTouchMode="false" -->
-                <EditText
-                    android:id="@+id/et_tgl_anak"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:hint="Cnt: 2001/03/29"
-                    android:inputType="datetime" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_tgl_anak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="datetime" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_umur_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Umur Anak (bulan):  "
-                app:layout_constraintTop_toBottomOf="@id/til_tgl_lahir_anak"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak" />
+            <ImageView
+                android:id="@+id/iv_umur_anak"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_umur"
+                app:layout_constraintEnd_toStartOf="@id/til_umur_anak"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_tgl_lahir_anak" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_umur_anak"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_umur_anak">
+                android:elevation="5dp"
+                android:hint="Umur (dalam bulan)"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/blueSecond_200"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_umur_anak"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_umur_anak"
+                app:layout_constraintTop_toTopOf="@id/iv_umur_anak"
+                app:shapeAppearance="@style/Rounded">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_umur_anak"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Cnt: 60" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_tinggi_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tinggi Badan (cm)"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/til_jk"
-                app:layout_constraintStart_toStartOf="@id/til_jk" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_tinggi_anak"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Tinggi Badan (cm)"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/til_jk"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/til_jk" />-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/til_tinggi_anak"-->
+<!--                    android:layout_width="300dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:boxStrokeColor="@color/bluePrimary"-->
+<!--                    app:hintTextColor="@color/blueSecond"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_tinggi_anak"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_tinggi_anak"-->
+<!--                    tools:layout_editor_absoluteX="16dp"-->
+<!--                    tools:layout_editor_absoluteY="136dp">-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/et_tinggi_anak"-->
+<!--                        android:layout_width="300dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="Cnth: 46"-->
+<!--                        android:inputType="number" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+            <ImageView
+                android:id="@+id/iv_tinggi_anak"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_tinggi_badan"
+                app:layout_constraintEnd_toStartOf="@id/til_tinggi_anak"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_umur_anak" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_tinggi_anak"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="136dp"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_tinggi_anak"
-                app:layout_constraintTop_toBottomOf="@id/tv_tinggi_anak">
+                android:elevation="5dp"
+                android:hint="Tinggi (dalam cm)"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/blueSecond_200"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_tinggi_anak"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_tinggi_anak"
+                app:layout_constraintTop_toTopOf="@id/iv_tinggi_anak"
+                app:shapeAppearance="@style/Rounded">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_tinggi_anak"
-                    android:inputType="number"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Cnth: 46" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tv_nama_ortu_anak"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nama Orangtua: "
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/til_tinggi_anak"
-                app:layout_constraintStart_toStartOf="@+id/nama_anak" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_nama_ortu_anak"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Nama Orangtua: "-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/nama_anak"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/til_tinggi_anak" />-->
+
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/til_nama_ortu_anak"-->
+<!--                    android:layout_width="300dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:boxStrokeColor="@color/bluePrimary"-->
+<!--                    app:hintTextColor="@color/blueSecond"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_nama_anak"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/tv_nama_ortu_anak">-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/et_nama_ortu_anak"-->
+<!--                        android:layout_width="300dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="Cnt: Siti Nurjanah"-->
+<!--                        android:inputType="text" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+            <ImageView
+                android:id="@+id/iv_nama_ortu"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_orang_tua"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_ortu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_tinggi_anak" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_ortu_anak"
+                android:id="@+id/til_nama_ortu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/bluePrimary"
-                app:hintTextColor="@color/blueSecond"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nama_ortu_anak">
+                android:elevation="5dp"
+                android:hint="Nama orang tua"
+                app:boxBackgroundColor="@color/white"
+                app:boxStrokeColor="@color/blueSecond_200"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_ortu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_ortu"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_ortu"
+                app:shapeAppearance="@style/Rounded">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_nama_ortu_anak"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Cnt: Siti Nurjanah" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
         <Button
                 android:id="@+id/btn_submit_anak"
@@ -280,7 +371,7 @@
                 app:strokeColor="@color/blueSecond"
                 app:icon="@drawable/ic_send_to_mobile_24px"
                 android:paddingHorizontal="30dp"
-                app:layout_constraintTop_toBottomOf="@id/ll_anak"
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_ortu"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_anak"
                 android:text="Kirim" />

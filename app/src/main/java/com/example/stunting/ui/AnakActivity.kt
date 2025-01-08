@@ -30,8 +30,6 @@ import com.example.stunting.functions_helper.Functions.showCustomeInfoDialog
 import com.example.stunting.functions_helper.Functions.toastInfo
 import com.example.stunting.ml.ModelRegularizerCategorical
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
@@ -68,25 +66,12 @@ class AnakActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
-        val appBarLayout = findViewById<AppBarLayout>(R.id.appBarLayout)
-        val collapsingToolbarLayout = findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbar)
-
-        appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val totalScrollRange = appBarLayout.totalScrollRange
-            if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
-                // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
-                collapsingToolbarLayout.title = "Layanan Anak"
-            } else {
-                // Jika masih expanded, sembunyikan judul
-                collapsingToolbarLayout.title = ""
-            }
-        }
-
         // Binding AnakBottomSheetDialog for retrieve xml id
         _bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
+
+        // Collapsed
+        collapsedHandler()
 
         // Toolbar
         setToolBar()
@@ -147,6 +132,19 @@ class AnakActivity : AppCompatActivity() {
 
         // Get all items
         getAll(anakDao)
+    }
+
+    private fun collapsedHandler() {
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalScrollRange = appBarLayout.totalScrollRange
+            if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
+                // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_anak)
+            } else {
+                // Jika masih expanded, sembunyikan judul
+                binding.collapsingToolbarLayout.title = ""
+            }
+        }
     }
 
     private fun getAll(anakDao: AnakDao) {
