@@ -58,8 +58,8 @@ class AnakActivity : AppCompatActivity() {
         _bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
 
-//        // Toolbar
-//        setToolBar()
+        // Toolbar
+        setToolBar()
 //
 //        // Call database
 //        _anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
@@ -398,20 +398,20 @@ class AnakActivity : AppCompatActivity() {
 //        binding.etNamaOrtuAnak.text!!.clear()
 //    }
 //
-//    private fun setToolBar() {
-//        // Call object actionBar
-//        setSupportActionBar(binding.tbAnak)
-//        supportActionBar!!.title = getString(R.string.app_name_layanan_anak)
-//        // Change font style text
-//        binding.tbAnak.setTitleTextAppearance(this, R.style.Theme_Stunting)
-//        // Enable back button if you're in a child activity
-//        if (supportActionBar != null) {
-//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        }
-//        binding.tbAnak.setNavigationOnClickListener {
-//            onBackPressed()
-//        }
-//    }
+    private fun setToolBar() {
+        // Call object actionBar
+        setSupportActionBar(binding.tbAnak)
+        supportActionBar!!.title = getString(R.string.app_name_layanan_anak)
+        // Change font style text
+        binding.tbAnak.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        // Enable back button if you're in a child activity
+        if (supportActionBar != null) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.tbAnak.setNavigationOnClickListener {
+            onBackPressed()
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
