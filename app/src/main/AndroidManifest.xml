@@ -19,9 +19,12 @@
         <activity
             android:name=".ui.KonsultasiActivity"
             android:exported="false" />
+
+        <!-- Fungsi dari android:windowSoftInputMode="adjustResize" supaya editText muncul diatas keyboard -->
         <activity
             android:name=".ui.AnakActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.LayananKeluargaActivity"
             android:exported="false" />
@@ -43,9 +46,6 @@
         <activity
             android:name=".ui.BumilActivity"
             android:exported="false" />
-        <activity
-            android:name=".StuntingPreventActivity"
-            android:exported="false" /> <!-- We need this atribute for splash screen -->
         <activity
             android:name=".ui.SplashScreenActivity"
             android:exported="false" />
