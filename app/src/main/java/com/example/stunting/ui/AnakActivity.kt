@@ -66,15 +66,15 @@ class AnakActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        // Toolbar
+        setToolBar()
+
+        // Collapsed Toolbar
+        collapsedHandlerToolbar()
+
         // Binding AnakBottomSheetDialog for retrieve xml id
         _bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
-
-        // Collapsed
-        collapsedHandler()
-
-        // Toolbar
-        setToolBar()
 
         // Call database
         _anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
@@ -134,7 +134,7 @@ class AnakActivity : AppCompatActivity() {
         getAll(anakDao)
     }
 
-    private fun collapsedHandler() {
+    private fun collapsedHandlerToolbar() {
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val totalScrollRange = appBarLayout.totalScrollRange
             if (abs(verticalOffset.toDouble()) >= totalScrollRange) {

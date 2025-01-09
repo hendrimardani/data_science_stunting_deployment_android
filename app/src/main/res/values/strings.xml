@@ -67,4 +67,5 @@
     <string name="title_error_quotaExceeded_request_api">Gagal Merespons !</string>
     <string name="description_error_quotaExceeded_request_api">Silahkan hubungi pengembang aplikasi</string>
     <string name="child_service_form">Formulir Layanan Anak</string>
+    <string name="pregnant_mom_service_form">Formulir Layanan \nIbu Hamil</string>
 </resources>

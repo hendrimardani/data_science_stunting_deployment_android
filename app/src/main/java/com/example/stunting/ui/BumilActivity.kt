@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityBumilBinding? = null
@@ -71,6 +72,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         // Toolbar
         setToolBar()
 
+        // Collapsed Toolbar
+        collapsedHandlerToolbar()
+
         // Binding BumilBottomSheetDialog for retrieve xml id
         _bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
@@ -95,6 +99,19 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Get all items
         getAll(bumilDao)
+    }
+
+    private fun collapsedHandlerToolbar() {
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalScrollRange = appBarLayout.totalScrollRange
+            if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
+                // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_anak)
+            } else {
+                // Jika masih expanded, sembunyikan judul
+                binding.collapsingToolbarLayout.title = ""
+            }
+        }
     }
 
     private fun getRadioButtonValue(bindingRadioGroup: Int) {
