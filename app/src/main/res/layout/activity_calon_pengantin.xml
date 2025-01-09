@@ -293,6 +293,7 @@
                 android:id="@+id/rg_bimbingan_perkawinan_calon_pengantin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginStart="@dimen/dimen_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_bimbingan_perkawinan_calon_pengantin">
