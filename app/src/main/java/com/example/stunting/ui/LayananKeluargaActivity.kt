@@ -34,6 +34,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.math.abs
 
 class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityLayananKeluargaBinding? = null
@@ -65,6 +66,10 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         }
         // toolbar
         setToolBar()
+
+        // Collapsed Toolbar
+        collapsedHandlerToolbar()
+
         // Binding BumilBottomSheetDialog for retrieve xml id
         _bindingLayananKeluargaBottomSheetDialog = DialogBottomSheetLayananKeluargaBinding.inflate(layoutInflater)
         bindingLayananKeluargaBottomSheetDialog.tvListDataLayananKeluarga.text = getString(R.string.list_data_layanan_keluarga)
@@ -72,20 +77,33 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         // Call database
         _layananKeluargaDao = (application as DatabaseApp).dbLayananKeluargaDatabase.layananKeluargaDao()
 
-        getRadioButtonValue(R.id.rg_kategori_keluarga_rentan_layanan_keluarga, KATEGORI_KELUARGA_RENTAN)
-        getRadioButtonValue(R.id.rg_memiliki_kartu_keluarga_layanan_keluarga, MEMILIKI_KARTU_KELUARGA)
-        getRadioButtonValue(R.id.rg_memiliki_jamban_sehat_layanan_keluarga, MEMILIKI_JAMBAN_SEHAT)
-        getRadioButtonValue(R.id.rg_memiliki_sumber_air_bersih_layanan_keluarga, MEMILIKI_SUMBER_AIR_BERSIH)
-        getRadioButtonValue(R.id.rg_peserta_jaminan_kesehatan_layanan_keluarga, PESERTA_JAMINANA_KESEHATAN)
-        getRadioButtonValue(R.id.rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_layanan_keluarga, MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK)
-        getRadioButtonValue(R.id.rg_pendampingan_keluarga_oleh_tpk_layanan_keluarga, PENDAMPINGAN_KELUARGA_OLEH_TPK)
-        getRadioButtonValue(R.id.rg_peserta_kegiatan_ketahanan_pangan_layanan_keluarga, PESERTA_KEGIATAN_KETAHANAN_PANGAN)
+        getRadioButtonValue(R.id.rg_kategori_keluarga_rentan_keluarga, KATEGORI_KELUARGA_RENTAN)
+        getRadioButtonValue(R.id.rg_memiliki_kartu_keluarga_keluarga, MEMILIKI_KARTU_KELUARGA)
+        getRadioButtonValue(R.id.rg_memiliki_jamban_sehat_keluarga, MEMILIKI_JAMBAN_SEHAT)
+        getRadioButtonValue(R.id.rg_memiliki_sumber_air_bersih_keluarga, MEMILIKI_SUMBER_AIR_BERSIH)
+        getRadioButtonValue(R.id.rg_peserta_jaminan_kesehatan_keluarga, PESERTA_JAMINANA_KESEHATAN)
+        getRadioButtonValue(R.id.rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga, MEMILIKI_AKSES_SANITAS_PEMBUANGAN_LIMBAH_LAYAK)
+        getRadioButtonValue(R.id.rg_pendampingan_keluarga_oleh_tpk_keluarga, PENDAMPINGAN_KELUARGA_OLEH_TPK)
+        getRadioButtonValue(R.id.rg_peserta_kegiatan_ketahanan_pangan_keluarga, PESERTA_KEGIATAN_KETAHANAN_PANGAN)
 
-        binding.btnSubmitLayananKeluarga.setOnClickListener(this)
-        binding.btnTampilDataLayananKeluarga.setOnClickListener(this)
+        binding.btnSubmitKeluarga.setOnClickListener(this)
+        binding.btnTampilDataKeluarga.setOnClickListener(this)
 
         // Get all items
         getAll(layananKeluargaDao)
+    }
+
+    private fun collapsedHandlerToolbar() {
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalScrollRange = appBarLayout.totalScrollRange
+            if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
+                // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_keluarga)
+            } else {
+                // Jika masih expanded, sembunyikan judul
+                binding.collapsingToolbarLayout.title = ""
+            }
+        }
     }
 
     private fun getAll(layananKeluargaDao: LayananKeluargaDao) {
@@ -271,26 +289,26 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setToolBar() {
         // Call object actionBar
-        setSupportActionBar(binding.tbLayananKeluarga)
+        setSupportActionBar(binding.tbKeluarga)
         supportActionBar!!.title = getString(R.string.app_name_layanan_keluarga)
         // Change font style text
-        binding.tbLayananKeluarga.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        binding.tbKeluarga.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        binding.tbLayananKeluarga.setNavigationOnClickListener {
+        binding.tbKeluarga.setNavigationOnClickListener {
             onBackPressed()
         }
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.btn_submit_layanan_keluarga -> {
-                val namaAyah= binding.etNamaLayananKeluarga.text.toString()
-                val dusun = binding.etDusunLayananKeluarga.text.toString()
-                val namaIbu = binding.etNamaLengkapIbuHamilLayananKeluarga.text.toString()
-                val anak = binding.etAnakLayananKeluarga.text.toString()
+            R.id.btn_submit_keluarga -> {
+                val namaAyah= binding.etNamaKeluarga.text.toString()
+                val dusun = binding.etDusunKeluarga.text.toString()
+                val namaIbu = binding.etNamaLengkapIbuHamilKeluarga.text.toString()
+                val anak = binding.etAnakKeluarga.text.toString()
 
                 if (namaAyah.isNotEmpty() && dusun.isNotEmpty() && namaIbu.isNotEmpty() && anak.isNotEmpty()) {
                     addRecord(layananKeluargaDao, namaAyah, dusun, namaIbu, anak, kategoriKeluargaRentanRadioButton,
@@ -304,7 +322,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 }
             }
-            R.id.btn_tampil_data_layanan_keluarga -> {
+            R.id.btn_tampil_data_keluarga -> {
                 // Data not empty
 //                Log.e("CEK DATANA", countItem.toString())
                 if (countItem != 0) showBottomSheetDialog()
@@ -468,10 +486,10 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Clear the text when data saved !!! (success)
-        binding.etNamaLayananKeluarga.text!!.clear()
-        binding.etDusunLayananKeluarga.text!!.clear()
-        binding.etNamaLengkapIbuHamilLayananKeluarga.text!!.clear()
-        binding.etAnakLayananKeluarga.text!!.clear()
+        binding.etNamaKeluarga.text!!.clear()
+        binding.etDusunKeluarga.text!!.clear()
+        binding.etNamaLengkapIbuHamilKeluarga.text!!.clear()
+        binding.etAnakKeluarga.text!!.clear()
     }
 
     override fun onDestroy() {

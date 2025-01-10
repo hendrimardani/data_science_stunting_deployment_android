@@ -69,4 +69,17 @@
     <string name="child_service_form">Formulir Layanan Anak</string>
     <string name="pregnant_mom_service_form">Formulir Layanan \nIbu Hamil</string>
     <string name="teenage_girls_service_form">Formulir Layanan Remaja Putri</string>
+    <string name="family_service_form">Formulir Layanan Keluarga</string>
+    <string name="hint_nama">Nama</string>
+    <string name="hint_nik">Nomor Induk Kependudukan</string>
+    <string name="hint_tgl_lahir">Tanggal lahir</string>
+    <string name="hint_umur">Umur</string>
+    <string name="hint_tgl_hari_pertama_haid_terakhir">Hari pertama haid terakhir</string>
+    <string name="hint_tgl_perkiraan_lahir">Tanggal perkiraan lahir</string>
+    <string name="hint_umur_kehamilan">Umur kehamilan (bulan)</string>
+    <string name="tv_status_gizi_kesehatan">Status Gizi Kesehatan (Ya/Tidak)</string>
+    <string name="rb_ya">YA</string>
+    <string name="rb_tidak">TIDAK</string>
+    <string name="kirim">Kirim</string>
+    <string name="tampilkan_data">Tampilkan Data</string>
 </resources>

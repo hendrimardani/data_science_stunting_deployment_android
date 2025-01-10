@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/pregnant_mom_service_form"
-                android:textSize="36dp"
+                android:textSize="36sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:fontFamily="monospace"
@@ -84,7 +84,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Nama"
+                android:hint="@string/hint_nama"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -118,7 +118,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Nomor Induk Kependudukan"
+                android:hint="@string/hint_nik"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -152,7 +152,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Tanggal lahir"
+                android:hint="@string/hint_tgl_lahir"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -188,7 +188,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Umur"
+                android:hint="@string/hint_umur"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -222,7 +222,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Tanggal hari pertama haid terakhir"
+                android:hint="@string/hint_tgl_hari_pertama_haid_terakhir"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -258,7 +258,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Tanggal perkiraan lahir"
+                android:hint="@string/hint_tgl_perkiraan_lahir"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -294,7 +294,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Umur kehamilan (bulan)"
+                android:hint="@string/hint_umur_kehamilan"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -318,7 +318,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Status Gizi Kesehatan (Ya/Tidak): "
+                android:text="@string/tv_status_gizi_kesehatan"
                 android:layout_marginStart="@dimen/dimen_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_umur_kehamilan_bumil" />
@@ -337,13 +337,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/dimen_48"
-                    android:text="YA" />
+                    android:text="@string/rb_ya" />
 
                 <RadioButton
                     android:id="@+id/rb_tidak_bumil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TIDAK" />
+                    android:text="@string/rb_tidak" />
             </RadioGroup>
 
         <Button
@@ -354,11 +354,11 @@
             style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             app:strokeColor="@color/blueSecond"
             app:icon="@drawable/ic_send_to_mobile_24px"
+            android:text="@string/kirim"
             android:paddingHorizontal="30dp"
             app:layout_constraintTop_toBottomOf="@id/rg_bumil"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_bumil"
-            android:text="Kirim" />
+            app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_bumil" />
 
         <Button
             android:id="@+id/btn_tampil_data_bumil"
@@ -367,7 +367,7 @@
             style="@style/Widget.Material3.Button.Icon"
             app:strokeColor="@color/blueSecond"
             app:icon="@drawable/ic_visibility_24px"
-            android:text="Tampilkan Data"
+            android:text="@string/tampilkan_data"
             android:paddingHorizontal="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_8"
             app:layout_constraintBottom_toBottomOf="@+id/btn_submit_bumil"
