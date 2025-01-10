@@ -296,7 +296,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             R.id.et_tgl_lahir_calon_pengantin -> getDatePickerDialogTglLahir(this@CalonPengantinActivity)
             R.id.et_perkiraan_tanggal_pernikahan_calon_pengantin -> getDatePickerDialogPerkiraanTglPernikahan()
             R.id.btn_submit_calon_pengantin -> {
-                val nama = binding.etNamaCalonPengantin.text.toString()
+                val nama = binding.etNamaPerempuanCalonPengantin.text.toString()
                 val nik = binding.etNikCalonPengantin.text.toString()
                 val tglLahir = binding.etTglLahirCalonPengantin.text.toString()
                 val umur = binding.etUmurCalonPengantin.text.toString()
@@ -346,7 +346,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Clear the text when data saved !!! (success)
-        binding.etNamaCalonPengantin.text!!.clear()
+        binding.etNamaPerempuanCalonPengantin.text!!.clear()
         binding.etNikCalonPengantin.text!!.clear()
         binding.etTglLahirCalonPengantin.text!!.clear()
         binding.etUmurCalonPengantin.text!!.clear()

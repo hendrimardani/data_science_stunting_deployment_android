@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -38,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/pregnant_mom_service_form"
-                android:textSize="36dp"
+                android:textSize="36sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:fontFamily="monospace"
@@ -70,34 +69,34 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/iv_nama_calon_pengantin"
+                android:id="@+id/iv_nama_perempuan_calon_pengantin"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_name_catin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/til_nama_calon_pengantin"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_perempuan_calon_pengantin"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_calon_pengantin"
+                android:id="@+id/til_nama_perempuan_calon_pengantin"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Nama calon pengantin perempuan"
+                android:hint="@string/hint_nama_calon_peremmpuan"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
-                app:layout_constraintBottom_toBottomOf="@id/iv_nama_calon_pengantin"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_perempuan_calon_pengantin"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_nama_calon_pengantin"
-                app:layout_constraintTop_toTopOf="@id/iv_nama_calon_pengantin"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_perempuan_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_perempuan_calon_pengantin"
                 app:shapeAppearance="@style/Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nama_calon_pengantin"
+                    android:id="@+id/et_nama_perempuan_calon_pengantin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -111,7 +110,7 @@
                 android:src="@drawable/ic_nik"
                 app:layout_constraintEnd_toStartOf="@id/til_nik_calon_pengantin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_nama_calon_pengantin" />
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_perempuan_calon_pengantin" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_nik_calon_pengantin"
@@ -119,7 +118,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Nomor Induk Kependudukan"
+                android:hint="@string/hint_nik"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -153,7 +152,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Tanggal lahir"
+                android:hint="@string/hint_tgl_lahir"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -189,7 +188,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Umur"
+                android:hint="@string/hint_umur"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -223,7 +222,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="Perkiraan tanggal pernikahan"
+                android:hint="@string/hint_perkiraan_tgl_pernikahan"
                 app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
                 app:endIconMode="clear_text"
@@ -249,7 +248,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Periksa Kesehatan (Ya/Tidak): "
+                android:text="@string/hint_periksa_kesehatan"
                 android:layout_marginStart="@dimen/dimen_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin" />
@@ -268,13 +267,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/dimen_48"
-                    android:text="YA" />
+                    android:text="@string/rb_ya" />
 
                 <RadioButton
                     android:id="@+id/rb_tidak_periksa_kesehatan_calon_pengantin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TIDAK" />
+                    android:text="@string/rb_tidak" />
             </RadioGroup>
 
             <TextView
@@ -284,7 +283,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="Bimbingan Perkawinan (Ya/Tidak): "
+                android:text="@string/bimbingan_perkawinan"
                 android:layout_marginStart="@dimen/dimen_16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rg_periksa_kesehatan_calon_pengantin" />
@@ -303,13 +302,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/dimen_48"
-                    android:text="YA" />
+                    android:text="@string/rb_ya" />
 
                 <RadioButton
                     android:id="@+id/rb_tidak_bimbingan_perkawinan_calon_pengantin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TIDAK" />
+                    android:text="@string/rb_tidak" />
             </RadioGroup>
 
         <Button
@@ -320,11 +319,11 @@
             style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             app:strokeColor="@color/blueSecond"
             app:icon="@drawable/ic_send_to_mobile_24px"
+            android:text="@string/kirim"
             android:paddingHorizontal="30dp"
             app:layout_constraintTop_toBottomOf="@id/rg_bimbingan_perkawinan_calon_pengantin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_calon_pengantin"
-            android:text="Kirim" />
+            app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_calon_pengantin" />
 
         <Button
             android:id="@+id/btn_tampil_data_calon_pengantin"
@@ -333,7 +332,7 @@
             style="@style/Widget.Material3.Button.Icon"
             app:strokeColor="@color/blueSecond"
             app:icon="@drawable/ic_visibility_24px"
-            android:text="Tampilkan Data"
+            android:text="@string/tampilkan_data"
             android:paddingHorizontal="@dimen/dimen_16"
             android:layout_marginStart="@dimen/dimen_8"
             app:layout_constraintBottom_toBottomOf="@+id/btn_submit_calon_pengantin"

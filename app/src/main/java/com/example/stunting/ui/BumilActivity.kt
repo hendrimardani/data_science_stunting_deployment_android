@@ -370,7 +370,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         try {
             val file = File(fileDir, fileName)
             dataResult.add(
-                listOf("tanggal", "Nama Bumil", "Tgl Lahir Bumil", "Umur Bumil",
+                listOf("tanggal", "Nama Bumil", "Tgl Lahir Bumil", "Umur Bumil (tahun)",
                     "Hari Pertama Haid Terakhir", "Tanggal Perkiraan Lahir Bumil", "Umur Kehamilan Bumil", "Status Gizi Kesehatan (YA/TIDAK)")
             )
             bumilDao.fetchAllBumil().collect {

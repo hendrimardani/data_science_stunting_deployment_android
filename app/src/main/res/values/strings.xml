@@ -82,4 +82,27 @@
     <string name="rb_tidak">TIDAK</string>
     <string name="kirim">Kirim</string>
     <string name="tampilkan_data">Tampilkan Data</string>
+    <string name="hint_nama_kepala_keluarga">Nama kepala keluarga</string>
+    <string name="hint_dusun">Dusun</string>
+    <string name="hint_nama_lengkap_ibu_hamil">Nama lengkap ibu hamil</string>
+    <string name="hint_nama_anak">Nama anak</string>
+    <string name="hint_kategori_keluarga_rentan">Kategori Keluarga Rentan (Ya/Tidak)</string>
+    <string name="hint_memiliki_kartu_keluarga">Memiliki Kartu Keluarga (Ya/Tidak)</string>
+    <string name="memiliki_jamban_sehat">Memiliki Jamban Sehat (Ya/Tidak)</string>
+    <string name="memiliki_sumber_air_bersih">Memiliki Sumber Air Bersih (Ya/Tidak)</string>
+    <string name="peserta_jaminan_kesehatan">Peserta Jaminan Sosial (Ya/Tidak)</string>
+    <string name="memiliki_akses_sanitasi_pembuangan_limbah_layak">Memiliki Akses Sanitasi Pembuangan Limbah Layak\\n(Ya/Tidak)</string>
+    <string name="pendampingan_keluarga_oleh_tpk">Pendampingan Keluarga oleh TPK (Ya/Tidak)</string>
+    <string name="peserta_kegiatan_ketahanan_pangan">Peserta Kegiatan Ketahanan Pangan (Ya/Tidak)</string>
+    <string name="mendapat_ttd">Mendapat TTD (Ya/Tidak)</string>
+    <string name="hint_periksa_anemia">Periksa Anemia (Ya/Tidak)</string>
+    <string name="hasil_periksa_anemia">Hasil Periksa Anemia (Ya/Tidak)</string>
+    <string name="hint_jenis_kelamin">Jenis kelamin (0: L, 1: P)</string>
+    <string name="hint_umur_bulan">Umur (bulan)</string>
+    <string name="hint_tinggi_cm">Tinggi (cm)</string>
+    <string name="hint_nama_ortu">Nama orang tua</string>
+    <string name="hint_nama_calon_peremmpuan">Nama calon pengantin perempuan</string>
+    <string name="hint_perkiraan_tgl_pernikahan">Perkiraan tanggal pernikahan</string>
+    <string name="hint_periksa_kesehatan">Periksa Kesehatan (Ya/Tidak)</string>
+    <string name="bimbingan_perkawinan">Bimbingan Perkawinan (Ya/Tidak)</string>
 </resources>

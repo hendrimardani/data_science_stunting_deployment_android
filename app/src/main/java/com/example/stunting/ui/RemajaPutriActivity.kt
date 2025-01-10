@@ -303,7 +303,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
             val file = File(fileDir, fileName)
             dataResult.add(
                 listOf("tanggal", "Nama Remaja Putri", "NIK", "Tanggal Lahir",
-                    "Umur", "Mendapat TTD (YA/TIDAK)", "Periksa Anemia (YA/TIDAK)", "Hasil Periksa Anemia (YA/TIDAK)")
+                    "Umur (tahun)", "Mendapat TTD (YA/TIDAK)", "Periksa Anemia (YA/TIDAK)", "Hasil Periksa Anemia (YA/TIDAK)")
             )
             remajaPutriDao.fetchAllRemajaPutri().collect {
                 for (item in it) {
