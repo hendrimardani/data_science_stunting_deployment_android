@@ -104,7 +104,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
             val totalScrollRange = appBarLayout.totalScrollRange
             if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
                 // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
-                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_anak)
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_catin)
             } else {
                 // Jika masih expanded, sembunyikan judul
                 binding.collapsingToolbarLayout.title = ""
@@ -278,7 +278,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbCalonPengantin)
-        supportActionBar!!.title = getString(R.string.app_name_catin)
+        supportActionBar!!.title = getString(R.string.app_name_layanan_catin)
         // Change font style text
         binding.tbCalonPengantin.setTitleTextAppearance(this, R.style.Theme_Stunting)
 

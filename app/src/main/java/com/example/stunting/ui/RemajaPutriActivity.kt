@@ -37,6 +37,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.math.abs
 
 class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityRemajaPutriBinding? = null
@@ -64,6 +65,9 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         // Toolbar
         setToolBar()
 
+        // Collapsed Toolbar
+        collapsedHandlerToolbar()
+
         // Binding BumilBottomSheetDialog for retrieve xml id
         _bindingRemajaPutriBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingRemajaPutriBottomSheetDialog.tvListData.text = getString(R.string.list_data_rematri)
@@ -85,6 +89,19 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
 
         // Get all items
         getAll(remajaPutriDao)
+    }
+
+    private fun collapsedHandlerToolbar() {
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val totalScrollRange = appBarLayout.totalScrollRange
+            if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
+                // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_rematri)
+            } else {
+                // Jika masih expanded, sembunyikan judul
+                binding.collapsingToolbarLayout.title = ""
+            }
+        }
     }
 
     private fun getRadioButtonValue(bindingRadioGroup: Int, resultRadioButton: String) {
@@ -149,7 +166,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbRemajaPutri)
-        supportActionBar!!.title = getString(R.string.app_name_rematri)
+        supportActionBar!!.title = getString(R.string.app_name_layanan_rematri)
         // Change font style text
         binding.tbRemajaPutri.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Enable back button if you're in a child activity

@@ -18,7 +18,7 @@
     <string name="description_saved_data">Data berhasil di simpan di database !!</string>
     <string name="app_name_layanan_anak">Layanan Anak</string>
     <string name="list_data_bumil">List Data Bumil</string>
-    <string name="app_name_ibu_hamil">Ibu Hamil</string>
+    <string name="app_name_layanan_bumil">Layanan Ibu Hamil</string>
     <string name="title_input_failed">INPUT GAGAL !</string>
     <string name="description_input_failed">Data tidak boleh ada yang kosong !</string>
     <string name="list_data_catin">List Data Catin</string>
@@ -27,7 +27,7 @@
     <string name="list_data_layanan_keluarga">List Data Keluarga</string>
     <string name="list_data_anak">List Data Anak</string>
     <string name="app_name_layanan_keluarga">Layanan Keluarga</string>
-    <string name="app_name_catin">Calon Pengantin</string>
+    <string name="app_name_layanan_catin">Layanan Calon Pengantin</string>
     <string name="text_1">1. Konsumsi makanan bergizi seimbang yang mencakup protein hewani, sayuran, buah, dan karbohidrat kompleks.</string>
     <string name="text_2">2. Minum suplemen kehamilan sesuai anjuran dokter.</string>
     <string name="text_3">3. Menjaga berat badan ideal selama kehamilan.</string>
@@ -42,7 +42,7 @@
     <string name="description_about_email">https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRvxmkxPlXNnrdQHFnTpMFwwGQFsRbBzClXRqRrMbKBBgxdXmgPxVTVNKmFGBHJTdgpsnsV</string>
     <string name="description_about_ig">https://www.instagram.com/hendri.mardani/</string>
     <string name="list_data_rematri">List Data Rematri</string>
-    <string name="app_name_rematri">Remaja Putri</string>
+    <string name="app_name_layanan_rematri">Layanan Remaja Putri</string>
     <string name="konsultasi">Mau tanya apa ?</string>
     <string name="classification_stunting_kurus">STUNTING KURUS</string>
     <string name="classification_stunting_tinggi">STUNTING TINGGI</string>
@@ -68,4 +68,5 @@
     <string name="description_error_quotaExceeded_request_api">Silahkan hubungi pengembang aplikasi</string>
     <string name="child_service_form">Formulir Layanan Anak</string>
     <string name="pregnant_mom_service_form">Formulir Layanan \nIbu Hamil</string>
+    <string name="teenage_girls_service_form">Formulir Layanan Remaja Putri</string>
 </resources>

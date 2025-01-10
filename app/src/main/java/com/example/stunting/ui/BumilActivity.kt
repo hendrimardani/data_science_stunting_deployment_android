@@ -106,7 +106,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             val totalScrollRange = appBarLayout.totalScrollRange
             if (abs(verticalOffset.toDouble()) >= totalScrollRange) {
                 // Jika CollapsingToolbarLayout sudah collapsed, tampilkan judul
-                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_anak)
+                binding.collapsingToolbarLayout.title = getString(R.string.app_name_layanan_bumil)
             } else {
                 // Jika masih expanded, sembunyikan judul
                 binding.collapsingToolbarLayout.title = ""
@@ -140,7 +140,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private fun setToolBar() {
         // Call object actionBar
         setSupportActionBar(binding.tbBumil)
-        supportActionBar!!.title = getString(R.string.app_name_ibu_hamil)
+        supportActionBar!!.title = getString(R.string.app_name_layanan_bumil)
         // Change font style text
         binding.tbBumil.setTitleTextAppearance(this, R.style.Theme_Stunting)
 
