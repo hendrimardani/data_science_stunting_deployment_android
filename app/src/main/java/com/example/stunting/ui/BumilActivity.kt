@@ -71,7 +71,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
         // Toolbar
         setToolBar()
-
+        
         // Collapsed Toolbar
         collapsedHandlerToolbar()
 
