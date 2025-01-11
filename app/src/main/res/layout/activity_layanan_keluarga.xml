@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:collapsedTitleTextColor="@color/white"
-            app:contentScrim="?attr/colorPrimary"
+            app:collapsedTitleTextColor="?attr/colorText"
+            app:contentScrim="?attr/colorBackground"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 
@@ -46,11 +46,12 @@
                 android:shadowDy="10"
                 android:shadowRadius="10" />
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/tb_keluarga"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIconTint="?attr/colorText"
                 app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -85,8 +86,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nama_kepala_keluarga"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nama_keluarga"
@@ -99,6 +102,7 @@
                     android:id="@+id/et_nama_keluarga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +111,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_nik"
+                android:src="@drawable/ic_dusun"
                 app:layout_constraintEnd_toStartOf="@id/til_dusun_keluarga"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_nama_keluarga" />
@@ -119,8 +123,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_dusun"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_dusun_keluarga"
@@ -133,6 +139,7 @@
                     android:id="@+id/et_dusun_keluarga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,8 +160,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nama_lengkap_ibu_hamil"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nama_lengkap_ibu_hamil_keluarga"
@@ -167,6 +176,7 @@
                     android:id="@+id/et_nama_lengkap_ibu_hamil_keluarga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,8 +197,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nama_anak"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_anak_keluarga"
@@ -201,6 +213,7 @@
                     android:id="@+id/et_anak_keluarga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
