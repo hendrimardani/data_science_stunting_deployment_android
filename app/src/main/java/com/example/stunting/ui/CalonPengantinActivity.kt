@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +40,9 @@ import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -97,6 +102,48 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
 
         // Get all items
         getAll(calonPengantinDao)
+
+        // Set inputText umur from calculate tgl lahir
+        setInputTextUmur()
+    }
+
+    private fun setInputTextUmur() {
+        // Ketika tiap sentuh inputText, inputText umur akan terupdate
+        binding.etTglLahirCalonPengantin.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                val tglLahir = s.toString()
+                // Log format untuk debugging
+//                Log.e("TEST FORMAT", tglLahir)
+
+                // Pastikan tglLahir tidak kosong sebelum mencoba menghitung umur
+                if (tglLahir.isNotEmpty()) {
+                    val umur = calculateAge(tglLahir)
+                    binding.etUmurCalonPengantin.setText(umur)
+                } else {
+                    // Clear tglLahir jika input tanggal kosong
+                    binding.etUmurCalonPengantin.setText("")
+                }
+            }
+        })
+    }
+
+    private fun calculateAge(birthDateString: String): String {
+        // Format tanggal (ubah format jika perlu)
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val birthDate = LocalDate.parse(birthDateString, formatter)
+
+        // Tanggal hari ini
+        val today = LocalDate.now()
+
+        // Hitung umur
+        val period = Period.between(birthDate, today)
+//        Log.e("TEST RESULT PERIOD ", period.toString())
+
+        return "${period.years} tahun, ${period.months} bulan"
     }
 
     private fun collapsedHandlerToolbar() {

@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:collapsedTitleTextColor="@color/white"
-            app:contentScrim="?attr/colorPrimary"
+            app:collapsedTitleTextColor="?attr/colorText"
+            app:contentScrim="?attr/colorBackground"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/pregnant_mom_service_form"
+                android:text="@string/bride_and_groom_service_form"
                 android:textSize="36sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -46,11 +46,12 @@
                 android:shadowDy="10"
                 android:shadowRadius="10" />
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/tb_calon_pengantin"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIconTint="?attr/colorText"
                 app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -85,8 +86,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nama_calon_peremmpuan"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nama_perempuan_calon_pengantin"
@@ -99,6 +102,7 @@
                     android:id="@+id/et_nama_perempuan_calon_pengantin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,8 +123,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nik"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nik_calon_pengantin"
@@ -133,6 +139,7 @@
                     android:id="@+id/et_nik_calon_pengantin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,8 +160,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_tgl_lahir"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_calon_pengantin"
@@ -189,8 +198,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_umur"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="0dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_umur_calon_pengantin"
@@ -203,7 +214,9 @@
                     android:id="@+id/et_umur_calon_pengantin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:textColor="?attr/colorText"
+                    android:enabled="false"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -223,8 +236,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_perkiraan_tgl_pernikahan"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin"

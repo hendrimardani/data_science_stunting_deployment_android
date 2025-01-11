@@ -105,4 +105,5 @@
     <string name="hint_perkiraan_tgl_pernikahan">Perkiraan tanggal pernikahan</string>
     <string name="hint_periksa_kesehatan">Periksa Kesehatan (Ya/Tidak)</string>
     <string name="bimbingan_perkawinan">Bimbingan Perkawinan (Ya/Tidak)</string>
+    <string name="bride_and_groom_service_form">Formulir Layanan Calon Pengantin</string>
 </resources>
