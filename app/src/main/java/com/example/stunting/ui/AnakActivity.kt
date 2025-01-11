@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
@@ -40,6 +43,9 @@ import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import kotlin.math.abs
 
@@ -80,9 +86,9 @@ class AnakActivity : AppCompatActivity() {
         _anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
 
         // Set caledar and update in view result
-        setCalendarTglLahir(binding.etTglAnak)
+        setCalendarTglLahir(binding.etTglLahirAnak)
 
-        binding.etTglAnak.setOnClickListener {
+        binding.etTglLahirAnak.setOnClickListener {
             getDatePickerDialogTglLahir(this@AnakActivity)
         }
 
@@ -90,7 +96,7 @@ class AnakActivity : AppCompatActivity() {
             val nama = binding.etNamaAnak.text.toString()
             val jk = binding.etJkAnak.text.toString()
             val nik = binding.etNikAnak.text.toString()
-            val tglLahir = binding.etTglAnak.text.toString()
+            val tglLahir = binding.etTglLahirAnak.text.toString()
             val umur = binding.etUmurAnak.text.toString()
             val tinggi = binding.etTinggiAnak.text.toString()
             val namaOrtu = binding.etNamaOrtuAnak.text.toString()
@@ -132,6 +138,54 @@ class AnakActivity : AppCompatActivity() {
 
         // Get all items
         getAll(anakDao)
+
+        // Set inputText umur from calculate tgl lahir
+        setInputTextUmur()
+    }
+
+    private fun setInputTextUmur() {
+        // Ketika tiap sentuh inputText, inputText umur akan terupdate
+        binding.etTglLahirAnak.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                val tglLahir = s.toString()
+                // Log format untuk debugging
+//                Log.e("TEST FORMAT", tglLahir)
+
+                // Pastikan umur tidak kosong sebelum mencoba menghitung umur
+                if (tglLahir.isNotEmpty()) {
+                    val umur = calculateAge(tglLahir)
+                    binding.etUmurAnak.setText(umur.toString())
+                } else {
+                    // Clear umur jika input tanggal kosong
+                    binding.etUmurAnak.setText("")
+                }
+            }
+        })
+    }
+
+    private fun calculateAge(birthDateString: String): Int {
+        // Format tanggal (ubah format jika perlu)
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val birthDate = LocalDate.parse(birthDateString, formatter)
+
+        // Tanggal hari ini
+        val today = LocalDate.now()
+
+        // Hitung umur
+        val period = Period.between(birthDate, today)
+//        Log.e("TEST RESULT PERIOD ", period.toString())
+
+        val totalDays = period.days + period.months * 30 + period.years * 365
+        Log.e("TEST TOTAL DAYS", totalDays.toString())
+
+        // Hitung dalam minggu
+        val weeksPregnant = totalDays / 7
+        val monthsPregnant = weeksPregnant / 4 // Hitung dalam bulan
+        return monthsPregnant
     }
 
     private fun collapsedHandlerToolbar() {
@@ -419,7 +473,7 @@ class AnakActivity : AppCompatActivity() {
         // Clear the text when data saved !!! (success)
         binding.etNamaAnak.text!!.clear()
         binding.etNikAnak.text!!.clear()
-        binding.etTglAnak.text!!.clear()
+        binding.etTglLahirAnak.text!!.clear()
         binding.etUmurAnak.text!!.clear()
         binding.etJkAnak.text!!.clear()
         binding.etTinggiAnak.text!!.clear()

@@ -150,6 +150,8 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Hitung selisih hari
         val period = Period.between(firstDayOfLastPeriod, today)
+//        Log.e("TEST RESULT PERIOD ", period.toString())
+
         val totalDays = period.days + period.months * 30 + period.years * 365
 
         // Hitung minggu kehamilan
@@ -177,7 +179,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     binding.etTglPerkiraanLahirBumil.setText(umur)
                 } else {
                     // Clear tgl perkiraan lahir jika input tanggal kosong
-                    binding.etUmurBumil.setText("")
+                    binding.etTglPerkiraanLahirBumil.setText("")
                 }
             }
         })
@@ -215,7 +217,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     val umur = calculateAge(tglLahir)
                     binding.etUmurBumil.setText(umur)
                 } else {
-                    // Clear umur jika input tanggal kosong
+                    // Clear tglLahir jika input tanggal kosong
                     binding.etUmurBumil.setText("")
                 }
             }
@@ -232,8 +234,10 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         val today = LocalDate.now()
 
         // Hitung umur
-        val age = Period.between(birthDate, today)
-        return "${age.years} tahun, ${age.months} bulan"
+        val period = Period.between(birthDate, today)
+//        Log.e("TEST RESULT PERIOD ", period.toString())
+
+        return "${period.years} tahun, ${period.months} bulan"
     }
 
     private fun collapsedHandlerToolbar() {

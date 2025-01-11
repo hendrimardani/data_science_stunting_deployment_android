@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -20,7 +19,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:collapsedTitleTextColor="@color/white"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="?attr/colorBackground"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp">
 
@@ -47,11 +46,12 @@
                 android:shadowDy="10"
                 android:shadowRadius="10" />
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/tb_remaja_putri"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIconTint="?attr/colorText"
                 app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -86,8 +86,10 @@ supaya editText muncul diatas keyboard -->
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:hint="@string/hint_nama"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/blueSecond_200"
+            android:textColorHint="?attr/colorTextHint"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/red"
             app:layout_constraintBottom_toBottomOf="@id/iv_nama_remaja_putri"
@@ -100,6 +102,7 @@ supaya editText muncul diatas keyboard -->
                 android:id="@+id/et_nama_remaja_putri"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,8 +123,10 @@ supaya editText muncul diatas keyboard -->
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:hint="@string/hint_nik"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/blueSecond_200"
+            android:textColorHint="?attr/colorTextHint"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/red"
             app:layout_constraintBottom_toBottomOf="@id/iv_nik_remaja_putri"
@@ -134,6 +139,7 @@ supaya editText muncul diatas keyboard -->
                 android:id="@+id/et_nik_remaja_putri"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,8 +160,10 @@ supaya editText muncul diatas keyboard -->
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:hint="@string/hint_tgl_lahir"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/blueSecond_200"
+            android:textColorHint="?attr/colorTextHint"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/red"
             app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_remaja_putri"
@@ -170,6 +178,7 @@ supaya editText muncul diatas keyboard -->
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                android:textColor="?attr/colorText"
                 android:inputType="datetime" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,10 +199,12 @@ supaya editText muncul diatas keyboard -->
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:hint="@string/hint_umur"
-            app:boxBackgroundColor="@color/white"
-            app:boxStrokeColor="@color/blueSecond_200"
+            android:textColorHint="?attr/colorTextHint"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
             app:endIconMode="clear_text"
             app:endIconTint="@color/red"
+            app:boxStrokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="@id/iv_umur_remaja_Putri"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_umur_remaja_Putri"
@@ -204,6 +215,7 @@ supaya editText muncul diatas keyboard -->
                 android:id="@+id/et_umur_remaja_putri"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
