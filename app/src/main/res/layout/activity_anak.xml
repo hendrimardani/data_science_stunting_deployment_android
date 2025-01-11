@@ -56,9 +56,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Fungsi dari
-    android:fitsSystemWindows="true"
-    supaya editText muncul diatas keyboard -->
+    <!-- Fungsi dari android:fitsSystemWindows="true" supaya editText muncul diatas keyboard -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

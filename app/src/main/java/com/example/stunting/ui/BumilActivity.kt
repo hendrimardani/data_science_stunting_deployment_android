@@ -224,7 +224,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-
     private fun calculateAge(birthDateString: String): String {
         // Format tanggal (ubah format jika perlu)
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
