@@ -126,7 +126,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable?) {
                 val hpht = s.toString()
                 // Log format untuk debugging
-                Log.e("TEST FORMAT", hpht)
+//                Log.e("TEST FORMAT", hpht)
 
                 // Pastikan hpht tidak kosong sebelum mencoba menghitung umur
                 if (hpht.isNotEmpty()) {
@@ -169,7 +169,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable?) {
                 val hpht = s.toString()
                 // Log format untuk debugging
-                Log.e("TEST FORMAT", hpht)
+//                Log.e("TEST FORMAT", hpht)
 
                 // Pastikan hpht tidak kosong sebelum mencoba menghitung umur
                 if (hpht.isNotEmpty()) {
