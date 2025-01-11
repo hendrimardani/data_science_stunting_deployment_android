@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -37,6 +40,9 @@ import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -71,7 +77,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
         // Toolbar
         setToolBar()
-        
+
         // Collapsed Toolbar
         collapsedHandlerToolbar()
 
@@ -84,14 +90,14 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
-        setCalendarHariPertamaHaidTerakhir(binding.etHariPertamaHaidTerakhirBumil)
+        setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
         setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
 
         // getRadioButtomValue
         getRadioButtonValue(R.id.rg_bumil)
 
         binding.etTglLahirBumil.setOnClickListener(this)
-        binding.etHariPertamaHaidTerakhirBumil.setOnClickListener(this)
+        binding.etTglHariPertamaHaidTerakhirBumil.setOnClickListener(this)
         binding.etTglPerkiraanLahirBumil.setOnClickListener(this)
         binding.rgBumil.setOnClickListener(this)
         binding.btnSubmitBumil.setOnClickListener(this)
@@ -99,6 +105,135 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Get all items
         getAll(bumilDao)
+
+        // Set inputText umur from calculate tgl lahir
+        setInputTextUmur()
+
+        // Set inputText tanggalPerkiraanLahir
+        setInputTextTanggalPerkiraanLahir()
+
+        // Set inputText gestationalAge from calculate hari pertama haid terakhir
+        setInputTextUmurKehamilan()
+    }
+
+    private fun setInputTextUmurKehamilan() {
+        // Ketika tiap sentuh inputText, inputText umur kehamilan akan terupdate
+        binding.etTglHariPertamaHaidTerakhirBumil.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                val hpht = s.toString()
+                // Log format untuk debugging
+                Log.e("TEST FORMAT", hpht)
+
+                // Pastikan hpht tidak kosong sebelum mencoba menghitung umur
+                if (hpht.isNotEmpty()) {
+                    val umurKehamilan = calculateGestationalAgeInMonths(hpht)
+                    binding.etUmurKehamilanBumil.setText(umurKehamilan)
+                } else {
+                    // Clear umur kehamilan jika input tanggal kosong
+                    binding.etUmurKehamilanBumil.setText("")
+                }
+            }
+        })
+    }
+
+    private fun calculateGestationalAgeInMonths(hpht: String): String {
+        // Format tanggal input
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val firstDayOfLastPeriod = LocalDate.parse(hpht, formatter)
+
+        // Tanggal hari ini
+        val today = LocalDate.now()
+
+        // Hitung selisih hari
+        val period = Period.between(firstDayOfLastPeriod, today)
+        val totalDays = period.days + period.months * 30 + period.years * 365
+
+        // Hitung minggu kehamilan
+        val weeksPregnant = totalDays / 7
+        val monthsPregnant = weeksPregnant / 4 // 1 bulan kehamilan = 4 minggu
+
+        return "$monthsPregnant bulan (${weeksPregnant} minggu)"
+    }
+
+    private fun setInputTextTanggalPerkiraanLahir() {
+        // Ketika tiap sentuh inputText, inputText tgl perkiraan lahir akan terupdate
+        binding.etTglHariPertamaHaidTerakhirBumil.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                val hpht = s.toString()
+                // Log format untuk debugging
+                Log.e("TEST FORMAT", hpht)
+
+                // Pastikan hpht tidak kosong sebelum mencoba menghitung umur
+                if (hpht.isNotEmpty()) {
+                    val umur = calculateTanggalPerkiraanLahir(hpht)
+                    binding.etTglPerkiraanLahirBumil.setText(umur)
+                } else {
+                    // Clear tgl perkiraan lahir jika input tanggal kosong
+                    binding.etUmurBumil.setText("")
+                }
+            }
+        })
+    }
+
+    private fun calculateTanggalPerkiraanLahir(hpht: String): String {
+        // Format tanggal input
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val firstDayOfLastPeriod = LocalDate.parse(hpht, formatter)
+
+        // Tambahkan 7 hari, kurangi 3 bulan, dan tambahkan 1 tahun jika diperlukan
+        val dueDate = firstDayOfLastPeriod.plusDays(7).minusMonths(3).let {
+            if (it.isBefore(firstDayOfLastPeriod)) it.plusYears(1) else it
+        }
+
+        // Format hasil
+        return dueDate.format(formatter)
+    }
+
+
+    private fun setInputTextUmur() {
+        // Ketika tiap sentuh inputText, inputText umur akan terupdate
+        binding.etTglLahirBumil.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+
+            override fun afterTextChanged(s: Editable?) {
+                val tglLahir = s.toString()
+                // Log format untuk debugging
+//                Log.e("TEST FORMAT", tglLahir)
+
+                // Pastikan tglLahir tidak kosong sebelum mencoba menghitung umur
+                if (tglLahir.isNotEmpty()) {
+                    val umur = calculateAge(tglLahir)
+                    binding.etUmurBumil.setText(umur)
+                } else {
+                    // Clear umur jika input tanggal kosong
+                    binding.etUmurBumil.setText("")
+                }
+            }
+        })
+    }
+
+
+    private fun calculateAge(birthDateString: String): String {
+        // Format tanggal (ubah format jika perlu)
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val birthDate = LocalDate.parse(birthDateString, formatter)
+
+        // Tanggal hari ini
+        val today = LocalDate.now()
+
+        // Hitung umur
+        val age = Period.between(birthDate, today)
+        return "${age.years} tahun, ${age.months} bulan"
     }
 
     private fun collapsedHandlerToolbar() {
@@ -156,14 +291,14 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.et_tgl_lahir_bumil -> getDatePickerDialogTglLahir(this@BumilActivity)
-            R.id.et_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
+            R.id.et_tgl_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
             R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
             R.id.btn_submit_bumil -> {
                 val nama = binding.etNamaBumil.text.toString()
                 val nik = binding.etNikBumil.text.toString()
                 val tglLahir = binding.etTglLahirBumil.text.toString()
                 val umur = binding.etUmurBumil.text.toString()
-                val hariPertamaHaidTerakhir = binding.etHariPertamaHaidTerakhirBumil.text.toString()
+                val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
                 val tanggalPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
                 val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
                 val statusGiziKesehatan = statusGiziRadioButton
@@ -245,7 +380,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.etNikBumil.text!!.clear()
         binding.etTglLahirBumil.text!!.clear()
         binding.etUmurBumil.text!!.clear()
-        binding.etHariPertamaHaidTerakhirBumil.text!!.clear()
+        binding.etTglHariPertamaHaidTerakhirBumil.text!!.clear()
         binding.etTglPerkiraanLahirBumil.text!!.clear()
         binding.etUmurKehamilanBumil.text!!.clear()
     }

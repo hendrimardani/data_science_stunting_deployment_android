@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -85,8 +85,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nama"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
@@ -99,6 +101,7 @@
                     android:id="@+id/et_nama_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,8 +122,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_nik"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nik_bumil"
@@ -133,6 +138,7 @@
                     android:id="@+id/et_nik_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,8 +159,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_tgl_lahir"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_bumil"
@@ -169,6 +177,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:textColor="?attr/colorText"
                     android:inputType="datetime" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,21 +198,26 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_umur"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_umur_bumil"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_umur_bumil"
                 app:layout_constraintTop_toTopOf="@id/iv_umur_bumil"
                 app:shapeAppearance="@style/Rounded">
 
+                <!-- Atur ke false android:enabled="false" supaya tidak bisa disentuh oleh user inputTypenya -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_umur_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:enabled="false"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
@@ -223,8 +237,10 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_tgl_hari_pertama_haid_terakhir"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_hari_pertama_haid_terakhir_bumil"
@@ -234,11 +250,12 @@
                 app:shapeAppearance="@style/Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_hari_pertama_haid_terakhir_bumil"
+                    android:id="@+id/et_tgl_hari_pertama_haid_terakhir_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:textColor="?attr/colorText"
                     android:inputType="datetime" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -259,8 +276,8 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_tgl_perkiraan_lahir"
-                app:boxBackgroundColor="@color/white"
                 app:boxStrokeColor="@color/blueSecond_200"
+                app:boxStrokeWidth="0dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:layout_constraintBottom_toBottomOf="@id/iv_tgl_perkiraan_lahir_bumil"
@@ -269,12 +286,15 @@
                 app:layout_constraintTop_toTopOf="@id/iv_tgl_perkiraan_lahir_bumil"
                 app:shapeAppearance="@style/Rounded">
 
+                <!-- Atur ke false android:enabled="false" supaya tidak bisa disentuh oleh user inputTypenya -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_tgl_perkiraan_lahir_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:enabled="false"
+                    android:textColor="?attr/colorText"
                     android:inputType="datetime" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -295,10 +315,12 @@
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:hint="@string/hint_umur_kehamilan"
-                app:boxBackgroundColor="@color/white"
-                app:boxStrokeColor="@color/blueSecond_200"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_umur_kehamilan_bumil"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_umur_kehamilan_bumil"
@@ -309,6 +331,8 @@
                     android:id="@+id/et_umur_kehamilan_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:enabled="false"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 

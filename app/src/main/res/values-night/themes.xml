@@ -2,8 +2,13 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Stunting" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-         <item name="colorPrimary">@color/bluePrimary</item>
-        <item name="colorSecondary">@color/blueSecond</item>
+        <item name="colorPrimary">@color/blueSecond</item>
+        <item name="colorSecondary">@color/blueSecond_200</item>
+        <item name="colorBackground">@color/black</item>
+        <item name="colorStroke">@color/white</item>
+        <!-- Text color -->
+        <item name="colorText">@color/white</item>
+        <item name="colorTextHint">@color/white</item>
 
         <!-- Menggunakan activity transition -->
         <item name="android:windowActivityTransitions">true</item>
