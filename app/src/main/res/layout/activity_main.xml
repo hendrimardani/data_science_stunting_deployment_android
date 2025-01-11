@@ -5,17 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    android:background="?attr/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="?attr/colorBackground"
+            app:logo="@drawable/icon_stunting"
+            app:titleTextColor="?attr/colorText"
+            app:navigationIconTint="?attr/colorText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/card_shape"
+            android:padding="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +41,12 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:textColor="@color/white"
+                android:fontFamily="monospace"
+                android:shadowColor="@color/white"
+                android:shadowDx="10"
+                android:shadowDy="10"
+                android:shadowRadius="10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -56,6 +66,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -70,7 +81,14 @@
                         android:layout_gravity="center"
                         android:text="Layanan"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -78,14 +96,21 @@
                         android:layout_gravity="center"
                         android:text="Bumil"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10" />
+
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_anak"
-            android:layout_width="140dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:backgroundTint="@color/blueSecond"
@@ -100,6 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:padding="@dimen/dimen_4"
                 android:orientation="vertical">
 
                 <ImageView
@@ -114,7 +140,14 @@
                     android:layout_gravity="center"
                     android:text="Layanan"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:fontFamily="monospace"
+                    android:shadowColor="@color/white"
+                    android:shadowDx="10"
+                    android:shadowDy="10"
+                    android:shadowRadius="10" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,14 +155,21 @@
                     android:layout_gravity="center"
                     android:text="Anak"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:fontFamily="monospace"
+                    android:shadowColor="@color/white"
+                    android:shadowDx="10"
+                    android:shadowDy="10"
+                    android:shadowRadius="10" />
+
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_calon_pengantin"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:elevation="4dp"
                 android:backgroundTint="@color/blueSecond"
@@ -142,8 +182,9 @@
                 app:layout_constraintEnd_toEndOf="@id/cv_bumil">
 
                 <LinearLayout
-                    android:layout_width="140dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -158,15 +199,28 @@
                         android:layout_gravity="center"
                         android:text="Layanan"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Calon Pengantin"
+                        android:layout_marginStart="10dp"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -187,6 +241,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -201,7 +256,13 @@
                         android:layout_gravity="center"
                         android:text="Layanan"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -209,7 +270,13 @@
                         android:layout_gravity="center"
                         android:text="Remaja Putri"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -232,6 +299,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:padding="@dimen/dimen_4"
                     android:orientation="vertical">
 
                     <ImageView
@@ -245,7 +313,13 @@
                         android:layout_gravity="center"
                         android:text="Layanan"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -253,14 +327,20 @@
                         android:layout_gravity="center"
                         android:text="Keluarga"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_cegah_stunting"
-                android:layout_width="140dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:elevation="4dp"
                 android:backgroundTint="@color/blueSecond"
@@ -276,6 +356,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen_4"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -290,7 +371,13 @@
                         android:layout_gravity="center"
                         android:text="Layanan"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -298,7 +385,13 @@
                         android:layout_gravity="center"
                         android:text="Cegah Stunting"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:shadowColor="@color/white"
+                        android:shadowDx="10"
+                        android:shadowDy="10"
+                        android:shadowRadius="10" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -310,8 +403,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="Tombol chatbot"
             android:src="@drawable/ic_message_40"
-            app:elevation="5dp"
-            style="@style/Widget.Material3.Button"
+            app:backgroundTint="@color/blueSecond"
+            app:tint="@color/white"
             android:layout_margin="@dimen/dimen_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
