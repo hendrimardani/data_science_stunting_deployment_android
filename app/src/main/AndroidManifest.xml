@@ -16,8 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
+
+        <!-- Tambahkan android:windowsSoftInputMode="adjustResize" supaya ketika menekan TextInputEditText muncul diatas keyboard -->
         <activity
             android:name=".ui.KonsultasiActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <activity

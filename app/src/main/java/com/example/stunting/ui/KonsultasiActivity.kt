@@ -5,13 +5,17 @@ import android.app.Dialog
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -31,6 +35,7 @@ import com.google.ai.client.generativeai.type.UnknownException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToastStyle
+import kotlin.math.max
 
 
 class KonsultasiActivity : AppCompatActivity() {
@@ -48,20 +53,22 @@ class KonsultasiActivity : AppCompatActivity() {
         enableEdgeToEdge()
         _binding = ActivityKonsultasiBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        // Supaya tidak ada margin di atas app bar dan dibawah
+        setCoordinatorFitsSystemWindows()
+
         // Toolbar
         setToolBar()
 
         _messageDao = (application as DatabaseApp).dbMessage.messageDao()
 
+        // isWordAvailable
+        wordAvailable()
+
         try {
             binding.ivKonsultasi.setOnClickListener {
                 val input = binding.etKonsultasi.text
-                if (input.isEmpty()) {
+                if (input!!.isEmpty()) {
                     toastInfo(
                         this@KonsultasiActivity,
                         getString(R.string.title_input_failed), getString(R.string.description_input_failed),
@@ -98,6 +105,42 @@ class KonsultasiActivity : AppCompatActivity() {
 
         // Get all items
         getAll(messageDao)
+    }
+
+    private fun wordAvailable() {
+        // Matikan ikon jika tidak ada input
+        binding.etKonsultasi.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s!!.isEmpty()){
+                    binding.ivKonsultasi.setColorFilter(getColor(R.color.gray))
+                } else {
+                    binding.ivKonsultasi.setColorFilter(getColor(R.color.blueSecond))
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) { }
+        })
+    }
+
+    private fun setCoordinatorFitsSystemWindows() {
+        // Fungsi ini untuk menghapus margin dibagian atas dan bawah ketika menerapkan CoordinatorLayout
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById<View>(R.id.main)
+        ) { view: View, insets: WindowInsetsCompat ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBarsInsets =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Atur padding untuk menyesuaikan keyboard (IME) dan status bar
+            view.setPadding(
+                0, 0, 0,
+                max(imeInsets.bottom.toDouble(), systemBarsInsets.bottom.toDouble()).toInt()
+            )
+            insets
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -213,7 +256,7 @@ class KonsultasiActivity : AppCompatActivity() {
         // Change font style text
         binding.tbKonsultasi.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Set icon
-        supportActionBar!!.setIcon(R.drawable.neural_network_40)
+        supportActionBar!!.setIcon(R.drawable.neural_network)
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

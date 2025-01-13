@@ -1,66 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.KonsultasiActivity">
+    android:background="?attr/colorBackground">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_konsultasi"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="?attr/colorBackground"
+        android:fitsSystemWindows="true"> <!-- Memastikan AppBar mengikuti insets -->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_konsultasi"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:listitem="@layout/item_sent_konsultasi_adapter"
-        app:layout_constraintBottom_toTopOf="@id/cv_konsultasi"
-        app:layout_constraintTop_toBottomOf="@id/tb_konsultasi"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_konsultasi"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:backgroundTint="@color/light_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_konsultasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:logo="@drawable/neural_network" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <EditText
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorBackground"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- ubah dari android:layout_height="0dp" ke android:layout_height="wrap_content"
+        supaya tidak ada padding setengah didalam recyclerview -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_konsultasi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_sent_konsultasi_adapter"
+            android:background="@drawable/bg_konsultasi"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+            app:layout_constraintBottom_toTopOf="@id/til_konsultasi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="NotSibling" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_konsultasi"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/hint_konsultasi"
+            android:layout_marginStart="@dimen/dimen_4"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_konsultasi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_konsultasi"
-                android:layout_width="330dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:backgroundTint="@color/white"
-                android:background="@drawable/shape_edit_text_konsultasi"
-                android:gravity="top"
-                android:padding="5dp"
-                android:layout_margin="@dimen/dimen_8"
-                android:hint="@string/konsultasi"
-                android:layout_marginHorizontal="@dimen/dimen_4" />
+                android:maxLines="5"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/iv_konsultasi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_40"
-                android:layout_marginEnd="@dimen/dimen_8"
-                android:layout_marginTop="@dimen/dimen_8" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_konsultasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_40"
+            android:layout_marginEnd="@dimen/dimen_8"
+            app:layout_constraintStart_toEndOf="@id/til_konsultasi"
+            app:layout_constraintTop_toTopOf="@id/til_konsultasi"
+            app:layout_constraintBottom_toBottomOf="@id/til_konsultasi"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
