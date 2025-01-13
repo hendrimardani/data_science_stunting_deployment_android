@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private var isCoordinatorVisible = false // Untuk melacak visibilitas
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.cvCegahStunting.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
