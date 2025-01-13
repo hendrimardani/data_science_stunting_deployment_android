@@ -60,6 +60,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_HALF_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        } else if(bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        } else {
+            // Keluar dari aplikasi jika CoordinatorLayout tidak terlihat
+            super.onBackPressed()
+        }
+    }
+
     private fun setupBottomSheet() {
         val bottomSheet = findViewById<View>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
