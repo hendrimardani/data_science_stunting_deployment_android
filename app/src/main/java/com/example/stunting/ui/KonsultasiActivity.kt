@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -116,7 +115,7 @@ class KonsultasiActivity : AppCompatActivity() {
                 if (s!!.isEmpty()){
                     binding.ivKonsultasi.setColorFilter(getColor(R.color.gray))
                 } else {
-                    binding.ivKonsultasi.setColorFilter(getColor(R.color.blueSecond))
+                    binding.ivKonsultasi.setColorFilter(getColor(R.color.white))
                 }
             }
 

@@ -45,7 +45,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_konsultasi"
-            android:layout_width="330dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:hint="@string/hint_konsultasi"
@@ -55,7 +55,7 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/red"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/iv_konsultasi"
+            app:layout_constraintEnd_toStartOf="@id/frame_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:shapeAppearance="@style/Rounded">
 
@@ -69,15 +69,24 @@
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/iv_konsultasi"
+        <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_send_40"
-            android:layout_marginEnd="@dimen/dimen_8"
+            android:background="@drawable/shape_circle"
+            android:layout_marginEnd="@dimen/dimen_4"
             app:layout_constraintStart_toEndOf="@id/til_konsultasi"
             app:layout_constraintTop_toTopOf="@id/til_konsultasi"
             app:layout_constraintBottom_toBottomOf="@id/til_konsultasi"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_konsultasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:src="@drawable/ic_send_40"
+                android:layout_marginEnd="@dimen/dimen_8" />
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
