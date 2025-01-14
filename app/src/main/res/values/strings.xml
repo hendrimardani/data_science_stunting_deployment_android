@@ -7,6 +7,10 @@
         <item>4. ASI eksklusif selama 6 bulan pertama kehidupan bayi.</item>
         <item>5. Imunisasi membantu melindungi anak dari penyakit infeksi yang dapat mengganggu pertumbuhannya.</item>
         <item>6. Cuci tangan dengan sabun dan air mengalir secara teratur.</item>
+        <item>7. Pemantauan kehamilan yang rutin</item>
+        <item>8. Hindari rokok dan alkohol</item>
+        <item>9. Pantau pertumbuhan anak</item>
+        <item>10. Penyediaan air bersih dan sanitasi</item>
     </string-array>
 
     <integer-array name="data_images">
@@ -16,6 +20,10 @@
         <item>@drawable/bayi_menyusu_pada_ibu</item>
         <item>@drawable/imunisasi</item>
         <item>@drawable/cuci_tangan_dengan_sabun</item>
+        <item>@drawable/pemantauan_kehamilan</item>
+        <item>@drawable/hindari_merokok</item>
+        <item>@drawable/pantau_pertumbungan_anak</item>
+        <item>@drawable/air_bersih</item>
     </integer-array>
 
     <string name="app_name">Stunting</string>

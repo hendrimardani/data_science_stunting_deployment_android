@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
 import com.example.stunting.adapter.ListCegahStuntingAdapter
 import com.example.stunting.databinding.ActivityMainBinding
@@ -22,11 +21,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var overlay: View
-    private lateinit var rvCegahStunting: RecyclerView
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var isCoordinatorVisible = false // Untuk melacak visibilitas
 
     private val list = ArrayList<CegahStuntingData>()
 
@@ -121,7 +118,10 @@ class MainActivity : AppCompatActivity() {
                         BottomSheetBehavior.STATE_COLLAPSED -> {
                             overlay.visibility = View.GONE
                         }
-
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                            overlay.visibility = View.VISIBLE
+                            overlay.alpha = 1f
+                        }
                         BottomSheetBehavior.STATE_HIDDEN -> {
                             overlay.visibility = View.GONE
                         }

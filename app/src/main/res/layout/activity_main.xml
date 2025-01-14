@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorBackground">
@@ -426,10 +427,11 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorBackground"
+        android:background="@drawable/shape"
         android:orientation="vertical"
         app:behavior_hideable="true"
         app:behavior_peekHeight="1dp"
+        app:behavior_halfExpandedRatio="0.5"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -437,11 +439,33 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/iv_rectangle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_bottom_sheet"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ic_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
+                android:layout_marginEnd="8dp"
+                app:layout_goneMarginTop="5dp"
+                android:layout_marginTop="@dimen/dimen_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
                 android:id="@+id/iv_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_info_36"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_pencegahan_stunting"
                 app:layout_constraintEnd_toStartOf="@id/tv_pencegahan_stunting"
                 app:layout_constraintStart_toStartOf="parent"
@@ -456,7 +480,6 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginEnd="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_info"
                 app:layout_constraintTop_toTopOf="parent" />
 
