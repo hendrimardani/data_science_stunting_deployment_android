@@ -462,191 +462,208 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_cegah_stunting"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintTop_toBottomOf="@id/tv_pencegahan_stunting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="NotSibling" />
 
-                <TextView
-                    android:id="@+id/tv_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_pencegahan_stunting"
-                    tools:text="1. TEXT 1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/iv_1"
-                    android:layout_width="390dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.4"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/konsumsi_makanan_bergizi"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_1" />
+<!--        <androidx.core.widget.NestedScrollView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-                <TextView
-                    android:id="@+id/tv_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_1"
-                    app:layout_constraintTop_toBottomOf="@id/iv_1"
-                    tools:text="2. TEXT 2" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="16dp">-->
 
-                <ImageView
-                    android:id="@+id/iv_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.1"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/suplemen_kehamilan"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/tv_2"
-                    app:layout_constraintTop_toBottomOf="@id/tv_2" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_1"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_pencegahan_stunting"-->
+<!--                    tools:text="1. TEXT 1" />-->
 
-                <TextView
-                    android:id="@+id/tv_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/tv_3"
-                    app:layout_constraintTop_toBottomOf="@id/iv_2"
-                    tools:text="3. TEXT 3" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_1"-->
+<!--                    android:layout_width="390dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.4"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/konsumsi_makanan_bergizi"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_1" />-->
 
-                <ImageView
-                    android:id="@+id/iv_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.4"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/menjaga_berat_badan_ideal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/iv_3"
-                    app:layout_constraintTop_toBottomOf="@id/tv_3" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_1"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/iv_1"-->
+<!--                    tools:text="2. TEXT 2" />-->
 
-                <TextView
-                    android:id="@+id/tv_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/tv_4"
-                    app:layout_constraintTop_toBottomOf="@id/iv_3"
-                    tools:text="4. TEXT 4" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.1"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/suplemen_kehamilan"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_2"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_2" />-->
 
-                <ImageView
-                    android:id="@+id/iv_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.45"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/bayi_menyusu_pada_ibu"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/iv_4"
-                    app:layout_constraintTop_toBottomOf="@id/tv_4" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_3"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_3"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/iv_2"-->
+<!--                    tools:text="3. TEXT 3" />-->
 
-                <TextView
-                    android:id="@+id/tv_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/tv_5"
-                    app:layout_constraintTop_toBottomOf="@id/iv_4"
-                    tools:text="5. TEXT 5" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_3"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.4"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/menjaga_berat_badan_ideal"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/iv_3"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_3" />-->
 
-                <ImageView
-                    android:id="@+id/iv_5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.3"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/imunisasi"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/iv_5"
-                    app:layout_constraintTop_toBottomOf="@id/tv_5" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_4"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_4"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/iv_3"-->
+<!--                    tools:text="4. TEXT 4" />-->
 
-                <TextView
-                    android:id="@+id/tv_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/tv_6"
-                    app:layout_constraintTop_toBottomOf="@id/iv_5"
-                    tools:text="6. TEXT 6" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_4"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.45"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/bayi_menyusu_pada_ibu"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/iv_4"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_4" />-->
 
-                <ImageView
-                    android:id="@+id/iv_6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:scaleX="1.1"
-                    android:justificationMode="inter_word"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/cuci_tangan_dengan_sabun"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.105"
-                    app:layout_constraintStart_toStartOf="@id/iv_6"
-                    app:layout_constraintTop_toBottomOf="@id/tv_6" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_5"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_5"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/iv_4"-->
+<!--                    tools:text="5. TEXT 5" />-->
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_5"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.3"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/imunisasi"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/iv_5"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_5" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_6"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_6"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/iv_5"-->
+<!--                    tools:text="6. TEXT 6" />-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/iv_6"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:scaleX="1.1"-->
+<!--                    android:justificationMode="inter_word"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_marginEnd="15dp"-->
+<!--                    android:src="@drawable/cuci_tangan_dengan_sabun"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintHorizontal_bias="0.105"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/iv_6"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_6" />-->
+
+<!--            </LinearLayout>-->
+<!--        </androidx.core.widget.NestedScrollView>-->
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

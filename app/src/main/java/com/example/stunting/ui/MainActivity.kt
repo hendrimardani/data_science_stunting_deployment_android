@@ -1,5 +1,6 @@
 package com.example.stunting.ui
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
@@ -9,18 +10,25 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
+import com.example.stunting.adapter.ListCegahStuntingAdapter
 import com.example.stunting.databinding.ActivityMainBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
+import com.example.stunting.resouce_data.CegahStuntingData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var overlay: View
+    private lateinit var rvCegahStunting: RecyclerView
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     private var isCoordinatorVisible = false // Untuk melacak visibilitas
+
+    private val list = ArrayList<CegahStuntingData>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +39,11 @@ class MainActivity : AppCompatActivity() {
         setToolBar()
         setupBottomSheet()
         setupViews()
+
+        // Get from resources
+        binding.rvCegahStunting.setHasFixedSize(true)
+        list.addAll(getListCegahStuntingData())
+        showRecyclerList()
 
         binding.apply {
             cvBumil.setOnClickListener {
@@ -58,6 +71,25 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
             }
         }
+    }
+
+    private fun showRecyclerList() {
+        binding.rvCegahStunting.layoutManager = LinearLayoutManager(this)
+        val listCegahStuntingAdapter = ListCegahStuntingAdapter(list)
+        binding.rvCegahStunting.adapter = listCegahStuntingAdapter
+    }
+
+    @SuppressLint("Recycle")
+    private fun getListCegahStuntingData(): ArrayList<CegahStuntingData> {
+        val titles = resources.getStringArray(R.array.data_titles)
+        val images = resources.obtainTypedArray(R.array.data_images)
+        val listCegahStuntingData = ArrayList<CegahStuntingData>()
+
+        for (i in 0..titles.size - 1) {
+            val items = CegahStuntingData(titles[i], images.getResourceId(i, -1))
+            listCegahStuntingData.add(items)
+        }
+        return listCegahStuntingData
     }
 
     override fun onBackPressed() {
@@ -109,14 +141,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        binding.apply {
-            tv1.text = getString(R.string.text_1)
-            tv2.text = getString(R.string.text_2)
-            tv3.text = getString(R.string.text_3)
-            tv4.text = getString(R.string.text_4)
-            tv5.text = getString(R.string.text_5)
-            tv6.text = getString(R.string.text_6)
-        }
         binding.cvCegahStunting.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
