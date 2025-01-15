@@ -5,7 +5,9 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -94,11 +96,13 @@ object Functions {
 
     fun showCustomeInfoDialog(context: Context, layoutInflater: LayoutInflater) {
         val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
+        val infoDialog = Dialog(context)
         // Check if the view already has a parent
         val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
 
-        val infoDialog = Dialog(context)
         infoDialog.setContentView(viewBottomSheetDialog)
+        infoDialog.setCanceledOnTouchOutside(false)
+        infoDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         // Set content
         bindingBumilBottomSheetDialog.tvDescription.text = context.getString(R.string.description_detail_info)
         bindingBumilBottomSheetDialog.tvYes.setOnClickListener {

@@ -31,7 +31,6 @@
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="@string/result"
-        android:textColor="?attr/colorText"
-        android:layout_marginStart="5dp" />
+        android:textColor="?attr/colorText" />
 
 </LinearLayout>
