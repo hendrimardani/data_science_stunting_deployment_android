@@ -476,9 +476,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Berikut tips mencegah stunting "
+                android:text="@string/prevent_stunting"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:textColor="?attr/colorText"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintStart_toEndOf="@id/iv_info"
                 app:layout_constraintTop_toTopOf="parent" />

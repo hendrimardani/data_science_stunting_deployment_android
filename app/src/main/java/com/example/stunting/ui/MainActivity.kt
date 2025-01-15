@@ -3,6 +3,8 @@ package com.example.stunting.ui
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -173,6 +175,7 @@ class MainActivity : AppCompatActivity() {
 
         customDialog.setContentView(dialogBinding.root)
         customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         // Set text
         dialogBinding.tvDescription.text = getString(R.string.description_about)

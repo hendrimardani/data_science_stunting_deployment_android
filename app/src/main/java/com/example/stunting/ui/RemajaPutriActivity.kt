@@ -2,6 +2,8 @@ package com.example.stunting.ui
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -311,7 +313,10 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     private fun showCustomeExportDataDialog() {
         val viewExport = DialogCustomExportDataBinding.inflate(layoutInflater)
         val exportDialog = Dialog(this)
+
         exportDialog.setContentView(viewExport.root)
+        exportDialog.setCanceledOnTouchOutside(false)
+        exportDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val result = "$NAME(tahunbulantanggal_jammenitdetik)"
         val simpleDateFormat = SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())
@@ -378,7 +383,10 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
     private fun showCustomeDeleteDialog() {
         val viewDelete = DialogCustomDeleteBinding.inflate(layoutInflater)
         val deleteDialog = Dialog(this)
+
         deleteDialog.setContentView(viewDelete.root)
+        deleteDialog.setCanceledOnTouchOutside(false)
+        deleteDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {

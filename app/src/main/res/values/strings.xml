@@ -128,4 +128,8 @@
     <string name="hint_konsultasi">Mau tanya apa ?</string>
     <string name="item_image">Item List Image</string>
     <string name="title">Ini Judul</string>
+    <string name="app_created_about">Tentang Pembuat Aplikasi</string>
+    <string name="ok">OK</string>
+    <string name="you_are_sure">Kamu yakin ?</string>
+    <string name="prevent_stunting">Berikut tips mencegah stunting</string>
 </resources>
