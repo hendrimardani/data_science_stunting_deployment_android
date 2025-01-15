@@ -78,7 +78,7 @@ class KonsultasiActivity : AppCompatActivity() {
                     val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
                     progressBar.setTitleText(getString(R.string.title_loading))
                     progressBar.setContentText(getString(R.string.description_loading))
-                        .progressHelper.barColor = R.color.blueSecond
+                        .progressHelper.barColor = Color.parseColor("#73D1FA")
                     progressBar.setCancelable(false)
                     progressBar.show()
                     lifecycleScope.launch {
