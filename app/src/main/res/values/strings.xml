@@ -141,4 +141,6 @@
     <string name="date">Tanggal</string>
     <string name="result">Hasil</string>
     <string name="info">Info</string>
+    <string name="father_name">Nama Ayah</string>
+    <string name="mother_name">Nama Ibu</string>
 </resources>
