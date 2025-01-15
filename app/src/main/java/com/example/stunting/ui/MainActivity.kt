@@ -21,11 +21,12 @@ import com.example.stunting.resouce_data.CegahStuntingData
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
-    private lateinit var overlay: View
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var overlay: View
 
     private val list = ArrayList<CegahStuntingData>()
 
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         // Toolbar
         setToolBar()
+
+        // bottomSheetCoordinatorLayout
         setupBottomSheet()
         setupViews()
 

@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -116,7 +121,72 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         // Set inputText gestationalAge from calculate hari pertama haid terakhir
         setInputTextUmurKehamilan()
+
+        val input = "This is *bold* and this is **italic**"
+        val styledText = parseTextWithStylesAndRemoveSymbols(input)
+
+// Set ke TextView
+        binding.tvStatusGiziKesehatanBumil.text = styledText
+
     }
+
+    fun parseTextWithStylesAndRemoveSymbols(input: String): SpannableString {
+        val spannableBuilder = SpannableStringBuilder(input) // Menggunakan SpannableStringBuilder untuk mengganti teks
+
+        // Proses untuk Italic (**)
+        val italicRegex = "\\*\\*(.*?)\\*\\*".toRegex()
+        val italicMatches = italicRegex.findAll(spannableBuilder).toList()
+
+        italicMatches.reversed().forEach { match ->
+            val italicText = match.groupValues[1] // Mengambil teks di dalam **
+            val start = match.range.first
+            val end = match.range.last + 1
+
+            // Ganti simbol ** dengan teks yang hanya berisi italicText
+            spannableBuilder.replace(start, end, italicText)
+
+            // Terapkan StyleSpan untuk italic pada posisi yang benar
+            spannableBuilder.setSpan(
+                StyleSpan(Typeface.ITALIC),
+                start,
+                start + italicText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Proses untuk Bold (*)
+        val boldRegex = "\\*(.*?)\\*".toRegex()
+        val boldMatches = boldRegex.findAll(spannableBuilder).toList()
+
+        boldMatches.reversed().forEach { match ->
+            val boldText = match.groupValues[1] // Mengambil teks di dalam *
+            val start = match.range.first
+            val end = match.range.last + 1
+
+            // Ganti simbol * dengan teks yang hanya berisi boldText
+            spannableBuilder.replace(start, end, boldText)
+
+            // Terapkan StyleSpan untuk bold pada posisi yang benar
+            spannableBuilder.setSpan(
+                StyleSpan(Typeface.BOLD),
+                start,
+                start + boldText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Kembalikan hasil sebagai SpannableString
+        return SpannableString(spannableBuilder)
+    }
+
+
+
+
+
+
+
+
+
 
     private fun setInputTextUmurKehamilan() {
         // Ketika tiap sentuh inputText, inputText umur kehamilan akan terupdate

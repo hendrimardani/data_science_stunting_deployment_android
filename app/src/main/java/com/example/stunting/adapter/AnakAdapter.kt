@@ -1,5 +1,6 @@
 package com.example.stunting.adapter
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -39,12 +40,24 @@ class AnakAdapter(val items: ArrayList<AnakEntity>) : RecyclerView.Adapter<AnakA
             holder.klasifikasi.setTextColor(Color.GREEN)
         } else holder.klasifikasi.setTextColor(Color.RED)
 
-        if (position % 2 == 0) {
-            holder.llItemAnak.setBackgroundColor(ContextCompat
-                .getColor(holder.itemView.context, R.color.light_gray))
+        // Inside the RecyclerView Adapter's onBindViewHolder method
+        val context = holder.itemView.context
+        val isDarkMode = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+        if (isDarkMode) {
+            // Mode Gelap: Ganjil merah, Genap putih
+            if (position % 2 == 0) {
+                holder.llItemAnak.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+            } else {
+                holder.llItemAnak.setBackgroundColor(ContextCompat.getColor(context, R.color.light_black))
+            }
         } else {
-            holder.llItemAnak.setBackgroundColor(ContextCompat
-                .getColor(holder.itemView.context, R.color.white))
+            // Mode Terang: Ganjil putih, Genap merah
+            if (position % 2 == 0) {
+                holder.llItemAnak.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            } else {
+                holder.llItemAnak.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
+            }
         }
     }
 }

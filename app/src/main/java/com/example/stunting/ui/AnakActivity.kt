@@ -77,6 +77,8 @@ class AnakActivity : AppCompatActivity() {
         // Toolbar
         setToolBar()
 
+        binding.collapsingToolbarLayout
+
         // Collapsed Toolbar
         collapsedHandlerToolbar()
 

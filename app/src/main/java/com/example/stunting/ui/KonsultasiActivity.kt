@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -77,7 +78,7 @@ class KonsultasiActivity : AppCompatActivity() {
                     val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
                     progressBar.setTitleText(getString(R.string.title_loading))
                     progressBar.setContentText(getString(R.string.description_loading))
-                        .progressHelper.barColor = Color.parseColor("#73D1FA")
+                        .progressHelper.barColor = R.color.blueSecond
                     progressBar.setCancelable(false)
                     progressBar.show()
                     lifecycleScope.launch {
@@ -202,11 +203,12 @@ class KonsultasiActivity : AppCompatActivity() {
     }
 
     private fun customeDialogInfo() {
-        val customDialog = Dialog(this)
         val dialogBinding = DialogInfoKonsultasiBinding.inflate(layoutInflater)
+        val customDialog = Dialog(this)
 
         customDialog.setContentView(dialogBinding.root)
         customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialogBinding.tvOk.setOnClickListener {
             // Close

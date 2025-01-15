@@ -132,4 +132,12 @@
     <string name="ok">OK</string>
     <string name="you_are_sure">Kamu yakin ?</string>
     <string name="prevent_stunting">Berikut tips mencegah stunting</string>
+    <string name="data_sum">Total Data</string>
+    <string name="list_data">List Data</string>
+    <string name="input_date">Tanggal Input</string>
+    <string name="nik">NIK</string>
+    <string name="name">Nama</string>
+    <string name="more_information">Info Selengkapnya</string>
+    <string name="date">Tanggal</string>
+    <string name="result">Hasil</string>
 </resources>

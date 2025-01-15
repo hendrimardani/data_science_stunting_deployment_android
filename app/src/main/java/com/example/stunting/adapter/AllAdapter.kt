@@ -1,5 +1,6 @@
 package com.example.stunting.adapter
 
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -35,12 +36,24 @@ class BumilAdapter(val items: ArrayList<BumilEntity>) : RecyclerView.Adapter<Bum
         holder.nik.text = item.nikBumil
         holder.nama.text = item.namaBumil
 
-        if (position % 2 == 0) {
-            holder.llItem.setBackgroundColor(ContextCompat
-                .getColor(holder.itemView.context, R.color.light_gray))
+        // Inside the RecyclerView Adapter's onBindViewHolder method
+        val context = holder.itemView.context
+        val isDarkMode = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+        if (isDarkMode) {
+            // Mode Gelap: Ganjil merah, Genap putih
+            if (position % 2 == 0) {
+                holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+            } else {
+                holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.light_black))
+            }
         } else {
-            holder.llItem.setBackgroundColor(ContextCompat
-                .getColor(holder.itemView.context, R.color.white))
+            // Mode Terang: Ganjil putih, Genap merah
+            if (position % 2 == 0) {
+                holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            } else {
+                holder.llItem.setBackgroundColor(ContextCompat.getColor(context, R.color.light_gray))
+            }
         }
     }
 }
