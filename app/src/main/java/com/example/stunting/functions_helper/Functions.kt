@@ -5,6 +5,12 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.LeadingMarginSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -20,6 +26,71 @@ import java.util.Locale
 object Functions {
     private lateinit var cal: Calendar
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
+
+    fun parseTextWithStylesAndRemoveSymbols(input: String): SpannableString {
+        val spannableBuilder = SpannableStringBuilder(input)
+
+        // Proses untuk Unordered List dengan simbol •
+        val unorderedListRegex = "(?m)^\\*\\s(.*?)$".toRegex() // Regex untuk mendeteksi simbol * di awal baris
+        val unorderedListMatches = unorderedListRegex.findAll(spannableBuilder).toList()
+
+        unorderedListMatches.reversed().forEach { match -> // Proses dari belakang ke depan untuk menghindari konflik indeks
+            val listItemText = match.groupValues[1] // Mengambil teks setelah simbol *
+            val start = match.range.first
+            val end = match.range.last + 1
+
+            // Format teks dengan simbol bullet (•), tambahkan \n untuk memastikan pindah baris
+            val bulletText = "• $listItemText\n"
+
+            // Ganti simbol * dengan teks yang berisi bullet
+            spannableBuilder.replace(start, end, bulletText)
+
+            // Terapkan LeadingMarginSpan untuk memberikan indentasi pada list item
+            spannableBuilder.setSpan(
+                LeadingMarginSpan.Standard(40), // Memberikan indentasi ke kiri
+                start,
+                start + bulletText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Proses untuk Bold (**)
+        val boldRegex = "\\*\\*(.*?)\\*\\*".toRegex()
+        val boldMatches = boldRegex.findAll(spannableBuilder).toList()
+        boldMatches.reversed().forEach { match ->
+            val boldText = match.groupValues[1]
+            val start = match.range.first
+            val end = match.range.last + 1
+
+            spannableBuilder.replace(start, end, boldText)
+            spannableBuilder.setSpan(
+                StyleSpan(Typeface.BOLD),
+                start,
+                start + boldText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Proses untuk Italic dengan simbol _
+        val italicRegex = "_(.*?)_".toRegex()
+        val italicMatches = italicRegex.findAll(spannableBuilder).toList()
+        italicMatches.reversed().forEach { match ->
+            val italicText = match.groupValues[1]
+            val start = match.range.first
+            val end = match.range.last + 1
+
+            spannableBuilder.replace(start, end, italicText)
+            spannableBuilder.setSpan(
+                StyleSpan(Typeface.ITALIC),
+                start,
+                start + italicText.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // Kembalikan hasil sebagai SpannableString
+        return SpannableString(spannableBuilder)
+    }
 
     fun showCustomeInfoDialog(context: Context, layoutInflater: LayoutInflater) {
         val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)

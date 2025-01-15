@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
 import com.example.stunting.database.messages.MessageEntity
+import com.example.stunting.functions_helper.Functions.parseTextWithStylesAndRemoveSymbols
 
 class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -46,7 +47,9 @@ class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerVie
             if (IS_LOADING) holder.progressBar.visibility = View.VISIBLE
             else holder.progressBar.visibility = View.GONE
 
-            holder.tvReceivedMessage.text = message.text
+            // Melakukan filtering simbol seperti **, *, _
+            val cleanedText = parseTextWithStylesAndRemoveSymbols(message.text)
+            holder.tvReceivedMessage.text = cleanedText
         }
     }
 
