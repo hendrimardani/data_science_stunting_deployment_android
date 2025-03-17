@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.core.splashscreen)
     implementation(libs.com.github.f0ris.sweetalert)
     implementation(libs.com.google.ai.client.generativeai)
     implementation(libs.circle.imageview)

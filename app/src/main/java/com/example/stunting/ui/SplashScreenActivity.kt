@@ -1,11 +1,17 @@
 package com.example.stunting.ui
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.view.animation.AnticipateInterpolator
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.stunting.R
@@ -16,6 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private var _binding: ActivitySplashScreenBinding? = null
     private val binding get() = _binding!!
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,6 +40,29 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             goToMainActivity()
         }, 10000L)
+
+        slideHide()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun slideHide() {
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            // Create your custom animation.
+            val slideUp = ObjectAnimator.ofFloat(
+                splashScreenView,
+                View.TRANSLATION_Y,
+                0f,
+                -splashScreenView.height.toFloat()
+            )
+            slideUp.interpolator = AnticipateInterpolator()
+            slideUp.duration = 1000L
+
+            // Call SplashScreenView.remove at the end of your custom animation.
+            slideUp.doOnEnd { splashScreenView.remove() }
+
+            // Run your animation.
+            slideUp.start()
+        }
     }
 
     private fun goToMainActivity() {
