@@ -17,7 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_KEY", "\"AIzaSyDO13Ra3udlstDrWgYC3Ibs33nRECq_gfI\"" )
+        buildConfigField("String", "API_CHATBOT", "\"AIzaSyDO13Ra3udlstDrWgYC3Ibs33nRECq_gfI\"" )
+        buildConfigField("String", "API_CHATTING", "\"https://stunting-app-chattings-api-vercel.vercel.app/\"")
     }
 
     buildTypes {

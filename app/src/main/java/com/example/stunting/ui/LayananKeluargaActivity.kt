@@ -77,7 +77,7 @@ class LayananKeluargaActivity : AppCompatActivity(), View.OnClickListener {
         bindingLayananKeluargaBottomSheetDialog.tvListDataLayananKeluarga.text = getString(R.string.list_data_layanan_keluarga)
 
         // Call database
-        _layananKeluargaDao = (application as DatabaseApp).dbLayananKeluargaDatabase.layananKeluargaDao()
+        _layananKeluargaDao = (application as DatabaseApp).dbApp.layananKeluargaDao()
 
         getRadioButtonValue(R.id.rg_kategori_keluarga_rentan_keluarga, KATEGORI_KELUARGA_RENTAN)
         getRadioButtonValue(R.id.rg_memiliki_kartu_keluarga_keluarga, MEMILIKI_KARTU_KELUARGA)

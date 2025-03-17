@@ -16,10 +16,10 @@
         android:fitsSystemWindows="true"> <!-- Memastikan AppBar mengikuti insets -->
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_chatbot"
+            android:id="@+id/tb_konsultasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:logo="@drawable/neural_network" />
+            app:logo="@drawable/ic_people_outline_24" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,24 +32,24 @@
         <!-- ubah dari android:layout_height="0dp" ke android:layout_height="match_parent" lalu tambahkan paddingBottom ke 60dp
         supaya tidak ada padding setengah didalam recyclerview -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chatbot"
+            android:id="@+id/rv_konsultasi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="60dp"
             tools:listitem="@layout/item_sent_chatbot_adapter"
-            android:background="@drawable/bg_chatbot"
+            android:background="@drawable/bg_groupchat"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-            app:layout_constraintBottom_toTopOf="@id/til_chatbot"
+            app:layout_constraintBottom_toTopOf="@id/til_konsultasi"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="NotSibling" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_chatbot"
+            android:id="@+id/til_konsultasi"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:elevation="5dp"
-            android:hint="@string/hint_chatbot"
+            android:hint="@string/hint_groupchat"
             android:layout_marginStart="@dimen/dimen_4"
             app:boxBackgroundColor="@color/white"
             app:boxStrokeColor="@color/box_stroke_color"
@@ -62,7 +62,7 @@
             app:shapeAppearance="@style/Rounded">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_chatbot"
+                android:id="@+id/et_konsultasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="5"
@@ -77,13 +77,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_circle"
             android:layout_marginEnd="@dimen/dimen_4"
-            app:layout_constraintStart_toEndOf="@id/til_chatbot"
-            app:layout_constraintTop_toTopOf="@id/til_chatbot"
-            app:layout_constraintBottom_toBottomOf="@id/til_chatbot"
+            app:layout_constraintStart_toEndOf="@id/til_konsultasi"
+            app:layout_constraintTop_toTopOf="@id/til_konsultasi"
+            app:layout_constraintBottom_toBottomOf="@id/til_konsultasi"
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageView
-                android:id="@+id/iv_chatbot"
+                android:id="@+id/iv_konsultasi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="9dp"

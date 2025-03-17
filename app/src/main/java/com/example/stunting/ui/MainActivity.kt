@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
                 true
             } else {
-//                val intent = Intent(this@MainActivity, ChatbotActivity::class.java)
-//                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                val intent = Intent(this@MainActivity, GroupChatActivity::class.java)
+                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
                 true
             }
         }

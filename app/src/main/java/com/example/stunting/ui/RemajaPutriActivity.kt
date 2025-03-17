@@ -79,7 +79,7 @@ class RemajaPutriActivity : AppCompatActivity(), View.OnClickListener {
         bindingRemajaPutriBottomSheetDialog.tvListData.text = getString(R.string.list_data_rematri)
 
         // Call database
-        _remajaPutriDao = (application as DatabaseApp).dbRemajaPutriDatabase.remajaPutriDao()
+        _remajaPutriDao = (application as DatabaseApp).dbApp.remajaPutriDao()
 
         getRadioButtonValue(R.id.rg_mendapat_ttd_remaja_putri, MENDAPAT_TTD)
         getRadioButtonValue(R.id.rg_periksa_anemia_remaja_putri, PERIKSA_ANEMIA)

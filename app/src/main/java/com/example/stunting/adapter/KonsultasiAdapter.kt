@@ -7,10 +7,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
-import com.example.stunting.database.messages.MessageEntity
+import com.example.stunting.database.message_chatbot.MessageChatbotEntity
 import com.example.stunting.functions_helper.Functions.parseTextWithStylesAndRemoveSymbols
 
-class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class KonsultasiAdapter(val messageList: ArrayList<MessageChatbotEntity>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class SentMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvSentMessage = itemView.findViewById<TextView>(R.id.tv_sent_konsultasi)
@@ -23,7 +23,7 @@ class KonsultasiAdapter(val messageList: ArrayList<MessageEntity>) : RecyclerVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_SENT) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sent_konsultasi_adapter, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sent_chatbot_adapter, parent, false)
             SentMessageViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_received_konsultasi_adapter, parent, false)

@@ -23,8 +23,8 @@ import com.example.stunting.BuildConfig
 import com.example.stunting.R
 import com.example.stunting.adapter.KonsultasiAdapter
 import com.example.stunting.database.DatabaseApp
-import com.example.stunting.database.messages.MessageDao
-import com.example.stunting.database.messages.MessageEntity
+import com.example.stunting.database.message_chatbot.MessageChatbotDao
+import com.example.stunting.database.message_chatbot.MessageChatbotEntity
 import com.example.stunting.databinding.ActivityChatbotBinding
 import com.example.stunting.databinding.DialogInfoKonsultasiBinding
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
@@ -41,10 +41,10 @@ import kotlin.math.max
 class ChatbotActivity : AppCompatActivity() {
     private var _binding: ActivityChatbotBinding? = null
     private val binding get() = _binding!!
-    private var _messageDao: MessageDao? = null
+    private var _messageDao: MessageChatbotDao? = null
     private val messageDao get() = _messageDao!!
 
-    val messageList = ArrayList<MessageEntity>()
+    val messageList = ArrayList<MessageChatbotEntity>()
     var countItem = 0
 
     @SuppressLint("SuspiciousIndentation")
@@ -60,14 +60,14 @@ class ChatbotActivity : AppCompatActivity() {
         // Toolbar
         setToolBar()
 
-        _messageDao = (application as DatabaseApp).dbMessage.messageDao()
+        _messageDao = (application as DatabaseApp).dbApp.messageChatbotDao()
 
         // isWordAvailable
         wordAvailable()
 
         try {
-            binding.ivKonsultasi.setOnClickListener {
-                val input = binding.etKonsultasi.text
+            binding.ivChatbot.setOnClickListener {
+                val input = binding.etChatbot.text
                 if (input!!.isEmpty()) {
                     toastInfo(
                         this@ChatbotActivity,
@@ -109,14 +109,14 @@ class ChatbotActivity : AppCompatActivity() {
 
     private fun wordAvailable() {
         // Matikan ikon jika tidak ada input
-        binding.etKonsultasi.addTextChangedListener(object : TextWatcher {
+        binding.etChatbot.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s!!.isEmpty()){
-                    binding.ivKonsultasi.setColorFilter(getColor(R.color.gray))
+                    binding.ivChatbot.setColorFilter(getColor(R.color.gray))
                 } else {
-                    binding.ivKonsultasi.setColorFilter(getColor(R.color.white))
+                    binding.ivChatbot.setColorFilter(getColor(R.color.white))
                 }
             }
 
@@ -170,12 +170,12 @@ class ChatbotActivity : AppCompatActivity() {
         val date = getDateTimePrimaryKey()
         lifecycleScope.launch {
             messageDao.insert(
-                MessageEntity(date = date, text = input, isSent = isSent)
+                MessageChatbotEntity(date = date, text = input, isSent = isSent)
             )
         }
     }
 
-    private fun getAll(messageDao: MessageDao) {
+    private fun getAll(messageDao: MessageChatbotDao) {
         lifecycleScope.launch {
             messageDao.fetchAllMessage().collect {
                 val list = ArrayList(it)
@@ -184,20 +184,20 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupListOfDataIntoRecyclerView(messageList: ArrayList<MessageEntity>) {
+    private fun setupListOfDataIntoRecyclerView(messageList: ArrayList<MessageChatbotEntity>) {
         if (messageList.isNotEmpty()) {
             val konsultasiAdapter = KonsultasiAdapter(messageList)
             // Count item list
             countItem = messageList.size
-            binding.rvKonsultasi.layoutManager = LinearLayoutManager(this)
-            binding.rvKonsultasi.adapter = konsultasiAdapter
+            binding.rvChatbot.layoutManager = LinearLayoutManager(this)
+            binding.rvChatbot.adapter = konsultasiAdapter
             // To scrolling automatic when data entered
-            binding.rvKonsultasi.smoothScrollToPosition(countItem - 1)
+            binding.rvChatbot.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
-            binding.rvKonsultasi
+            binding.rvChatbot
                 .layoutManager!!.smoothScrollToPosition(binding
-                    .rvKonsultasi, null, countItem - 1)
+                    .rvChatbot, null, countItem - 1)
 
         }
     }
@@ -220,7 +220,7 @@ class ChatbotActivity : AppCompatActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun generativeModel(prompt: String) {
-        val generativeModel = GenerativeModel(modelName = "gemini-2.0-flash-exp", apiKey = BuildConfig.API_KEY)
+        val generativeModel = GenerativeModel(modelName = "gemini-2.0-flash-exp", apiKey = BuildConfig.API_CHATBOT)
         val progressBar = SweetAlertDialog(this@ChatbotActivity, SweetAlertDialog.PROGRESS_TYPE)
             progressBar.setTitleText(getString(R.string.title_loading))
             progressBar.setContentText(getString(R.string.description_loading))
@@ -252,17 +252,17 @@ class ChatbotActivity : AppCompatActivity() {
 
     private fun setToolBar() {
         // Call object actionBar
-        setSupportActionBar(binding.tbKonsultasi)
+        setSupportActionBar(binding.tbChatbot)
         supportActionBar!!.title = getString(R.string.app_neural_network)
         // Change font style text
-        binding.tbKonsultasi.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        binding.tbChatbot.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Set icon
         supportActionBar!!.setIcon(R.drawable.neural_network)
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        binding.tbKonsultasi.setNavigationOnClickListener {
+        binding.tbChatbot.setNavigationOnClickListener {
             onBackPressed()
         }
     }

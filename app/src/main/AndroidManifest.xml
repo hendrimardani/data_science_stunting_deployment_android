@@ -16,13 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
-
-        <!-- Tambahkan android:windowsSoftInputMode="adjustResize" supaya ketika menekan TextInputEditText muncul diatas keyboard -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.GroupChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" /> <!-- Tambahkan android:windowsSoftInputMode="adjustResize" supaya ketika menekan TextInputEditText muncul diatas keyboard -->
         <activity
             android:name=".ui.ChatbotActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.AnakActivity"
             android:exported="false" />
@@ -36,7 +40,7 @@
             android:name=".ui.CalonPengantinActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,9 +50,6 @@
         </activity>
         <activity
             android:name=".ui.BumilActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.SplashScreenActivity"
             android:exported="false" />
     </application>
 

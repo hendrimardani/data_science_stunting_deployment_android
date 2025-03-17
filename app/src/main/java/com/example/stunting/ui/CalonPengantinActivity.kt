@@ -87,7 +87,7 @@ class CalonPengantinActivity : AppCompatActivity(), View.OnClickListener {
         bindingCalonPengantinBottomSheetDialog.tvListData.text = getString(R.string.list_data_catin)
 
         // Call database
-        _calonPengantinDao = (application as DatabaseApp).dbCalonPengantinDatabase.calonPengantinDao()
+        _calonPengantinDao = (application as DatabaseApp).dbApp.calonPengantinDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirCalonPengantin)

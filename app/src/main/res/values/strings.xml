@@ -125,7 +125,8 @@
     <string name="hint_periksa_kesehatan">Periksa Kesehatan (Ya/Tidak)</string>
     <string name="bimbingan_perkawinan">Bimbingan Perkawinan (Ya/Tidak)</string>
     <string name="bride_and_groom_service_form">Formulir Layanan Calon Pengantin</string>
-    <string name="hint_konsultasi">Mau tanya apa ?</string>
+    <string name="hint_chatbot">Mau tanya apa ?</string>
+    <string name="hint_groupchat">Ketikan pesan...</string>
     <string name="item_image">Item List Image</string>
     <string name="title">Ini Judul</string>
     <string name="app_created_about">Tentang Pembuat Aplikasi</string>
@@ -143,6 +144,6 @@
     <string name="info">Info</string>
     <string name="father_name">Nama Ayah</string>
     <string name="mother_name">Nama Ibu</string>
-    <string name="menu_title_group">Group</string>
+    <string name="menu_title_group">Group Chat</string>
     <string name="menu_title_chatbot">Chatbot</string>
 </resources>

@@ -87,7 +87,7 @@ class AnakActivity : AppCompatActivity() {
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
 
         // Call database
-        _anakDao = (application as DatabaseApp).dbChildDatabase.anakDao()
+        _anakDao = (application as DatabaseApp).dbApp.anakDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirAnak)

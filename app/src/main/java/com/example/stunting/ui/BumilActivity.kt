@@ -4,18 +4,10 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.BulletSpan
-import android.text.style.LeadingMarginSpan
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -95,7 +87,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
 
         // Call database
-        _bumilDao = (application as DatabaseApp).dbBumilDatabase.bumilDao()
+        _bumilDao = (application as DatabaseApp).dbApp.bumilDao()
 
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
