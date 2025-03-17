@@ -19,7 +19,7 @@
 
         <!-- Tambahkan android:windowsSoftInputMode="adjustResize" supaya ketika menekan TextInputEditText muncul diatas keyboard -->
         <activity
-            android:name=".ui.KonsultasiActivity"
+            android:name=".ui.ChatbotActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 

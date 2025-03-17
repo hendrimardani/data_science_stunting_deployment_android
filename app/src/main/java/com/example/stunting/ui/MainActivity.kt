@@ -7,9 +7,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,10 +70,39 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, AnakActivity::class.java)
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
             }
-            fab.setOnClickListener {
-                val intent = Intent(this@MainActivity, KonsultasiActivity::class.java)
+            fab.setOnClickListener { showPopupMenu() }
+        }
+    }
+
+    private fun showPopupMenu() {
+        val popupMenu = PopupMenu(this@MainActivity, binding.fab)
+
+        popupMenu.menuInflater.inflate(R.menu.popup_menu_message_main_activity, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.title == getString(R.string.menu_title_chatbot)) {
+                val intent = Intent(this@MainActivity, ChatbotActivity::class.java)
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                true
+            } else {
+//                val intent = Intent(this@MainActivity, ChatbotActivity::class.java)
+//                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                true
             }
+        }
+
+        // Supaya muncul ikon di popup menu
+        try {
+            val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+            fieldMPopup.isAccessible = true
+            val mPopup = fieldMPopup.get(popupMenu)
+            mPopup.javaClass
+                .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                .invoke(mPopup, true)
+        } catch (e: Exception){
+            Log.e("Main", "Error showing menu icons.", e)
+        } finally {
+            // Showing the popup menu
+            popupMenu.show()
         }
     }
 
@@ -159,6 +190,7 @@ class MainActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_activity, menu)

@@ -143,4 +143,6 @@
     <string name="info">Info</string>
     <string name="father_name">Nama Ayah</string>
     <string name="mother_name">Nama Ibu</string>
+    <string name="menu_title_group">Group</string>
+    <string name="menu_title_chatbot">Chatbot</string>
 </resources>

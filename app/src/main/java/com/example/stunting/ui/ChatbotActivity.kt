@@ -4,16 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.LeadingMarginSpan
-import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,7 +25,7 @@ import com.example.stunting.adapter.KonsultasiAdapter
 import com.example.stunting.database.DatabaseApp
 import com.example.stunting.database.messages.MessageDao
 import com.example.stunting.database.messages.MessageEntity
-import com.example.stunting.databinding.ActivityKonsultasiBinding
+import com.example.stunting.databinding.ActivityChatbotBinding
 import com.example.stunting.databinding.DialogInfoKonsultasiBinding
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.functions_helper.Functions.toastInfo
@@ -44,8 +38,8 @@ import www.sanju.motiontoast.MotionToastStyle
 import kotlin.math.max
 
 
-class KonsultasiActivity : AppCompatActivity() {
-    private var _binding: ActivityKonsultasiBinding? = null
+class ChatbotActivity : AppCompatActivity() {
+    private var _binding: ActivityChatbotBinding? = null
     private val binding get() = _binding!!
     private var _messageDao: MessageDao? = null
     private val messageDao get() = _messageDao!!
@@ -57,7 +51,7 @@ class KonsultasiActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        _binding = ActivityKonsultasiBinding.inflate(layoutInflater)
+        _binding = ActivityChatbotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Supaya tidak ada margin di atas app bar dan dibawah
@@ -76,12 +70,12 @@ class KonsultasiActivity : AppCompatActivity() {
                 val input = binding.etKonsultasi.text
                 if (input!!.isEmpty()) {
                     toastInfo(
-                        this@KonsultasiActivity,
+                        this@ChatbotActivity,
                         getString(R.string.title_input_failed), getString(R.string.description_input_failed),
                         MotionToastStyle.ERROR
                     )
                 } else {
-                    val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
+                    val progressBar = SweetAlertDialog(this@ChatbotActivity, SweetAlertDialog.PROGRESS_TYPE)
                     progressBar.setTitleText(getString(R.string.title_loading))
                     progressBar.setContentText(getString(R.string.description_loading))
                         .progressHelper.barColor = Color.parseColor("#73D1FA")
@@ -100,7 +94,7 @@ class KonsultasiActivity : AppCompatActivity() {
             }
         } catch (e: SQLiteConstraintException) {
             toastInfo(
-                this@KonsultasiActivity,
+                this@ChatbotActivity,
                 getString(R.string.title_error_internet_request_api),
                 getString(R.string.description_error_internet_request_api),
                 MotionToastStyle.ERROR
@@ -166,7 +160,7 @@ class KonsultasiActivity : AppCompatActivity() {
             messageDao.deleteAll()
         }
         toastInfo(
-            this@KonsultasiActivity, getString(R.string.title_chat_deleted),
+            this@ChatbotActivity, getString(R.string.title_chat_deleted),
             getString(R.string.description_chat_deleted), MotionToastStyle.SUCCESS
         )
         finish()
@@ -227,7 +221,7 @@ class KonsultasiActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     private fun generativeModel(prompt: String) {
         val generativeModel = GenerativeModel(modelName = "gemini-2.0-flash-exp", apiKey = BuildConfig.API_KEY)
-        val progressBar = SweetAlertDialog(this@KonsultasiActivity, SweetAlertDialog.PROGRESS_TYPE)
+        val progressBar = SweetAlertDialog(this@ChatbotActivity, SweetAlertDialog.PROGRESS_TYPE)
             progressBar.setTitleText(getString(R.string.title_loading))
             progressBar.setContentText(getString(R.string.description_loading))
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
@@ -240,14 +234,14 @@ class KonsultasiActivity : AppCompatActivity() {
                 progressBar.dismiss()
             } catch (e: UnknownException) {
                 toastInfo(
-                    this@KonsultasiActivity,
+                    this@ChatbotActivity,
                     getString(R.string.title_error_internet_request_api),
                     getString(R.string.description_error_internet_request_api),
                     MotionToastStyle.ERROR
                 )
             } catch (e : QuotaExceededException) {
                 toastInfo(
-                    this@KonsultasiActivity,
+                    this@ChatbotActivity,
                     getString(R.string.title_error_quotaExceeded_request_api),
                     getString(R.string.description_error_quotaExceeded_request_api),
                     MotionToastStyle.ERROR
