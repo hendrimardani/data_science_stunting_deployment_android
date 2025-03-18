@@ -21,6 +21,7 @@ generativeVersion = "0.7.0"
 motionToastVersion = "1.4"
 sweetAlertVersion = "1.5.6"
 splashScreenVersion = "1.0.0"
+roomVersion = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +43,9 @@ activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activ
 motionToast = { module = "com.github.Spikeysanju:MotionToast", version.ref = "motionToastVersion" }
 com-google-ai-client-generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeVersion" }
 com-github-f0ris-sweetalert = { module = "com.github.f0ris.sweetalert:library", version.ref = "sweetAlertVersion" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreenVersion" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

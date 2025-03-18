@@ -146,4 +146,14 @@
     <string name="mother_name">Nama Ibu</string>
     <string name="menu_title_group">Group Chat</string>
     <string name="menu_title_chatbot">Chatbot</string>
+    <string name="title_menu_1">Selamat Datang di Aplikasi Stunting.</string>
+    <string name="desc_menu_1">"Solusi digital untuk membantu puskesmas dalam mendeteksi dan memantau kondisi stunting pada anak dengan lebih akurat dan efisien."</string>
+    <string name="title_menu_2">Deteksi Cepat dan Akurat</string>
+    <string name="desc_menu_2">Gunakan sistem analisis otomatis kami dengan machine learning untuk mendeteksi risiko stunting berdasarkan data medis, memudahkan tenaga kesehatan dalam memberikan intervensi yang tepat.</string>
+    <string name="title_menu_3">Bantuan Instan dengan AI Chatbot yang Akurat</string>
+    <string name="desc_menu_3">Dapatkan rekomendasi cepat dan informasi medis terpercaya melalui chatbot kami, yang dirancang khusus untuk mendukung tenaga medis dalam menangani kasus stunting.</string>
+    <string name="title_menu_4">Komunikasi Efektif dengan Berbagai Tim Medis</string>
+    <string name="desc_menu_4">Gunakan fitur chat untuk berdiskusi dengan rekan tim medis lainnya dan berbagi informasi penting untuk memastikan koordinasi yang lebih baik dalam menangani pasie.</string>
+    <string name="login">Masuk</string>
+    <string name="signup">Daftar Akun</string>
 </resources>

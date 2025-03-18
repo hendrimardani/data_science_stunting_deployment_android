@@ -66,7 +66,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun goToMainActivity() {
-        Intent(this, MainActivity::class.java).also {
+        Intent(this, OpeningActivity::class.java).also {
             startActivity(it)
             finish()
         }

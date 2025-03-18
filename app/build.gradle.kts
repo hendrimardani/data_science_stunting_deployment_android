@@ -59,7 +59,7 @@ dependencies {
     implementation(libs.kotlin.csv.jvm) // for JVM platform
 
     implementation(libs.room.runtime)
-    kapt("androidx.room:room-compiler:2.6.1")
+    kapt(libs.room.compiler)
 
     // Kotlin extnstion for coroutine support with room
     implementation(libs.room.ktx)
