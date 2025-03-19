@@ -156,4 +156,9 @@
     <string name="desc_menu_4">Gunakan fitur chat untuk berdiskusi dengan rekan tim medis lainnya dan berbagi informasi penting untuk memastikan koordinasi yang lebih baik dalam menangani pasie.</string>
     <string name="login">Masuk</string>
     <string name="signup">Daftar Akun</string>
+    <string name="email">Email</string>
+    <string name="text_login">LOGIN</string>
+    <string name="hint_email">Email</string>
+    <string name="text_password">Password</string>
+    <string name="hint_password">Password</string>
 </resources>
