@@ -44,7 +44,7 @@ abstract class LayananDatabase: RoomDatabase() {
                         context.applicationContext,
                         LayananDatabase::class.java,
                         "layanan_database"
-                    ).fallbackToDestructiveMigration().build()
+                    ).build()
                 }
 
                 INSTANCE = instance

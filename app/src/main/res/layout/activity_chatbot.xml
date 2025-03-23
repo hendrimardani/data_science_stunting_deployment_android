@@ -19,7 +19,7 @@
             android:id="@+id/tb_chatbot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:logo="@drawable/neural_network" />
+            app:logo="@drawable/ic_neural_network" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

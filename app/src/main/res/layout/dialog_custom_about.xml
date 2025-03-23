@@ -58,7 +58,7 @@
             android:id="@+id/iv_linkedin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/linkedin"
+            android:src="@drawable/ic_linkedin"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent" />
@@ -67,7 +67,7 @@
             android:id="@+id/iv_wa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/whatsapp"
+            android:src="@drawable/ic_whatsapp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp" />
 
@@ -75,7 +75,7 @@
             android:id="@+id/iv_ig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/instagram"
+            android:src="@drawable/ic_instagram"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp" />
 

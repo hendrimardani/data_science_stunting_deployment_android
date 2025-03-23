@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorBackground"
-            app:logo="@drawable/icon_stunting"
+            app:logo="@drawable/ic_stunting"
             app:titleTextColor="?attr/colorText"
             app:navigationIconTint="?attr/colorText"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/bumil" />
+                        android:src="@drawable/ic_bumil" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/anak" />
+                    android:src="@drawable/gambar_anak" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="120dp"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/calon_pengantin" />
+                        android:src="@drawable/gambar_calon_pengantin" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -250,7 +250,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/remaja_putri" />
+                        android:src="@drawable/ic_remaja_putri" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -307,7 +307,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/layanan_keluarga" />
+                        android:src="@drawable/ic_layanan_keluarga" />
 
                     <TextView
                         android:layout_width="wrap_content"

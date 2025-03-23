@@ -20,7 +20,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/neural_network"
+            android:src="@drawable/ic_neural_network"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_received_konsultasi"
             app:layout_constraintTop_toTopOf="@id/tv_received_konsultasi" />

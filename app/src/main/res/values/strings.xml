@@ -14,16 +14,16 @@
     </string-array>
 
     <integer-array name="data_images">
-        <item>@drawable/konsumsi_makanan_bergizi</item>
-        <item>@drawable/suplemen_kehamilan</item>
-        <item>@drawable/menjaga_berat_badan_ideal</item>
-        <item>@drawable/bayi_menyusu_pada_ibu</item>
-        <item>@drawable/imunisasi</item>
-        <item>@drawable/cuci_tangan_dengan_sabun</item>
-        <item>@drawable/pemantauan_kehamilan</item>
-        <item>@drawable/hindari_merokok</item>
-        <item>@drawable/pantau_pertumbungan_anak</item>
-        <item>@drawable/air_bersih</item>
+        <item>@drawable/gambar_konsumsi_makanan_bergizi</item>
+        <item>@drawable/gambar_suplemen_kehamilan</item>
+        <item>@drawable/gambar_menjaga_berat_badan_ideal</item>
+        <item>@drawable/gambar_bayi_menyusu_pada_ibu</item>
+        <item>@drawable/gambar_imunisasi</item>
+        <item>@drawable/gambar_cuci_tangan_dengan_sabun</item>
+        <item>@drawable/gambar_pemantauan_kehamilan</item>
+        <item>@drawable/gambar_hindari_merokok</item>
+        <item>@drawable/gambar_pantau_pertumbungan_anak</item>
+        <item>@drawable/gambar_air_bersih</item>
     </integer-array>
 
     <string name="app_name">Stunting</string>
@@ -157,8 +157,11 @@
     <string name="login">Masuk</string>
     <string name="signup">Daftar Akun</string>
     <string name="email">Email</string>
-    <string name="text_login">LOGIN</string>
     <string name="hint_email">Email</string>
     <string name="text_password">Password</string>
     <string name="hint_password">Password</string>
+    <string name="text_daftar">DAFTAR</string>
+    <string name="hint_nama_lengkap_sign_up">Nama Lengkap</string>
+    <string name="hint_email_sign_up">Email</string>
+    <string name="hint_repeat_password">Repeat Password</string>
 </resources>

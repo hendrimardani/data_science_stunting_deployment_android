@@ -257,7 +257,7 @@ class ChatbotActivity : AppCompatActivity() {
         // Change font style text
         binding.tbChatbot.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Set icon
-        supportActionBar!!.setIcon(R.drawable.neural_network)
+        supportActionBar!!.setIcon(R.drawable.ic_neural_network)
         // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

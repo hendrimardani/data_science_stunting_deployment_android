@@ -255,7 +255,7 @@ class MainActivity : AppCompatActivity() {
         // Change font style text
         binding.tbMain.setTitleTextAppearance(this, R.style.Theme_Stunting)
         // Set icon
-        supportActionBar!!.setIcon(R.drawable.icon_stunting)
+        supportActionBar!!.setIcon(R.drawable.ic_stunting)
 //        // Enable back button if you're in a child activity
 //        if (supportActionBar != null) {
 //            supportActionBar?.setDisplayHomeAsUpEnabled(true)

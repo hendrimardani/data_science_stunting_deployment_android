@@ -13,7 +13,7 @@
         android:id="@+id/logoMenu1"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src="@drawable/opening_gambar_1"
+        android:src="@drawable/gambar_opening_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
         android:id="@+id/logoMenu2"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src="@drawable/opening_gambar_2"
+        android:src="@drawable/gambar_opening_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +95,7 @@
         android:id="@+id/logoMenu3"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src="@drawable/opening_gambar_3"
+        android:src="@drawable/gambar_opening_3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/logoMenu2"
         app:layout_constraintStart_toStartOf="parent"
@@ -192,7 +192,7 @@
         android:id="@+id/logoMenu4"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src="@drawable/opening_gambar_4"
+        android:src="@drawable/gambar_opening_4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -264,6 +264,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/opening_gambar_stunting" />
+        app:srcCompat="@drawable/gambar_opening_stunting" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
