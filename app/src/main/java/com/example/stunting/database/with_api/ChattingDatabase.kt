@@ -17,7 +17,7 @@ import com.example.stunting.database.with_api.users.UsersEntity
         UsersEntity::class, UserProfileEntity::class, GroupsEntity::class,
         UserGroupEntity::class
                 ],
-    version = 18
+    version = 19
 )
 abstract class ChattingDatabase: RoomDatabase() {
     abstract fun userGroupDao(): UserGroupDao

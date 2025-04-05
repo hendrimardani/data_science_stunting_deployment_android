@@ -10,14 +10,20 @@ import androidx.room.Transaction
 @Dao
 interface UserGroupDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserGroup(userGroup: UserGroupEntity)
+    // Query ini tidak ke API melainkan ke database
+    @Transaction
+    @Query("SELECT * FROM user_group WHERE id_user_profile = :userId")
+    fun getUserProfilesWithGroupsByUserProfileId(userId: Int): LiveData<UserGroupEntity>
 
-//    @Transaction
-//    @Query("SELECT * FROM user_profile")
-//    fun getUserProfilesWithGroups(): LiveData<UserProfileWithGroups>
+    @Transaction
+    @Query("SELECT * FROM user_profile")
+    fun getUserProfilesWithGroups(): LiveData<UserProfileWithGroups>
 
     @Transaction
     @Query("SELECT * FROM groups")
     fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles>
+
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserGroup(userGroup: UserGroupEntity)
 }

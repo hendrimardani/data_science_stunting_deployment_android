@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -40,13 +41,18 @@ class GroupChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getExtraDataFromNavHomeFragment()
-
-    }
-
-    private fun getExtraDataFromNavHomeFragment() {
         val userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
         Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
+
+        getUserProfilesWithGroupsByUserProfileId(userId)
+
+        binding.fabGroupChatList.setOnClickListener { showCustomInputFragmentialog(userId) }
+    }
+
+    private fun getUserProfilesWithGroupsByUserProfileId(userId: Int?) {
+        viewModel.getUserProfilesWithGroupsByUserProfileId(userId!!).observe(requireActivity()) { result ->
+            Log.d(TAG, "onGroupChatListFragment getUserProfilesWithGroupsByUserProfileId : ${result}")
+        }
     }
 
     private fun showCustomInputFragmentialog(userId: Int?) {
@@ -74,14 +80,17 @@ class GroupChatListFragment : Fragment() {
                         is ResultState.Error -> {
                             progressBar.dismiss()
 //                            showSweetAlertDialog(result.error, 1)
-                            Log.d(TAG, "onGroupChatListFragment success adding group : ${result.error}")
-
+//                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
                         }
                         is ResultState.Success -> {
                             progressBar.dismiss()
-//                            val message = result.data.status
-                            Log.d(TAG, "onGroupChatListFragment success adding group : berhiasl")
-//                            showSweetAlertDialog(result.data.message.toString(), 2, user, dataLogin)
+                            val message = result.data?.message.toString()
+                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
+                            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+
+                            view.tietNamaGroup.text?.clear()
+                            view.tietDeskripsiGroup.text?.clear()
+                            viewDialog.dismiss()
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()

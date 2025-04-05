@@ -83,7 +83,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         if (getExtraFragment == "LoginFragment") {
             val user = intent.getParcelableExtra<User>(EXTRA_USER_TO_NAV_DRAWER_MAIN_ACTIVITY)
 //            Log.d(TAG, "onNavDrawerMainActivity from LoginFragment : ${user}")
-            userId = user!!.id
+            userId = user?.id
             sendDataToNavHomeFragment(userId)
             getUserWithUserProfileById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
@@ -105,8 +105,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     private fun getUserWithUserProfileById(userId: Int) {
         viewModel.getUserWithUserProfileById(userId).observe(this) { userWithUserProfile ->
-            Log.d(TAG, "onNavDrawerMainActivity from OpeningFragment getUserWithUserProfileById : ${userWithUserProfile}")
-//            if (userWithUserProfile != null) getHeaderView(userWithUserProfile)
+//            Log.d(TAG, "onNavDrawerMainActivity from OpeningFragment getUserWithUserProfileById : ${userWithUserProfile}")
+            if (userWithUserProfile != null) getHeaderView(userWithUserProfile)
         }
     }
 
@@ -124,7 +124,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                     is ResultState.Error -> progressBar.dismiss()
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsers : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsers : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
@@ -166,8 +166,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val nameNavView = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
         val emailNavView = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
 
-//        nameNavView.text = userWithUserProfile!!.profile!!.nama.toString().trim()
-//        emailNavView.text = userWithUserProfile.users.email.toString().trim()
+        nameNavView.text = userWithUserProfile?.profile?.nama.toString().trim()
+        emailNavView.text = userWithUserProfile?.users?.email.toString().trim()
     }
 
     override fun onSupportNavigateUp(): Boolean {

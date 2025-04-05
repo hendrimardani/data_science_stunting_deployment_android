@@ -1,9 +1,11 @@
 package com.example.stunting.database.with_api.user_group
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Junction
+import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.stunting.database.with_api.groups.GroupsEntity
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
@@ -28,8 +30,14 @@ import com.example.stunting.database.with_api.user_profile.UserProfileEntity
     ]
 )
 data class UserGroupEntity(
+    // Foreign key
     val id_group: Int,
-    val id_user_profile: Int
+    // Foreign key
+    val id_user_profile: Int,
+    val role: String?  = null,
+    @ColumnInfo(name = "created_by") val createdBy: String? = null,
+    @ColumnInfo(name = "created_at") val createdAt: String? = null,
+    @ColumnInfo(name = "updated_at") val updatedaT: String? = null
 )
 
 data class UserProfileWithGroups(

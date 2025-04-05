@@ -13,6 +13,8 @@ import com.example.stunting.database.with_api.request_json.UpdateUserProfileById
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
+import com.example.stunting.database.with_api.user_group.UserGroupEntity
+import com.example.stunting.database.with_api.user_group.UserProfileWithGroups
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.users.UsersEntity
@@ -36,7 +38,11 @@ class ChattingRepository(
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     val formattedDateTime = now.format(formatter)
 
-    private val resultListUsers = MediatorLiveData<ResultState<List<UsersEntity>>>()
+    private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
+
+    fun getUserProfilesWithGroupsByUserProfileId(userId: Int): LiveData<UserGroupEntity> {
+        return chattingDatabase.userGroupDao().getUserProfilesWithGroupsByUserProfileId(userId)
+    }
 
     fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles> {
         return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
@@ -124,7 +130,7 @@ class ChattingRepository(
         return chattingDatabase.userProfileDao().getUserWithUserProfileById(userId)
     }
 
-    fun getUsers(): LiveData<ResultState<List<UsersEntity>>> {
+    fun getUsers(): LiveData<ResultState<List<UserProfileEntity>>> {
         resultListUsers.value = ResultState.Loading
         val response = apiService.getAllUsers()
         response.enqueue(object: Callback<GetAllUsersResponse> {
@@ -177,8 +183,8 @@ class ChattingRepository(
                 resultListUsers.value = ResultState.Error(t.message.toString())
             }
         })
-        val localData = chattingDatabase.usersDao().getUsers()
-        resultListUsers.addSource(localData) { userData: List<UsersEntity> ->
+        val localData = chattingDatabase.userProfileDao().getUserProfiles()
+        resultListUsers.addSource(localData) { userData: List<UserProfileEntity> ->
             resultListUsers.value = ResultState.Success(userData)
         }
         return resultListUsers
