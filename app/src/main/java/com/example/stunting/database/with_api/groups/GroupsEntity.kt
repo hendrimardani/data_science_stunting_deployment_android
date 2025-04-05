@@ -10,4 +10,6 @@ data class GroupsEntity(
     @ColumnInfo(name = "id_group") val id: Int? = null,
     @ColumnInfo(name = "nama_group") val namaGroup: String? = null,
     @ColumnInfo(name = "deskripsi") val deskripsi: String? = null,
+    @ColumnInfo(name = "created_at") val createdAt: String? = null,
+    @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )

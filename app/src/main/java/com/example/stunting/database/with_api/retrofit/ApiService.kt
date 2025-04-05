@@ -6,6 +6,7 @@ import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
+import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -20,6 +21,9 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
+
+    @GET("user_profiles/groups")
+    fun getAllUserProfilesGroups(): Call<GetAllUserProfilesGroupsResponse>
 
     @POST("user_profile/{user_profile_id}/group")
     suspend fun addUserGroup(

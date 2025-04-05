@@ -44,14 +44,43 @@ class GroupChatListFragment : Fragment() {
         val userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
         Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
-        getUserProfilesWithGroupsByUserProfileId(userId)
+        getUserGroupByUserProfileId(userId)
+
+        getUserGroup()
 
         binding.fabGroupChatList.setOnClickListener { showCustomInputFragmentialog(userId) }
     }
 
-    private fun getUserProfilesWithGroupsByUserProfileId(userId: Int?) {
-        viewModel.getUserProfilesWithGroupsByUserProfileId(userId!!).observe(requireActivity()) { result ->
-            Log.d(TAG, "onGroupChatListFragment getUserProfilesWithGroupsByUserProfileId : ${result}")
+    private fun getUserGroup() {
+        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserGroup().observe(requireActivity()) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        Log.d(TAG, "onNavDrawerMainActivity getUserGroup : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getUserGroupByUserProfileId(userId: Int?) {
+        viewModel.getUserGroupByUserProfileId(userId!!).observe(requireActivity()) { result ->
+            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserProfileId : ${result}")
         }
     }
 

@@ -6,15 +6,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
+import com.example.stunting.database.with_api.groups.GroupsEntity
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
+import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_group.UserGroupEntity
-import com.example.stunting.database.with_api.user_group.UserProfileWithGroups
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.users.UsersEntity
@@ -38,15 +39,93 @@ class ChattingRepository(
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     val formattedDateTime = now.format(formatter)
 
+    private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
-    fun getUserProfilesWithGroupsByUserProfileId(userId: Int): LiveData<UserGroupEntity> {
-        return chattingDatabase.userGroupDao().getUserProfilesWithGroupsByUserProfileId(userId)
+    fun getUserGroupByUserProfileId(userId: Int): LiveData<List<UserGroupEntity>> {
+        return chattingDatabase.userGroupDao().getUserGroupByUserProfileId(userId)
     }
 
-    fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles> {
-        return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
+    // Menggunakan entitas pusat relasi
+    fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
+        resultListUserGroup.value = ResultState.Loading
+        val response = apiService.getAllUserProfilesGroups()
+
+        response.enqueue(object : Callback<GetAllUserProfilesGroupsResponse> {
+            override fun onResponse(
+                call: Call<GetAllUserProfilesGroupsResponse>,
+                response: Response<GetAllUserProfilesGroupsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val userGroups = response.body()?.userGroups
+                    val groupList = ArrayList<GroupsEntity>()
+                    val userProfileList = ArrayList<UserProfileEntity>()
+                    val userGroupList = ArrayList<UserGroupEntity>()
+
+                    appExecutors.diskIO.execute {
+                        userGroups?.forEach { item ->
+                            val group = item?.groups
+                            val userProfile = item?.userProfile
+
+                            if (group != null && userProfile != null) {
+                                // Simpan Group
+                                groupList.add(
+                                    GroupsEntity(
+                                        id = group.id,
+                                        namaGroup = group.namaGroup,
+                                        deskripsi = group.deskripsi,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString()
+                                    )
+                                )
+
+                                // Simpan UserProfile
+                                userProfileList.add(
+                                    UserProfileEntity(
+                                        id = userProfile.id ?: 0,
+                                        userId = userProfile.userId ?: 0,
+                                        nama = userProfile.nama,
+                                        nik = userProfile.nik,
+                                        jenisKelamin = userProfile.jenisKelamin,
+                                        tglLahir = userProfile.tglLahir,
+                                        umur = userProfile.umur ?: 0,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString()
+                                    )
+                                )
+
+                                // Simpan UserGroup
+                                userGroupList.add(
+                                    UserGroupEntity(
+                                        id_group = group.id ?: 0,
+                                        user_id = userProfile.userId ?: 0,
+                                        role = null,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString()
+                                    )
+                                )
+                            }
+                        }
+                        chattingDatabase.groupsDao().insertGroups(groupList)
+                        chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+                        chattingDatabase.userGroupDao().insertUserGroups(userGroupList)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GetAllUserProfilesGroupsResponse>, t: Throwable) {
+//                Log.d(TAG, "onChattingRepository getUserGroup Failed : ${t.message}")
+                resultListUserGroup.value = ResultState.Error(t.message.toString())
+            }
+        })
+
+        val localData = chattingDatabase.userGroupDao().getUserGroup()
+        resultListUserGroup.addSource(localData) { userData: List<UserGroupEntity> ->
+            resultListUserGroup.value = ResultState.Success(userData)
+        }
+        return resultListUserGroup
     }
+
 
     suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String) = liveData {
         emit(ResultState.Loading)
@@ -130,7 +209,7 @@ class ChattingRepository(
         return chattingDatabase.userProfileDao().getUserWithUserProfileById(userId)
     }
     
-
+    // Menggunakan entitas pusat relasi
     fun getUsers(): LiveData<ResultState<List<UserProfileEntity>>> {
         resultListUsers.value = ResultState.Loading
         val response = apiService.getAllUsers()

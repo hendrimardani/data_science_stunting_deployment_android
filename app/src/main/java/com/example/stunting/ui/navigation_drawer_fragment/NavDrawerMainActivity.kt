@@ -127,8 +127,10 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsers : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
+                        viewModel.logout()
                         val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
                         intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
                     }
                 }
             }

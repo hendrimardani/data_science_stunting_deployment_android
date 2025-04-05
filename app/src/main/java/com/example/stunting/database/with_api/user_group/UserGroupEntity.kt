@@ -5,7 +5,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Junction
-import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.stunting.database.with_api.groups.GroupsEntity
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
@@ -13,7 +12,7 @@ import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 // Many to many
 @Entity(
     tableName = "user_group",
-    primaryKeys = ["id_group", "id_user_profile"],
+    primaryKeys = ["id_group", "user_id"],
     foreignKeys = [
         ForeignKey(
             entity = GroupsEntity::class,
@@ -23,8 +22,8 @@ import com.example.stunting.database.with_api.user_profile.UserProfileEntity
         ),
         ForeignKey(
             entity = UserProfileEntity::class,
-            parentColumns = ["id_user_profile"],
-            childColumns = ["id_user_profile"],
+            parentColumns = ["user_id"],
+            childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -33,18 +32,18 @@ data class UserGroupEntity(
     // Foreign key
     val id_group: Int,
     // Foreign key
-    val id_user_profile: Int,
+    val user_id: Int,
     val role: String?  = null,
     @ColumnInfo(name = "created_by") val createdBy: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
-    @ColumnInfo(name = "updated_at") val updatedaT: String? = null
+    @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
 
 data class UserProfileWithGroups(
     @Embedded val userProfile: UserProfileEntity,
 
     @Relation(
-        parentColumn = "id_user_profile",
+        parentColumn = "user_id",
         entityColumn = "id_group",
         associateBy = Junction(UserGroupEntity::class)
     )
@@ -57,7 +56,7 @@ data class GroupWithUserProfiles(
 
     @Relation(
         parentColumn = "id_group",
-        entityColumn = "id_user_profile",
+        entityColumn = "user_id",
         associateBy = Junction(UserGroupEntity::class)
     )
 

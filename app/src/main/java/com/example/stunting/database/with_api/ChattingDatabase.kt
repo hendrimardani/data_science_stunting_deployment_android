@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.stunting.database.with_api.groups.GroupsDao
 import com.example.stunting.database.with_api.groups.GroupsEntity
 import com.example.stunting.database.with_api.user_group.UserGroupDao
 import com.example.stunting.database.with_api.user_group.UserGroupEntity
@@ -17,12 +18,13 @@ import com.example.stunting.database.with_api.users.UsersEntity
         UsersEntity::class, UserProfileEntity::class, GroupsEntity::class,
         UserGroupEntity::class
                 ],
-    version = 19
+    version = 24
 )
 abstract class ChattingDatabase: RoomDatabase() {
     abstract fun userGroupDao(): UserGroupDao
-    abstract fun usersDao(): UsersDao
+    abstract fun groupsDao(): GroupsDao
     abstract fun userProfileDao(): UserProfileDao
+    abstract fun usersDao(): UsersDao
 
     companion object {
         @Volatile
