@@ -23,7 +23,6 @@ interface UserGroupDao {
     @Query("SELECT * FROM groups")
     fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles>
 
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserGroup(userGroup: UserGroupEntity)
 }
