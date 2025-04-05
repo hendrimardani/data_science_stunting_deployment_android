@@ -12,7 +12,7 @@ import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
-import com.example.stunting.database.with_api.user_group.GroupWithUsers
+import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.users.UsersEntity
@@ -38,8 +38,8 @@ class ChattingRepository(
 
     private val resultListUsers = MediatorLiveData<ResultState<List<UsersEntity>>>()
 
-    fun getGroupWithUsers(): LiveData<GroupWithUsers> {
-        return chattingDatabase.userGroupDao().getGroupWithUsers()
+    fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles> {
+        return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
     }
 
     suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String) = liveData {

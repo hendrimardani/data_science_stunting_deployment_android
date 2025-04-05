@@ -14,8 +14,8 @@ interface UserGroupDao {
     suspend fun insertUserGroup(userGroup: UserGroupEntity)
 
 //    @Transaction
-//    @Query("SELECT * FROM users")
-//    fun getUserWithGroups(): LiveData<UserProfilesWithGroups>
+//    @Query("SELECT * FROM user_profile")
+//    fun getUserProfilesWithGroups(): LiveData<UserProfileWithGroups>
 
     @Transaction
     @Query("SELECT * FROM groups")

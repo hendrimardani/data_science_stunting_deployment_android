@@ -11,7 +11,7 @@ import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    fun getGroupWithUsers() = chattingRepository.getGroupWithUsers()
+    fun getGroupWithUserProfiles() = chattingRepository.getGroupWithUserProfiles()
 
     fun addUserGroup(userProfileById: Int, namaGroup: String, deskripsi: String) = liveData {
         emitSource(chattingRepository.addUserGroup(userProfileById, namaGroup, deskripsi))
