@@ -32,7 +32,7 @@ data class UserGroupEntity(
     val id_user_profile: Int
 )
 
-data class UserWithGroups(
+data class UserProfileWithGroups(
     @Embedded val userProfile: UserProfileEntity,
 
     @Relation(
@@ -44,7 +44,7 @@ data class UserWithGroups(
     val groups: List<GroupsEntity?>
 )
 
-data class GroupWithUsers(
+data class GroupWithUserProfiles(
     @Embedded val group: GroupsEntity,
 
     @Relation(

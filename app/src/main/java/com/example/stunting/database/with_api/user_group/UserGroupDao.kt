@@ -15,9 +15,9 @@ interface UserGroupDao {
 
 //    @Transaction
 //    @Query("SELECT * FROM users")
-//    fun getUserWithGroups(): LiveData<UserWithGroups>
+//    fun getUserWithGroups(): LiveData<UserProfilesWithGroups>
 
     @Transaction
     @Query("SELECT * FROM groups")
-    fun getGroupWithUsers(): LiveData<GroupWithUsers>
+    fun getGroupWithUserProfiles(): LiveData<GroupWithUserProfiles>
 }
