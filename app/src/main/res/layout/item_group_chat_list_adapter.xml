@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="5dp">
+
+    <LinearLayout
+        android:id="@+id/cv_group_chat_list_adapter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_4"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_item_group_chat_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:src="@tools:sample/avatars"  />
+
+        <TextView
+            android:id="@+id/tv_title_group"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            tools:text="@string/text_title_group"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp" />
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_forward_ios_24"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/dimen_12"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

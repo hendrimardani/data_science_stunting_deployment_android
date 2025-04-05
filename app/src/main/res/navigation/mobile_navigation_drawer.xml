@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_drawer"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.stunting.ui.navigation_drawer_fragment.home.NavHomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/nav_fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_group_chat_list"
+            app:destination="@id/nav_group_chat_list" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.stunting.ui.navigation_drawer_fragment.settings.NavSettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/nav_fragment_settings" />
+    <fragment
+        android:id="@+id/nav_group_chat_list"
+        android:name="com.example.stunting.ui.group_chat_list.GroupChatListFragment"
+        android:label="@string/text_group_chat_list"
+        tools:layout="@layout/fragment_group_chat_list" />
+</navigation>

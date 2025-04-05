@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.sign_up.SignUpActivity">
+
+    <View
+        android:id="@+id/v_background_1"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/gambar_wave_sign_up_up"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_stunting_app"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/gambar_login_stunting_bg_remove"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="20dp"
+        android:elevation="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_login"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:elevation="5dp"
+        android:layout_marginTop="40dp"
+        app:lottie_rawRes="@raw/animation_sign_up"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/v_1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_login_view_2"
+        android:layout_marginTop="270dp"
+        android:layout_marginStart="@dimen/dimen_12"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.983" />
+
+    <View
+        android:id="@+id/v_2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="270dp"
+        android:background="@drawable/shape_login_view_1"
+        android:elevation="5dp"
+        android:layout_marginEnd="@dimen/dimen_8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_login"
+        android:layout_width="340dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="280dp"
+        android:background="@drawable/shadow_background_constraint_layout"
+        android:elevation="@dimen/dimen_4"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/dimen_16"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="@string/text_daftar"
+                android:textStyle="bold"
+                android:textSize="@dimen/dimen_32"
+                android:textColor="@color/bluePrimary"
+                android:layout_marginTop="@dimen/dimen_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iv_nama_lengkap"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/dimen_12"
+                android:src="@drawable/ic_person_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_lengkap"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_up" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_lengkap"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nama_lengkap_sign_up"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_lengkap"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_up"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.example.stunting.MyNamaEditText
+                    android:id="@+id/tiet_nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_email"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_email_24"
+                app:layout_constraintStart_toStartOf="@id/iv_nama_lengkap"
+                app:layout_constraintEnd_toStartOf="@id/til_email"
+                app:layout_constraintTop_toBottomOf="@id/til_nama_lengkap" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_email_sign_up"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_email"
+                app:layout_constraintEnd_toEndOf="@id/til_nama_lengkap"
+                app:layout_constraintStart_toEndOf="@id/iv_email"
+                app:layout_constraintTop_toTopOf="@id/iv_email"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.example.stunting.MyEmailEditText
+                    android:id="@+id/tiet_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_password"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_key_24"
+                app:layout_constraintStart_toStartOf="@id/iv_email"
+                app:layout_constraintEnd_toStartOf="@id/til_email"
+                app:layout_constraintTop_toBottomOf="@id/til_email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_password"
+                android:textColorHint="?attr/colorTextHint"
+                app:endIconMode="password_toggle"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_password"
+                app:layout_constraintEnd_toEndOf="@id/til_email"
+                app:layout_constraintStart_toEndOf="@id/iv_password"
+                app:layout_constraintTop_toTopOf="@id/iv_password"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.example.stunting.MyPasswordEditText
+                    android:id="@+id/tiet_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_repeat_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_repeat_password"
+                android:textColorHint="?attr/colorTextHint"
+                app:endIconMode="password_toggle"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:layout_constraintEnd_toEndOf="@id/til_password"
+                app:layout_constraintStart_toStartOf="@id/til_password"
+                app:layout_constraintTop_toBottomOf="@id/til_password"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.example.stunting.MyPasswordEditText
+                    android:id="@+id/tiet_repeat_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/signup"
+                android:paddingHorizontal="50dp"
+                android:layout_marginStart="@dimen/dimen_32"
+                android:enabled="false"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                app:strokeColor="@color/gray"
+                app:icon="@drawable/ic_person_add_24dp"
+                app:layout_constraintTop_toBottomOf="@id/til_repeat_password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/v_background_2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/gambar_wave_sign_up_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/v_3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_login_view_2"
+        android:layout_marginTop="590dp"
+        android:layout_marginEnd="@dimen/dimen_12"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.983" />
+
+    <View
+        android:id="@+id/v_4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_login_view_1"
+        android:layout_marginTop="590dp"
+        android:layout_marginStart="@dimen/dimen_12"
+        android:elevation="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.983" />
+
+    <!--    Layout no internet-->
+    <include
+        android:id="@+id/layout_no_internet"
+        layout="@layout/no_internet"
+        android:visibility="invisible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

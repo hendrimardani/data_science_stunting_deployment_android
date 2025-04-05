@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:collapsedTitleTextColor="?attr/colorText"
+            app:contentScrim="?attr/colorBackground"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp">
+
+            <ImageView
+                android:id="@+id/toolbarImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:src="@drawable/gambar_kartun_keluarga_blur"
+                app:layout_collapseMode="parallax" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/family_service_form"
+                android:textSize="36sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:shadowColor="#000000"
+                android:shadowDx="10"
+                android:shadowDy="10"
+                android:shadowRadius="10" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_keluarga"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIconTint="?attr/colorText"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Fungsi dari
+    android:fitsSystemWindows="true"
+    supaya editText muncul diatas keyboard -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_nama_keluarga"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_name_keluarga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_keluarga"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_keluarga"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nama_kepala_keluarga"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_keluarga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_keluarga"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_keluarga"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nama_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_dusun_keluarga"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_dusun"
+                app:layout_constraintEnd_toStartOf="@id/til_dusun_keluarga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_dusun_keluarga"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_dusun"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_dusun_keluarga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_dusun_keluarga"
+                app:layout_constraintTop_toTopOf="@id/iv_dusun_keluarga"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_dusun_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_nama_lengkap_ibu_hamil_keluarga"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_name_bumil"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_lengkap_ibu_hamil_keluarga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_dusun_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_lengkap_ibu_hamil_keluarga"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nama_lengkap_ibu_hamil"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_lengkap_ibu_hamil_keluarga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_lengkap_ibu_hamil_keluarga"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_lengkap_ibu_hamil_keluarga"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nama_lengkap_ibu_hamil_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_anak_keluarga"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_name_anak"
+                app:layout_constraintEnd_toStartOf="@id/til_anak_keluarga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_lengkap_ibu_hamil_keluarga" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_anak_keluarga"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nama_anak"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_anak_keluarga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_anak_keluarga"
+                app:layout_constraintTop_toTopOf="@id/iv_anak_keluarga"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_anak_keluarga"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_kategori_keluarga_rentan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/hint_kategori_keluarga_rentan"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_anak_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_kategori_keluarga_rentan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_kategori_keluarga_rentan_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_kategori_keluarga_rentan_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_kategori_keluarga_rentan_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_memiliki_kartu_keluarga_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/hint_memiliki_kartu_keluarga"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_kategori_keluarga_rentan_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_memiliki_kartu_keluarga_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memiliki_kartu_keluarga_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_memiliki_kartu_keluarga_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_memiliki_kartu_keluarga_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_memiliki_jamban_sehat_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/memiliki_jamban_sehat"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_memiliki_kartu_keluarga_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_memiliki_jamban_sehat_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memiliki_jamban_sehat_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_memiliki_jamban_sehat_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_memiliki_jamban_sehat_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_memiliki_sumber_air_bersih_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/memiliki_sumber_air_bersih"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_memiliki_jamban_sehat_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_memiliki_sumber_air_bersih_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memiliki_sumber_air_bersih_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_memiliki_sumber_air_bersih_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_memiliki_sumber_air_bersih_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_peserta_jaminan_kesehatan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/peserta_jaminan_kesehatan"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_memiliki_sumber_air_bersih_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_peserta_jaminan_kesehatan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_peserta_jaminan_kesehatan_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_peserta_jaminan_kesehatan_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_peserta_jaminan_kesehatan_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/memiliki_akses_sanitasi_pembuangan_limbah_layak"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_peserta_jaminan_kesehatan_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_pendampingan_keluarga_oleh_tpk_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/pendampingan_keluarga_oleh_tpk"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_memiliki_akses_sanitasi_pembuangan_limbah_layak_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_pendampingan_keluarga_oleh_tpk_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_pendampingan_keluarga_oleh_tpk_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_pendampingan_keluarga_oleh_tpk_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_pendampingan_keluarga_oleh_tpk_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tv_peserta_kegiatan_ketahanan_pangan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/peserta_kegiatan_ketahanan_pangan"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rg_pendampingan_keluarga_oleh_tpk_keluarga" />
+
+                <RadioGroup
+                    android:id="@+id/rg_peserta_kegiatan_ketahanan_pangan_keluarga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_peserta_kegiatan_ketahanan_pangan_keluarga">
+
+                    <RadioButton
+                        android:id="@+id/rb_ya_peserta_kegiatan_ketahanan_pangan_keluarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/dimen_48"
+                        android:text="@string/rb_ya" />
+
+                    <RadioButton
+                        android:id="@+id/rb_tidak_peserta_kegiatan_ketahanan_pangan_keluarga"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rb_tidak" />
+                </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_submit_keluarga"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                app:strokeColor="@color/blueSecond"
+                app:icon="@drawable/ic_send_to_mobile_24px"
+                android:text="@string/kirim"
+                android:paddingHorizontal="30dp"
+                app:layout_constraintTop_toBottomOf="@id/rg_peserta_kegiatan_ketahanan_pangan_keluarga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_keluarga" />
+
+            <Button
+                android:id="@+id/btn_tampil_data_keluarga"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.Icon"
+                app:strokeColor="@color/blueSecond"
+                app:icon="@drawable/ic_visibility_24px"
+                android:text="@string/tampilkan_data"
+                android:paddingHorizontal="@dimen/dimen_16"
+                android:layout_marginStart="@dimen/dimen_8"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_submit_keluarga"
+                app:layout_constraintStart_toEndOf="@+id/btn_submit_keluarga"
+                app:layout_constraintTop_toTopOf="@+id/btn_submit_keluarga"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

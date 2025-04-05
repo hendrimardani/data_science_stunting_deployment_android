@@ -1,0 +1,13 @@
+package com.example.stunting.database.with_api.groups
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "groups")
+data class GroupsEntity(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id_group") val id: Int? = null,
+    @ColumnInfo(name = "nama_group") val namaGroup: String? = null,
+    @ColumnInfo(name = "deskripsi") val deskripsi: String? = null,
+)

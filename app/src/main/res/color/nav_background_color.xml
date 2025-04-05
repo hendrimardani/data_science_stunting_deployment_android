@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Warna latar belakang ketika item dipilih -->
+    <item android:drawable="@android:color/transparent" android:state_checked="true" android:color="@android:color/transparent" />
+    <!-- Warna default (tidak dipilih) -->
+    <item android:drawable="@android:color/transparent" android:color="@android:color/transparent" />
+</selector>

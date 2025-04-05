@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_opening">
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.stunting.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_navigationDrawerMainActivity"
+            app:destination="@id/navigationDrawerMainActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/navigationDrawerMainActivity"
+        android:name="com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity"
+        android:label="app_bar_navigation_drawer_main"
+        tools:layout="@layout/app_bar_navigation_drawer_main" />
+    <fragment
+        android:id="@+id/nav_opening"
+        android:name="com.example.stunting.ui.opening.OpeningFragment"
+        android:label="fragment_opening_fragment"
+        tools:layout="@layout/fragment_opening">
+        <action
+            android:id="@+id/action_nav_opening_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
+</navigation>
