@@ -33,6 +33,7 @@ class NavHomeFragment : Fragment() {
     private lateinit var overlay: View
 
     private val list = ArrayList<CegahStuntingData>()
+    private var userId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +61,7 @@ class NavHomeFragment : Fragment() {
     }
 
     private fun getDataExtraFromNavDrawerMainActivity() {
-        val userId = arguments?.getInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT)
+        userId = arguments?.getInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT)
 //        Log.d(TAG, "onNavHomeFragment id user : ${userId}")
         navigation(userId)
         }

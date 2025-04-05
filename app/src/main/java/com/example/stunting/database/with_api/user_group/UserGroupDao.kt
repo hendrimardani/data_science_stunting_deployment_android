@@ -6,15 +6,22 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 
 @Dao
 interface UserGroupDao {
 
     // Query ini tidak ke API melainkan ke database
     @Transaction
-    @Query("SELECT * FROM user_group WHERE user_id = :userId")
-    fun getUserGroupByUserProfileId(userId: Int): LiveData<List<UserGroupEntity>>
+    @Query("SELECT * FROM user_profile WHERE user_id = :userId")
+    fun getUserProfileWithGroupsByUserProfileId(userId: Int): LiveData<List<UserProfileWithGroups>>
+
+    @Transaction
+    @Query("SELECT * FROM user_profile")
+    fun getUserProfileWithGroups(): LiveData<List<UserProfileWithGroups>>
+
+    @Transaction
+    @Query("SELECT * FROM groups")
+    fun getGroupWithUserProfiles(): LiveData<List<GroupWithUserProfiles>>
 
     @Query("SELECT * FROM user_group ORDER BY user_id ASC")
     fun getUserGroup(): LiveData<List<UserGroupEntity>>

@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
+import com.example.stunting.adapter.GroupChatListAdapter
 import com.example.stunting.databinding.DialogCustomInputFragmentBinding
 import com.example.stunting.databinding.FragmentGroupChatListBinding
 import com.example.stunting.ui.MainActivity
@@ -29,6 +31,8 @@ class GroupChatListFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
+    val groupChatListAdapter = GroupChatListAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,11 +46,16 @@ class GroupChatListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
-        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
+//        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
         getUserGroupByUserProfileId(userId)
-
         getUserGroup()
+
+        binding.rvGroupChatList.apply {
+            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            setHasFixedSize(true)
+            adapter = groupChatListAdapter
+        }
 
         binding.fabGroupChatList.setOnClickListener { showCustomInputFragmentialog(userId) }
     }
@@ -65,7 +74,7 @@ class GroupChatListFragment : Fragment() {
                     is ResultState.Error -> progressBar.dismiss()
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onNavDrawerMainActivity getUserGroup : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivity getUserGroup : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -79,8 +88,12 @@ class GroupChatListFragment : Fragment() {
     }
 
     private fun getUserGroupByUserProfileId(userId: Int?) {
-        viewModel.getUserGroupByUserProfileId(userId!!).observe(requireActivity()) { result ->
-            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserProfileId : ${result}")
+        viewModel.getUserProfileWithGroupsByUserProfileId(userId!!).observe(requireActivity()) { result ->
+//            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserProfileId : ${result}")
+            result.forEach { item ->
+                val groupsEntityList = item.groups
+                groupChatListAdapter.submitList(groupsEntityList)
+            }
         }
     }
 

@@ -13,8 +13,11 @@ import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
+import com.example.stunting.database.with_api.response.UserProfile
 import com.example.stunting.database.with_api.retrofit.ApiService
+import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_group.UserGroupEntity
+import com.example.stunting.database.with_api.user_group.UserProfileWithGroups
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.users.UsersEntity
@@ -41,8 +44,16 @@ class ChattingRepository(
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
-    fun getUserGroupByUserProfileId(userId: Int): LiveData<List<UserGroupEntity>> {
-        return chattingDatabase.userGroupDao().getUserGroupByUserProfileId(userId)
+    fun getUserProfileWithGroupsByUserProfileId(userId: Int): LiveData<List<UserProfileWithGroups>> {
+        return chattingDatabase.userGroupDao().getUserProfileWithGroupsByUserProfileId(userId)
+    }
+
+    fun getGroupWithUserProfiles(): LiveData<List<GroupWithUserProfiles>> {
+        return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
+    }
+
+    fun getUserProfileWithGroups(): LiveData<List<UserProfileWithGroups>> {
+        return chattingDatabase.userGroupDao().getUserProfileWithGroups()
     }
 
     // Menggunakan entitas pusat relasi
