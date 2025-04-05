@@ -129,6 +129,7 @@ class ChattingRepository(
     fun getUserWithUserProfileById(userId: Int): LiveData<UserWithUserProfile>{
         return chattingDatabase.userProfileDao().getUserWithUserProfileById(userId)
     }
+    
 
     fun getUsers(): LiveData<ResultState<List<UserProfileEntity>>> {
         resultListUsers.value = ResultState.Loading
