@@ -14,7 +14,6 @@ import com.example.stunting.database.with_api.request_json.UpdateUserProfileById
 import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
-import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
@@ -58,6 +57,7 @@ class ChattingRepository(
             ) {
                 if (response.isSuccessful) {
                     val userGroups = response.body()?.userGroups
+//                    Log.d(TAG, "onChattingRepository getUserGroup Success : ${userGroups}")
                     val groupList = ArrayList<GroupsEntity>()
                     val userProfileList = ArrayList<UserProfileEntity>()
                     val userGroupList = ArrayList<UserGroupEntity>()
@@ -224,35 +224,39 @@ class ChattingRepository(
 //                    Log.d(TAG, "onChattingRepository getUsers Success : ${users}")
                     val usersList = ArrayList<UsersEntity>()
                     val userProfileList = ArrayList<UserProfileEntity>()
+
                     appExecutors.diskIO.execute {
-                        // Simpan di Entitas Users
                         users?.forEach { item ->
-                            val user = UsersEntity(
-                                item?.users?.id,
-                                item?.users?.email,
-                                item?.users?.password,
-                                formattedDateTime.toString(),
-                                formattedDateTime.toString()
-                            )
-                            usersList.add(user)
+                            val users = item?.users
+                            if (users != null) {
+                                // Simpan Users
+                                usersList.add(
+                                    UsersEntity(
+                                        id = item.users.id,
+                                        email = item.users.email,
+                                        password = item.users.password,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString()
+                                    )
+                                )
+
+                                // Simpan UserProfile
+                                userProfileList.add(
+                                    UserProfileEntity(
+                                        id = item.id,
+                                        userId = item.userId,
+                                        nama = item.nama,
+                                        nik = item.nik,
+                                        jenisKelamin = item.jenisKelamin,
+                                        tglLahir = item.tglLahir,
+                                        umur = item.umur,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString(),
+                                    )
+                                )
+                            }
                         }
                         chattingDatabase.usersDao().insertUsers(usersList)
-
-                        // Simpan di Entitas User Profile
-                        users!!.forEach { item ->
-                            val userProfile = UserProfileEntity(
-                                item?.id,
-                                item?.userId,
-                                item?.nama,
-                                item?.nik,
-                                item?.jenisKelamin,
-                                item?.tglLahir,
-                                item?.umur,
-                                formattedDateTime.toString(),
-                                formattedDateTime.toString(),
-                            )
-                            userProfileList.add(userProfile)
-                        }
                         chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
                     }
                 }
