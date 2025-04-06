@@ -13,7 +13,6 @@ import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
-import com.example.stunting.database.with_api.response.UserProfile
 import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_group.UserGroupEntity

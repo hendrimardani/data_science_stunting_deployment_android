@@ -16,6 +16,11 @@ class GroupChatListAdapter: ListAdapter<DataUserGroupByUserIdItem, GroupChatList
     class MyViewHolder(private val binding: ItemGroupChatListAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataUserGroupByUserIdItem) {
             binding.tvTitleGroup.text = item.groups?.namaGroup
+            // Format 2025-04-05T12:41:07
+            val dateTime = item.groups?.createdAt
+            binding.tvDateTime.text = dateTime?.substringBefore("T")
+
+            binding.tvCreatedBy.text = item.createdBy
 //            Glide.with(itemView.context)
 //                .load(item.mediaCover)
 //                .into(binding.ivFinished)

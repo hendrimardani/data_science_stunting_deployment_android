@@ -2,18 +2,24 @@ package com.example.stunting.ui.group_chat_list
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.stunting.MyNamaEditText.Companion.MIN_CHARACTER_NAMA
+import com.example.stunting.MyPasswordEditText.Companion.MIN_CHARACTER_PASSWORD
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.GroupChatListAdapter
@@ -58,6 +64,31 @@ class GroupChatListFragment : Fragment() {
 
         binding.fabGroupChatList.setOnClickListener { showCustomInputFragmentialog(userId) }
     }
+
+    private fun textWatcherDialogCustomInput(view: DialogCustomInputFragmentBinding) {
+        val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val namaGroup = view.tietNamaGroup.text.toString()
+                val deskripsiGroup = view.tietDeskripsiGroup.text.toString()
+
+                view.btnAddGroup.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty()
+
+                if (view.btnAddGroup.isEnabled == true) {
+                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.blueSecond))
+                } else {
+                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor))
+                    view.btnAddGroup.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.white))
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        }
+        view.tietNamaGroup.addTextChangedListener(textWatcher)
+        view.tietDeskripsiGroup.addTextChangedListener(textWatcher)
+    }
+
 
     private fun getUserGroup() {
         val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
@@ -124,7 +155,7 @@ class GroupChatListFragment : Fragment() {
         val viewDialog = Dialog(requireActivity())
 
         viewDialog.setContentView(view.root)
-        viewDialog.setCanceledOnTouchOutside(true)
+        viewDialog.setCanceledOnTouchOutside(false)
         viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
@@ -132,6 +163,8 @@ class GroupChatListFragment : Fragment() {
         progressBar.setContentText(getString(R.string.description_loading))
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
+
+        textWatcherDialogCustomInput(view)
 
         view.btnAddGroup.setOnClickListener {
             val namaGroup = view.tietNamaGroup.text.toString()

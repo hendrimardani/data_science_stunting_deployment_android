@@ -106,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_add_group"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_group"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -114,7 +114,8 @@
         android:text="@string/text_add_group"
         android:paddingHorizontal="20dp"
         android:layout_marginStart="@dimen/dimen_12"
-        app:strokeColor="@color/blueSecond"
+        android:enabled="false"
+        app:strokeColor="@color/gray"
         app:icon="@drawable/ic_group_add_24"
         app:layout_constraintTop_toTopOf="@id/btn_cancel"
         app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
