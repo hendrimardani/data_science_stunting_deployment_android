@@ -8,6 +8,7 @@ import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
+import com.example.stunting.database.with_api.response.GetUserGroupByUserIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileResponse
@@ -24,6 +25,11 @@ interface ApiService {
 
     @GET("user_profiles/groups")
     fun getAllUserProfilesGroups(): Call<GetAllUserProfilesGroupsResponse>
+
+    @GET("user_profile/{user_id}/group")
+    suspend fun getUserGroupByUserId(
+        @Path("user_id") userId: Int
+    ): Response<GetUserGroupByUserIdResponse>
 
     @POST("user_profile/{user_profile_id}/group")
     suspend fun addUserGroup(

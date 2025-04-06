@@ -47,12 +47,11 @@ class GroupChatListFragment : Fragment() {
 
         val userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
-
-        getUserGroupByUserProfileId(userId)
+        getUserGroupByUserId(userId)
         getUserGroup()
 
         binding.rvGroupChatList.apply {
-            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, true)
             setHasFixedSize(true)
             adapter = groupChatListAdapter
         }
@@ -87,12 +86,35 @@ class GroupChatListFragment : Fragment() {
         }
     }
 
-    private fun getUserGroupByUserProfileId(userId: Int?) {
-        viewModel.getUserProfileWithGroupsByUserProfileId(userId!!).observe(requireActivity()) { result ->
-//            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserProfileId : ${result}")
-            result.forEach { item ->
-                val groupsEntityList = item.groups
-                groupChatListAdapter.submitList(groupsEntityList)
+    private fun getUserGroupByUserId(userId: Int?) {
+        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserGroupByUserId(userId!!).observe(requireActivity()) { result ->
+//            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserId : ${result}")
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { progressBar.show() }
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        val dataUserGroupByUserId = result.data?.dataUserGroupByUserId
+//                        Log.d(TAG, "onGroupChatListFragment success adding the group : ${data}}")
+                        groupChatListAdapter.submitList(dataUserGroupByUserId)
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }
@@ -121,18 +143,20 @@ class GroupChatListFragment : Fragment() {
                         is ResultState.Loading -> progressBar.show()
                         is ResultState.Error -> {
                             progressBar.dismiss()
-//                            showSweetAlertDialog(result.error, 1)
 //                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
                         }
                         is ResultState.Success -> {
                             progressBar.dismiss()
+                            viewDialog.dismiss()
+
                             val message = result.data?.message.toString()
-                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
+//                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
                             Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+
+                            getUserGroupByUserId(userId)
 
                             view.tietNamaGroup.text?.clear()
                             view.tietDeskripsiGroup.text?.clear()
-                            viewDialog.dismiss()
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()

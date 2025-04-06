@@ -11,13 +11,16 @@ import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    fun getUserProfileWithGroupsByUserProfileId(userId: Int) = chattingRepository.getUserProfileWithGroupsByUserProfileId(userId)
 
     fun getGroupWithUserProfiles() = chattingRepository.getGroupWithUserProfiles()
 
     fun getUserProfileWithGroups() = chattingRepository.getUserProfileWithGroups()
 
     fun getUserGroup() = chattingRepository.getUserGroup()
+
+    fun getUserGroupByUserId(userId: Int) = liveData {
+        emitSource(chattingRepository.getUserGroupByUserId(userId))
+    }
 
     fun addUserGroup(userProfileById: Int, namaGroup: String, deskripsi: String) = liveData {
         emitSource(chattingRepository.addUserGroup(userProfileById, namaGroup, deskripsi))

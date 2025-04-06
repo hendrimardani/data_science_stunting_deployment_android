@@ -44,10 +44,6 @@ class ChattingRepository(
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
-    fun getUserProfileWithGroupsByUserProfileId(userId: Int): LiveData<List<UserProfileWithGroups>> {
-        return chattingDatabase.userGroupDao().getUserProfileWithGroupsByUserProfileId(userId)
-    }
-
     fun getGroupWithUserProfiles(): LiveData<List<GroupWithUserProfiles>> {
         return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
     }
@@ -135,6 +131,29 @@ class ChattingRepository(
             resultListUserGroup.value = ResultState.Success(userData)
         }
         return resultListUserGroup
+    }
+
+    // Langsung memanggol ke API
+    fun getUserGroupByUserId(userId: Int) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getUserGroupByUserId(userId)
+
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
+//                Log.e(TAG, "onChattingRepository getUserGroupByUserId Error ${response.code()}: $errorBody")
+                }
+            }
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            emit(ResultState.Error(e.message.toString()))
+        }
     }
 
 
