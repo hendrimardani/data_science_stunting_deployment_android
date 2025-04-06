@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.detail_group_chat.DetailGroupChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.navigation_drawer_fragment.NavDrawerMainActivity"
             android:exported="false"
             android:label="@string/title_activity_navigation_drawer_main"

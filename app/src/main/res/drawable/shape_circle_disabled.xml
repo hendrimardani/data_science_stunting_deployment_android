@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/blueSecond" />
+    <solid android:color="@color/buttonDisabledColor" />
 
-    <stroke android:color="@color/blueSecond" />
+    <stroke android:color="@color/buttonDisabledColor" />
     <padding
         android:left="5dp"
         android:top="5dp"

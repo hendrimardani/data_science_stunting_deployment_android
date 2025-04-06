@@ -200,4 +200,6 @@
     <string name="text_add_group">Tambah Group</string>
     <string name="text_name_group">Nama Group</string>
     <string name="text_description_group">Deskripsi Group</string>
+    <string name="hint_text_mau_tanya_apa">Mau tanya apa ...</string>
+    <string name="hint_text_kirim_pesan">Kirim pesan ...</string>
 </resources>

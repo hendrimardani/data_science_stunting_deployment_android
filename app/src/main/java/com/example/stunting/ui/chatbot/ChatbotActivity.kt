@@ -2,6 +2,7 @@ package com.example.stunting.ui.chatbot
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.res.ColorStateList
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -57,17 +59,14 @@ class ChatbotActivity : AppCompatActivity() {
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
 
-        // Toolbar
         setToolBar()
 
         _messageDao = (application as DatabaseApp).dbApp.messageChatbotDao()
 
-        // isWordAvailable
-        wordAvailable()
-
+        textWatcher()
         try {
-            binding.ivChatbot.setOnClickListener {
-                val input = binding.etChatbot.text
+            binding.btnSend.setOnClickListener {
+                val input = binding.tietMessage.text
                 if (input!!.isEmpty()) {
                     toastInfo(
                         this@ChatbotActivity,
@@ -83,11 +82,12 @@ class ChatbotActivity : AppCompatActivity() {
                     progressBar.show()
                     lifecycleScope.launch {
                         delay(1000)
-                        // Add record
                         addRecord(input.toString(), true)
                         generativeModel(input.toString())
+
                         input.clear()
                         progressBar.dismiss()
+
                         setupListOfDataIntoRecyclerView(messageList)
                     }
                 }
@@ -100,47 +100,33 @@ class ChatbotActivity : AppCompatActivity() {
                 MotionToastStyle.ERROR
             )
         }
-        // Dialog information
-        customeDialogInfo()
+        dialogCustomInfo()
 
-        // Get all items
         getAll(messageDao)
     }
 
-    private fun wordAvailable() {
-        // Matikan ikon jika tidak ada input
-        binding.etChatbot.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+    private fun textWatcher() {
+        val textWatcher = object : TextWatcher {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            override fun afterTextChanged(s: Editable?) {
+                val message = binding.tietMessage.text.toString().trim()
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s!!.isEmpty()){
-                    binding.ivChatbot.setColorFilter(getColor(R.color.gray))
+                binding.btnSend.isEnabled = message.isNotEmpty()
+
+                if (binding.btnSend.isEnabled) {
+                    binding.btnSend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@ChatbotActivity, R.color.white))
+                    binding.frameLayoutBtnSend.background = getDrawable(R.drawable.shape_circle)
                 } else {
-                    binding.ivChatbot.setColorFilter(getColor(R.color.white))
+                    binding.btnSend.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@ChatbotActivity, R.color.light_gray))
+                    binding.frameLayoutBtnSend.background = getDrawable(R.drawable.shape_circle_disabled)
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) { }
-        })
-    }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
-    private fun setCoordinatorFitsSystemWindows() {
-        // Fungsi ini untuk menghapus margin dibagian atas dan bawah ketika menerapkan CoordinatorLayout
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        ViewCompat.setOnApplyWindowInsetsListener(
-            findViewById<View>(R.id.main)
-        ) { view: View, insets: WindowInsetsCompat ->
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-            val systemBarsInsets =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Atur padding untuk menyesuaikan keyboard (IME) dan status bar
-            view.setPadding(
-                0, 0, 0,
-                max(imeInsets.bottom.toDouble(), systemBarsInsets.bottom.toDouble()).toInt()
-            )
-            insets
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         }
+        binding.tietMessage.addTextChangedListener(textWatcher)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -189,20 +175,20 @@ class ChatbotActivity : AppCompatActivity() {
             val chatbotAdapter = ChatbotAdapter(messageList)
             // Count item list
             countItem = messageList.size
-            binding.rvChatbot.layoutManager = LinearLayoutManager(this)
-            binding.rvChatbot.adapter = chatbotAdapter
+            binding.rvMessages.layoutManager = LinearLayoutManager(this)
+            binding.rvMessages.adapter = chatbotAdapter
             // To scrolling automatic when data entered
-            binding.rvChatbot.smoothScrollToPosition(countItem - 1)
+            binding.rvMessages.smoothScrollToPosition(countItem - 1)
 
             // When input data automatically to last index
-            binding.rvChatbot
+            binding.rvMessages
                 .layoutManager!!.smoothScrollToPosition(binding
-                    .rvChatbot, null, countItem - 1)
+                    .rvMessages, null, countItem - 1)
 
         }
     }
 
-    private fun customeDialogInfo() {
+    private fun dialogCustomInfo() {
         val dialogBinding = DialogInfoChatbotBinding.inflate(layoutInflater)
         val customDialog = Dialog(this)
 
@@ -210,11 +196,7 @@ class ChatbotActivity : AppCompatActivity() {
         customDialog.setCanceledOnTouchOutside(false)
         customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        dialogBinding.tvOk.setOnClickListener {
-            // Close
-            customDialog.dismiss()
-        }
-        // Display dialog
+        dialogBinding.tvOk.setOnClickListener { customDialog.dismiss() }
         customDialog.show()
     }
 
@@ -250,20 +232,36 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setToolBar() {
-        // Call object actionBar
-        setSupportActionBar(binding.tbChatbot)
+        setSupportActionBar(binding.toolbar)
         supportActionBar!!.title = getString(R.string.app_neural_network)
-        // Change font style text
-        binding.tbChatbot.setTitleTextAppearance(this, R.style.Theme_Stunting)
-        // Set icon
+        binding.toolbar.setTitleTextAppearance(this, R.style.Theme_Stunting)
         supportActionBar!!.setIcon(R.drawable.ic_neural_network)
-        // Enable back button if you're in a child activity
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        binding.tbChatbot.setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             onBackPressed()
+        }
+    }
+
+    private fun setCoordinatorFitsSystemWindows() {
+        // Fungsi ini untuk menghapus margin dibagian atas dan bawah ketika menerapkan CoordinatorLayout
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById(R.id.main)
+        ) { view: View, insets: WindowInsetsCompat ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBarsInsets =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Atur padding untuk menyesuaikan keyboard (IME) dan status bar
+            view.setPadding(
+                0, 0, 0,
+                max(imeInsets.bottom.toDouble(), systemBarsInsets.bottom.toDouble()).toInt()
+            )
+            insets
         }
     }
 

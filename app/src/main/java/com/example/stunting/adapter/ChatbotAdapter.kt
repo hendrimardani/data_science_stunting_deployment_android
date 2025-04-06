@@ -23,10 +23,10 @@ class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) : Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_SENT) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sent_chatbot_adapter, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_send_adapter, parent, false)
             SentMessageViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_received_chatbot_adapter, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_received_adapter, parent, false)
             ReceivedMessageViewHolder(view)
         }
     }
