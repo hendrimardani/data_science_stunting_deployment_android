@@ -9,5 +9,5 @@ data class MessageChatbotsEntity(
     @PrimaryKey
     val date: String,
     val text: String,
-    val isSent: Boolean
+    val isSender: Boolean
 )

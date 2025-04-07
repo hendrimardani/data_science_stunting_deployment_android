@@ -7,11 +7,12 @@ import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.groups.GroupsEntity
+import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
-import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
+import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
@@ -43,6 +44,51 @@ class ChattingRepository(
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
+    // Langsung memanggol ke API
+    fun getMessageByGroupId(userId: Int) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getMessageByGroupId(userId)
+
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
+//                Log.e(TAG, "onChattingRepository getMessageByGroupId Error ${response.code()}: $errorBody")
+                }
+            }
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+        }
+    }
+
+    fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val requestBody = AddingMessageRequestJSON(isiPesan)
+            val response = apiService.addMessage(userId, groupId, requestBody)
+
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
+//                Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
+                }
+            }
+        } catch (e: HttpException) {
+            emit(ResultState.Error(e.message.toString()))
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+        }
+    }
+
     fun getGroupWithUserProfiles(): LiveData<List<GroupWithUserProfiles>> {
         return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
     }
@@ -54,12 +100,12 @@ class ChattingRepository(
     // Menggunakan entitas pusat relasi
     fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
         resultListUserGroup.value = ResultState.Loading
-        val response = apiService.getAllUserProfilesGroups()
+        val response = apiService.getAllUserGroup()
 
-        response.enqueue(object : Callback<GetAllUserProfilesGroupsResponse> {
+        response.enqueue(object : Callback<GetAllUserGroupResponse> {
             override fun onResponse(
-                call: Call<GetAllUserProfilesGroupsResponse>,
-                response: Response<GetAllUserProfilesGroupsResponse>
+                call: Call<GetAllUserGroupResponse>,
+                response: Response<GetAllUserGroupResponse>
             ) {
                 if (response.isSuccessful) {
                     val userGroups = response.body()?.userGroups
@@ -119,7 +165,7 @@ class ChattingRepository(
                 }
             }
 
-            override fun onFailure(call: Call<GetAllUserProfilesGroupsResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GetAllUserGroupResponse>, t: Throwable) {
 //                Log.d(TAG, "onChattingRepository getUserGroup Failed : ${t.message}")
                 resultListUserGroup.value = ResultState.Error(t.message.toString())
             }

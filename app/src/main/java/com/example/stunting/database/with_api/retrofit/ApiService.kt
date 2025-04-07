@@ -1,13 +1,15 @@
 package com.example.stunting.database.with_api.retrofit
 
+import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
-import com.example.stunting.database.with_api.response.GetAllUserProfilesGroupsResponse
+import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
+import com.example.stunting.database.with_api.response.GetMessageByGroupIdResponse
 import com.example.stunting.database.with_api.response.GetUserGroupByUserIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -23,13 +25,25 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("user_profiles/groups")
-    fun getAllUserProfilesGroups(): Call<GetAllUserProfilesGroupsResponse>
+    @GET("group/{groupId}/notification")
+    suspend fun getMessageByGroupId(
+        @Path("group_id") groupId: Int
+    ): Response<GetMessageByGroupIdResponse>
+
+    @POST("user_profile/{user_id}/group/{group_id}/notification")
+    suspend fun addMessage(
+        @Path("user_id") userId: Int,
+        @Path("group_id") groupId: Int,
+        @Body addingMessageRequestJSON: AddingMessageRequestJSON
+    ): Response<AddingUserGroupResponse>
 
     @GET("user_profile/{user_id}/group")
     suspend fun getUserGroupByUserId(
         @Path("user_id") userId: Int
     ): Response<GetUserGroupByUserIdResponse>
+
+    @GET("user_profiles/groups")
+    fun getAllUserGroup(): Call<GetAllUserGroupResponse>
 
     @POST("user_profile/{user_profile_id}/group")
     suspend fun addUserGroup(

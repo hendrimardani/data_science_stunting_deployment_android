@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
-data class GetAllUserProfilesGroupsResponse(
+data class GetAllUserGroupResponse(
 
 	@field:SerializedName("userGroups")
 	val userGroups: List<UserGroupsItem?>? = null,

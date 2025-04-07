@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="60dp"
-            tools:listitem="@layout/item_send_adapter"
+            tools:listitem="@layout/item_sender_adapter"
             android:background="@drawable/bg_chatbot"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
             app:layout_constraintBottom_toTopOf="@id/til_message"

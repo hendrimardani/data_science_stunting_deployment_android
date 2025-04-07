@@ -1,25 +1,37 @@
 package com.example.stunting.ui.group_chat
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
+import com.example.stunting.ResultState
 import com.example.stunting.databinding.ActivityGroupChatBinding
+import com.example.stunting.ui.MainActivity
+import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.MainViewModel
+import com.example.stunting.ui.ViewModelFactory
 import kotlin.math.max
 
 class GroupChatActivity : AppCompatActivity() {
     private var _binding: ActivityGroupChatBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<MainViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +39,72 @@ class GroupChatActivity : AppCompatActivity() {
         _binding = ActivityGroupChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val getExtraUserId = intent?.getIntExtra(EXTRA_USER_ID_TO_GROUP_CHAT, 0)
         val getExtraGroupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
         val getExtraNama = intent?.getStringExtra(EXTRA_NAMA_TO_GROUP_CHAT)
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
 
+        getMessageByGroupId(getExtraGroupId!!)
         textWatcher()
+
+        binding.btnSend.setOnClickListener {
+            val isiPesan = binding.tietMessage.text.toString().trim()
+            addMessage(getExtraUserId!!, getExtraGroupId, isiPesan)
+        }
 
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
 
         setToolBar(getExtraNama!!)
+    }
+
+    private fun getMessageByGroupId(groupId: Int) {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getMessageByGroupId(groupId).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        val dataMessagesByGroupId = result.data?.dataMessagesByGroupId
+//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId : ${result.data}")
+
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addMessage(userId: Int, groupId: Int, isiPesan: String) {
+        viewModel.addMessage(userId, groupId, isiPesan).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> { }
+                    is ResultState.Success -> {
+//                        Log.d(TAG, "onGroupChatActivity addMessage : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private fun setToolBar(nama: String) {
@@ -102,6 +170,7 @@ class GroupChatActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = GroupChatActivity::class.java.simpleName
+        const val EXTRA_USER_ID_TO_GROUP_CHAT = "extra_user_id_to_group_chat"
         const val EXTRA_GROUP_ID_TO_GROUP_CHAT = "extra_group_id_to_group_chat"
         const val EXTRA_NAMA_TO_GROUP_CHAT = "extra_nama_to_group_chat"
     }

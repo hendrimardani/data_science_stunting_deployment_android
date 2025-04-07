@@ -18,8 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.example.stunting.MyNamaEditText.Companion.MIN_CHARACTER_NAMA
-import com.example.stunting.MyPasswordEditText.Companion.MIN_CHARACTER_PASSWORD
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.GroupChatListAdapter
@@ -104,7 +102,7 @@ class GroupChatListFragment : Fragment() {
                     is ResultState.Error -> progressBar.dismiss()
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onNavDrawerMainActivity getUserGroup : ${result.data}")
+//                        Log.d(TAG, "onGroupChatListFragment getUserGroup : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

@@ -80,6 +80,7 @@ class ChatbotActivity : AppCompatActivity() {
                         .progressHelper.barColor = Color.parseColor("#73D1FA")
                     progressBar.setCancelable(false)
                     progressBar.show()
+
                     lifecycleScope.launch {
                         delay(1000)
                         addRecord(input.toString(), true)
@@ -152,11 +153,11 @@ class ChatbotActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun addRecord(input: String, isSent: Boolean) {
+    private fun addRecord(input: String, isSender: Boolean) {
         val date = getDateTimePrimaryKey()
         lifecycleScope.launch {
             messageDao.insert(
-                MessageChatbotsEntity(date = date, text = input, isSent = isSent)
+                MessageChatbotsEntity(date = date, text = input, isSender = isSender)
             )
         }
     }
@@ -173,13 +174,12 @@ class ChatbotActivity : AppCompatActivity() {
     private fun setupListOfDataIntoRecyclerView(messageList: ArrayList<MessageChatbotsEntity>) {
         if (messageList.isNotEmpty()) {
             val chatbotAdapter = ChatbotAdapter(messageList)
-            // Count item list
+
             countItem = messageList.size
             binding.rvMessages.layoutManager = LinearLayoutManager(this)
             binding.rvMessages.adapter = chatbotAdapter
             // To scrolling automatic when data entered
             binding.rvMessages.smoothScrollToPosition(countItem - 1)
-
             // When input data automatically to last index
             binding.rvMessages
                 .layoutManager!!.smoothScrollToPosition(binding
