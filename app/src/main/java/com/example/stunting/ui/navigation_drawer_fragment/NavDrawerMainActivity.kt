@@ -81,7 +81,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
         if (getExtraFragment == "LoginFragment") {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
-//            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
+            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserWithUserProfileById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk

@@ -154,10 +154,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun showSweetAlertDialog(message: String, type: Int, userProfile: DataLoginUserProfile? = null, dataLogin: DataLogin? = null) {
-        val userId = userProfile?.userId.toString()
+        val userId = userProfile?.userId
         val nama = userProfile?.nama.toString()
         val token = dataLogin!!.token.toString()
-        val userModel = UserModel(userId, nama, token)
+        val userModel = UserModel(userId.toString(), nama, token)
 
         if (type == 1) {
             val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.ERROR_TYPE)
