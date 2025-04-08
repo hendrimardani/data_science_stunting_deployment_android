@@ -45,10 +45,10 @@ class ChattingRepository(
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
     // Langsung memanggol ke API
-    fun getMessageByGroupId(userId: Int) = liveData {
+    fun getMessageByGroupId(groupId: Int) = liveData {
         emit(ResultState.Loading)
         try {
-            val response = apiService.getMessageByGroupId(userId)
+            val response = apiService.getMessageByGroupId(groupId)
 
             if (response.isSuccessful) {
                 emit(ResultState.Success(response.body()))
