@@ -17,13 +17,11 @@ import com.example.stunting.database.with_api.message_chatbot.MessageChatbotsEnt
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriDao
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriEntity
 
-// If you change the structure database you have to change parameter version with increase
 @Database(entities = [
                         AnakEntity::class, BumilEntity::class, CalonPengantinEntity::class,
                         LayananKeluargaEntity::class, MessageChatbotsEntity::class, RemajaPutriEntity::class
-                     ], version = 2, exportSchema = true)
+                     ], version = 3)
 abstract class LayananDatabase: RoomDatabase() {
-
     abstract fun anakDao(): AnakDao
     abstract fun bumilDao(): BumilDao
     abstract fun calonPengantinDao(): CalonPengantinDao
@@ -44,7 +42,9 @@ abstract class LayananDatabase: RoomDatabase() {
                         context.applicationContext,
                         LayananDatabase::class.java,
                         "layanan_database"
-                    ).build()
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
                 }
 
                 INSTANCE = instance

@@ -20,7 +20,7 @@ import com.example.stunting.MyPasswordEditText.Companion.MIN_CHARACTER_PASSWORD
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.response.DataLogin
-import com.example.stunting.database.with_api.response.User
+import com.example.stunting.database.with_api.response.DataLoginUserProfile
 import com.example.stunting.databinding.FragmentLoginBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
@@ -29,7 +29,7 @@ import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.utils.NetworkLiveData
 
 class LoginFragment : Fragment() {
@@ -137,9 +137,9 @@ class LoginFragment : Fragment() {
                         }
                         is ResultState.Success -> {
                             progressBar.dismiss()
-                            val user = result.data!!.dataLogin!!.user
-                            val dataLogin = result.data.dataLogin
-                            showSweetAlertDialog(result.data.message.toString(), 2, user, dataLogin)
+                            val user = result.data?.dataLogin?.dataLoginUserProfile
+                            val dataLogin = result.data?.dataLogin
+                            showSweetAlertDialog(result.data?.message.toString(), 2, user, dataLogin)
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()
@@ -153,7 +153,12 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun showSweetAlertDialog(message: String, type: Int, user: User? = null, dataLogin: DataLogin? = null) {
+    private fun showSweetAlertDialog(message: String, type: Int, userProfile: DataLoginUserProfile? = null, dataLogin: DataLogin? = null) {
+        val userId = userProfile?.userId.toString()
+        val nama = userProfile?.nama.toString()
+        val token = dataLogin!!.token.toString()
+        val userModel = UserModel(userId, nama, token)
+
         if (type == 1) {
             val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.ERROR_TYPE)
             sweetAlertDialog.setTitleText(getString(R.string.title_validation_error))
@@ -167,14 +172,14 @@ class LoginFragment : Fragment() {
             sweetAlertDialog.setCancelable(false)
             sweetAlertDialog.setConfirmText(getString(R.string.ok))
 
-            viewModel.saveSession(UserModel(user!!.id.toString(), user.email.toString(), dataLogin!!.token.toString()))
+            viewModel.saveSession(userModel)
             sweetAlertDialog.setConfirmClickListener { dialog ->
                 dialog.dismiss()
 //                Log.d(TAG, "onLoginSucces: ${user.email}")
 
                 val intent = Intent(requireActivity(), NavDrawerMainActivity::class.java)
                 intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
-                intent.putExtra(EXTRA_USER_TO_NAV_DRAWER_MAIN_ACTIVITY, user)
+                intent.putExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, userId)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 requireActivity().finish()

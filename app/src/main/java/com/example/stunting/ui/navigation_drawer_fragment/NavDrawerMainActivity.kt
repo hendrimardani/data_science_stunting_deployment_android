@@ -26,9 +26,8 @@ import androidx.core.app.ActivityOptionsCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.response.User
+import com.example.stunting.database.with_api.response.DataLoginUserProfile
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
-import com.example.stunting.database.with_api.users.UsersEntity
 import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
@@ -81,9 +80,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
         if (getExtraFragment == "LoginFragment") {
-            val user = intent.getParcelableExtra<User>(EXTRA_USER_TO_NAV_DRAWER_MAIN_ACTIVITY)
-//            Log.d(TAG, "onNavDrawerMainActivity from LoginFragment : ${user}")
-            userId = user?.id
+            userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
+//            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserWithUserProfileById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
@@ -227,7 +225,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
     companion object {
         private val TAG = NavDrawerMainActivity::class.java.simpleName
         const val EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_fragment_to_nav_drawer_main_activity"
-        const val EXTRA_USER_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_to_nav_drawer_main_activity"
+        const val EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_id_to_nav_drawer_main_activity"
         const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_model_to_nav_drawer_main_activity"
     }
 }

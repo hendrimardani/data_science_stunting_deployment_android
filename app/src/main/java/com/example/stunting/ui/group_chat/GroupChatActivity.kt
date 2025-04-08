@@ -73,7 +73,7 @@ class GroupChatActivity : AppCompatActivity() {
                     is ResultState.Success -> {
                         progressBar.dismiss()
                         val dataMessagesByGroupId = result.data?.dataMessagesByGroupId
-//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId : ${result.data}")
+                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId : ${result.data}")
 
                     }
                     is ResultState.Unauthorized -> {

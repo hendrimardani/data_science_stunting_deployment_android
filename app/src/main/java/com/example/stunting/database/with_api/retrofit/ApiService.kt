@@ -5,6 +5,7 @@ import com.example.stunting.database.with_api.request_json.AddingUserGroupReques
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
+import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
@@ -25,7 +26,7 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("group/{groupId}/notification")
+    @GET("group/{group_id}/notification")
     suspend fun getMessageByGroupId(
         @Path("group_id") groupId: Int
     ): Response<GetMessageByGroupIdResponse>
@@ -35,7 +36,7 @@ interface ApiService {
         @Path("user_id") userId: Int,
         @Path("group_id") groupId: Int,
         @Body addingMessageRequestJSON: AddingMessageRequestJSON
-    ): Response<AddingUserGroupResponse>
+    ): Response<AddingMessageResponse>
 
     @GET("user_profile/{user_id}/group")
     suspend fun getUserGroupByUserId(
