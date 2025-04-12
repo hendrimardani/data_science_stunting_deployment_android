@@ -1,0 +1,205 @@
+<resources>
+
+    <string-array name="data_titles">
+        <item>1. Konsumsi makanan bergizi seimbang yang mencakup protein hewani, sayuran, buah, dan karbohidrat kompleks.</item>
+        <item>2. Minum suplemen kehamilan sesuai anjuran dokter.</item>
+        <item>3. Menjaga berat badan ideal selama kehamilan.</item>
+        <item>4. ASI eksklusif selama 6 bulan pertama kehidupan bayi.</item>
+        <item>5. Imunisasi membantu melindungi anak dari penyakit infeksi yang dapat mengganggu pertumbuhannya.</item>
+        <item>6. Cuci tangan dengan sabun dan air mengalir secara teratur.</item>
+        <item>7. Pemantauan kehamilan yang rutin</item>
+        <item>8. Hindari rokok dan alkohol</item>
+        <item>9. Pantau pertumbuhan anak</item>
+        <item>10. Penyediaan air bersih dan sanitasi</item>
+    </string-array>
+
+    <integer-array name="data_images">
+        <item>@drawable/gambar_konsumsi_makanan_bergizi</item>
+        <item>@drawable/gambar_suplemen_kehamilan</item>
+        <item>@drawable/gambar_menjaga_berat_badan_ideal</item>
+        <item>@drawable/gambar_bayi_menyusu_pada_ibu</item>
+        <item>@drawable/gambar_imunisasi</item>
+        <item>@drawable/gambar_cuci_tangan_dengan_sabun</item>
+        <item>@drawable/gambar_pemantauan_kehamilan</item>
+        <item>@drawable/gambar_hindari_merokok</item>
+        <item>@drawable/gambar_pantau_pertumbungan_anak</item>
+        <item>@drawable/gambar_air_bersih</item>
+    </integer-array>
+
+    <string name="app_name">Stunting</string>
+    <string name="classification_normal">NORMAL</string>
+    <string name="title_show_data_failed">TAMPILKAN DATA GAGAL !</string>
+    <string name="description_show_data_failed">Data masih kosong tidak ada yang ditampilkan, silahkan input data.</string>
+    <string name="description_detail_info">Untuk melihat detail data bisa eksport terlebih dahulu datanya.</string>
+    <string name="description_export_dialog">Apakah anda yakin ingin mengeksport data ke Excel pada %s Untuk melihat hasilnya silahkan cek dengan %s.xlsx di folder Download/Unduhan hari ini Cth: %s.xlsx</string>
+    <string name="title_export_success">DATA BERHASIL DI EKSPOR</string>
+    <string name="description_export_success">Silahkan cek di folder Download atau Unduhan penyimpanan internal anda !</string>
+    <string name="title_export_failed">Gagal Mengekspor File !</string>
+    <string name="description_export_failed">Silahkan coba lagi !, atau jika mengalami kendala hubungi pembuat aplikasi !</string>
+    <string name="description_delete_dialog">Ini akan mengakibatkan semua data terhapus !, pastikan sebelum menghapus eksport terlebih dahulu.</string>
+    <string name="title_history_delete">HISTORI BERHASIL DIHAPUS SEMUA</string>
+    <string name="description_history_delete">Silahkan jalankan kembali aplikasinya.</string>
+    <string name="setup_recycler_view_sum_data">%s Data</string>
+    <string name="classification_stunting">STUNTING</string>
+    <string name="title_saved_data">DATA TERSIMPAN !</string>
+    <string name="description_saved_data">Data berhasil di simpan di database !!</string>
+    <string name="app_name_layanan_anak">Layanan Anak</string>
+    <string name="list_data_bumil">List Data Bumil</string>
+    <string name="app_name_layanan_bumil">Layanan Ibu Hamil</string>
+    <string name="title_input_failed">INPUT GAGAL !</string>
+    <string name="description_input_failed">Data tidak boleh ada yang kosong !</string>
+    <string name="list_data_catin">List Data Catin</string>
+    <string name="title_code_gender_not_valid">KODE JENIS KELAMIN TIDAK VALID !</string>
+    <string name="description_code_gender_not_valid">Data jenis kelamin hanya angka 0 dan 1 !</string>
+    <string name="list_data_layanan_keluarga">List Data Keluarga</string>
+    <string name="list_data_anak">List Data Anak</string>
+    <string name="app_name_layanan_keluarga">Layanan Keluarga</string>
+    <string name="app_name_layanan_catin">Layanan Calon Pengantin</string>
+    <string name="description_about">Jika anda mengalami permasalah pada aplikasi anda silahkan hubungi pembuat aplikasi dibawah ini, atau jika ingin ada yang ditanyakan karena proses pembuatan aplikasi ini masih tahap percobaan dan belum sebenuhnya sempurna. Silahkan hubungi Kotak dibawah ini :</string>
+    <string name="description_about_linkedIn">https://www.linkedin.com/in/hendri-mardani-1b6ba61a8/</string>
+    <string name="description_about_wa">https://api.whatsapp.com/send?phone=6281388372075</string>
+    <string name="description_about_email">https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRvxmkxPlXNnrdQHFnTpMFwwGQFsRbBzClXRqRrMbKBBgxdXmgPxVTVNKmFGBHJTdgpsnsV</string>
+    <string name="description_about_ig">https://www.instagram.com/hendri.mardani/</string>
+    <string name="list_data_rematri">List Data Rematri</string>
+    <string name="app_name_layanan_rematri">Layanan Remaja Putri</string>
+    <string name="konsultasi">Mau tanya apa ?</string>
+    <string name="classification_stunting_kurus">STUNTING KURUS</string>
+    <string name="classification_stunting_tinggi">STUNTING TINGGI</string>
+    <string name="app_neural_network">Neural Network Bot</string>
+    <string name="menu_name_delete_chat">Hapus Semua Chat</string>
+    <string name="title_chat_deleted">Chat berhasil dihapus</string>
+    <string name="description_chat_deleted">Silahkan buka kembali</string>
+    <string name="title_loading">Loading</string>
+    <string name="description_loading">Harap tunggu !</string>
+    <string name="title_info_konsultasi">Wajib Mengaktifkan\nData Internet</string>
+    <string name="description_info_konsultasi">Hal ini karena data akan dikirimkan lewat jaringan internet</string>
+    <string name="title_error_internet_request_api">Permintaan Gagal !</string>
+    <string name="description_error_internet_request_api">Silahkan aktifkan data internet anda, atau cek kondisi lingkungan jaringan anda</string>
+    <string name="pencegahan_stunting_tidak_ada">Pertahankan nutrisi dan pola asuh yang diberikan.</string>
+    <string name="pencegahan_stunting_kurus">Tingkatkan lagi pemenuhan kebutuhan gizi pada anak, seperti asupan protein dan pemberian vitamin, atau jika kondisi ini terus berlanjut bisa hubungi dokter pada ahli gizi</string>
+    <string name="pencegahan_stunting">Tingkatkan kualitas kesehatan pada anak secara rutin seperti melakukan imunisasi</string>
+    <string name="pencegahan_stunting_tinggi">Lakukan pemantauan berat dan tinggi badan anak secara rutin untuk mendeteksi dini masalah gizi dan pertumbuhan sekaligus menjaga kebersihan dan sanitasi lingkungan untuk mencegah infeksi, atau jika kondisi ini terus berlanjut bisa hubungi dokter pada ahli gizi</string>
+    <string name="title_pencegahan_stunting_tidak_ada">Kondisi Anak Anda Normal</string>
+    <string name="title_pencegahan_stunting_tinggi">Kondisi anak anda mengalami stunting tinggi !</string>
+    <string name="title_pencegahan_stunting">Kondisi Anak Anda Mengalami Stunting Secara Umum</string>
+    <string name="title_pencegahan_stunting_kurus">Kondisi Anak Anda Mengalami Stunting Kurus</string>
+    <string name="title_error_quotaExceeded_request_api">Gagal Merespons !</string>
+    <string name="description_error_quotaExceeded_request_api">Silahkan hubungi pengembang aplikasi</string>
+    <string name="child_service_form">Formulir Layanan Anak</string>
+    <string name="pregnant_mom_service_form">Formulir Layanan \nIbu Hamil</string>
+    <string name="teenage_girls_service_form">Formulir Layanan Remaja Putri</string>
+    <string name="family_service_form">Formulir Layanan Keluarga</string>
+    <string name="hint_nama">Nama</string>
+    <string name="hint_nik">Nomor Induk Kependudukan</string>
+    <string name="hint_tgl_lahir">Tanggal lahir</string>
+    <string name="hint_umur">Umur</string>
+    <string name="hint_tgl_hari_pertama_haid_terakhir">Hari pertama haid terakhir</string>
+    <string name="hint_tgl_perkiraan_lahir">Tanggal perkiraan lahir</string>
+    <string name="hint_umur_kehamilan">Umur kehamilan</string>
+    <string name="tv_status_gizi_kesehatan">Status Gizi Kesehatan (Ya/Tidak)</string>
+    <string name="rb_ya">YA</string>
+    <string name="rb_tidak">TIDAK</string>
+    <string name="kirim">Kirim</string>
+    <string name="tampilkan_data">Tampilkan Data</string>
+    <string name="hint_nama_kepala_keluarga">Nama kepala keluarga</string>
+    <string name="hint_dusun">Dusun</string>
+    <string name="hint_nama_lengkap_ibu_hamil">Nama lengkap ibu hamil</string>
+    <string name="hint_nama_anak">Nama anak</string>
+    <string name="hint_kategori_keluarga_rentan">Kategori Keluarga Rentan (Ya/Tidak)</string>
+    <string name="hint_memiliki_kartu_keluarga">Memiliki Kartu Keluarga (Ya/Tidak)</string>
+    <string name="memiliki_jamban_sehat">Memiliki Jamban Sehat (Ya/Tidak)</string>
+    <string name="memiliki_sumber_air_bersih">Memiliki Sumber Air Bersih (Ya/Tidak)</string>
+    <string name="peserta_jaminan_kesehatan">Peserta Jaminan Sosial (Ya/Tidak)</string>
+    <string name="memiliki_akses_sanitasi_pembuangan_limbah_layak">Memiliki Akses Sanitasi Pembuangan Limbah Layak\n(Ya/Tidak)</string>
+    <string name="pendampingan_keluarga_oleh_tpk">Pendampingan Keluarga oleh TPK (Ya/Tidak)</string>
+    <string name="peserta_kegiatan_ketahanan_pangan">Peserta Kegiatan Ketahanan Pangan (Ya/Tidak)</string>
+    <string name="mendapat_ttd">Mendapat TTD (Ya/Tidak)</string>
+    <string name="hint_periksa_anemia">Periksa Anemia (Ya/Tidak)</string>
+    <string name="hasil_periksa_anemia">Hasil Periksa Anemia (Ya/Tidak)</string>
+    <string name="hint_jenis_kelamin">Jenis kelamin (0: L, 1: P)</string>
+    <string name="hint_umur_bulan">Umur (bulan)</string>
+    <string name="hint_tinggi_cm">Tinggi (cm)</string>
+    <string name="hint_nama_ortu">Nama orang tua</string>
+    <string name="hint_nama_calon_peremmpuan">Nama calon pengantin perempuan</string>
+    <string name="hint_perkiraan_tgl_pernikahan">Perkiraan tanggal pernikahan</string>
+    <string name="hint_periksa_kesehatan">Periksa Kesehatan (Ya/Tidak)</string>
+    <string name="bimbingan_perkawinan">Bimbingan Perkawinan (Ya/Tidak)</string>
+    <string name="bride_and_groom_service_form">Formulir Layanan Calon Pengantin</string>
+    <string name="hint_chatbot">Mau tanya apa ?</string>
+    <string name="hint_groupchat">Ketikan pesan...</string>
+    <string name="item_image">Item List Image</string>
+    <string name="title">Ini Judul</string>
+    <string name="app_created_about">Tentang Pembuat Aplikasi</string>
+    <string name="ok">OK</string>
+    <string name="you_are_sure">Kamu yakin ?</string>
+    <string name="prevent_stunting">Berikut tips mencegah stunting</string>
+    <string name="data_sum">Total Data</string>
+    <string name="list_data">List Data</string>
+    <string name="input_date">Tanggal Input</string>
+    <string name="nik">NIK</string>
+    <string name="name">Nama</string>
+    <string name="more_information">Info Selengkapnya</string>
+    <string name="date">Tanggal</string>
+    <string name="result">Hasil</string>
+    <string name="info">Info</string>
+    <string name="father_name">Nama Ayah</string>
+    <string name="mother_name">Nama Ibu</string>
+    <string name="menu_title_group">Group Chat</string>
+    <string name="menu_title_chatbot">Chatbot</string>
+    <string name="title_menu_1">Selamat Datang di Aplikasi Stunting.</string>
+    <string name="desc_menu_1">"Solusi digital untuk membantu puskesmas dalam mendeteksi dan memantau kondisi stunting pada anak dengan lebih akurat dan efisien."</string>
+    <string name="title_menu_2">Deteksi Cepat dan Akurat</string>
+    <string name="desc_menu_2">Gunakan sistem analisis otomatis kami dengan machine learning untuk mendeteksi risiko stunting berdasarkan data medis, memudahkan tenaga kesehatan dalam memberikan inferensi yang tepat.</string>
+    <string name="title_menu_3">Bantuan Instan dengan AI Chatbot yang Akurat</string>
+    <string name="desc_menu_3">Dapatkan rekomendasi cepat dan informasi medis terpercaya melalui chatbot kami, yang dirancang khusus untuk mendukung tenaga medis dalam menangani kasus stunting.</string>
+    <string name="title_menu_4">Komunikasi Efektif dengan Berbagai Tim Medis</string>
+    <string name="desc_menu_4">Gunakan fitur chat untuk berdiskusi dengan rekan tim medis lainnya dan berbagi informasi penting untuk memastikan koordinasi yang lebih baik dalam menangani pasien.</string>
+    <string name="login">Masuk</string>
+    <string name="signup">Daftar Akun</string>
+    <string name="email">Email</string>
+    <string name="hint_email">Email</string>
+    <string name="text_password">Password</string>
+    <string name="hint_password">Password</string>
+    <string name="text_daftar">DAFTAR</string>
+    <string name="hint_nama_lengkap_sign_up">Nama Lengkap</string>
+    <string name="hint_email_sign_up">Email</string>
+    <string name="hint_repeat_password">Repeat Password</string>
+    <string name="title_message_error">Error !</string>
+    <string name="description_message_error">Error: %s</string>
+    <string name="registration_text_dialog">Lanjut</string>
+    <string name="registration_success_title_dialog">Pengguna berhasil dibuat</string>
+    <string name="registration_success_description_dialog">Berhasil: %s</string>
+    <string name="title_message_success">Berhasil !</string>
+    <string name="pattern" translatable="false">(@gmail.com)$</string>
+    <string name="error_description_email_validation">Harus memiliki akhiran @gmail.com</string>
+    <string name="title_validation_error">Validasi Gagal !</string>
+    <string name="error_description_nama_validation">Harus minimal 3 karakter</string>
+    <string name="error_description_password_validation">Harus minimal 6 karakter</string>
+    <string name="text_connected">Internet Terhubung</string>
+    <string name="text_no_connected">Koneksi Internet Terputus</string>
+    <string name="next_login">Lanjut login</string>
+    <string name="text_no_internet">Ooopss... anda tidak terhubung ke internet.</string>
+    <string name="text_title_group">Title Group</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_navigation_drawer_main">NavigationDrawerMainActivity</string>
+    <string name="menu_settings">Pengaturan</string>
+    <string name="menu_logout">Keluar akun</string>
+    <string name="title_logout">Yakin Ingin Keluar Akun ?</string>
+    <string name="text_cancel">Batal</string>
+    <string name="text_yes">Ya</string>
+    <string name="text_group_chat_list">Daftar Group Chat</string>
+    <string name="text_add_group">Tambah Group</string>
+    <string name="text_name_group">Nama Group</string>
+    <string name="text_description_group">Deskripsi Group</string>
+    <string name="hint_text_mau_tanya_apa">Mau tanya apa ...</string>
+    <string name="hint_text_kirim_pesan">Kirim pesan ...</string>
+</resources>

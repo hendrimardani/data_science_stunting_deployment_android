@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:collapsedTitleTextColor="?attr/colorText"
+            app:contentScrim="?attr/colorBackground"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp">
+
+            <ImageView
+                android:id="@+id/toolbarImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:src="@drawable/gambar_kartun_calon_pengantin_blur"
+                app:layout_collapseMode="parallax" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/bride_and_groom_service_form"
+                android:textSize="36sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:shadowColor="#000000"
+                android:shadowDx="10"
+                android:shadowDy="10"
+                android:shadowRadius="10" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_calon_pengantin"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:navigationIconTint="?attr/colorText"
+                app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Fungsi dari
+    android:fitsSystemWindows="true"
+    supaya editText muncul diatas keyboard -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_nama_perempuan_calon_pengantin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_name_catin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_perempuan_calon_pengantin"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nama_perempuan_calon_pengantin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nama_calon_peremmpuan"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_perempuan_calon_pengantin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_perempuan_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_perempuan_calon_pengantin"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nama_perempuan_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_nik_calon_pengantin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_nik"
+                app:layout_constraintEnd_toStartOf="@id/til_nik_calon_pengantin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_perempuan_calon_pengantin" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nik_calon_pengantin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nik"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nik_calon_pengantin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_nik_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_nik_calon_pengantin"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nik_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_tgl_lahir_calon_pengantin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_tgl_lahir"
+                app:layout_constraintEnd_toStartOf="@id/til_tgl_lahir_calon_pengantin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_nik_calon_pengantin" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_tgl_lahir_calon_pengantin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_tgl_lahir"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_calon_pengantin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_tgl_lahir_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_calon_pengantin"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_tgl_lahir_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="datetime" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_umur_calon_pengantin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_umur"
+                app:layout_constraintEnd_toStartOf="@id/til_umur_calon_pengantin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_tgl_lahir_calon_pengantin" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_umur_calon_pengantin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_umur"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="0dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_umur_calon_pengantin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_umur_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_umur_calon_pengantin"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_umur_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:enabled="false"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_perkiraan_tanggal_pernikahan_calon_pengantin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_tgl_lahir"
+                app:layout_constraintEnd_toStartOf="@id/til_perkiraan_tanggal_pernikahan_calon_pengantin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_umur_calon_pengantin" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_perkiraan_tanggal_pernikahan_calon_pengantin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_perkiraan_tgl_pernikahan"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:layout_constraintBottom_toBottomOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin"
+                app:layout_constraintTop_toTopOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_perkiraan_tanggal_pernikahan_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="datetime" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_perkiraan_kesehatan_calon_pengantin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/hint_periksa_kesehatan"
+                android:layout_marginStart="@dimen/dimen_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_perkiraan_tanggal_pernikahan_calon_pengantin" />
+
+            <RadioGroup
+                android:id="@+id/rg_periksa_kesehatan_calon_pengantin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/dimen_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_perkiraan_kesehatan_calon_pengantin">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_periksa_kesehatan_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/dimen_48"
+                    android:text="@string/rb_ya" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_periksa_kesehatan_calon_pengantin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rb_tidak" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_bimbingan_perkawinan_calon_pengantin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/bimbingan_perkawinan"
+                android:layout_marginStart="@dimen/dimen_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rg_periksa_kesehatan_calon_pengantin" />
+
+            <RadioGroup
+                android:id="@+id/rg_bimbingan_perkawinan_calon_pengantin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/dimen_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_bimbingan_perkawinan_calon_pengantin">
+
+                <RadioButton
+                    android:id="@+id/rb_ya_bimbingan_perkawinan_calon_pengantin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/dimen_48"
+                    android:text="@string/rb_ya" />
+
+                <RadioButton
+                    android:id="@+id/rb_tidak_bimbingan_perkawinan_calon_pengantin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rb_tidak" />
+            </RadioGroup>
+
+        <Button
+            android:id="@+id/btn_submit_calon_pengantin"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            app:strokeColor="@color/blueSecond"
+            app:icon="@drawable/ic_send_to_mobile_24px"
+            android:text="@string/kirim"
+            android:paddingHorizontal="30dp"
+            app:layout_constraintTop_toBottomOf="@id/rg_bimbingan_perkawinan_calon_pengantin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_calon_pengantin" />
+
+        <Button
+            android:id="@+id/btn_tampil_data_calon_pengantin"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.Icon"
+            app:strokeColor="@color/blueSecond"
+            app:icon="@drawable/ic_visibility_24px"
+            android:text="@string/tampilkan_data"
+            android:paddingHorizontal="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_submit_calon_pengantin"
+            app:layout_constraintStart_toEndOf="@+id/btn_submit_calon_pengantin"
+            app:layout_constraintTop_toTopOf="@+id/btn_submit_calon_pengantin"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

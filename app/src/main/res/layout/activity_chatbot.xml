@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorBackground">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorBackground"
+        android:fitsSystemWindows="true"> <!-- Memastikan AppBar mengikuti insets -->
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:logo="@drawable/ic_neural_network" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorBackground"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="60dp"
+            tools:listitem="@layout/item_sender_adapter"
+            android:background="@drawable/bg_chatbot"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+            app:layout_constraintBottom_toTopOf="@id/til_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="NotSibling" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/hint_text_mau_tanya_apa"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/frame_layout_btn_send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="5"
+                android:textColor="@color/black"
+                app:hintTextColor="?attr/colorSecondary"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frame_layout_btn_send"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:padding="@dimen/dimen_8"
+            android:background="@drawable/shape_circle_disabled"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:layout_marginEnd="@dimen/dimen_8"
+            app:layout_constraintStart_toEndOf="@id/til_message"
+            app:layout_constraintTop_toTopOf="@id/til_message"
+            app:layout_constraintBottom_toBottomOf="@id/til_message"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_send_34"
+                android:enabled="false" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

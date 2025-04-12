@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_konsultasi_delete_chat"
+        android:title="@string/menu_name_delete_chat"
+        app:showAsAction="never" />
+
+</menu>

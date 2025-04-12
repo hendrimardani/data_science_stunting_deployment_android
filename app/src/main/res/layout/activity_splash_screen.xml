@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.splash_screen.SplashScreenActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/siv_gambar_stunting"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="236dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/gambar_splash_screen_stunting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/RoundedImageView" />
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="170dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/pink"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/siv_gambar_stunting"/>
+
+    <com.example.stunting.CustomTextProgressView
+        android:id="@+id/ctpv_created_by"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ctpv_hm"
+        tools:layout_editor_absoluteY="530dp" />
+
+    <com.example.stunting.CustomTextProgressView
+        android:id="@+id/ctpv_hm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/dimen_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

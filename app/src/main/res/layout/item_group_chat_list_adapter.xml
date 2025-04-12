@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/dimen_16"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cv_group_chat_list_adapter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_8">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_item_group_chat_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="@string/text_title_group"
+            android:textSize="18sp"
+            android:layout_marginEnd="@dimen/dimen_12"
+            app:layout_constraintStart_toEndOf="@id/civ_item_group_chat_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_date_time" />
+
+        <TextView
+            android:id="@+id/tv_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="datetime"
+            android:textSize="12sp"
+            android:layout_marginEnd="@dimen/dimen_32"
+            app:layout_constraintStart_toEndOf="@id/tv_title_group"
+            app:layout_constraintTop_toTopOf="@id/tv_title_group"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_created_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="dibuat oleh"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/dimen_32"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_time"
+            app:layout_constraintStart_toStartOf="@id/tv_date_time"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

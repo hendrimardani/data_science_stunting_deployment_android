@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- For realtime check internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- For permission write external -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- For permission internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".database.no_api.DatabaseApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Stunting"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.detail_group_chat.DetailGroupChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.navigation_drawer_fragment.NavDrawerMainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation_drawer_main"
+            android:theme="@style/Theme.Stunting.NoActionBar" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.group_chat_list.GroupChatListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.sign_up.SignUpActivity"
+            android:exported="false" /> <!-- Tambahkan android:windowsSoftInputMode="adjustResize" supaya ketika menekan TextInputEditText muncul diatas keyboard -->
+        <activity
+            android:name=".ui.group_chat.GroupChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.chatbot.ChatbotActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.anak.AnakActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.layanan_keluarga.LayananKeluargaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.reamaja_putri.RemajaPutriActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.calon_pengantin.CalonPengantinActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.splash_screen.SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.bumil.BumilActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

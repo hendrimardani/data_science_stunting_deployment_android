@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dimen_16">
+
+    <ImageView
+        android:id="@+id/iv_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.107" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/app_created_about"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorText"
+        app:layout_constraintBottom_toBottomOf="@id/iv_alert"
+        app:layout_constraintStart_toEndOf="@id/iv_alert"
+        app:layout_constraintTop_toTopOf="@id/iv_alert"
+        app:layout_constraintVertical_bias="0.444" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="20sp"
+        tools:text="Information"
+        android:textColor="?attr/colorText"
+        android:justificationMode="inter_word"
+        app:layout_constraintTop_toBottomOf="@+id/iv_alert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_icons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tv_description"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/iv_linkedin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_linkedin"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_wa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_whatsapp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp" />
+
+        <ImageView
+            android:id="@+id/iv_ig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_instagram"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp" />
+
+        <ImageView
+            android:id="@+id/iv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/envelope_regular"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/light_gray"
+        android:text="@string/ok"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.961"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_description" />
+</androidx.constraintlayout.widget.ConstraintLayout>
