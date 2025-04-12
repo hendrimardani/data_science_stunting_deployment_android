@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,9 @@ class GroupChatActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private var userId: Int? = null
+    private var groupId: Int? = null
+    private var activityName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +45,13 @@ class GroupChatActivity : AppCompatActivity() {
         _binding = ActivityGroupChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val getExtraUserId = intent?.getIntExtra(EXTRA_USER_ID_TO_GROUP_CHAT, 0)
-        val getExtraGroupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
-        val getExtraNama = intent?.getStringExtra(EXTRA_NAMA_TO_GROUP_CHAT)
+        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_GROUP_CHAT, 0)
+        groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
+        activityName = intent?.getStringExtra(EXTRA_NAMA_TO_GROUP_CHAT)
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
 
-        val groupChatAdapter = GroupChatAdapter(getExtraUserId!!)
-        getMessageByGroupId(getExtraGroupId!!, groupChatAdapter)
+        val groupChatAdapter = GroupChatAdapter(userId!!)
+        getMessageByGroupId(groupId!!, groupChatAdapter)
         textWatcher()
 
         binding.rvMessages.apply {
@@ -57,13 +61,35 @@ class GroupChatActivity : AppCompatActivity() {
         }
 
         binding.btnSend.setOnClickListener {
+            Toast.makeText(this@GroupChatActivity, "ASADAS", Toast.LENGTH_SHORT).show()
             val isiPesan = binding.tietMessage.text.toString().trim()
+
+            viewModel.addMessage(userId!!, groupId!!, isiPesan).observe(this@GroupChatActivity) { result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultState.Loading -> { }
+                        is ResultState.Error ->{
+//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
+                        }
+                        is ResultState.Success -> {
+//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Success : ${result.data}")
+                            getMessageByGroupId(groupId!!, groupChatAdapter)
+                        }
+                        is ResultState.Unauthorized -> {
+                            viewModel.logout()
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
         }
 
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
 
-        setToolBar(getExtraNama!!)
+        setToolBar(activityName!!)
     }
 
     private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {

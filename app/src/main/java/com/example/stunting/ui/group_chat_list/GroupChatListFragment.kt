@@ -35,7 +35,8 @@ class GroupChatListFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
-    val groupChatListAdapter = GroupChatListAdapter()
+    private var userId: Int? = null
+    private val groupChatListAdapter = GroupChatListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +50,9 @@ class GroupChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
+        userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
-        getUserGroupByUserId(userId)
+        getUserGroupRelationByUserId(userId!!)
         getUserGroup()
 
         binding.rvGroupChatList.apply {
@@ -72,10 +73,16 @@ class GroupChatListFragment : Fragment() {
                 view.btnAddGroup.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty()
 
                 if (view.btnAddGroup.isEnabled == true) {
-                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.blueSecond))
+                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(requireActivity(), R.color.blueSecond)
+                    )
                 } else {
-                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor))
-                    view.btnAddGroup.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.white))
+                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor)
+                    )
+                    view.btnAddGroup.backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(requireActivity(), R.color.white)
+                    )
                 }
             }
 
@@ -115,36 +122,9 @@ class GroupChatListFragment : Fragment() {
         }
     }
 
-    private fun getUserGroupByUserId(userId: Int?) {
-        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        viewModel.getUserGroupByUserId(userId!!).observe(requireActivity()) { result ->
-//            Log.d(TAG, "onGroupChatListFragment getUserGroupByUserId : ${result}")
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> { progressBar.show() }
-                    is ResultState.Error -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-                        val dataUserGroupByUserIdList = result.data?.dataUserGroupByUserId
-//                        Log.d(TAG, "onGroupChatListFragment getUserGroupByUserId : ${result.data}")
-                        groupChatListAdapter.submitList(dataUserGroupByUserIdList)
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
+    private fun getUserGroupRelationByUserId(userId: Int?) {
+        viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { result ->
+            groupChatListAdapter.submitList(result)
         }
     }
 
@@ -184,7 +164,8 @@ class GroupChatListFragment : Fragment() {
 //                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
                             Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
 
-                            getUserGroupByUserId(userId)
+                            getUserGroupRelationByUserId(userId)
+                            getUserGroup()
 
                             view.tietNamaGroup.text?.clear()
                             view.tietDeskripsiGroup.text?.clear()

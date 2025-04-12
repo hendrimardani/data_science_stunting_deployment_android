@@ -35,6 +35,8 @@ class GroupChatAdapter(private val currentUserId: Int) :
         class ReceiverViewHolder(private val binding: ItemReceiverAdapterBinding) :
             RecyclerView.ViewHolder(binding.root) {
                 fun bind(item: DataMessagesByGroupIdItem) {
+                    val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
+                    binding.ivProfile.setImageDrawable(drawable)
                     binding.tvReceiver.text = item.isiPesan.toString()
                 }
             }

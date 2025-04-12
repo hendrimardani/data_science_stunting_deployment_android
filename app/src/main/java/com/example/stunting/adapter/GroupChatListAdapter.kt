@@ -10,31 +10,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.stunting.database.with_api.response.DataUserGroupByUserIdItem
+import com.example.stunting.database.with_api.user_group.UserGroupRelation
 import com.example.stunting.databinding.ItemGroupChatListAdapterBinding
 import com.example.stunting.ui.group_chat.GroupChatActivity
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_GROUP_ID_TO_GROUP_CHAT
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_NAMA_TO_GROUP_CHAT
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_USER_ID_TO_GROUP_CHAT
 
-class GroupChatListAdapter: ListAdapter<DataUserGroupByUserIdItem, GroupChatListAdapter.MyViewHolder>(DIFF_CALLBACK){
+class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.MyViewHolder>(DIFF_CALLBACK){
 
     class MyViewHolder(private val binding: ItemGroupChatListAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: DataUserGroupByUserIdItem) {
-            binding.tvTitleGroup.text = item.groups?.namaGroup
+        fun bind(item: UserGroupRelation) {
+            binding.tvTitleGroup.text = item.groupsEntity.namaGroup
             // Format 2025-04-05T12:41:07
-            val dateTime = item.groups?.createdAt
+            val dateTime = item.groupsEntity.createdAt
             binding.tvDateTime.text = dateTime?.substringBefore("T")
 
-            binding.tvCreatedBy.text = item.createdBy
+            binding.tvCreatedBy.text = item.userGroupEntity.createdBy
 //            Glide.with(itemView.context)
 //                .load(item.mediaCover)
 //                .into(binding.ivFinished)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, GroupChatActivity::class.java)
-                intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userProfileId)
-                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.groupId)
-                intent.putExtra(EXTRA_NAMA_TO_GROUP_CHAT, item.groups?.namaGroup)
+                intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userGroupEntity.user_id)
+                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.userGroupEntity.id_group)
+                intent.putExtra(EXTRA_NAMA_TO_GROUP_CHAT, item.groupsEntity.namaGroup)
                 itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
         }
@@ -52,14 +52,14 @@ class GroupChatListAdapter: ListAdapter<DataUserGroupByUserIdItem, GroupChatList
 
     companion object {
         private val TAG = GroupChatListAdapter::class.java.simpleName
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<DataUserGroupByUserIdItem> =
-            object : DiffUtil.ItemCallback<DataUserGroupByUserIdItem>() {
-                override fun areItemsTheSame(oldItem: DataUserGroupByUserIdItem, newItem: DataUserGroupByUserIdItem): Boolean {
-                    return oldItem.groups?.id == newItem.groups?.id
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<UserGroupRelation> =
+            object : DiffUtil.ItemCallback<UserGroupRelation>() {
+                override fun areItemsTheSame(oldItem: UserGroupRelation, newItem: UserGroupRelation): Boolean {
+                    return oldItem.userGroupEntity.id_group == newItem.userGroupEntity.id_group
                 }
 
                 @SuppressLint("DiffUtilEquals")
-                override fun areContentsTheSame(oldItem: DataUserGroupByUserIdItem, newItem: DataUserGroupByUserIdItem): Boolean {
+                override fun areContentsTheSame(oldItem: UserGroupRelation, newItem: UserGroupRelation): Boolean {
                     return oldItem == newItem
                 }
             }

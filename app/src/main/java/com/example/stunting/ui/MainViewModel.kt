@@ -20,9 +20,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         emitSource(chattingRepository.addMessage(userId, groupId, isiPesan))
     }
 
-    fun getGroupWithUserProfiles() = chattingRepository.getGroupWithUserProfiles()
-
-    fun getUserProfileWithGroups() = chattingRepository.getUserProfileWithGroups()
+    fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
     fun getUserGroup() = chattingRepository.getUserGroup()
 

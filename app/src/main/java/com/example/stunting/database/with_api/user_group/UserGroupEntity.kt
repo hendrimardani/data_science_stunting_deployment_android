@@ -39,26 +39,8 @@ data class UserGroupEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
 
-data class UserProfileWithGroups(
-    @Embedded val userProfile: UserProfileEntity,
-
-    @Relation(
-        parentColumn = "user_id",
-        entityColumn = "id_group",
-        associateBy = Junction(UserGroupEntity::class)
-    )
-
-    val groups: List<GroupsEntity?>
-)
-
-data class GroupWithUserProfiles(
-    @Embedded val group: GroupsEntity,
-
-    @Relation(
-        parentColumn = "id_group",
-        entityColumn = "user_id",
-        associateBy = Junction(UserGroupEntity::class)
-    )
-
-    val usersProfile: List<UserProfileEntity?>
+data class UserGroupRelation(
+    @Embedded(prefix = "up_") val userProfileEntity: UserProfileEntity,
+    @Embedded(prefix = "g_") val groupsEntity: GroupsEntity,
+    @Embedded(prefix = "ug_") val userGroupEntity: UserGroupEntity
 )

@@ -14,11 +14,9 @@ import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
-import com.example.stunting.database.with_api.response.GetMessageByGroupIdResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
-import com.example.stunting.database.with_api.user_group.GroupWithUserProfiles
 import com.example.stunting.database.with_api.user_group.UserGroupEntity
-import com.example.stunting.database.with_api.user_group.UserProfileWithGroups
+import com.example.stunting.database.with_api.user_group.UserGroupRelation
 import com.example.stunting.database.with_api.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.users.UsersEntity
@@ -82,22 +80,19 @@ class ChattingRepository(
                 } else {
                     val errorBody = response.errorBody()?.string()
                     emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
+                Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
             emit(ResultState.Error(e.message.toString()))
-//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
         }
     }
 
-    fun getGroupWithUserProfiles(): LiveData<List<GroupWithUserProfiles>> {
-        return chattingDatabase.userGroupDao().getGroupWithUserProfiles()
+    fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>> {
+        return chattingDatabase.userGroupDao().getUserGroupRelationByUserId(userId)
     }
 
-    fun getUserProfileWithGroups(): LiveData<List<UserProfileWithGroups>> {
-        return chattingDatabase.userGroupDao().getUserProfileWithGroups()
-    }
 
     // Menggunakan entitas pusat relasi
     fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
