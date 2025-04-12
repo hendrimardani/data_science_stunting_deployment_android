@@ -99,29 +99,29 @@ class GroupChatActivity : AppCompatActivity() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getMessageByGroupId(groupId).observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error ->{
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-                        val messagesList = result.data?.dataMessagesByGroupId
-//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Success : ${result.data}")
-                        groupChatAdapter.submitList(messagesList)
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
+//        viewModel.getMessageByGroupId(groupId).observe(this) { result ->
+//            if (result != null) {
+//                when (result) {
+//                    is ResultState.Loading -> progressBar.show()
+//                    is ResultState.Error ->{
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
+//                    }
+//                    is ResultState.Success -> {
+//                        progressBar.dismiss()
+//                        val messagesList = result.data?.dataMessagesByGroupId
+////                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Success : ${result.data}")
+//                        groupChatAdapter.submitList(messagesList)
+//                    }
+//                    is ResultState.Unauthorized -> {
+//                        viewModel.logout()
+//                        val intent = Intent(this, MainActivity::class.java)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun setToolBar(nama: String) {

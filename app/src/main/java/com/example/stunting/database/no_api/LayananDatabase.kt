@@ -12,8 +12,8 @@ import com.example.stunting.database.no_api.calon_pengantin.CalonPengantinDao
 import com.example.stunting.database.no_api.calon_pengantin.CalonPengantinEntity
 import com.example.stunting.database.no_api.layanan_keluarga.LayananKeluargaDao
 import com.example.stunting.database.no_api.layanan_keluarga.LayananKeluargaEntity
-import com.example.stunting.database.with_api.message_chatbot.MessageChatbotDao
-import com.example.stunting.database.with_api.message_chatbot.MessageChatbotsEntity
+import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotDao
+import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotsEntity
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriDao
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriEntity
 

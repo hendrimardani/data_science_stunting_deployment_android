@@ -25,8 +25,8 @@ import com.example.stunting.BuildConfig
 import com.example.stunting.R
 import com.example.stunting.adapter.ChatbotAdapter
 import com.example.stunting.database.no_api.DatabaseApp
-import com.example.stunting.database.with_api.message_chatbot.MessageChatbotDao
-import com.example.stunting.database.with_api.message_chatbot.MessageChatbotsEntity
+import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotDao
+import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotsEntity
 import com.example.stunting.databinding.ActivityChatbotBinding
 import com.example.stunting.databinding.DialogInfoChatbotBinding
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey

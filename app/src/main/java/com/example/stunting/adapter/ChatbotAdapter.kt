@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
-import com.example.stunting.database.with_api.message_chatbot.MessageChatbotsEntity
+import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotsEntity
 import com.example.stunting.functions_helper.Functions.parseTextWithStylesAndRemoveSymbols
 
 class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) :

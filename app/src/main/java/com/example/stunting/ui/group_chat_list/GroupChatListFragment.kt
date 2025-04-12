@@ -52,6 +52,8 @@ class GroupChatListFragment : Fragment() {
 
         userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
+
+        // Simpan ke database
         getUserGroupRelationByUserId(userId!!)
         getUserGroup()
 
@@ -164,6 +166,7 @@ class GroupChatListFragment : Fragment() {
 //                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
                             Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
 
+                            // Simpan ke database lagi
                             getUserGroupRelationByUserId(userId)
                             getUserGroup()
 

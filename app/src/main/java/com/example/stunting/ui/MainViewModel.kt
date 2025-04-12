@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
 
-    fun getMessageByGroupId(groupId: Int) = liveData {
-        emitSource(chattingRepository.getMessageByGroupId(groupId))
-    }
+//    fun getMessageByGroupId(groupId: Int) = liveData {
+//        emitSource(chattingRepository.getMessageByGroupId(groupId))
+//    }
 
     fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
         emitSource(chattingRepository.addMessage(userId, groupId, isiPesan))
@@ -23,10 +23,6 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
     fun getUserGroup() = chattingRepository.getUserGroup()
-
-    fun getUserGroupByUserId(userId: Int) = liveData {
-        emitSource(chattingRepository.getUserGroupByUserId(userId))
-    }
 
     fun addUserGroup(userProfileById: Int, namaGroup: String, deskripsi: String) = liveData {
         emitSource(chattingRepository.addUserGroup(userProfileById, namaGroup, deskripsi))

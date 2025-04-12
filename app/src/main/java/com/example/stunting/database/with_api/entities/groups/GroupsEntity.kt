@@ -1,4 +1,4 @@
-package com.example.stunting.database.with_api.groups
+package com.example.stunting.database.with_api.entities.groups
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.stunting.database.with_api.groups.GroupsDao
-import com.example.stunting.database.with_api.groups.GroupsEntity
-import com.example.stunting.database.with_api.user_group.UserGroupDao
-import com.example.stunting.database.with_api.user_group.UserGroupEntity
-import com.example.stunting.database.with_api.user_profile.UserProfileDao
-import com.example.stunting.database.with_api.user_profile.UserProfileEntity
-import com.example.stunting.database.with_api.users.UsersDao
-import com.example.stunting.database.with_api.users.UsersEntity
+import com.example.stunting.database.with_api.entities.groups.GroupsDao
+import com.example.stunting.database.with_api.entities.groups.GroupsEntity
+import com.example.stunting.database.with_api.entities.user_group.UserGroupDao
+import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileDao
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
+import com.example.stunting.database.with_api.entities.users.UsersDao
+import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Database(
     entities = [

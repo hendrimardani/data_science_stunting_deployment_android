@@ -26,7 +26,7 @@ import androidx.core.app.ActivityOptionsCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
+import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
 import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel

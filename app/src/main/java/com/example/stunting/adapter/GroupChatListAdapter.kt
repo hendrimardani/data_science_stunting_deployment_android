@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.stunting.database.with_api.user_group.UserGroupRelation
+import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.databinding.ItemGroupChatListAdapterBinding
 import com.example.stunting.ui.group_chat.GroupChatActivity
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_GROUP_ID_TO_GROUP_CHAT

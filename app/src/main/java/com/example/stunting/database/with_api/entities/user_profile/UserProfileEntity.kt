@@ -1,4 +1,4 @@
-package com.example.stunting.database.with_api.user_profile
+package com.example.stunting.database.with_api.entities.user_profile
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
@@ -7,7 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import com.example.stunting.database.with_api.users.UsersEntity
+import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Entity(
     tableName = "user_profile",

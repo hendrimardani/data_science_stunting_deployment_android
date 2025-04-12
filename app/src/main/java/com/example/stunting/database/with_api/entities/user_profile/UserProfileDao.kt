@@ -1,4 +1,4 @@
-package com.example.stunting.database.with_api.user_profile
+package com.example.stunting.database.with_api.entities.user_profile
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.stunting.database.with_api.users.UsersEntity
+import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Dao
 interface UserProfileDao {

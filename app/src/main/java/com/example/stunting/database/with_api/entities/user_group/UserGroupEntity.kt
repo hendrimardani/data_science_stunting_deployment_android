@@ -1,4 +1,4 @@
-package com.example.stunting.database.with_api.user_group
+package com.example.stunting.database.with_api.entities.user_group
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
@@ -6,8 +6,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.Relation
-import com.example.stunting.database.with_api.groups.GroupsEntity
-import com.example.stunting.database.with_api.user_profile.UserProfileEntity
+import com.example.stunting.database.with_api.entities.groups.GroupsEntity
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 
 // Many to many
 @Entity(
@@ -29,9 +29,7 @@ import com.example.stunting.database.with_api.user_profile.UserProfileEntity
     ]
 )
 data class UserGroupEntity(
-    // Foreign key
     val id_group: Int,
-    // Foreign key
     val user_id: Int,
     val role: String?  = null,
     @ColumnInfo(name = "created_by") val createdBy: String? = null,

@@ -6,7 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
-import com.example.stunting.database.with_api.groups.GroupsEntity
+import com.example.stunting.database.with_api.entities.groups.GroupsEntity
+import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
@@ -15,11 +16,11 @@ import com.example.stunting.database.with_api.request_json.UpdateUserProfileById
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
-import com.example.stunting.database.with_api.user_group.UserGroupEntity
-import com.example.stunting.database.with_api.user_group.UserGroupRelation
-import com.example.stunting.database.with_api.user_profile.UserProfileEntity
-import com.example.stunting.database.with_api.user_profile.UserWithUserProfile
-import com.example.stunting.database.with_api.users.UsersEntity
+import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
+import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
+import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
+import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.AppExecutors
 import kotlinx.coroutines.flow.Flow
@@ -41,30 +42,15 @@ class ChattingRepository(
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     val formattedDateTime = now.format(formatter)
 
+    private val resultListMessages = MediatorLiveData<ResultState<List<MessagesEntity>>>()
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
-    // Langsung memanggol ke API
-    fun getMessageByGroupId(groupId: Int) = liveData {
-        emit(ResultState.Loading)
-        try {
-            val response = apiService.getMessageByGroupId(groupId)
+    // Menggunakan entitas pusat relasi
+//    fun getMessages(): LiveData<ResultState<List<MessagesEntity>>> {
+//        resultListMessages.value = ResultState.Loading
+//    }
 
-            if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    ResultState.Unauthorized
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-                Log.e(TAG, "onChattingRepository getMessageByGroupId Error ${response.code()}: $errorBody")
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
-        }
-    }
 
     fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
         emit(ResultState.Loading)
@@ -92,7 +78,6 @@ class ChattingRepository(
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserId(userId)
     }
-
 
     // Menggunakan entitas pusat relasi
     fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
@@ -174,30 +159,6 @@ class ChattingRepository(
         }
         return resultListUserGroup
     }
-
-    // Langsung memanggol ke API
-    fun getUserGroupByUserId(userId: Int) = liveData {
-        emit(ResultState.Loading)
-        try {
-            val response = apiService.getUserGroupByUserId(userId)
-
-            if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    ResultState.Unauthorized
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository getUserGroupByUserId Error ${response.code()}: $errorBody")
-                }
-            }
-        } catch (e: Exception) {
-//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
-            emit(ResultState.Error(e.message.toString()))
-        }
-    }
-
 
     suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String) = liveData {
         emit(ResultState.Loading)
