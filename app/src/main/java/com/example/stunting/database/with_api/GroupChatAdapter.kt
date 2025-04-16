@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
-import com.example.stunting.database.with_api.response.DataMessagesByGroupIdItem
+import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.databinding.ItemReceiverAdapterBinding
 import com.example.stunting.databinding.ItemSenderAdapterBinding
 
 class GroupChatAdapter(private val currentUserId: Int) :
-    ListAdapter<DataMessagesByGroupIdItem, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<MessagesRelation, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val item = getItem(position)
@@ -25,19 +25,19 @@ class GroupChatAdapter(private val currentUserId: Int) :
 
         class SenderViewHolder(private val binding: ItemSenderAdapterBinding) :
             RecyclerView.ViewHolder(binding.root) {
-                fun bind(item: DataMessagesByGroupIdItem) {
+                fun bind(item: MessagesRelation) {
                     val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
                     binding.ivProfile.setImageDrawable(drawable)
-                    binding.tvSender.text = item.isiPesan.toString()
+                    binding.tvSender.text = item.messagesEntity.isi_pesan.toString()
                 }
             }
 
         class ReceiverViewHolder(private val binding: ItemReceiverAdapterBinding) :
             RecyclerView.ViewHolder(binding.root) {
-                fun bind(item: DataMessagesByGroupIdItem) {
+                fun bind(item: MessagesRelation) {
                     val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
                     binding.ivProfile.setImageDrawable(drawable)
-                    binding.tvReceiver.text = item.isiPesan.toString()
+                    binding.tvReceiver.text = item.messagesEntity.isi_pesan.toString()
                 }
             }
 
@@ -57,7 +57,7 @@ class GroupChatAdapter(private val currentUserId: Int) :
 
         override fun getItemViewType(position: Int): Int {
             val item = getItem(position)
-            return if (item.userProfileId == currentUserId) VIEW_TYPE_SENDER else VIEW_TYPE_RECEIVER
+            return if (item.userProfileEntity.userId == currentUserId) VIEW_TYPE_SENDER else VIEW_TYPE_RECEIVER
         }
 
         companion object {
@@ -65,19 +65,19 @@ class GroupChatAdapter(private val currentUserId: Int) :
             private const val VIEW_TYPE_SENDER = 1
             private const val VIEW_TYPE_RECEIVER = 2
 
-            val DIFF_CALLBACK: DiffUtil.ItemCallback<DataMessagesByGroupIdItem> =
-                object : DiffUtil.ItemCallback<DataMessagesByGroupIdItem>() {
+            val DIFF_CALLBACK: DiffUtil.ItemCallback<MessagesRelation> =
+                object : DiffUtil.ItemCallback<MessagesRelation>() {
                     override fun areItemsTheSame(
-                        oldItem: DataMessagesByGroupIdItem,
-                        newItem: DataMessagesByGroupIdItem
+                        oldItem: MessagesRelation,
+                        newItem: MessagesRelation
                     ): Boolean {
-                        return oldItem.groupId == newItem.groupId
+                        return oldItem.groupsEntity.id == newItem.groupsEntity.id
                     }
 
                     @SuppressLint("DiffUtilEquals")
                     override fun areContentsTheSame(
-                        oldItem: DataMessagesByGroupIdItem,
-                        newItem: DataMessagesByGroupIdItem
+                        oldItem: MessagesRelation,
+                        newItem: MessagesRelation
                     ): Boolean {
                         return oldItem == newItem
                     }

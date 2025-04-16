@@ -11,16 +11,8 @@ import androidx.room.Transaction
 interface UserGroupDao {
 
     @Query("""
-        SELECT 
-            -- From user_group
-            ug.id_group AS ug_id_group,
-            ug.user_id AS ug_user_id,
-            ug.role AS ug_role,
-            ug.created_by AS ug_created_by,
-            ug.created_at AS ug_created_at,
-            ug.updated_at AS ug_updated_at,
-    
-            -- From user_profile
+        SELECT  
+            -- user_profile
             up.id_user_profile AS up_id_user_profile,
             up.user_id AS up_user_id,
             up.nama AS up_nama,
@@ -31,16 +23,24 @@ interface UserGroupDao {
             up.created_at AS up_created_at,
             up.updated_at AS up_updated_at,
     
-            -- From groups
+            -- groups
             g.id_group AS g_id_group,
             g.nama_group AS g_nama_group,
             g.deskripsi AS g_deskripsi,
             g.created_at AS g_created_at,
-            g.updated_at AS g_updated_at
+            g.updated_at AS g_updated_at,
+            
+            -- user_group
+            ug.user_id AS ug_user_id,
+            ug.group_id AS ug_group_id,
+            ug.role AS ug_role,
+            ug.created_by AS ug_created_by,
+            ug.created_at AS ug_created_at,
+            ug.updated_at AS ug_updated_at
     
         FROM user_group ug
         INNER JOIN user_profile up ON up.user_id = ug.user_id
-        INNER JOIN groups g ON g.id_group = ug.id_group
+        INNER JOIN groups g ON g.id_group = ug.group_id
         WHERE ug.user_id = :userId
     """)
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>>

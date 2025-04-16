@@ -8,6 +8,8 @@ import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
+import com.example.stunting.database.with_api.entities.messages.MessagesRelation
+import com.example.stunting.database.with_api.entities.notifications.NotificationsEntity
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
@@ -21,9 +23,12 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupRelat
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.entities.users.UsersEntity
+import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.AppExecutors
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -46,13 +51,83 @@ class ChattingRepository(
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
+    fun getMessageRelationByGroupId(groupId: Int): LiveData<List<MessagesRelation>> {
+        return chattingDatabase.messagesDao().getMessageRelationByGroupId(groupId)
+    }
+
     // Menggunakan entitas pusat relasi
-//    fun getMessages(): LiveData<ResultState<List<MessagesEntity>>> {
-//        resultListMessages.value = ResultState.Loading
-//    }
+    suspend fun getMessages(): ResultState<List<MessagesEntity>> {
+        return try {
+            val response = apiService.getAllMessages()
+            val messages = response.dataMessages
+            Log.d(TAG, "onChattingRepository getMessages success: $messages")
 
+            val userProfileList = ArrayList<UserProfileEntity>()
+            val groupsList = ArrayList<GroupsEntity>()
+            val notificationsList = ArrayList<NotificationsEntity>()
+            val messagesList = ArrayList<MessagesEntity>()
 
-    fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
+            messages?.forEach { item ->
+                val userProfile = item?.userProfile
+                val groups = item?.groups
+                val notifications = item?.notifications
+
+                if (userProfile != null && groups != null && notifications != null) {
+                    userProfileList.add(
+                        UserProfileEntity(
+                            id = userProfile.id,
+                            userId = userProfile.userId,
+                            nama = userProfile.nama,
+                            jenisKelamin = userProfile.jenisKelamin
+                        )
+                    )
+
+                    groupsList.add(
+                        GroupsEntity(
+                            id = groups.id,
+                            namaGroup = groups.namaGroup,
+                            deskripsi = groups.deskripsi
+                        )
+                    )
+
+                    notificationsList.add(
+                        NotificationsEntity(
+                            id = notifications.id,
+                            isStatus = notifications.isStatus
+                        )
+                    )
+
+                    messagesList.add(
+                        MessagesEntity(
+                            user_id = userProfile.userId ?: 0,
+                            group_id = groups.id ?: 0,
+                            notification_id = notifications.id ?: 0,
+                            isi_pesan = item.isiPesan.orEmpty()
+                        )
+                    )
+                }
+            }
+
+            // Simpan ke database
+            withContext(Dispatchers.IO) {
+                Log.d(TAG, "onInsert Start")
+                chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+                chattingDatabase.groupsDao().insertGroups(groupsList)
+                chattingDatabase.notificationsDao().insertNotifications(notificationsList)
+                chattingDatabase.messagesDao().insertMessages(messagesList)
+                Log.d(TAG, "onInsert End")
+            }
+
+            val localData = chattingDatabase.messagesDao().getMessages()
+            ResultState.Success(localData)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "onChattingRepository getMessages failed: ${e.message}")
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    suspend fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
         emit(ResultState.Loading)
         try {
             val requestBody = AddingMessageRequestJSON(isiPesan)
@@ -98,11 +173,26 @@ class ChattingRepository(
 
                     appExecutors.diskIO.execute {
                         userGroups?.forEach { item ->
-                            val group = item?.groups
                             val userProfile = item?.userProfile
+                            val group = item?.groups
 
                             if (group != null && userProfile != null) {
-                                // Simpan Group
+                                // Simpan UserProfile
+                                userProfileList.add(
+                                    UserProfileEntity(
+                                        id = userProfile.id,
+                                        userId = userProfile.userId ,
+                                        nama = userProfile.nama,
+                                        nik = userProfile.nik,
+                                        jenisKelamin = userProfile.jenisKelamin,
+                                        tglLahir = userProfile.tglLahir,
+                                        umur = userProfile.umur,
+                                        createdAt = formattedDateTime.toString(),
+                                        updatedAt = formattedDateTime.toString()
+                                    )
+                                )
+
+                                // Simpan Groups
                                 groupList.add(
                                     GroupsEntity(
                                         id = group.id,
@@ -113,25 +203,10 @@ class ChattingRepository(
                                     )
                                 )
 
-                                // Simpan UserProfile
-                                userProfileList.add(
-                                    UserProfileEntity(
-                                        id = userProfile.id ?: 0,
-                                        userId = userProfile.userId ?: 0,
-                                        nama = userProfile.nama,
-                                        nik = userProfile.nik,
-                                        jenisKelamin = userProfile.jenisKelamin,
-                                        tglLahir = userProfile.tglLahir,
-                                        umur = userProfile.umur ?: 0,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString()
-                                    )
-                                )
-
                                 // Simpan UserGroup
                                 userGroupList.add(
                                     UserGroupEntity(
-                                        id_group = group.id ?: 0,
+                                        group_id = group.id ?: 0,
                                         user_id = userProfile.userId ?: 0,
                                         role = null,
                                         createdAt = formattedDateTime.toString(),

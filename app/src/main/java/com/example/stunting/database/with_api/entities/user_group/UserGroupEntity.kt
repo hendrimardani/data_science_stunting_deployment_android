@@ -12,25 +12,25 @@ import com.example.stunting.database.with_api.entities.user_profile.UserProfileE
 // Many to many
 @Entity(
     tableName = "user_group",
-    primaryKeys = ["id_group", "user_id"],
+    primaryKeys = ["user_id", "group_id"],
     foreignKeys = [
-        ForeignKey(
-            entity = GroupsEntity::class,
-            parentColumns = ["id_group"],
-            childColumns = ["id_group"],
-            onDelete = ForeignKey.CASCADE
-        ),
         ForeignKey(
             entity = UserProfileEntity::class,
             parentColumns = ["user_id"],
             childColumns = ["user_id"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = GroupsEntity::class,
+            parentColumns = ["id_group"],
+            childColumns = ["group_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class UserGroupEntity(
-    val id_group: Int,
     val user_id: Int,
+    val group_id: Int,
     val role: String?  = null,
     @ColumnInfo(name = "created_by") val createdBy: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,

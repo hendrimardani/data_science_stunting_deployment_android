@@ -11,7 +11,7 @@ import com.example.stunting.database.with_api.entities.user_profile.UserProfileE
 // Many to many
 @Entity(
     tableName = "messages",
-    primaryKeys = ["id_user_profile", "id_group", "id_notification"],
+    primaryKeys = ["user_id", "group_id", "notification_id"],
     foreignKeys = [
         ForeignKey(
             entity = UserProfileEntity::class,
@@ -22,13 +22,13 @@ import com.example.stunting.database.with_api.entities.user_profile.UserProfileE
         ForeignKey(
             entity = GroupsEntity::class,
             parentColumns = ["id_group"],
-            childColumns = ["id_group"],
+            childColumns = ["group_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = NotificationsEntity::class,
             parentColumns = ["id_notification"],
-            childColumns = ["id_notification"],
+            childColumns = ["notification_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]

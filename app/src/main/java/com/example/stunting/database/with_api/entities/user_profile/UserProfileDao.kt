@@ -11,9 +11,6 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
 @Dao
 interface UserProfileDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUserProfile(userProfile: List<UserProfileEntity>)
-
     @Query("SELECT * FROM users WHERE id_user = :userId")
     fun getUserProfileById(userId: Int): LiveData<UsersEntity>
 
@@ -23,4 +20,7 @@ interface UserProfileDao {
 
     @Query("SELECT * FROM user_profile ORDER BY id_user_profile ASC")
     fun getUserProfiles(): LiveData<List<UserProfileEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertUserProfile(userProfile: List<UserProfileEntity>)
 }

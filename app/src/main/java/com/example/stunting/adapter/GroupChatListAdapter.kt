@@ -33,7 +33,7 @@ class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, GroupChatActivity::class.java)
                 intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userGroupEntity.user_id)
-                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.userGroupEntity.id_group)
+                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.userGroupEntity.group_id)
                 intent.putExtra(EXTRA_NAMA_TO_GROUP_CHAT, item.groupsEntity.namaGroup)
                 itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
@@ -55,7 +55,7 @@ class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.
         val DIFF_CALLBACK: DiffUtil.ItemCallback<UserGroupRelation> =
             object : DiffUtil.ItemCallback<UserGroupRelation>() {
                 override fun areItemsTheSame(oldItem: UserGroupRelation, newItem: UserGroupRelation): Boolean {
-                    return oldItem.userGroupEntity.id_group == newItem.userGroupEntity.id_group
+                    return oldItem.userGroupEntity.group_id == newItem.userGroupEntity.group_id
                 }
 
                 @SuppressLint("DiffUtilEquals")

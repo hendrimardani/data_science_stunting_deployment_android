@@ -8,6 +8,7 @@ import com.example.stunting.database.with_api.request_json.UpdateUserProfileById
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
+import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.response.GetMessageByGroupIdResponse
@@ -26,10 +27,13 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("group/{group_id}/notification")
-    suspend fun getMessageByGroupId(
-        @Path("group_id") groupId: Int
-    ): Response<GetMessageByGroupIdResponse>
+//    @GET("group/{group_id}/notification")
+//    suspend fun getMessageByGroupId(
+//        @Path("group_id") groupId: Int
+//    ): Response<GetMessageByGroupIdResponse>
+
+    @GET("messages")
+    fun getAllMessages(): GetAllMessagesResponse
 
     @POST("user_profile/{user_id}/group/{group_id}/notification")
     suspend fun addMessage(
@@ -38,10 +42,10 @@ interface ApiService {
         @Body addingMessageRequestJSON: AddingMessageRequestJSON
     ): Response<AddingMessageResponse>
 
-    @GET("user_profile/{user_id}/group")
-    suspend fun getUserGroupByUserId(
-        @Path("user_id") userId: Int
-    ): Response<GetUserGroupByUserIdResponse>
+//    @GET("user_profile/{user_id}/group")
+//    suspend fun getUserGroupByUserId(
+//        @Path("user_id") userId: Int
+//    ): Response<GetUserGroupByUserIdResponse>
 
     @GET("user_profiles/groups")
     fun getAllUserGroup(): Call<GetAllUserGroupResponse>
