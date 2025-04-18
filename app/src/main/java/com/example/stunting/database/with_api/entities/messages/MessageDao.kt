@@ -52,8 +52,8 @@ interface MessagesDao {
     fun getMessageRelationByGroupId(groupId: Int): LiveData<List<MessagesRelation>>
 
     @Query("SELECT * FROM messages ORDER BY user_id ASC")
-    fun getMessages(): List<MessagesEntity>
+    fun getMessages(): LiveData<List<MessagesEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertMessages(messagesEntity: List<MessagesEntity>)
+    fun insertMessages(messagesEntity: List<MessagesEntity>)
 }

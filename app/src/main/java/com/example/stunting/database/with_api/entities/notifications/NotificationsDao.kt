@@ -13,5 +13,5 @@ interface NotificationsDao {
     fun getNotifications(): LiveData<List<NotificationsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertNotifications(groups: List<NotificationsEntity>)
+    fun insertNotifications(groups: List<NotificationsEntity>)
 }

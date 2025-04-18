@@ -47,84 +47,91 @@ class ChattingRepository(
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     val formattedDateTime = now.format(formatter)
 
+    private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
     private val resultListMessages = MediatorLiveData<ResultState<List<MessagesEntity>>>()
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
-    private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
 
     fun getMessageRelationByGroupId(groupId: Int): LiveData<List<MessagesRelation>> {
         return chattingDatabase.messagesDao().getMessageRelationByGroupId(groupId)
     }
 
     // Menggunakan entitas pusat relasi
-    suspend fun getMessages(): ResultState<List<MessagesEntity>> {
-        return try {
-            val response = apiService.getAllMessages()
-            val messages = response.dataMessages
-            Log.d(TAG, "onChattingRepository getMessages success: $messages")
+    fun getMessages(): LiveData<ResultState<List<MessagesEntity>>> {
+        resultListMessages.value = ResultState.Loading
+        val response = apiService.getAllMessages()
+        response.enqueue(object : Callback<GetAllMessagesResponse> {
+            override fun onResponse(
+                call: Call<GetAllMessagesResponse>,
+                response: Response<GetAllMessagesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val messages = response.body()?.dataMessages
+                    Log.d(TAG, "onChattingRepository getMessages success: $messages")
 
-            val userProfileList = ArrayList<UserProfileEntity>()
-            val groupsList = ArrayList<GroupsEntity>()
-            val notificationsList = ArrayList<NotificationsEntity>()
-            val messagesList = ArrayList<MessagesEntity>()
+                    val userProfileList = ArrayList<UserProfileEntity>()
+                    val groupsList = ArrayList<GroupsEntity>()
+                    val notificationsList = ArrayList<NotificationsEntity>()
+                    val messagesList = ArrayList<MessagesEntity>()
 
-            messages?.forEach { item ->
-                val userProfile = item?.userProfile
-                val groups = item?.groups
-                val notifications = item?.notifications
+                    appExecutors.diskIO.execute {
+                        messages?.forEach { item ->
+                            val userProfile = item?.userProfile
+                            val groups = item?.groups
+                            val notifications = item?.notifications
 
-                if (userProfile != null && groups != null && notifications != null) {
-                    userProfileList.add(
-                        UserProfileEntity(
-                            id = userProfile.id,
-                            userId = userProfile.userId,
-                            nama = userProfile.nama,
-                            jenisKelamin = userProfile.jenisKelamin
-                        )
-                    )
+                            if (userProfile != null && groups != null && notifications != null) {
+                                userProfileList.add(
+                                    UserProfileEntity(
+                                        id = userProfile.id,
+                                        userId = userProfile.userId,
+                                        nama = userProfile.nama,
+                                        jenisKelamin = userProfile.jenisKelamin
+                                    )
+                                )
 
-                    groupsList.add(
-                        GroupsEntity(
-                            id = groups.id,
-                            namaGroup = groups.namaGroup,
-                            deskripsi = groups.deskripsi
-                        )
-                    )
+                                groupsList.add(
+                                    GroupsEntity(
+                                        id = groups.id,
+                                        namaGroup = groups.namaGroup,
+                                        deskripsi = groups.deskripsi
+                                    )
+                                )
 
-                    notificationsList.add(
-                        NotificationsEntity(
-                            id = notifications.id,
-                            isStatus = notifications.isStatus
-                        )
-                    )
+                                notificationsList.add(
+                                    NotificationsEntity(
+                                        id = notifications.id,
+                                        isStatus = notifications.isStatus
+                                    )
+                                )
 
-                    messagesList.add(
-                        MessagesEntity(
-                            user_id = userProfile.userId ?: 0,
-                            group_id = groups.id ?: 0,
-                            notification_id = notifications.id ?: 0,
-                            isi_pesan = item.isiPesan.orEmpty()
-                        )
-                    )
+                                messagesList.add(
+                                    MessagesEntity(
+                                        user_id = userProfile.userId ?: 0,
+                                        group_id = groups.id ?: 0,
+                                        notification_id = notifications.id ?: 0,
+                                        isi_pesan = item.isiPesan.orEmpty()
+                                    )
+                                )
+                            }
+                            chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+                            chattingDatabase.groupsDao().insertGroups(groupsList)
+                            chattingDatabase.notificationsDao().insertNotifications(notificationsList)
+                            chattingDatabase.messagesDao().insertMessages(messagesList)
+                        }
+                    }
                 }
             }
 
-            // Simpan ke database
-            withContext(Dispatchers.IO) {
-                Log.d(TAG, "onInsert Start")
-                chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
-                chattingDatabase.groupsDao().insertGroups(groupsList)
-                chattingDatabase.notificationsDao().insertNotifications(notificationsList)
-                chattingDatabase.messagesDao().insertMessages(messagesList)
-                Log.d(TAG, "onInsert End")
+            override fun onFailure(call: Call<GetAllMessagesResponse>, t: Throwable) {
+                Log.d(TAG, "onChattingRepository getMessages Failed : ${t.message}")
+                resultListMessages.value = ResultState.Error(t.message.toString())
             }
-
-            val localData = chattingDatabase.messagesDao().getMessages()
-            ResultState.Success(localData)
-
-        } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository getMessages failed: ${e.message}")
-            ResultState.Error(e.message ?: "Unknown error")
+        })
+        val localData = chattingDatabase.messagesDao().getMessages()
+        resultListMessages.addSource(localData) { userData: List<MessagesEntity> ->
+            resultListMessages.value = ResultState.Success(userData)
         }
+        return resultListMessages
     }
 
     suspend fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
@@ -227,7 +234,6 @@ class ChattingRepository(
                 resultListUserGroup.value = ResultState.Error(t.message.toString())
             }
         })
-
         val localData = chattingDatabase.userGroupDao().getUserGroup()
         resultListUserGroup.addSource(localData) { userData: List<UserGroupEntity> ->
             resultListUserGroup.value = ResultState.Success(userData)

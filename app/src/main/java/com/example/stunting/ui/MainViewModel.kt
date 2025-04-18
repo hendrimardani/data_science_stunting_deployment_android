@@ -2,28 +2,19 @@ package com.example.stunting.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    val resultMessages = MutableLiveData<ResultState<List<MessagesEntity>>>()
-
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
-    fun getMessages() {
-        viewModelScope.launch {
-            resultMessages.value = ResultState.Loading
-            resultMessages.value = chattingRepository.getMessages()
-        }
-    }
+    fun getMessages() = chattingRepository.getMessages()
+
     fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
         emitSource(chattingRepository.addMessage(userId, groupId, isiPesan))
     }

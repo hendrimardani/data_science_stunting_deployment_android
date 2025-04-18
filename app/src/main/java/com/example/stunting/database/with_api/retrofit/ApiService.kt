@@ -33,7 +33,7 @@ interface ApiService {
 //    ): Response<GetMessageByGroupIdResponse>
 
     @GET("messages")
-    fun getAllMessages(): GetAllMessagesResponse
+    fun getAllMessages(): Call<GetAllMessagesResponse>
 
     @POST("user_profile/{user_id}/group/{group_id}/notification")
     suspend fun addMessage(

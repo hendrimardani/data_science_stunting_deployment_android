@@ -49,6 +49,7 @@ class GroupChatActivity : AppCompatActivity() {
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
         activityName = intent?.getStringExtra(EXTRA_NAMA_TO_GROUP_CHAT)
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
+        val groupChatAdapter = GroupChatAdapter(userId!!)
 
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
             progressBar.setTitleText(getString(R.string.title_loading))
@@ -56,7 +57,7 @@ class GroupChatActivity : AppCompatActivity() {
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
             progressBar.setCancelable(false)
 
-        viewModel.resultMessages.observe(this) { result ->
+        viewModel.getMessages().observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
@@ -67,6 +68,7 @@ class GroupChatActivity : AppCompatActivity() {
                     is ResultState.Success -> {
                         progressBar.dismiss()
                         Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -78,7 +80,6 @@ class GroupChatActivity : AppCompatActivity() {
             }
         }
 
-        val groupChatAdapter = GroupChatAdapter(userId!!)
         textWatcher()
 
         binding.rvMessages.apply {
@@ -92,11 +93,35 @@ class GroupChatActivity : AppCompatActivity() {
             viewModel.addMessage(userId!!, groupId!!, isiPesan).observe(this@GroupChatActivity) { result ->
                 if (result != null) {
                     when (result) {
+
                         is ResultState.Loading -> { }
                         is ResultState.Error ->{
 //                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
                         }
                         is ResultState.Success -> {
+                            viewModel.getMessages().observe(this) { result ->
+                                if (result != null) {
+                                    when (result) {
+                                        is ResultState.Loading -> progressBar.show()
+                                        is ResultState.Error ->{
+                                            progressBar.dismiss()
+                                            Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
+                                        }
+                                        is ResultState.Success -> {
+                                            progressBar.dismiss()
+                                            Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+
+                                        }
+                                        is ResultState.Unauthorized -> {
+                                            viewModel.logout()
+                                            val intent = Intent(this, MainActivity::class.java)
+                                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                                            startActivity(intent)
+                                        }
+                                    }
+                                }
+                            }
+
                         Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
@@ -126,9 +151,6 @@ class GroupChatActivity : AppCompatActivity() {
 
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
             Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
-            result.forEach { item ->
-                Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${item}")
-            }
             groupChatAdapter.submitList(result)
         }
     }
