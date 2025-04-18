@@ -51,34 +51,8 @@ class GroupChatActivity : AppCompatActivity() {
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText(getString(R.string.title_loading))
-            progressBar.setContentText(getString(R.string.description_loading))
-                .progressHelper.barColor = Color.parseColor("#73D1FA")
-            progressBar.setCancelable(false)
-
-        viewModel.getMessages().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error ->{
-                        progressBar.dismiss()
-                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
-
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
+        getMessages()
+        getMessageByGroupId(groupId!!, groupChatAdapter)
 
         textWatcher()
 
@@ -99,30 +73,8 @@ class GroupChatActivity : AppCompatActivity() {
 //                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
                         }
                         is ResultState.Success -> {
-                            viewModel.getMessages().observe(this) { result ->
-                                if (result != null) {
-                                    when (result) {
-                                        is ResultState.Loading -> progressBar.show()
-                                        is ResultState.Error ->{
-                                            progressBar.dismiss()
-                                            Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
-                                        }
-                                        is ResultState.Success -> {
-                                            progressBar.dismiss()
-                                            Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
-
-                                        }
-                                        is ResultState.Unauthorized -> {
-                                            viewModel.logout()
-                                            val intent = Intent(this, MainActivity::class.java)
-                                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                                            startActivity(intent)
-                                        }
-                                    }
-                                }
-                            }
-
-                        Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
+                            getMessages()
+                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
                         is ResultState.Unauthorized -> {
@@ -140,6 +92,28 @@ class GroupChatActivity : AppCompatActivity() {
         setCoordinatorFitsSystemWindows()
 
         setToolBar(activityName!!)
+    }
+
+    private fun getMessages() {
+        viewModel.getMessages().observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+//                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+//                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
