@@ -74,7 +74,7 @@ class GroupChatActivity : AppCompatActivity() {
                         }
                         is ResultState.Success -> {
                             getMessages()
-                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
+//                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
                         is ResultState.Unauthorized -> {
