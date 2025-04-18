@@ -68,13 +68,13 @@ class GroupChatActivity : AppCompatActivity() {
                 if (result != null) {
                     when (result) {
 
-                        is ResultState.Loading -> { }
+                        is ResultState.Loading -> {  }
                         is ResultState.Error ->{
 //                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
                         }
                         is ResultState.Success -> {
-                            getMessages()
 //                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
+                            getMessages()
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
                         is ResultState.Unauthorized -> {
@@ -124,7 +124,7 @@ class GroupChatActivity : AppCompatActivity() {
         progressBar.setCancelable(false)
 
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
-            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
+//            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
             groupChatAdapter.submitList(result)
         }
     }

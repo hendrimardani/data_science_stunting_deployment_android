@@ -23,6 +23,7 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupRelat
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.entities.users.UsersEntity
+import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.AppExecutors
@@ -134,28 +135,31 @@ class ChattingRepository(
         return resultListMessages
     }
 
-    suspend fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
-        emit(ResultState.Loading)
-        try {
+    suspend fun addMessage(userId: Int, groupId: Int, isiPesan: String): ResultState<AddingMessageResponse?> {
+        return try {
             val requestBody = AddingMessageRequestJSON(isiPesan)
             val response = apiService.addMessage(userId, groupId, requestBody)
 
             if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
+                ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-                Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
+                    Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
+                    ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            emit(ResultState.Error(e.message.toString()))
             Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
         }
     }
+
 
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserId(userId)

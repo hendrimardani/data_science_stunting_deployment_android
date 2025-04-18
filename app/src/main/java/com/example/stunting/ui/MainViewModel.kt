@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
@@ -15,8 +17,9 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getMessages() = chattingRepository.getMessages()
 
-    fun addMessage(userId: Int, groupId: Int, isiPesan: String) = liveData {
-        emitSource(chattingRepository.addMessage(userId, groupId, isiPesan))
+    fun addMessage(userId: Int, groupId: Int, isiPesan: String): LiveData<ResultState<AddingMessageResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.addMessage(userId, groupId, isiPesan))
     }
 
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
