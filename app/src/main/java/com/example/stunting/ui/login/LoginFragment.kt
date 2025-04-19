@@ -99,7 +99,10 @@ class LoginFragment : Fragment() {
                 val password = binding.tietPassword.text.toString().trim()
 
                 val pattern = getString(R.string.pattern)
-                binding.btnLogin.isEnabled = email.contains(Regex(pattern)) && password.length >= MIN_CHARACTER_PASSWORD
+                val isEmailValid = email.contains(Regex(pattern))
+                val isPasswordValid = password.length >= MIN_CHARACTER_PASSWORD
+
+                binding.btnLogin.isEnabled = isEmailValid && isPasswordValid
 
                 if (binding.btnLogin.isEnabled == true) {
                     binding.btnLogin.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.blueSecond))

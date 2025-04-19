@@ -10,7 +10,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 
-class MyEmailEditText @JvmOverloads constructor(
+class MyNamaGroupEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs), View.OnTouchListener {
 
@@ -24,9 +24,8 @@ class MyEmailEditText @JvmOverloads constructor(
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val pattern = context.getString(R.string.pattern)
-                if (!s.contains(Regex(pattern))) {
-                    error = resources.getString(R.string.error_text_email_validation)
+                if (s.length >= MAX_CHARACTER_NAMA_GROUP) {
+                    error = resources.getString(R.string.error_text_nama_group_validation)
                 }
             }
             override fun afterTextChanged(s: Editable) { }
@@ -35,5 +34,9 @@ class MyEmailEditText @JvmOverloads constructor(
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         return false
+    }
+
+    companion object {
+        val MAX_CHARACTER_NAMA_GROUP = 15
     }
 }

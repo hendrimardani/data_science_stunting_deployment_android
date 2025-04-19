@@ -18,10 +18,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.example.stunting.MyDeskripsiGroupEditText.Companion.MAX_CHARACTER_DESKRIPSI_GROUP
+import com.example.stunting.MyNamaGroupEditText.Companion.MAX_CHARACTER_NAMA_GROUP
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.GroupChatListAdapter
-import com.example.stunting.databinding.DialogCustomInputFragmentBinding
+import com.example.stunting.databinding.DialogCustomGroupChatListFragmentBinding
 import com.example.stunting.databinding.FragmentGroupChatListBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
@@ -63,16 +65,20 @@ class GroupChatListFragment : Fragment() {
             adapter = groupChatListAdapter
         }
 
-        binding.fabGroupChatList.setOnClickListener { showCustomInputFragmentialog(userId) }
+        binding.fabGroupChatList.setOnClickListener { showDialogCustomGroupChatListFragmentBinding(userId) }
     }
 
-    private fun textWatcherDialogCustomInput(view: DialogCustomInputFragmentBinding) {
+    private fun textWatcherDialogCustomInput(view: DialogCustomGroupChatListFragmentBinding) {
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val namaGroup = view.tietNamaGroup.text.toString()
                 val deskripsiGroup = view.tietDeskripsiGroup.text.toString()
 
-                view.btnAddGroup.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty()
+                val isNamaGroupValid = namaGroup.length >= MAX_CHARACTER_NAMA_GROUP
+                val isDeskripsiGroupValid = deskripsiGroup.length >= MAX_CHARACTER_DESKRIPSI_GROUP
+
+                view.btnAddGroup.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty() &&
+                    !isNamaGroupValid && !isDeskripsiGroupValid
 
                 if (view.btnAddGroup.isEnabled == true) {
                     view.btnAddGroup.strokeColor = ColorStateList.valueOf(
@@ -130,8 +136,8 @@ class GroupChatListFragment : Fragment() {
         }
     }
 
-    private fun showCustomInputFragmentialog(userId: Int?) {
-        val view = DialogCustomInputFragmentBinding.inflate(layoutInflater)
+    private fun showDialogCustomGroupChatListFragmentBinding(userId: Int?) {
+        val view = DialogCustomGroupChatListFragmentBinding.inflate(layoutInflater)
         val viewDialog = Dialog(requireActivity())
 
         viewDialog.setContentView(view.root)

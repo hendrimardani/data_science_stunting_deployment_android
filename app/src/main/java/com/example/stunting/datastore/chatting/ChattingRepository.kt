@@ -24,7 +24,10 @@ import com.example.stunting.database.with_api.entities.user_profile.UserProfileE
 import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
+import com.example.stunting.database.with_api.response.LoginResponse
+import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.AppExecutors
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +38,8 @@ import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -44,10 +49,6 @@ class ChattingRepository(
     private val userPreference: UserPreference,
     private val appExecutors: AppExecutors
 ) {
-    val now = LocalDateTime.now()
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    val formattedDateTime = now.format(formatter)
-
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
     private val resultListMessages = MediatorLiveData<ResultState<List<MessagesEntity>>>()
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
@@ -66,8 +67,12 @@ class ChattingRepository(
                 response: Response<GetAllMessagesResponse>
             ) {
                 if (response.isSuccessful) {
+                    // hasil: 2025-04-18T14:00:00+07:00
+                    val currentDateTime = OffsetDateTime.now(ZoneOffset.of("+07:00"))
+                    val dateTimeFormatted = currentDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
                     val messages = response.body()?.dataMessages
-                    Log.d(TAG, "onChattingRepository getMessages success: $messages")
+//                    Log.d(TAG, "onChattingRepository getMessages success: $messages")
 
                     val userProfileList = ArrayList<UserProfileEntity>()
                     val groupsList = ArrayList<GroupsEntity>()
@@ -86,7 +91,9 @@ class ChattingRepository(
                                         id = userProfile.id,
                                         userId = userProfile.userId,
                                         nama = userProfile.nama,
-                                        jenisKelamin = userProfile.jenisKelamin
+                                        jenisKelamin = userProfile.jenisKelamin,
+                                        createdAt = dateTimeFormatted,
+                                        updatedAt = dateTimeFormatted
                                     )
                                 )
 
@@ -94,14 +101,18 @@ class ChattingRepository(
                                     GroupsEntity(
                                         id = groups.id,
                                         namaGroup = groups.namaGroup,
-                                        deskripsi = groups.deskripsi
+                                        deskripsi = groups.deskripsi,
+                                        createdAt = dateTimeFormatted,
+                                        updatedAt = dateTimeFormatted
                                     )
                                 )
 
                                 notificationsList.add(
                                     NotificationsEntity(
                                         id = notifications.id,
-                                        isStatus = notifications.isStatus
+                                        isStatus = notifications.isStatus,
+                                        createdAt = dateTimeFormatted,
+                                        updatedAt = dateTimeFormatted
                                     )
                                 )
 
@@ -110,7 +121,9 @@ class ChattingRepository(
                                         user_id = userProfile.userId ?: 0,
                                         group_id = groups.id ?: 0,
                                         notification_id = notifications.id ?: 0,
-                                        isi_pesan = item.isiPesan.orEmpty()
+                                        isi_pesan = item.isiPesan,
+                                        createdAt = dateTimeFormatted,
+                                        updatedAt = dateTimeFormatted
                                     )
                                 )
                             }
@@ -124,7 +137,7 @@ class ChattingRepository(
             }
 
             override fun onFailure(call: Call<GetAllMessagesResponse>, t: Throwable) {
-                Log.d(TAG, "onChattingRepository getMessages Failed : ${t.message}")
+//                Log.d(TAG, "onChattingRepository getMessages Failed : ${t.message}")
                 resultListMessages.value = ResultState.Error(t.message.toString())
             }
         })
@@ -147,15 +160,15 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository addMessage Error ${response.code()}: $errorBody")
                     ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }
@@ -198,8 +211,8 @@ class ChattingRepository(
                                         jenisKelamin = userProfile.jenisKelamin,
                                         tglLahir = userProfile.tglLahir,
                                         umur = userProfile.umur,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString()
+                                        createdAt = userProfile.createdAt,
+                                        updatedAt = userProfile.updatedAt
                                     )
                                 )
 
@@ -209,8 +222,8 @@ class ChattingRepository(
                                         id = group.id,
                                         namaGroup = group.namaGroup,
                                         deskripsi = group.deskripsi,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString()
+                                        createdAt = group.createdAt,
+                                        updatedAt = group.updatedAt
                                     )
                                 )
 
@@ -219,9 +232,10 @@ class ChattingRepository(
                                     UserGroupEntity(
                                         group_id = group.id ?: 0,
                                         user_id = userProfile.userId ?: 0,
-                                        role = null,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString()
+                                        role = item.role,
+                                        createdBy = item.createdBy,
+                                        createdAt = item.createdAt,
+                                        updatedAt = item.updatedAt
                                     )
                                 )
                             }
@@ -245,26 +259,28 @@ class ChattingRepository(
         return resultListUserGroup
     }
 
-    suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String) = liveData {
-        emit(ResultState.Loading)
-        try {
+    suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String): ResultState<AddingUserGroupResponse?> {
+        return try {
             val requestBody = AddingUserGroupRequestJSON(namaGroup, deskripsi)
             val response = apiService.addUserGroup(userProfileId, requestBody)
 
             if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
+                ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
+                    ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: HttpException) {
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
-            emit(ResultState.Error(e.message.toString()))
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
         }
     }
 
@@ -353,8 +369,8 @@ class ChattingRepository(
                                         id = item.users.id,
                                         email = item.users.email,
                                         password = item.users.password,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString()
+                                        createdAt = item.createdAt,
+                                        updatedAt = item.updatedAt
                                     )
                                 )
 
@@ -368,8 +384,8 @@ class ChattingRepository(
                                         jenisKelamin = item.jenisKelamin,
                                         tglLahir = item.tglLahir,
                                         umur = item.umur,
-                                        createdAt = formattedDateTime.toString(),
-                                        updatedAt = formattedDateTime.toString(),
+                                        createdAt = item.createdAt,
+                                        updatedAt = item.updatedAt,
                                     )
                                 )
                             }
@@ -392,26 +408,28 @@ class ChattingRepository(
         return resultListUsers
     }
 
-    suspend  fun login(email: String, password: String) = liveData {
-        emit(ResultState.Loading)
-        try {
+    suspend fun login(email: String, password: String): ResultState<LoginResponse?> {
+        return try {
             val requestBody = LoginRequestJSON(email, password)
             val response = apiService.login(requestBody)
 
             if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
+                ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository login Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository login Error ${response.code()}: $errorBody")
+                    ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            emit(ResultState.Error(e.message.toString()))
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
         }
     }
 
@@ -423,26 +441,28 @@ class ChattingRepository(
         return userPreference.getSession()
     }
 
-    suspend fun register(nama: String, email: String, password: String, repeatPassword: String) = liveData {
-        emit(ResultState.Loading)
-        try {
+    suspend fun register(nama: String, email: String, password: String, repeatPassword: String): ResultState<RegisterResponse?> {
+        return try {
             val requestBody = RegisterRequestJSON(nama, email, password, repeatPassword)
             val response = apiService.register(requestBody)
 
             if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
+                ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBody")
+                    ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            emit(ResultState.Error(e.message.toString()))
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
         }
     }
 

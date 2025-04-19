@@ -100,10 +100,13 @@ class SignUpActivity : AppCompatActivity() {
                 val repeatPassword = binding.tietRepeatPassword.text.toString().trim()
 
                 val pattern = getString(R.string.pattern)
-                binding.btnSignUp.isEnabled = nama.length >= MIN_CHARACTER_NAMA &&
-                        email.contains(Regex(pattern)) &&
-                        password.length >= MIN_CHARACTER_PASSWORD &&
-                        password == repeatPassword
+                val isNamaValid = nama.length >= MIN_CHARACTER_NAMA
+                val isEmailValid = email.contains(Regex(pattern))
+                val isPasswordValid = password.length >= MIN_CHARACTER_PASSWORD
+                val isRepeatPasswordValid = password == repeatPassword
+
+                binding.btnSignUp.isEnabled = isNamaValid && isEmailValid &&
+                        isPasswordValid && isRepeatPasswordValid
 
                 if (binding.btnSignUp.isEnabled == true) {
                     binding.btnSignUp.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(this@SignUpActivity, R.color.blueSecond))

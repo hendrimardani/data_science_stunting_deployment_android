@@ -23,11 +23,20 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 object Functions {
     private lateinit var cal: Calendar
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
+
+    fun formatToHourMinute(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+        val date: Date? = inputFormat.parse(dateString)
+        return date?.let { outputFormat.format(it) } ?: ""
+    }
 
     fun parseTextWithStylesAndRemoveSymbols(input: String): SpannableString {
         val spannableBuilder = SpannableStringBuilder(input)
@@ -89,21 +98,17 @@ object Functions {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
-
-        // Kembalikan hasil sebagai SpannableString
         return SpannableString(spannableBuilder)
     }
 
     fun showCustomeInfoDialog(context: Context, layoutInflater: LayoutInflater) {
         val bindingBumilBottomSheetDialog = DialogCustomeInfoBinding.inflate(layoutInflater)
         val infoDialog = Dialog(context)
-        // Check if the view already has a parent
         val viewBottomSheetDialog: View = bindingBumilBottomSheetDialog.root
 
         infoDialog.setContentView(viewBottomSheetDialog)
         infoDialog.setCanceledOnTouchOutside(false)
         infoDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        // Set content
         bindingBumilBottomSheetDialog.tvDescription.text = context.getString(R.string.description_detail_info)
         bindingBumilBottomSheetDialog.tvYes.setOnClickListener {
             infoDialog.dismiss()
@@ -113,7 +118,7 @@ object Functions {
 
     fun linkToDirectory(activity: Activity) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        activity.startActivityForResult(intent, 101) // Replace REQUEST_CODE with a unique code (free numeric)
+        activity.startActivityForResult(intent, 101)
     }
 
     fun toastInfo(activity: Activity, title: String, description: String, info: MotionToastStyle) {

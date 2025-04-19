@@ -171,15 +171,15 @@
     <string name="registration_success_description_dialog">Berhasil: %s</string>
     <string name="title_message_success">Berhasil !</string>
     <string name="pattern" translatable="false">(@gmail.com)$</string>
-    <string name="error_description_email_validation">Harus memiliki akhiran @gmail.com</string>
+    <string name="error_text_email_validation">Harus memiliki akhiran @gmail.com</string>
     <string name="title_validation_error">Validasi Gagal !</string>
-    <string name="error_description_nama_validation">Harus minimal 3 karakter</string>
-    <string name="error_description_password_validation">Harus minimal 6 karakter</string>
+    <string name="error_text_nama_validation">Harus minimal 3 karakter</string>
+    <string name="error_text_password_validation">Harus minimal 6 karakter</string>
     <string name="text_connected">Internet Terhubung</string>
     <string name="text_no_connected">Koneksi Internet Terputus</string>
     <string name="next_login">Lanjut login</string>
     <string name="text_no_internet">Ooopss... anda tidak terhubung ke internet.</string>
-    <string name="text_title_group">Title Group</string>
+    <string name="text_nama_group_chat">Nama Group</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -202,4 +202,7 @@
     <string name="text_description_group">Deskripsi Group</string>
     <string name="hint_text_mau_tanya_apa">Mau tanya apa ...</string>
     <string name="hint_text_kirim_pesan">Kirim pesan ...</string>
+    <string name="text_deskripsi_group_chat">deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi </string>
+    <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
+    <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
 </resources>

@@ -104,6 +104,12 @@ class GroupChatActivity : AppCompatActivity() {
                     }
                     is ResultState.Success -> {
 //                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+                        if (result.data.isNotEmpty()) {
+                            binding.rvMessages.scrollToPosition(result.data.size - 1)
+                            binding.rvMessages.layoutManager!!.smoothScrollToPosition(
+                                binding.rvMessages, null, result.data.size - 1
+                            )
+                        }
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -126,6 +132,13 @@ class GroupChatActivity : AppCompatActivity() {
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
 //            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
             groupChatAdapter.submitList(result)
+            if (result.isNotEmpty()) {
+                binding.rvMessages.scrollToPosition(result.size - 1)
+                binding.rvMessages.layoutManager!!.smoothScrollToPosition(
+                    binding.rvMessages, null, result.size - 1
+                )
+            }
+            binding.tietMessage.text?.clear()
         }
     }
 

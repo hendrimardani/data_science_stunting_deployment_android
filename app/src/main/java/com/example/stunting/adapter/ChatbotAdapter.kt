@@ -16,14 +16,14 @@ class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         class SenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val ivProfile = itemView.findViewById<ImageView>(R.id.iv_profile)
-            val tvSender = itemView.findViewById<TextView>(R.id.tv_sender)
+            val ivProfileSender = itemView.findViewById<ImageView>(R.id.iv_profile)
+            val tvIsiPesanSender = itemView.findViewById<TextView>(R.id.tv_isi_pesan)
         }
 
         class ReceiverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val ivProfile = itemView.findViewById<ImageView>(R.id.iv_profile)
-            val tvReceiver = itemView.findViewById<TextView>(R.id.tv_receiver)
-            val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
+            val ivProfileReceiver = itemView.findViewById<ImageView>(R.id.iv_profile)
+            val tvIsiPesanReceiver = itemView.findViewById<TextView>(R.id.tv_isi_pesan)
+            val progressBarReceiver = itemView.findViewById<ProgressBar>(R.id.progressBar)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -48,17 +48,17 @@ class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) :
             val message = messageList[position]
             if (holder is SenderViewHolder) {
                 val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_person_40)
-                holder.ivProfile.setImageDrawable(drawable)
-                holder.tvSender.text = message.text
+                holder.ivProfileSender.setImageDrawable(drawable)
+                holder.tvIsiPesanSender.text = message.text
             } else if (holder is ReceiverViewHolder) {
-                if (IS_LOADING) holder.progressBar.visibility = View.VISIBLE
-                else holder.progressBar.visibility = View.GONE
+                if (IS_LOADING) holder.progressBarReceiver.visibility = View.VISIBLE
+                else holder.progressBarReceiver.visibility = View.GONE
 
                 val drawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_neural_network)
-                holder.ivProfile.setImageDrawable(drawable)
+                holder.ivProfileReceiver.setImageDrawable(drawable)
                 // Melakukan filtering simbol seperti **, *, _
                 val cleanedText = parseTextWithStylesAndRemoveSymbols(message.text)
-                holder.tvReceiver.text = cleanedText
+                holder.tvIsiPesanReceiver.text = cleanedText
             }
         }
 

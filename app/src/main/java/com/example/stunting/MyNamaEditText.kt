@@ -25,7 +25,7 @@ class MyNamaEditText @JvmOverloads constructor(
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length < MIN_CHARACTER_NAMA) {
-                    error = resources.getString(R.string.error_description_nama_validation)
+                    error = resources.getString(R.string.error_text_nama_validation)
                 }
             }
             override fun afterTextChanged(s: Editable) { }

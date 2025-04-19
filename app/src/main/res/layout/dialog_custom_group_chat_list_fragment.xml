@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@id/cl_header"
         app:shapeAppearance="@style/Rounded">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.stunting.MyNamaGroupEditText
             android:id="@+id/tiet_nama_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@id/til_name_group"
         app:shapeAppearance="@style/Rounded">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.stunting.MyDeskripsiGroupEditText
             android:id="@+id/tiet_deskripsi_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

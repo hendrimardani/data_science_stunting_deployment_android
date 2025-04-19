@@ -11,6 +11,7 @@ import com.example.stunting.R
 import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.databinding.ItemReceiverAdapterBinding
 import com.example.stunting.databinding.ItemSenderAdapterBinding
+import com.example.stunting.functions_helper.Functions.formatToHourMinute
 
 class GroupChatAdapter(private val currentUserId: Int) :
     ListAdapter<MessagesRelation, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
@@ -27,8 +28,11 @@ class GroupChatAdapter(private val currentUserId: Int) :
             RecyclerView.ViewHolder(binding.root) {
                 fun bind(item: MessagesRelation) {
                     val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
+                    val date = item.messagesEntity.createdAt.toString()
+
                     binding.ivProfile.setImageDrawable(drawable)
-                    binding.tvSender.text = item.messagesEntity.isi_pesan.toString()
+                    binding.tvIsiPesan.text = item.messagesEntity.isi_pesan.toString()
+                    binding.tvPukul.text = formatToHourMinute(date)
                 }
             }
 
@@ -36,8 +40,12 @@ class GroupChatAdapter(private val currentUserId: Int) :
             RecyclerView.ViewHolder(binding.root) {
                 fun bind(item: MessagesRelation) {
                     val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
+                    val date = item.messagesEntity.createdAt.toString()
+
                     binding.ivProfile.setImageDrawable(drawable)
-                    binding.tvReceiver.text = item.messagesEntity.isi_pesan.toString()
+                    binding.tvNama.text = item.userProfileEntity.nama.toString()
+                    binding.tvIsiPesan.text = item.messagesEntity.isi_pesan.toString()
+                    binding.tvPukul.text = formatToHourMinute(date)
                 }
             }
 

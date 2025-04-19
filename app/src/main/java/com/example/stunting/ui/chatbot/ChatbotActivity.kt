@@ -182,9 +182,7 @@ class ChatbotActivity : AppCompatActivity() {
             countItem = messageList.size
             binding.rvMessages.layoutManager = LinearLayoutManager(this)
             binding.rvMessages.adapter = chatbotAdapter
-            // To scrolling automatic when data entered
             binding.rvMessages.smoothScrollToPosition(countItem - 1)
-            // When input data automatically to last index
             binding.rvMessages
                 .layoutManager!!.smoothScrollToPosition(binding
                     .rvMessages, null, countItem - 1)

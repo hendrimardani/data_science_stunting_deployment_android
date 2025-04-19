@@ -8,6 +8,9 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingUserGroupResponse
+import com.example.stunting.database.with_api.response.LoginResponse
+import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
@@ -26,8 +29,9 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUserGroup() = chattingRepository.getUserGroup()
 
-    fun addUserGroup(userProfileById: Int, namaGroup: String, deskripsi: String) = liveData {
-        emitSource(chattingRepository.addUserGroup(userProfileById, namaGroup, deskripsi))
+    fun addUserGroup(userProfileById: Int, namaGroup: String, deskripsi: String): LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.addUserGroup(userProfileById, namaGroup, deskripsi))
     }
 
     fun deleteUserById(id: Int) = liveData {
@@ -62,12 +66,13 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUsers() = chattingRepository.getUsers()
 
-    fun login(email: String, password: String) = liveData {
-        emitSource(chattingRepository.login(email, password))
+    fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.login(email, password))
     }
 
-    fun register(nama: String, email: String, password: String, repeatPassword: String) = liveData {
-        emitSource(chattingRepository.register(nama, email, password, repeatPassword))
+    fun register(nama: String, email: String, password: String, repeatPassword: String): LiveData<ResultState<RegisterResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.register(nama, email, password, repeatPassword))
     }
-
 }
