@@ -13,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -147,6 +148,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             sweetAlertDialog.setCancelText(getString(R.string.text_cancel))
             sweetAlertDialog.setConfirmText(getString(R.string.text_yes))
             sweetAlertDialog.setConfirmClickListener {
+                Toast.makeText(this, "Berhasil keluar akun", Toast.LENGTH_LONG).show()
                 viewModel.logout()
                 val intent = Intent(this@NavDrawerMainActivity , MainActivity::class.java)
                 intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")

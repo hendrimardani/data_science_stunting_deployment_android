@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.DetailGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detail_group_chat.DetailGroupChatActivity"
             android:exported="false" />
         <activity

@@ -74,7 +74,7 @@
             android:id="@+id/frame_layout_btn_send"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:padding="@dimen/dimen_8"
+            android:paddingStart="20dp"
             android:background="@drawable/shape_circle_disabled"
             android:layout_marginStart="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_8"
@@ -85,8 +85,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_send"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/ic_send_34"
                 android:enabled="false" />
         </FrameLayout>

@@ -3,16 +3,16 @@ package com.example.stunting.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.databinding.ItemCegahStuntingBinding
+import com.example.stunting.databinding.ItemCegahStuntingAdapterBinding
 import com.example.stunting.resouce_data.CegahStuntingData
 
 class ListCegahStuntingAdapter(val items: ArrayList<CegahStuntingData>) :
     RecyclerView.Adapter<ListCegahStuntingAdapter.ListViewHolder>() {
 
-    class ListViewHolder(val binding: ItemCegahStuntingBinding) : RecyclerView.ViewHolder(binding.root)
+    class ListViewHolder(val binding: ItemCegahStuntingAdapterBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = ItemCegahStuntingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemCegahStuntingAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(binding)
     }
 

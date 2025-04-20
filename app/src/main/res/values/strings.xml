@@ -205,4 +205,5 @@
     <string name="text_deskripsi_group_chat">deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi </string>
     <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
     <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
+    <string name="hint_text_cari">Cari anggota...</string>
 </resources>

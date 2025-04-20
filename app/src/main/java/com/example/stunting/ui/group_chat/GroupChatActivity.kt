@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -23,10 +24,12 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.GroupChatAdapter
 import com.example.stunting.databinding.ActivityGroupChatBinding
+import com.example.stunting.ui.DetailGroupActivity
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.ui.bumil.BumilActivity
 import kotlin.math.max
 
 class GroupChatActivity : AppCompatActivity() {
@@ -57,22 +60,38 @@ class GroupChatActivity : AppCompatActivity() {
         textWatcher()
 
         binding.rvMessages.apply {
-            layoutManager = LinearLayoutManager(this@GroupChatActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(
+                this@GroupChatActivity, LinearLayoutManager.VERTICAL, false
+            )
             setHasFixedSize(true)
             adapter = groupChatAdapter
         }
 
+        binding.toolbar.setOnClickListener {
+            val intent = Intent(this, DetailGroupActivity::class.java)
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+        }
+
         binding.btnSend.setOnClickListener {
             val isiPesan = binding.tietMessage.text.toString().trim()
+
+            val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            progressBar.setTitleText(getString(R.string.title_loading))
+            progressBar.setContentText(getString(R.string.description_loading))
+                .progressHelper.barColor = Color.parseColor("#73D1FA")
+            progressBar.setCancelable(false)
+
             viewModel.addMessage(userId!!, groupId!!, isiPesan).observe(this@GroupChatActivity) { result ->
                 if (result != null) {
                     when (result) {
 
-                        is ResultState.Loading -> {  }
+                        is ResultState.Loading -> { progressBar.show() }
                         is ResultState.Error ->{
-//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
+                            progressBar.dismiss()
+//                            Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
                         }
                         is ResultState.Success -> {
+                            progressBar.dismiss()
 //                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
                             getMessages()
                             getMessageByGroupId(groupId!!, groupChatAdapter)
@@ -123,12 +142,6 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
 //            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
             groupChatAdapter.submitList(result)
@@ -139,19 +152,6 @@ class GroupChatActivity : AppCompatActivity() {
                 )
             }
             binding.tietMessage.text?.clear()
-        }
-    }
-
-    private fun setToolBar(nama: String) {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar!!.title = nama
-        binding.toolbar.setTitleTextAppearance(this, R.style.Theme_Stunting)
-        supportActionBar!!.setIcon(R.drawable.ic_group_50)
-        if (supportActionBar != null) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
         }
     }
 
@@ -181,6 +181,19 @@ class GroupChatActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         }
         binding.tietMessage.addTextChangedListener(textWatcher)
+    }
+
+    private fun setToolBar(nama: String) {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.title = nama
+        binding.toolbar.setTitleTextAppearance(this, R.style.Theme_Stunting)
+        supportActionBar!!.setIcon(R.drawable.ic_group_50)
+        if (supportActionBar != null) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun setCoordinatorFitsSystemWindows() {
