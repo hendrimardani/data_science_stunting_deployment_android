@@ -11,9 +11,14 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -29,6 +34,7 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
 import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
+import com.example.stunting.databinding.DialogBottomSheetNavDrawerMainActivityBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
@@ -36,6 +42,8 @@ import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACT
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
+import com.example.stunting.utils.Functions.getImageUri
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class NavDrawerMainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -44,6 +52,54 @@ class NavDrawerMainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var userId: Int? = null
+    private var isEditProfile: Boolean = false
+    private var _bindingNavDrawerMainActivityBottomSheetDialog: DialogBottomSheetNavDrawerMainActivityBinding? = null
+    private val bindingNavDrawerMainActivityBottomSheetDialog get() = _bindingNavDrawerMainActivityBottomSheetDialog!!
+
+    private var currentImageProfileUri: Uri? = null
+    private var currentImageBannerUri: Uri? = null
+
+    private val launcherIntentCameraProfile = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        if (isSuccess) {
+            showImageProfile()
+        } else {
+            currentImageProfileUri = null
+        }
+    }
+
+    private val launcherIntentCameraBanner = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        if (isSuccess) {
+            showImageBanner()
+        } else {
+            currentImageBannerUri = null
+        }
+    }
+
+    private val launcherGalleryProfile = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            currentImageProfileUri = uri
+            showImageProfile()
+        } else {
+            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private val launcherGalleryBanner = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            currentImageBannerUri = uri
+            showImageBanner()
+        } else {
+            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +120,9 @@ class NavDrawerMainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Binding BumilBottomSheetDialog for retrieve xml id
+        _bindingNavDrawerMainActivityBottomSheetDialog = DialogBottomSheetNavDrawerMainActivityBinding.inflate(layoutInflater)
+
         // Ubah warna teks logout
         val menu = navView.menu
         val logoutItem = menu.findItem(R.id.nav_logout)
@@ -76,12 +135,87 @@ class NavDrawerMainActivity : AppCompatActivity() {
         getMenuNavigationView()
     }
 
+    private fun startGalleryBanner() {
+        launcherGalleryBanner.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    private fun startGalleryProfile() {
+        launcherGalleryProfile.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    private fun startCameraBanner() {
+        currentImageBannerUri = getImageUri(this)
+        launcherIntentCameraBanner.launch(currentImageBannerUri)
+    }
+
+    private fun startCameraProfile() {
+        currentImageProfileUri = getImageUri(this)
+        launcherIntentCameraProfile.launch(currentImageProfileUri)
+    }
+
+    private fun showBottomSheetDialog() {
+        // Check if the view already has a parent
+        val viewBottomSheetDialog: View = bindingNavDrawerMainActivityBottomSheetDialog.root
+
+        if (viewBottomSheetDialog.parent != null) {
+            val parentViewGroup = viewBottomSheetDialog.parent as ViewGroup
+            parentViewGroup.removeView(viewBottomSheetDialog)
+        }
+        // Now set the view as content for the BottomSheetDialog
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(viewBottomSheetDialog)
+        bottomSheetDialog.show()
+
+        bindingNavDrawerMainActivityBottomSheetDialog.apply {
+            llAmbilGambar.setOnClickListener {
+                if (isEditProfile) {
+                    startCameraProfile()
+                    bottomSheetDialog.dismiss()
+                } else {
+                    startCameraBanner()
+                    bottomSheetDialog.dismiss()
+                }
+            }
+            llAmbilDariGallery.setOnClickListener {
+                if (isEditProfile) {
+                    startGalleryProfile()
+                    bottomSheetDialog.dismiss()
+                } else {
+                    startGalleryBanner()
+                    bottomSheetDialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun showImageBanner() {
+        currentImageBannerUri?.let { uri ->
+            val headerView = binding.navView.getHeaderView(0)
+            val editBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
+            Toast.makeText(this, "Berhasil diubah", Toast.LENGTH_LONG).show()
+            editBanner.setImageURI(uri)
+        }
+    }
+
+    private fun showImageProfile() {
+        currentImageProfileUri?.let { uri ->
+            val headerView = binding.navView.getHeaderView(0)
+            val editProfile = headerView.findViewById<ImageView>(R.id.civ_edit_profile)
+            Toast.makeText(this, "Berhasil diubah", Toast.LENGTH_LONG).show()
+            editProfile.setImageURI(uri)
+        }
+    }
+
     private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
         if (getExtraFragment == "LoginFragment") {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
-            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
+//            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserWithUserProfileById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
@@ -163,12 +297,23 @@ class NavDrawerMainActivity : AppCompatActivity() {
     private fun getHeaderView(userWithUserProfile: UserWithUserProfile?) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
-        val imageNavView = headerView.findViewById<ImageView>(R.id.iv_nav_view)
-        val nameNavView = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
-        val emailNavView = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
+        val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)
+        val ivBanner = headerView.findViewById<ImageView>(R.id.iv_banner)
+        val name = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
+        val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
 
-        nameNavView.text = userWithUserProfile?.profile?.nama.toString().trim()
-        emailNavView.text = userWithUserProfile?.users?.email.toString().trim()
+        flProfile.setOnClickListener {
+            isEditProfile = true
+            showBottomSheetDialog()
+        }
+
+        ivBanner.setOnClickListener {
+            isEditProfile = false
+            showBottomSheetDialog()
+        }
+
+        name.text = userWithUserProfile?.profile?.nama.toString().trim()
+        email.text = userWithUserProfile?.users?.email.toString().trim()
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -29,8 +29,8 @@ import com.example.stunting.database.with_api.entities.message_chatbot.MessageCh
 import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotsEntity
 import com.example.stunting.databinding.ActivityChatbotBinding
 import com.example.stunting.databinding.DialogInfoChatbotBinding
-import com.example.stunting.functions_helper.Functions.getDateTimePrimaryKey
-import com.example.stunting.functions_helper.Functions.toastInfo
+import com.example.stunting.utils.Functions.getDateTimePrimaryKey
+import com.example.stunting.utils.Functions.toastInfo
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.QuotaExceededException
 import com.google.ai.client.generativeai.type.UnknownException

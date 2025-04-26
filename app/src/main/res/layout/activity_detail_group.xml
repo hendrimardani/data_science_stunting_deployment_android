@@ -16,14 +16,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_banner"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            tools:src="@tools:sample/avatars"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                tools:src="@tools:sample/avatars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -79,12 +84,13 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_3"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:elevation="5dp"
         android:layout_marginTop="@dimen/dimen_16"
         app:cardCornerRadius="@dimen/dimen_16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,19 +111,21 @@
                 android:id="@+id/searchBar"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_margin="@dimen/dimen_12"
+                android:layout_margin="@dimen/dimen_8"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
                 app:navigationIcon="@drawable/ic_search_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.search.SearchView
                 android:id="@+id/searchView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/white"
                 android:hint="@string/hint_text_cari"
+                android:foregroundGravity="center"
                 app:layout_anchor="@id/searchBar"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +134,7 @@
                 android:id="@+id/rv_anggota"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:paddingHorizontal="@dimen/dimen_12"
+                android:layout_marginTop="@dimen/dimen_8"
                 tools:listitem="@layout/item_anggota_adapter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

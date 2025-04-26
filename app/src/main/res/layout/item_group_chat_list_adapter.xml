@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/dimen_16"
     xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="@dimen/dimen_16"
     android:elevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,9 +14,9 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_profile_group_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_group_50"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            tools:src="@tools:sample/avatars"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

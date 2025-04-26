@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.R
 import com.example.stunting.database.with_api.entities.message_chatbot.MessageChatbotsEntity
-import com.example.stunting.functions_helper.Functions.parseTextWithStylesAndRemoveSymbols
+import com.example.stunting.utils.Functions.parseTextWithStylesAndRemoveSymbols
 
 class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

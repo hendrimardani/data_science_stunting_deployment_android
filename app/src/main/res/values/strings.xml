@@ -183,8 +183,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_name">Nama</string>
+    <string name="nav_header_email">email@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -206,4 +206,7 @@
     <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
     <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
     <string name="hint_text_cari">Cari anggota...</string>
+    <string name="text_ambil_kamera">Ambil kamera</string>
+    <string name="text_ambil_dari_berkas">Ambil dari berkas</string>
+    <string name="text_tentang_saya">Tentang Saya</string>
 </resources>

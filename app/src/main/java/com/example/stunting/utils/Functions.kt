@@ -1,13 +1,18 @@
-package com.example.stunting.functions_helper
+package com.example.stunting.utils
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -16,11 +21,14 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
+import com.example.stunting.BuildConfig
 import com.example.stunting.R
 import com.example.stunting.databinding.DialogCustomeInfoBinding
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -29,6 +37,37 @@ import java.util.Locale
 object Functions {
     private lateinit var cal: Calendar
     private lateinit var dataSetListenerTgllahir: DatePickerDialog.OnDateSetListener
+
+    private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
+    private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
+    private const val MAXIMAL_SIZE = 1000000
+
+    fun getImageUri(context: Context): Uri {
+        var uri: Uri? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/MyCamera/")
+            }
+            uri = context.contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
+        }
+        return uri ?: getImageUriForPreQ(context)
+    }
+
+    private fun getImageUriForPreQ(context: Context): Uri {
+        val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val imageFile = File(filesDir, "/MyCamera/$timeStamp.jpg")
+        if (imageFile.parentFile?.exists() == false) imageFile.parentFile?.mkdir()
+        return FileProvider.getUriForFile(
+            context,
+            "${BuildConfig.APPLICATION_ID}.fileprovider",
+            imageFile
+        )
+    }
 
     fun formatToHourMinute(dateString: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())

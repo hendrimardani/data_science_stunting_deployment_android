@@ -74,7 +74,7 @@
             android:id="@+id/frame_layout_btn_send"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:paddingStart="20dp"
+            android:paddingStart="@dimen/dimen_16"
             android:background="@drawable/shape_circle_disabled"
             android:layout_marginStart="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_8"
