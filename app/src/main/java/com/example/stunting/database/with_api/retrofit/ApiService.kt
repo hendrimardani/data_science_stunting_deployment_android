@@ -13,14 +13,18 @@ import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
-import com.example.stunting.database.with_api.response.UpdateUserProfileResponse
+import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
@@ -37,9 +41,9 @@ interface ApiService {
     @GET("user_profiles/groups")
     fun getAllUserGroup(): Call<GetAllUserGroupResponse>
 
-    @POST("user_profile/{user_profile_id}/group")
+    @POST("user_profile/{user_id}/group")
     suspend fun addUserGroup(
-        @Path("user_profile_id") userProfileId: Int,
+        @Path("user_id") userId: Int,
         @Body addingUserGroupRequestJSON: AddingUserGroupRequestJSON
     ): Response<AddingUserGroupResponse>
 
@@ -48,11 +52,13 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<DeleteUserByIdResponse>
 
-    @PUT("user_profiles/{user_profile_id}")
+    @Multipart
+    @PUT("user_profile/{user_id}")
     suspend fun updateUserProfileById(
-        @Path("user_profile_id") userProfileId: Int,
-        @Body updateUserProfileRequestJSON: UpdateUserProfileByIdRequestJSON
-    ): Response<UpdateUserProfileResponse>
+        @Path("user_id") userId: Int,
+        @Part("dataJsonString") dataJsonString: RequestBody,
+        @Part gambarProfile: MultipartBody.Part
+    ): Response<UpdateUserProfileByIdResponse>
 
     @GET("users")
     fun getAllUsers(): Call<GetAllUsersResponse>

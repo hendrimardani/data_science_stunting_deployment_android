@@ -20,7 +20,7 @@ data class Data(
 	val nik: Any? = null,
 
 	@field:SerializedName("umur")
-	val umur: Any? = null,
+	val umur: String? = null,
 
 	@field:SerializedName("nama")
 	val nama: String? = null,

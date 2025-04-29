@@ -1,5 +1,6 @@
 package com.example.stunting.datastore.chatting
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
@@ -20,19 +21,26 @@ import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
-import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.utils.AppExecutors
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.File
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -205,6 +213,7 @@ class ChattingRepository(
                                         jenisKelamin = userProfile.jenisKelamin,
                                         tglLahir = userProfile.tglLahir,
                                         umur = userProfile.umur,
+                                        alamat = userProfile.alamat,
                                         createdAt = userProfile.createdAt,
                                         updatedAt = userProfile.updatedAt
                                     )
@@ -253,10 +262,10 @@ class ChattingRepository(
         return resultListUserGroup
     }
 
-    suspend fun addUserGroup(userProfileId: Int, namaGroup: String, deskripsi: String): ResultState<AddingUserGroupResponse?> {
+    suspend fun addUserGroup(userId: Int, namaGroup: String, deskripsi: String): ResultState<AddingUserGroupResponse?> {
         return try {
             val requestBody = AddingUserGroupRequestJSON(namaGroup, deskripsi)
-            val response = apiService.addUserGroup(userProfileId, requestBody)
+            val response = apiService.addUserGroup(userId, requestBody)
 
             if (response.isSuccessful) {
                 ResultState.Success(response.body())
@@ -301,27 +310,59 @@ class ChattingRepository(
     }
 
     suspend fun updateUserProfileById(
-        userProfileId: Int, nama: String, nik: String, umur: Int, jenisKelamin: String, tglLahir: String
-    ) = liveData {
-        emit(ResultState.Loading)
-        try {
-            val requestBody = UpdateUserProfileByIdRequestJSON(nama, nik, umur, jenisKelamin, tglLahir)
-            val response = apiService.updateUserProfileById(userProfileId, requestBody)
+        userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
+        tglLahir: String?, gambarProfile: File?
+    ): ResultState<UpdateUserProfileByIdResponse?> {
+        return try {
+            val requestBodyJson = UpdateUserProfileByIdRequestJSON(nama, nik, umur, alamat, jenisKelamin, tglLahir)
+
+            // Convert dataJson menjadi JSON String
+            val gson = GsonBuilder()
+                .serializeNulls() // Boleh null
+                .create()
+            val jsonData = gson.toJson(requestBodyJson)
+            Log.d(TAG, requestBodyJson.toString())
+            Log.d(TAG, jsonData.toString())
+
+            // Convert JSON string to RequestBody
+            val dataRequestBody = jsonData.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            // Multipart upload gambar
+            val requestImageProfileFile = gambarProfile?.asRequestBody("image/*".toMediaTypeOrNull())
+            val multipartBodyImageProfile = MultipartBody.Part.createFormData(
+                "gambar_profile",
+                gambarProfile?.name,
+                requestImageProfileFile!!
+            )
+//            val requestImageBannerFile = gambarBanner?.asRequestBody("image/*".toMediaTypeOrNull())
+//            val multipartBodyImageBanner = MultipartBody.Part.createFormData(
+//                "gambar_banner",
+//                gambarBanner?.name,
+//                requestImageBannerFile!!
+//            )
+
+            val response = apiService.updateUserProfileById(
+                userId, dataRequestBody, multipartBodyImageProfile
+            )
 
             if (response.isSuccessful) {
-                emit(ResultState.Success(response.body()))
+                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
+                ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    emit(ResultState.Error("Error ${response.code()}: $errorBody"))
-//                Log.e(TAG, "onChattingRepository updateUserProfileById Error ${response.code()}: $errorBody")
+                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBody")
+                    ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            emit(ResultState.Error(e.message.toString()))
-//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
         }
     }
 
@@ -333,8 +374,8 @@ class ChattingRepository(
         }
     }
 
-    fun getUserWithUserProfileById(userId: Int): LiveData<UserWithUserProfile>{
-        return chattingDatabase.userProfileDao().getUserWithUserProfileById(userId)
+    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation>{
+        return chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
     }
     
     // Menggunakan entitas pusat relasi
@@ -378,6 +419,7 @@ class ChattingRepository(
                                         jenisKelamin = item.jenisKelamin,
                                         tglLahir = item.tglLahir,
                                         umur = item.umur,
+                                        alamat = item.alamat,
                                         createdAt = item.createdAt,
                                         updatedAt = item.updatedAt,
                                     )

@@ -32,7 +32,7 @@ import androidx.core.app.ActivityOptionsCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.entities.user_profile.UserWithUserProfile
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
 import com.example.stunting.databinding.DialogBottomSheetNavDrawerMainActivityBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
@@ -43,6 +43,8 @@ import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
 import com.example.stunting.utils.Functions.getImageUri
+import com.example.stunting.utils.Functions.reduceFileImage
+import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class NavDrawerMainActivity : AppCompatActivity() {
@@ -135,6 +137,50 @@ class NavDrawerMainActivity : AppCompatActivity() {
         getMenuNavigationView()
     }
 
+    private fun updateUserProfileById(userId: Int, editProfile: ImageView, userProfileWithUserRelation: UserProfileWithUserRelation) {
+        currentImageProfileUri?.let { uri ->
+            val nama = userProfileWithUserRelation.profile?.nama
+            val nik = userProfileWithUserRelation.profile?.nik
+            val umur = userProfileWithUserRelation.profile?.umur
+            val alamat = userProfileWithUserRelation.profile?.alamat
+            val jenisKelamin = userProfileWithUserRelation.profile?.jenisKelamin
+            val tglLahir = userProfileWithUserRelation.profile?.tglLahir
+            val imageProfileFile = uriToFile(uri, this).reduceFileImage()
+            Log.d(TAG,"updateUserProfileById() : ${imageProfileFile.absoluteFile}")
+
+            val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
+            progressBar.setTitleText(getString(R.string.title_loading))
+            progressBar.setContentText(getString(R.string.description_loading))
+                .progressHelper.barColor = Color.parseColor("#73D1FA")
+            progressBar.setCancelable(false)
+
+            viewModel.updateUserProfileById(
+                userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, imageProfileFile
+            ).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is ResultState.Loading -> progressBar.show()
+                        is ResultState.Error -> {
+                            progressBar.dismiss()
+                            Toast.makeText(this@NavDrawerMainActivity, "Gagal diubah", Toast.LENGTH_LONG).show()
+                        }
+                        is ResultState.Success -> {
+                            progressBar.dismiss()
+                            editProfile.setImageURI(uri)
+                            Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+                        }
+                        is ResultState.Unauthorized -> {
+                            viewModel.logout()
+                            val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
+                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun startGalleryBanner() {
         launcherGalleryBanner.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -196,7 +242,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
         currentImageBannerUri?.let { uri ->
             val headerView = binding.navView.getHeaderView(0)
             val editBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
-            Toast.makeText(this, "Berhasil diubah", Toast.LENGTH_LONG).show()
             editBanner.setImageURI(uri)
         }
     }
@@ -205,8 +250,10 @@ class NavDrawerMainActivity : AppCompatActivity() {
         currentImageProfileUri?.let { uri ->
             val headerView = binding.navView.getHeaderView(0)
             val editProfile = headerView.findViewById<ImageView>(R.id.civ_edit_profile)
-            Toast.makeText(this, "Berhasil diubah", Toast.LENGTH_LONG).show()
-            editProfile.setImageURI(uri)
+
+            viewModel.getUserProfileWithUserById(userId!!).observe(this) { userProfileWithUserRelation ->
+                updateUserProfileById(userId!!, editProfile, userProfileWithUserRelation)
+            }
         }
     }
 
@@ -217,13 +264,13 @@ class NavDrawerMainActivity : AppCompatActivity() {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
-            getUserWithUserProfileById(userId!!)
+            getUserProfileWithUserById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
             sendDataToNavHomeFragment(userId)
-            getUserWithUserProfileById(userId!!)
+            getUserProfileWithUserById(userId!!)
         }
     }
 
@@ -235,10 +282,12 @@ class NavDrawerMainActivity : AppCompatActivity() {
         navController.navigate(R.id.nav_home, bundle)
     }
 
-    private fun getUserWithUserProfileById(userId: Int) {
-        viewModel.getUserWithUserProfileById(userId).observe(this) { userWithUserProfile ->
-//            Log.d(TAG, "onNavDrawerMainActivity from OpeningFragment getUserWithUserProfileById : ${userWithUserProfile}")
-            if (userWithUserProfile != null) getHeaderView(userWithUserProfile)
+    private fun getUserProfileWithUserById(userId: Int) {
+        viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
+//            Log.d(TAG, "onNavDrawerMainActivity from OpeningFragment getUserProfileWithUserById : ${userWithUserProfile}")
+            if (userProfileWithUserRelation != null) {
+                getHeaderView(userProfileWithUserRelation)
+            }
         }
     }
 
@@ -294,7 +343,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHeaderView(userWithUserProfile: UserWithUserProfile?) {
+    private fun getHeaderView(userWithUserProfile: UserProfileWithUserRelation?) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
         val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)

@@ -40,7 +40,7 @@ data class DataUsersItem(
 	val nik: String? = null,
 
 	@field:SerializedName("umur")
-	val umur: Int? = null,
+	val umur: String? = null,
 
 	@field:SerializedName("nama")
 	val nama: String? = null,
@@ -59,6 +59,9 @@ data class DataUsersItem(
 
 	@field:SerializedName("jenis_kelamin")
 	val jenisKelamin: String? = null,
+
+	@field:SerializedName("alamat")
+	val alamat: String? = null,
 
 	@field:SerializedName("tgl_lahir")
 	val tglLahir: String? = null,

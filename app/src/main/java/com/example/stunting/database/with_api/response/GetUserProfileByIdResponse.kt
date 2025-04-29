@@ -21,7 +21,7 @@ data class DataUserProfileById(
 	val nik: String? = null,
 
 	@field:SerializedName("umur")
-	val umur: Int? = null,
+	val umur: String? = null,
 
 	@field:SerializedName("nama")
 	val nama: String? = null,

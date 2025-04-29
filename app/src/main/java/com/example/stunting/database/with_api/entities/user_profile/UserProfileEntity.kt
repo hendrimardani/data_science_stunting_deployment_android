@@ -27,13 +27,14 @@ data class UserProfileEntity(
     @ColumnInfo(name = "nik") val nik: String? = null,
     @ColumnInfo(name = "jenis_kelamin") val jenisKelamin: String? = null,
     @ColumnInfo(name = "tgl_lahir") val tglLahir: String? = null,
-    @ColumnInfo(name = "umur") val umur: Int? = null,
+    @ColumnInfo(name = "umur") val umur: String? = null,
+    @ColumnInfo(name = "alamat") val alamat: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
 
 // One to one
-data class UserWithUserProfile(
+data class UserProfileWithUserRelation(
     @Embedded val users: UsersEntity,
 
     @Relation(
