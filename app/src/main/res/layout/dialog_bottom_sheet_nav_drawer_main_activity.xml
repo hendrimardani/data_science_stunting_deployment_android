@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/dimen_8"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -11,53 +10,80 @@
         android:layout_height="wrap_content"
         android:src="@drawable/shape_bottom_sheet"
         android:layout_marginTop="10dp"
+        android:elevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_ambil_gambar"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_camera"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/iv_rectangle"
+        android:layout_height="50dp"
+        app:cardCornerRadius="@dimen/dimen_16"
+        android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_camera_alt_24" />
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_ambil_kamera"
-            android:textSize="20sp"
-            android:layout_marginStart="@dimen/dimen_8"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen_8">
 
-    <LinearLayout
-        android:id="@+id/ll_ambil_dari_gallery"
+            <ImageView
+                android:id="@+id/iv_camera"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_camera_alt_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_ambil_kamera"
+                android:textSize="20sp"
+                android:layout_marginStart="@dimen/dimen_8"
+                app:layout_constraintStart_toEndOf="@id/iv_camera"
+                app:layout_constraintTop_toTopOf="@id/iv_camera"
+                app:layout_constraintBottom_toBottomOf="@id/iv_camera" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_gallery"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/ll_ambil_gambar"
+        android:layout_height="50dp"
+        app:cardCornerRadius="@dimen/dimen_16"
+        android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_camera">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_collections_24" />
-
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_ambil_dari_berkas"
-            android:textSize="20sp"
-            android:layout_marginStart="@dimen/dimen_8"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen_8">
+
+            <ImageView
+                android:id="@+id/iv_gallery"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_collections_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_ambil_dari_berkas"
+                android:textSize="20sp"
+                android:layout_marginStart="@dimen/dimen_8"
+                app:layout_constraintStart_toEndOf="@id/iv_gallery"
+                app:layout_constraintTop_toTopOf="@id/iv_gallery"
+                app:layout_constraintBottom_toBottomOf="@id/iv_gallery" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

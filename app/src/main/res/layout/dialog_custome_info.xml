@@ -7,30 +7,19 @@
     android:layout_height="match_parent"
     android:padding="@dimen/dimen_16">
 
-    <ImageView
-        android:id="@+id/iv_alert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_info_36"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.377"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
-
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:text="@string/info"
         android:textSize="30dp"
-
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_alert"
-        app:layout_constraintStart_toEndOf="@id/iv_alert"
-        app:layout_constraintTop_toTopOf="@id/iv_alert" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.125" />
 
     <TextView
         android:id="@+id/tv_description"
@@ -41,7 +30,7 @@
         android:textSize="20sp"
         tools:text="Deskripsi"
         android:justificationMode="inter_word"
-        app:layout_constraintTop_toBottomOf="@+id/iv_alert"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

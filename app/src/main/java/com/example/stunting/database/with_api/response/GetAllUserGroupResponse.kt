@@ -58,7 +58,13 @@ data class Groups(
 	val id: Int? = null,
 
 	@field:SerializedName("deskripsi")
-	val deskripsi: String? = null
+	val deskripsi: String? = null,
+
+	@field:SerializedName("gambar_profile")
+	val gambarProfile: String? = null,
+
+	@field:SerializedName("gambar_banner")
+	val gambarBanner: String? = null
 ) : Parcelable
 
 @Parcelize
@@ -92,5 +98,11 @@ data class UserProfile(
 	val tglLahir: String? = null,
 
 	@field:SerializedName("alamat")
-	val alamat: String? = null
+	val alamat: String? = null,
+
+	@field:SerializedName("gambar_profile")
+	val gambarProfile: String? = null,
+
+	@field:SerializedName("gambar_banner")
+	val gambarBanner: String? = null
 ) : Parcelable

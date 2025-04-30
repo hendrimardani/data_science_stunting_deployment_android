@@ -44,12 +44,12 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun updateUserProfileById(
         userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
-        tglLahir: String?, gambarProfile: File?
+        tglLahir: String?, gambarProfile: File?, gambarBanner: File?
     ): LiveData<ResultState<UpdateUserProfileByIdResponse?>> = liveData {
         emit(ResultState.Loading)
         emit(
             chattingRepository.updateUserProfileById(
-                userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, gambarProfile
+                userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, gambarProfile, gambarBanner
             )
         )
     }

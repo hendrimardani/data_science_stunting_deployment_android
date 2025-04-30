@@ -214,6 +214,8 @@ class ChattingRepository(
                                         tglLahir = userProfile.tglLahir,
                                         umur = userProfile.umur,
                                         alamat = userProfile.alamat,
+                                        gambarProfile = userProfile.gambarProfile,
+                                        gambarBanner = userProfile.gambarBanner,
                                         createdAt = userProfile.createdAt,
                                         updatedAt = userProfile.updatedAt
                                     )
@@ -225,6 +227,8 @@ class ChattingRepository(
                                         id = group.id,
                                         namaGroup = group.namaGroup,
                                         deskripsi = group.deskripsi,
+                                        gambarProfile = group.gambarProfile,
+                                        gambarBanner = group.gambarBanner,
                                         createdAt = group.createdAt,
                                         updatedAt = group.updatedAt
                                     )
@@ -311,7 +315,7 @@ class ChattingRepository(
 
     suspend fun updateUserProfileById(
         userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
-        tglLahir: String?, gambarProfile: File?
+        tglLahir: String?, gambarProfile: File?, gambarBanner: File?
     ): ResultState<UpdateUserProfileByIdResponse?> {
         return try {
             val requestBodyJson = UpdateUserProfileByIdRequestJSON(nama, nik, umur, alamat, jenisKelamin, tglLahir)
@@ -334,15 +338,15 @@ class ChattingRepository(
                 gambarProfile?.name,
                 requestImageProfileFile!!
             )
-//            val requestImageBannerFile = gambarBanner?.asRequestBody("image/*".toMediaTypeOrNull())
-//            val multipartBodyImageBanner = MultipartBody.Part.createFormData(
-//                "gambar_banner",
-//                gambarBanner?.name,
-//                requestImageBannerFile!!
-//            )
+            val requestImageBannerFile = gambarBanner?.asRequestBody("image/*".toMediaTypeOrNull())
+            val multipartBodyImageBanner = MultipartBody.Part.createFormData(
+                "gambar_banner",
+                gambarBanner?.name,
+                requestImageBannerFile!!
+            )
 
             val response = apiService.updateUserProfileById(
-                userId, dataRequestBody, multipartBodyImageProfile
+                userId, dataRequestBody, multipartBodyImageProfile, multipartBodyImageBanner
             )
 
             if (response.isSuccessful) {
@@ -420,6 +424,8 @@ class ChattingRepository(
                                         tglLahir = item.tglLahir,
                                         umur = item.umur,
                                         alamat = item.alamat,
+                                        gambarProfile = item.gambarProfile,
+                                        gambarBanner = item.gambarBanner,
                                         createdAt = item.createdAt,
                                         updatedAt = item.updatedAt,
                                     )

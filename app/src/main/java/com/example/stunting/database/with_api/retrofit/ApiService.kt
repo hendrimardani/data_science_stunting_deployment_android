@@ -57,7 +57,8 @@ interface ApiService {
     suspend fun updateUserProfileById(
         @Path("user_id") userId: Int,
         @Part("dataJsonString") dataJsonString: RequestBody,
-        @Part gambarProfile: MultipartBody.Part
+        @Part gambarProfile: MultipartBody.Part,
+        @Part gambarBanner: MultipartBody.Part
     ): Response<UpdateUserProfileByIdResponse>
 
     @GET("users")

@@ -7,30 +7,19 @@
     android:layout_height="match_parent"
     android:padding="@dimen/dimen_16">
 
-    <ImageView
-        android:id="@+id/iv_alert"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_info_36"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107" />
-
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="@string/app_created_about"
+        android:textColor="?attr/colorText"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="?attr/colorText"
-        app:layout_constraintBottom_toBottomOf="@id/iv_alert"
-        app:layout_constraintStart_toEndOf="@id/iv_alert"
-        app:layout_constraintTop_toTopOf="@id/iv_alert"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.013" />
 
     <TextView
         android:id="@+id/tv_description"
@@ -42,7 +31,7 @@
         tools:text="Information"
         android:textColor="?attr/colorText"
         android:justificationMode="inter_word"
-        app:layout_constraintTop_toBottomOf="@+id/iv_alert"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -29,6 +29,8 @@ data class UserProfileEntity(
     @ColumnInfo(name = "tgl_lahir") val tglLahir: String? = null,
     @ColumnInfo(name = "umur") val umur: String? = null,
     @ColumnInfo(name = "alamat") val alamat: String? = null,
+    @ColumnInfo(name = "gambar_profile") val gambarProfile: String? = null,
+    @ColumnInfo(name = "gambar_banner") val gambarBanner: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
@@ -41,6 +43,6 @@ data class UserProfileWithUserRelation(
         parentColumn = "id_user",
         entityColumn = "user_id"
     )
-    val profile: UserProfileEntity?
+    val userProfile: UserProfileEntity?
 )
 

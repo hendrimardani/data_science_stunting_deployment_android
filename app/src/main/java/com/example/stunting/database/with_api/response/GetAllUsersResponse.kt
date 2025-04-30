@@ -66,6 +66,12 @@ data class DataUsersItem(
 	@field:SerializedName("tgl_lahir")
 	val tglLahir: String? = null,
 
+	@field:SerializedName("gambar_profile")
+	val gambarProfile: String? = null,
+
+	@field:SerializedName("gambar_banner")
+	val gambarBanner: String? = null,
+
 	@field:SerializedName("users")
 	val users: Users? = null
 ) : Parcelable
