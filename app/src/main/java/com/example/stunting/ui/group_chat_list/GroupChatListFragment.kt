@@ -57,7 +57,7 @@ class GroupChatListFragment : Fragment() {
 
         // Simpan ke database
         getUserGroupRelationByUserId(userId!!)
-//        getUserGroup()
+        getUserGroup()
 
         binding.rvGroupChatList.apply {
             layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -103,32 +103,32 @@ class GroupChatListFragment : Fragment() {
     }
 
 
-//    private fun getUserGroup() {
-//        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
-//        progressBar.setTitleText(getString(R.string.title_loading))
-//        progressBar.setContentText(getString(R.string.description_loading))
-//            .progressHelper.barColor = Color.parseColor("#73D1FA")
-//        progressBar.setCancelable(false)
-//
-//        viewModel.getUserGroup().observe(requireActivity()) { result ->
-//            if (result != null) {
-//                when (result) {
-//                    is ResultState.Loading -> progressBar.show()
-//                    is ResultState.Error -> progressBar.dismiss()
-//                    is ResultState.Success -> {
-//                        progressBar.dismiss()
-////                        Log.d(TAG, "onGroupChatListFragment getUserGroup : ${result.data}")
-//                    }
-//                    is ResultState.Unauthorized -> {
-//                        viewModel.logout()
-//                        val intent = Intent(requireActivity(), MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-//                        startActivity(intent)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun getUserGroup() {
+        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserGroup().observe(requireActivity()) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onGroupChatListFragment getUserGroup : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
 
     private fun getUserGroupRelationByUserId(userId: Int?) {
         viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { result ->
@@ -174,7 +174,7 @@ class GroupChatListFragment : Fragment() {
 
                             // Simpan ke database lagi
                             getUserGroupRelationByUserId(userId)
-//                            getUserGroup()
+                            getUserGroup()
 
                             view.tietNamaGroup.text?.clear()
                             view.tietDeskripsiGroup.text?.clear()

@@ -137,12 +137,21 @@ class NavDrawerMainActivity : AppCompatActivity() {
         spannable.setSpan(ForegroundColorSpan(Color.RED), 0, spannable.length, 0)
         logoutItem.title = spannable
 
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
         viewModel.deleteUsers()
         getUsers()
+
         lifecycleScope.launch {
+            progressBar.show()
             // Nunggu 8 detik supaya data getUsers() masuk ke database
             delay(8000)
-            getDataExtra()
+
+            getDataExtra(progressBar)
         }
         getMenuNavigationView()
     }
@@ -168,7 +177,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 progressBar.setCancelable(false)
 
                 viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, imageProfileFile, null
+                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, imageProfileFile, null
                 ).observe(this) { result ->
                     if (result != null) {
                         when (result) {
@@ -211,7 +220,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 progressBar.setCancelable(false)
 
                 viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, null, imageBannerFile
+                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, null, imageBannerFile
                 ).observe(this) { result ->
                     if (result != null) {
                         when (result) {
@@ -318,15 +327,17 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDataExtra() {
+    private fun getDataExtra(progressBar: SweetAlertDialog) {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
         if (getExtraFragment == "LoginFragment") {
+            progressBar.dismiss()
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserProfileWithUserById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
+            progressBar.dismiss()
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()

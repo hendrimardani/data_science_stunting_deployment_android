@@ -284,15 +284,15 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
+                    Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
                     ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }

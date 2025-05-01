@@ -20,7 +20,7 @@ import java.io.File
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
-//    fun getMessages() = chattingRepository.getMessages()
+    fun getMessages() = chattingRepository.getMessages()
 
     fun addMessage(userId: Int, groupId: Int, isiPesan: String) :
         LiveData<ResultState<AddingMessageResponse?>> = liveData {
@@ -30,7 +30,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
-//    fun getUserGroup() = chattingRepository.getUserGroup()
+    fun getUserGroup() = chattingRepository.getUserGroup()
 
     fun addUserGroup(userId: Int, namaGroup: String, deskripsi: String) :
         LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
