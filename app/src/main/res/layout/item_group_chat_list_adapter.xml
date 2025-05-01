@@ -4,6 +4,7 @@
     android:layout_height="75dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="@dimen/dimen_8"
     app:cardCornerRadius="@dimen/dimen_16"
     android:elevation="5dp">
 
@@ -16,7 +17,7 @@
             android:id="@+id/civ_profile_group_chat"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            tools:src="@tools:sample/avatars"
+            android:src="@drawable/ic_avatar_group_chat"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -28,6 +29,7 @@
             tools:text="@string/text_nama_group_chat"
             android:textSize="18sp"
             android:layout_marginEnd="@dimen/dimen_12"
+            android:layout_marginStart="@dimen/dimen_4"
             app:layout_constraintStart_toEndOf="@id/civ_profile_group_chat"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_tanggal" />
@@ -39,6 +41,7 @@
             android:layout_marginEnd="26dp"
             android:maxLines="2"
             tools:text="@string/text_deskripsi_group_chat"
+            android:layout_marginStart="@dimen/dimen_4"
             app:layout_constraintStart_toEndOf="@id/civ_profile_group_chat"
             app:layout_constraintTop_toBottomOf="@id/tv_nama_group"
             app:layout_constraintEnd_toStartOf="@id/tv_tanggal" />

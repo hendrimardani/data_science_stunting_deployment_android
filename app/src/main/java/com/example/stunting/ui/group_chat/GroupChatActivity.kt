@@ -54,7 +54,7 @@ class GroupChatActivity : AppCompatActivity() {
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
-        getMessages()
+//        getMessages()
         getMessageByGroupId(groupId!!, groupChatAdapter)
 
         textWatcher()
@@ -93,7 +93,7 @@ class GroupChatActivity : AppCompatActivity() {
                         is ResultState.Success -> {
                             progressBar.dismiss()
 //                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
-                            getMessages()
+//                            getMessages()
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
                         is ResultState.Unauthorized -> {
@@ -113,33 +113,33 @@ class GroupChatActivity : AppCompatActivity() {
         setToolBar(activityName!!)
     }
 
-    private fun getMessages() {
-        viewModel.getMessages().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> { }
-                    is ResultState.Error -> {
-//                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-//                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
-                        if (result.data.isNotEmpty()) {
-                            binding.rvMessages.scrollToPosition(result.data.size - 1)
-                            binding.rvMessages.layoutManager!!.smoothScrollToPosition(
-                                binding.rvMessages, null, result.data.size - 1
-                            )
-                        }
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
+//    private fun getMessages() {
+//        viewModel.getMessages().observe(this) { result ->
+//            if (result != null) {
+//                when (result) {
+//                    is ResultState.Loading -> { }
+//                    is ResultState.Error -> {
+////                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
+//                    }
+//                    is ResultState.Success -> {
+////                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+//                        if (result.data.isNotEmpty()) {
+//                            binding.rvMessages.scrollToPosition(result.data.size - 1)
+//                            binding.rvMessages.layoutManager!!.smoothScrollToPosition(
+//                                binding.rvMessages, null, result.data.size - 1
+//                            )
+//                        }
+//                    }
+//                    is ResultState.Unauthorized -> {
+//                        viewModel.logout()
+//                        val intent = Intent(this, MainActivity::class.java)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->

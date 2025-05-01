@@ -4,7 +4,6 @@ import com.example.stunting.database.with_api.request_json.AddingMessageRequestJ
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
-import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
@@ -56,9 +55,9 @@ interface ApiService {
     @PUT("user_profile/{user_id}")
     suspend fun updateUserProfileById(
         @Path("user_id") userId: Int,
-        @Part("dataJsonString") dataJsonString: RequestBody,
-        @Part gambarProfile: MultipartBody.Part,
-        @Part gambarBanner: MultipartBody.Part
+        @Part("dataJsonString") dataJsonString: RequestBody?,
+        @Part gambarProfile: MultipartBody.Part?,
+        @Part gambarBanner: MultipartBody.Part?
     ): Response<UpdateUserProfileByIdResponse>
 
     @GET("users")

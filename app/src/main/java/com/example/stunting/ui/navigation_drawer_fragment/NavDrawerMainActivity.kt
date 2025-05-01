@@ -29,6 +29,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.example.stunting.R
@@ -48,6 +49,8 @@ import com.example.stunting.utils.Functions.reduceFileImage
 import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NavDrawerMainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -134,16 +137,21 @@ class NavDrawerMainActivity : AppCompatActivity() {
         spannable.setSpan(ForegroundColorSpan(Color.RED), 0, spannable.length, 0)
         logoutItem.title = spannable
 
-        getDataExtra()
+        viewModel.deleteUsers()
         getUsers()
+        lifecycleScope.launch {
+            // Nunggu 8 detik supaya data getUsers() masuk ke database
+            delay(8000)
+            getDataExtra()
+        }
         getMenuNavigationView()
     }
 
     private fun updateUserProfileById(
-        userId: Int, imageView: ImageView, isEditProfile: Boolean,
+        userId: Int, imageView: ImageView, isEditGambarProfile: Boolean,
         userProfileWithUserRelation: UserProfileWithUserRelation
     ) {
-        if (isEditProfile) {
+        if (isEditGambarProfile) {
             currentImageProfileUri?.let { uri ->
                 val nama = userProfileWithUserRelation.userProfile?.nama
                 val nik = userProfileWithUserRelation.userProfile?.nik
@@ -152,7 +160,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
                 val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
                 val imageProfileFile = uriToFile(uri, this).reduceFileImage()
-                val imageBannerFile = uriToFile(uri, this).reduceFileImage()
 
                 val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
                 progressBar.setTitleText(getString(R.string.title_loading))
@@ -161,7 +168,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 progressBar.setCancelable(false)
 
                 viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, imageProfileFile, imageBannerFile
+                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, imageProfileFile, null
                 ).observe(this) { result ->
                     if (result != null) {
                         when (result) {
@@ -175,7 +182,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
                             is ResultState.Success -> {
                                 progressBar.dismiss()
                                 imageView.setImageURI(uri)
-
                                 Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
                             }
                             is ResultState.Unauthorized -> {
@@ -196,7 +202,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 val alamat = userProfileWithUserRelation.userProfile?.alamat
                 val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
                 val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
-                val imageProfileFile = uriToFile(uri, this).reduceFileImage()
                 val imageBannerFile = uriToFile(uri, this).reduceFileImage()
 
                 val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
@@ -206,7 +211,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 progressBar.setCancelable(false)
 
                 viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, imageProfileFile, imageBannerFile
+                    userId, nama, nik, umur, jenisKelamin, tglLahir, alamat, null, imageBannerFile
                 ).observe(this) { result ->
                     if (result != null) {
                         when (result) {
@@ -340,7 +345,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     private fun getUserProfileWithUserById(userId: Int) {
         viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
-//            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
+            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
             if (userProfileWithUserRelation != null) {
                 getHeaderView(userProfileWithUserRelation)
             }
@@ -418,10 +423,15 @@ class NavDrawerMainActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        val urlProfile = userProfileWithUserRelation?.userProfile?.gambarProfile.toString()
+        val urlProfile = userProfileWithUserRelation?.userProfile?.gambarProfile
         Glide.with(this)
             .load(urlProfile)
             .into(civProfile)
+        val urlBanner = userProfileWithUserRelation?.userProfile?.gambarBanner
+        Glide.with(this)
+            .load(urlBanner)
+            .into(ivBanner)
+
         name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
         email.text = userProfileWithUserRelation?.users?.email.toString()
     }

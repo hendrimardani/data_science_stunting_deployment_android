@@ -34,6 +34,7 @@ import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
@@ -51,6 +52,11 @@ class ChattingRepository(
     private val userPreference: UserPreference,
     private val appExecutors: AppExecutors
 ) {
+    var requestImageProfileFile: RequestBody? = null
+    var multipartBodyImageProfile: MultipartBody.Part? = null
+    var requestImageBannerFile: RequestBody? = null
+    var multipartBodyImageBanner: MultipartBody.Part? = null
+
     private val resultListUsers = MediatorLiveData<ResultState<List<UserProfileEntity>>>()
     private val resultListMessages = MediatorLiveData<ResultState<List<MessagesEntity>>>()
     private val resultListUserGroup = MediatorLiveData<ResultState<List<UserGroupEntity>>>()
@@ -318,6 +324,7 @@ class ChattingRepository(
         tglLahir: String?, gambarProfile: File?, gambarBanner: File?
     ): ResultState<UpdateUserProfileByIdResponse?> {
         return try {
+
             val requestBodyJson = UpdateUserProfileByIdRequestJSON(nama, nik, umur, alamat, jenisKelamin, tglLahir)
 
             // Convert dataJson menjadi JSON String
@@ -331,20 +338,23 @@ class ChattingRepository(
             // Convert JSON string to RequestBody
             val dataRequestBody = jsonData.toRequestBody("text/plain".toMediaTypeOrNull())
 
-            // Multipart upload gambar
-            val requestImageProfileFile = gambarProfile?.asRequestBody("image/*".toMediaTypeOrNull())
-            val multipartBodyImageProfile = MultipartBody.Part.createFormData(
-                "gambar_profile",
-                gambarProfile?.name,
-                requestImageProfileFile!!
-            )
-            val requestImageBannerFile = gambarBanner?.asRequestBody("image/*".toMediaTypeOrNull())
-            val multipartBodyImageBanner = MultipartBody.Part.createFormData(
-                "gambar_banner",
-                gambarBanner?.name,
-                requestImageBannerFile!!
-            )
+            if (gambarProfile != null) {
+                requestImageProfileFile = gambarProfile.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageProfile = MultipartBody.Part.createFormData(
+                    "gambar_profile",
+                    gambarProfile.name,
+                    requestImageProfileFile!!
+                )
+            }
 
+            if (gambarBanner != null) {
+                requestImageBannerFile = gambarBanner.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageBanner = MultipartBody.Part.createFormData(
+                    "gambar_banner",
+                    gambarBanner.name,
+                    requestImageBannerFile!!
+                )
+            }
             val response = apiService.updateUserProfileById(
                 userId, dataRequestBody, multipartBodyImageProfile, multipartBodyImageBanner
             )
@@ -380,6 +390,10 @@ class ChattingRepository(
 
     fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation>{
         return chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
+    }
+
+    suspend fun deleteUsers() {
+        return chattingDatabase.usersDao().deleteUsers()
     }
     
     // Menggunakan entitas pusat relasi
