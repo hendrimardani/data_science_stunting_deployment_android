@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +21,9 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.GroupChatAdapter
@@ -54,6 +58,7 @@ class GroupChatActivity : AppCompatActivity() {
 //        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
+        getUserGroupRelationByUserId(userId)
         getMessages()
         getMessageByGroupId(groupId!!, groupChatAdapter)
 
@@ -109,8 +114,16 @@ class GroupChatActivity : AppCompatActivity() {
 
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
+    }
 
-        setToolBar(activityName!!)
+    private fun getUserGroupRelationByUserId(userId: Int?) {
+        viewModel.getUserGroupRelationByUserId(userId!!).observe(this) { result ->
+            result.forEach { item ->
+                val namaGroup =  item.groupsEntity.namaGroup
+                val gambarProfile = item.groupsEntity.gambarProfile
+                setToolBar(gambarProfile, namaGroup)
+            }
+        }
     }
 
     private fun getMessages() {
@@ -183,17 +196,28 @@ class GroupChatActivity : AppCompatActivity() {
         binding.tietMessage.addTextChangedListener(textWatcher)
     }
 
-    private fun setToolBar(nama: String) {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar!!.title = nama
-        binding.toolbar.setTitleTextAppearance(this, R.style.Theme_Stunting)
-        supportActionBar!!.setIcon(R.drawable.ic_group_50)
-        if (supportActionBar != null) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
+    private fun setToolBar(gambarProfile: String?, nama: String?) {
+        Glide.with(this)
+            .asDrawable()
+            .load(gambarProfile)
+            .override(100, 100)
+            .circleCrop()
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    setSupportActionBar(binding.toolbar)
+                    supportActionBar!!.title = nama
+                    binding.toolbar.setTitleTextAppearance(this@GroupChatActivity, R.style.Theme_Stunting)
+                    binding.toolbar.setLogo(resource)
+                    if (supportActionBar != null) {
+                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    }
+                    binding.toolbar.setNavigationOnClickListener {
+                        onBackPressed()
+                    }
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) { }
+            })
     }
 
     private fun setCoordinatorFitsSystemWindows() {
