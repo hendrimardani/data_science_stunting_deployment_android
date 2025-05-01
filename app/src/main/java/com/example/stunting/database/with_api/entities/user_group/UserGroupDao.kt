@@ -27,6 +27,8 @@ interface UserGroupDao {
             g.id_group AS g_id_group,
             g.nama_group AS g_nama_group,
             g.deskripsi AS g_deskripsi,
+            g.gambar_profile AS g_gambar_profile,
+            g.gambar_banner AS g_gambar_banner,
             g.created_at AS g_created_at,
             g.updated_at AS g_updated_at,
             

@@ -151,7 +151,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
             progressBar.show()
             // Nunggu 2 detik supaya data getUsers() masuk ke database
             delay(2000)
-
             getDataExtra(progressBar)
         }
         getMenuNavigationView()

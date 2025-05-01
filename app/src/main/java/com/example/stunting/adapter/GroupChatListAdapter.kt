@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.stunting.R
 import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.databinding.ItemGroupChatListAdapterBinding
 import com.example.stunting.ui.group_chat.GroupChatActivity
@@ -20,17 +21,25 @@ import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_USER
 class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.MyViewHolder>(DIFF_CALLBACK){
 
     class MyViewHolder(private val binding: ItemGroupChatListAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(item: UserGroupRelation) {
             binding.tvNamaGroup.text = item.groupsEntity.namaGroup
             binding.tvDeskripsi.text = item.groupsEntity.deskripsi
+            val gambarProfile = item.groupsEntity.gambarProfile
             // 2025-04-05T12:41:07
             val dateTime = item.groupsEntity.createdAt
             binding.tvTanggal.text = dateTime?.substringBefore("T")
 
             binding.tvCreatedBy.text = item.userGroupEntity.createdBy
-//            Glide.with(itemView.context)
-//                .load(item.mediaCover)
-//                .into(binding.ivFinished)
+            if (gambarProfile != null) {
+                Glide.with(itemView.context)
+                    .load(gambarProfile)
+                    .into(binding.civProfile)
+            } else {
+                Glide.with(itemView.context)
+                    .load(itemView.context.getDrawable(R.drawable.ic_avatar_group_chat))
+                    .into(binding.civProfile)
+            }
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, GroupChatActivity::class.java)
                 intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userGroupEntity.user_id)

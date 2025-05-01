@@ -14,7 +14,7 @@
         android:padding="@dimen/dimen_8">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_profile_group_chat"
+            android:id="@+id/civ_profile"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/ic_avatar_group_chat"
@@ -30,7 +30,7 @@
             android:textSize="18sp"
             android:layout_marginEnd="@dimen/dimen_12"
             android:layout_marginStart="@dimen/dimen_4"
-            app:layout_constraintStart_toEndOf="@id/civ_profile_group_chat"
+            app:layout_constraintStart_toEndOf="@id/civ_profile"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_tanggal" />
 
@@ -42,7 +42,7 @@
             android:maxLines="2"
             tools:text="@string/text_deskripsi_group_chat"
             android:layout_marginStart="@dimen/dimen_4"
-            app:layout_constraintStart_toEndOf="@id/civ_profile_group_chat"
+            app:layout_constraintStart_toEndOf="@id/civ_profile"
             app:layout_constraintTop_toBottomOf="@id/tv_nama_group"
             app:layout_constraintEnd_toStartOf="@id/tv_tanggal" />
 
@@ -54,7 +54,7 @@
             android:layout_marginEnd="@dimen/dimen_4"
             android:textColor="@color/gray"
             tools:text="2025-09-12"
-            app:layout_constraintTop_toTopOf="@id/civ_profile_group_chat"
+            app:layout_constraintTop_toTopOf="@id/civ_profile"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
