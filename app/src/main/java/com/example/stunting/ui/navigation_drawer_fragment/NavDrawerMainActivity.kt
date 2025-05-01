@@ -1,5 +1,6 @@
 package com.example.stunting.ui.navigation_drawer_fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -148,8 +149,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             progressBar.show()
-            // Nunggu 8 detik supaya data getUsers() masuk ke database
-            delay(8000)
+            // Nunggu 2 detik supaya data getUsers() masuk ke database
+            delay(2000)
 
             getDataExtra(progressBar)
         }
@@ -415,6 +416,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun getHeaderView(userProfileWithUserRelation: UserProfileWithUserRelation?) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
