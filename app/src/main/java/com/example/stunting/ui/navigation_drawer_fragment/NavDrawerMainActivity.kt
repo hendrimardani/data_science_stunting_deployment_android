@@ -435,9 +435,16 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
 
         val urlProfile = userProfileWithUserRelation?.userProfile?.gambarProfile
-        Glide.with(this)
-            .load(urlProfile)
-            .into(civProfile)
+        if (urlProfile != null) {
+            Glide.with(this)
+                .load(urlProfile)
+                .into(civProfile)
+        } else {
+            Glide.with(this)
+                .load(getDrawable(R.drawable.ic_person_40))
+                .into(civProfile)
+        }
+
         val urlBanner = userProfileWithUserRelation?.userProfile?.gambarBanner
         Glide.with(this)
             .load(urlBanner)
