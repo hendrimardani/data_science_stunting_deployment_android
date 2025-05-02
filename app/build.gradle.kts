@@ -48,7 +48,7 @@ android {
 
 dependencies {
     // Ui
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.swipeRefreshLayout)
     implementation(libs.glide)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.lifecycle.livedata.ktx)
