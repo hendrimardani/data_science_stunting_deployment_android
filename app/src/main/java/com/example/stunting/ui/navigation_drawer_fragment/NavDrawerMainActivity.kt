@@ -138,21 +138,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         spannable.setSpan(ForegroundColorSpan(Color.RED), 0, spannable.length, 0)
         logoutItem.title = spannable
 
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        viewModel.deleteUsers()
         getUsers()
-
-        lifecycleScope.launch {
-            progressBar.show()
-            // Nunggu 4 detik supaya data getUsers() masuk ke database
-            delay(4000)
-            getDataExtra(progressBar)
-        }
+        getDataExtra()
         getMenuNavigationView()
     }
 
@@ -232,7 +219,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
                             is ResultState.Success -> {
                                 progressBar.dismiss()
                                 imageView.setImageURI(uri)
-
                                 Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
                             }
                             is ResultState.Unauthorized -> {
@@ -327,17 +313,15 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDataExtra(progressBar: SweetAlertDialog) {
+    private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
         if (getExtraFragment == "LoginFragment") {
-            progressBar.dismiss()
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserProfileWithUserById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
-            progressBar.dismiss()
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()

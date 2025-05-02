@@ -12,6 +12,6 @@ interface GroupsDao {
     @Query("DELETE FROM groups")
     suspend fun deleteGroups()
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertGroups(groups: List<GroupsEntity>)
 }

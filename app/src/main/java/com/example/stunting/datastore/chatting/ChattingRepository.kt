@@ -99,9 +99,15 @@ class ChattingRepository(
                                         id = userProfile.id,
                                         userId = userProfile.userId,
                                         nama = userProfile.nama,
+                                        nik = userProfile.nik,
                                         jenisKelamin = userProfile.jenisKelamin,
-                                        createdAt = dateTimeFormatted,
-                                        updatedAt = dateTimeFormatted
+                                        tglLahir = userProfile.tglLahir,
+                                        umur = userProfile.umur,
+                                        alamat = userProfile.alamat,
+                                        gambarProfile = userProfile.gambarProfile,
+                                        gambarBanner = userProfile.gambarBanner,
+                                        createdAt = userProfile.createdAt,
+                                        updatedAt = userProfile.updatedAt
                                     )
                                 )
 
@@ -110,8 +116,10 @@ class ChattingRepository(
                                         id = groups.id,
                                         namaGroup = groups.namaGroup,
                                         deskripsi = groups.deskripsi,
-                                        createdAt = dateTimeFormatted,
-                                        updatedAt = dateTimeFormatted
+                                        gambarProfile = groups.gambarProfile,
+                                        gambarBanner = groups.gambarBanner,
+                                        createdAt = groups.createdAt,
+                                        updatedAt = groups.updatedAt
                                     )
                                 )
 
@@ -196,8 +204,8 @@ class ChattingRepository(
     // Menggunakan entitas pusat relasi
     fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
         resultListUserGroup.value = ResultState.Loading
-        val response = apiService.getAllUserGroup()
 
+        val response = apiService.getAllUserGroup()
         response.enqueue(object : Callback<GetAllUserGroupResponse> {
             override fun onResponse(
                 call: Call<GetAllUserGroupResponse>,
@@ -205,7 +213,6 @@ class ChattingRepository(
             ) {
                 if (response.isSuccessful) {
                     val userGroups = response.body()?.userGroups
-//                    Log.d(TAG, "onChattingRepository getUserGroup Success : ${userGroups}")
                     val groupList = ArrayList<GroupsEntity>()
                     val userProfileList = ArrayList<UserProfileEntity>()
                     val userGroupList = ArrayList<UserGroupEntity>()
@@ -213,14 +220,13 @@ class ChattingRepository(
                     appExecutors.diskIO.execute {
                         userGroups?.forEach { item ->
                             val userProfile = item?.userProfile
-                            val group = item?.groups
+                            val groups = item?.groups
 
-                            if (group != null && userProfile != null) {
-                                // Simpan UserProfile
+                            if (groups != null && userProfile != null) {
                                 userProfileList.add(
                                     UserProfileEntity(
                                         id = userProfile.id,
-                                        userId = userProfile.userId ,
+                                        userId = userProfile.userId,
                                         nama = userProfile.nama,
                                         nik = userProfile.nik,
                                         jenisKelamin = userProfile.jenisKelamin,
@@ -233,24 +239,20 @@ class ChattingRepository(
                                         updatedAt = userProfile.updatedAt
                                     )
                                 )
-
-                                // Simpan Groups
                                 groupList.add(
                                     GroupsEntity(
-                                        id = group.id,
-                                        namaGroup = group.namaGroup,
-                                        deskripsi = group.deskripsi,
-                                        gambarProfile = group.gambarProfile,
-                                        gambarBanner = group.gambarBanner,
-                                        createdAt = group.createdAt,
-                                        updatedAt = group.updatedAt
+                                        id = groups.id,
+                                        namaGroup = groups.namaGroup,
+                                        deskripsi = groups.deskripsi,
+                                        gambarProfile = groups.gambarProfile,
+                                        gambarBanner = groups.gambarBanner,
+                                        createdAt = groups.createdAt,
+                                        updatedAt = groups.updatedAt
                                     )
                                 )
-
-                                // Simpan UserGroup
                                 userGroupList.add(
                                     UserGroupEntity(
-                                        group_id = group.id ?: 0,
+                                        group_id = groups.id ?: 0,
                                         user_id = userProfile.userId ?: 0,
                                         role = item.role,
                                         createdBy = item.createdBy,
@@ -260,24 +262,29 @@ class ChattingRepository(
                                 )
                             }
                         }
+
+                        // Simpan ke Room
                         chattingDatabase.groupsDao().insertGroups(groupList)
                         chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
                         chattingDatabase.userGroupDao().insertUserGroups(userGroupList)
+
+                        // Trigger ambil ulang data dari Room setelah simpan selesai
+                        val updatedData = chattingDatabase.userGroupDao().getUserGroup()
+                        resultListUserGroup.postValue(ResultState.Success(updatedData))
                     }
+                } else {
+                    resultListUserGroup.postValue(ResultState.Error("Gagal mengambil data"))
                 }
             }
 
             override fun onFailure(call: Call<GetAllUserGroupResponse>, t: Throwable) {
-//                Log.d(TAG, "onChattingRepository getUserGroup Failed : ${t.message}")
-                resultListUserGroup.value = ResultState.Error(t.message.toString())
+                resultListUserGroup.postValue(ResultState.Error(t.message ?: "Unknown error"))
             }
         })
-        val localData = chattingDatabase.userGroupDao().getUserGroup()
-        resultListUserGroup.addSource(localData) { userData: List<UserGroupEntity> ->
-            resultListUserGroup.value = ResultState.Success(userData)
-        }
+
         return resultListUserGroup
     }
+
 
     suspend fun addUserGroup(
         userId: List<Int>, namaGroup: String, deskripsi: String,
@@ -426,10 +433,6 @@ class ChattingRepository(
 
     fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation>{
         return chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
-    }
-
-    suspend fun deleteUsers() {
-        return chattingDatabase.usersDao().deleteUsers()
     }
     
     // Menggunakan entitas pusat relasi

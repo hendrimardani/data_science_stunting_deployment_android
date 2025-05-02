@@ -79,12 +79,6 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         return chattingRepository.getSession().asLiveData()
     }
 
-    fun deleteUsers() {
-        viewModelScope.launch {
-            chattingRepository.deleteUsers()
-        }
-    }
-
     fun getUsers() = chattingRepository.getUsers()
 
     fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {

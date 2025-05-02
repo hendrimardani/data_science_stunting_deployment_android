@@ -20,6 +20,7 @@ interface UserGroupDao {
             up.jenis_kelamin AS up_jenis_kelamin,
             up.tgl_lahir AS up_tgl_lahir,
             up.umur AS up_umur,
+            up.alamat AS up_alamat,
             up.gambar_profile AS up_gambar_profile,
             up.gambar_banner AS up_gambar_banner,
             up.created_at AS up_created_at,
@@ -59,6 +60,9 @@ interface UserGroupDao {
             up.jenis_kelamin AS up_jenis_kelamin,
             up.tgl_lahir AS up_tgl_lahir,
             up.umur AS up_umur,
+            up.alamat AS up_alamat,
+            up.gambar_profile AS up_gambar_profile,
+            up.gambar_banner AS up_gambar_banner,
             up.created_at AS up_created_at,
             up.updated_at AS up_updated_at,
     
@@ -87,8 +91,8 @@ interface UserGroupDao {
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>>
 
     @Query("SELECT * FROM user_group ORDER BY user_id ASC")
-    fun getUserGroup(): LiveData<List<UserGroupEntity>>
+    fun getUserGroup(): List<UserGroupEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUserGroups(userGroups: List<UserGroupEntity>)
 }

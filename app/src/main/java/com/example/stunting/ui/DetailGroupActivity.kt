@@ -37,54 +37,20 @@ class DetailGroupActivity : AppCompatActivity() {
         enableEdgeToEdge()
         _binding = ActivityDetailGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, 0)
 
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-//        viewModel.deleteUsers()
-//        getUsers()
         getUserGroup()
-        lifecycleScope.launch {
-            delay(4000)
-            getUserGroupRelationByGroupId(groupId)
+        getUserGroupRelationByGroupId(groupId)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            getUserGroup()
+            binding.swipeRefreshLayout.isRefreshing = false
         }
         binding.rvAnggota.apply {
             layoutManager = LinearLayoutManager(this@DetailGroupActivity, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
             adapter = detailGroupAdapter
-        }
-    }
-
-    private fun getUsers() {
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        viewModel.getUsers().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> progressBar.dismiss()
-                    is ResultState.Success -> progressBar.dismiss()
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
         }
     }
 

@@ -19,13 +19,16 @@ interface MessagesDao {
             up.jenis_kelamin AS up_jenis_kelamin,
             up.tgl_lahir AS up_tgl_lahir,
             up.umur AS up_umur,
+            up.alamat AS up_alamat,
             up.created_at AS up_created_at,
             up.updated_at AS up_updated_at,
-
+    
             -- groups
             g.id_group AS g_id_group,
             g.nama_group AS g_nama_group,
             g.deskripsi AS g_deskripsi,
+            g.gambar_profile AS g_gambar_profile,
+            g.gambar_banner AS g_gambar_banner,
             g.created_at AS g_created_at,
             g.updated_at AS g_updated_at,
 
