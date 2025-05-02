@@ -29,6 +29,7 @@ import com.example.stunting.database.with_api.GroupChatAdapter
 import com.example.stunting.databinding.ActivityGroupChatBinding
 import com.example.stunting.ui.DetailGroupActivity
 import com.example.stunting.ui.DetailGroupActivity.Companion.EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT
+import com.example.stunting.ui.DetailGroupActivity.Companion.EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
@@ -71,47 +72,51 @@ class GroupChatActivity : AppCompatActivity() {
 
         binding.toolbar.setOnClickListener {
             val intent = Intent(this, DetailGroupActivity::class.java)
+            intent.putExtra(EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT, userId)
             intent.putExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, groupId)
             startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
         }
 
         binding.btnSend.setOnClickListener {
             val isiPesan = binding.tietMessage.text.toString().trim()
-
-            val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText(getString(R.string.title_loading))
-            progressBar.setContentText(getString(R.string.description_loading))
-                .progressHelper.barColor = Color.parseColor("#73D1FA")
-            progressBar.setCancelable(false)
-
-            viewModel.addMessage(userId!!, groupId!!, isiPesan).observe(this@GroupChatActivity) { result ->
-                if (result != null) {
-                    when (result) {
-
-                        is ResultState.Loading -> { progressBar.show() }
-                        is ResultState.Error ->{
-                            progressBar.dismiss()
-//                            Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
-                        }
-                        is ResultState.Success -> {
-                            progressBar.dismiss()
-//                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
-                            getMessages()
-                            getMessageByGroupId(groupId!!, groupChatAdapter)
-                        }
-                        is ResultState.Unauthorized -> {
-                            viewModel.logout()
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                            startActivity(intent)
-                        }
-                    }
-                }
-            }
+            addMessage(userId!!, groupId!!, groupChatAdapter, isiPesan)
         }
 
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
+    }
+
+    private fun addMessage(userId: Int, groupId: Int, groupChatAdapter: GroupChatAdapter, isiPesan: String) {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.addMessage(userId, groupId, isiPesan).observe(this@GroupChatActivity) { result ->
+            if (result != null) {
+                when (result) {
+
+                    is ResultState.Loading -> { progressBar.show() }
+                    is ResultState.Error ->{
+                        progressBar.dismiss()
+//                            Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+//                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
+                        getMessageByGroupId(groupId!!, groupChatAdapter)
+                        getMessages()
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private fun getUserGroupRelationByGroupId(groupId: Int?) {
@@ -125,14 +130,22 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun getMessages() {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
         viewModel.getMessages().observe(this) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultState.Loading -> { }
+                    is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
+                        progressBar.dismiss()
 //                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
                     }
                     is ResultState.Success -> {
+                        progressBar.dismiss()
 //                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
                         if (result.data.isNotEmpty()) {
                             binding.rvMessages.scrollToPosition(result.data.size - 1)
@@ -248,6 +261,12 @@ class GroupChatActivity : AppCompatActivity() {
             )
             insets
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Supaya ketika ditekan tombol back muncul lagi data dari database
+        getMessages()
     }
 
     override fun onDestroy() {

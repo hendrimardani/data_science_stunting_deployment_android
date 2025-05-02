@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.stunting.R
 import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.databinding.ItemReceiverAdapterBinding
@@ -56,18 +57,30 @@ class GroupChatAdapter(private val currentUserId: Int) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(messagesRelation: MessagesRelation, isFirstMessageFromSender: Boolean) {
-            val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
+            val drawableResource = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
             val date = messagesRelation.messagesEntity.createdAt.toString()
 
-            binding.tvIsiPesan.text = messagesRelation.messagesEntity.isi_pesan
-            binding.tvPukul.text = formatToHourMinute(date)
+            val userProfile = messagesRelation.userProfileEntity
+            val messages =  messagesRelation.messagesEntity
+
+            if (userProfile.gambarProfile != null) {
+                Glide.with(itemView.context)
+                    .load(userProfile.gambarProfile)
+                    .into(binding.civProfile)
+            } else {
+                Glide.with(itemView.context)
+                    .load(drawableResource)
+                    .into(binding.civProfile)
+            }
 
             if (isFirstMessageFromSender) {
-                binding.ivProfile.visibility = View.VISIBLE
+                binding.civProfile.visibility = View.VISIBLE
             } else {
-                binding.ivProfile.visibility = View.GONE
+                binding.civProfile.visibility = View.INVISIBLE
             }
-            binding.ivProfile.setImageDrawable(drawable)
+
+            binding.tvIsiPesan.text = messages.isi_pesan
+            binding.tvPukul.text = formatToHourMinute(date)
         }
     }
 
@@ -75,21 +88,33 @@ class GroupChatAdapter(private val currentUserId: Int) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(messagesRelation: MessagesRelation, isFirstMessageFromSender: Boolean) {
-            val drawable = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
+            val drawableResource = ContextCompat.getDrawable(itemView.context, R.drawable.ic_person_40)
             val date = messagesRelation.messagesEntity.createdAt.toString()
 
-            binding.tvIsiPesan.text = messagesRelation.messagesEntity.isi_pesan
-            binding.tvPukul.text = formatToHourMinute(date)
+            val userProfile = messagesRelation.userProfileEntity
+            val messages =  messagesRelation.messagesEntity
+
+            if (userProfile.gambarProfile != null) {
+                Glide.with(itemView.context)
+                    .load(userProfile.gambarProfile)
+                    .into(binding.civProfile)
+            } else {
+                Glide.with(itemView.context)
+                    .load(drawableResource)
+                    .into(binding.civProfile)
+            }
 
             if (isFirstMessageFromSender) {
-                binding.ivProfile.visibility = View.VISIBLE
+                binding.civProfile.visibility = View.VISIBLE
                 binding.tvNama.visibility = View.VISIBLE
                 binding.tvNama.text = messagesRelation.userProfileEntity.nama
             } else {
-                binding.ivProfile.visibility = View.GONE
+                binding.civProfile.visibility = View.INVISIBLE
                 binding.tvNama.visibility = View.GONE
             }
-            binding.ivProfile.setImageDrawable(drawable)
+
+            binding.tvIsiPesan.text = messages.isi_pesan
+            binding.tvPukul.text = formatToHourMinute(date)
         }
     }
 

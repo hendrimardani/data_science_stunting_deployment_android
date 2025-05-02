@@ -46,9 +46,9 @@ interface UserGroupDao {
         FROM user_group ug
         INNER JOIN user_profile up ON up.user_id = ug.user_id
         INNER JOIN groups g ON g.id_group = ug.group_id
-        WHERE ug.user_id = :userId AND ug.group_id = :groupId
+        WHERE ug.user_id = :userId OR ug.group_id = :groupId
     """)
-    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<List<UserGroupRelation>>
+    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<UserGroupRelation>
 
     @Query("""
         SELECT  

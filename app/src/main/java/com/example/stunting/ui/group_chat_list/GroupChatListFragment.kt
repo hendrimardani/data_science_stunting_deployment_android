@@ -113,7 +113,10 @@ class GroupChatListFragment : Fragment() {
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onGroupChatListFragment getUserGroup Error  : ${result.error}")
+                    }
                     is ResultState.Success -> {
                         progressBar.dismiss()
 //                        Log.d(TAG, "onGroupChatListFragment getUserGroup : ${result.data}")
@@ -156,41 +159,49 @@ class GroupChatListFragment : Fragment() {
             val namaGroup = view.tietNamaGroup.text.toString()
             val deskripsi = view.tietDeskripsiGroup.text.toString()
 
-            viewModel.addUserGroup(userIdList, namaGroup, deskripsi, null, null).observe(requireActivity()) { result ->
-                if (result != null) {
-                    when (result) {
-                        is ResultState.Loading -> progressBar.show()
-                        is ResultState.Error -> {
-                            progressBar.dismiss()
-//                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
-                        }
-                        is ResultState.Success -> {
-                            progressBar.dismiss()
-                            viewDialog.dismiss()
+            viewModel.addUserGroup(
+                userIdList, namaGroup, deskripsi, null, null)
+                .observe(requireActivity()) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> progressBar.show()
+                            is ResultState.Error -> {
+                                progressBar.dismiss()
+    //                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
+                            }
+                            is ResultState.Success -> {
+                                progressBar.dismiss()
+                                viewDialog.dismiss()
 
-                            val message = result.data?.message.toString()
-//                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
-                            Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+                                val message = result.data?.message.toString()
+    //                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
+                                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
 
-                            // Simpan ke database lagi
-                            getUserGroupRelationByUserId(userId)
-                            getUserGroup()
+                                // Simpan ke database lagi
+                                getUserGroupRelationByUserId(userId)
+                                getUserGroup()
 
-                            view.tietNamaGroup.text?.clear()
-                            view.tietDeskripsiGroup.text?.clear()
-                        }
-                        is ResultState.Unauthorized -> {
-                            viewModel.logout()
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                            startActivity(intent)
+                                view.tietNamaGroup.text?.clear()
+                                view.tietDeskripsiGroup.text?.clear()
+                            }
+                            is ResultState.Unauthorized -> {
+                                viewModel.logout()
+                                val intent = Intent(requireActivity(), MainActivity::class.java)
+                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
-            }
         }
-        view.btnCancel.setOnClickListener { viewDialog.dismiss() }
-        viewDialog.show()
+            view.btnCancel.setOnClickListener { viewDialog.dismiss() }
+            viewDialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Supaya ketika ditekan tombol back muncul lagi data dari database
+        getUserGroup()
     }
 
     companion object {

@@ -16,12 +16,12 @@ class ChatbotAdapter(val messageList: ArrayList<MessageChatbotsEntity>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         class SenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val ivProfileSender = itemView.findViewById<ImageView>(R.id.iv_profile)
+            val ivProfileSender = itemView.findViewById<ImageView>(R.id.civ_profile)
             val tvIsiPesanSender = itemView.findViewById<TextView>(R.id.tv_isi_pesan)
         }
 
         class ReceiverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val ivProfileReceiver = itemView.findViewById<ImageView>(R.id.iv_profile)
+            val ivProfileReceiver = itemView.findViewById<ImageView>(R.id.civ_profile)
             val tvIsiPesanReceiver = itemView.findViewById<TextView>(R.id.tv_isi_pesan)
             val progressBarReceiver = itemView.findViewById<ProgressBar>(R.id.progressBar)
         }

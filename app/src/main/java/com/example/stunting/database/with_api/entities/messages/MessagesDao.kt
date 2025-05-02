@@ -20,6 +20,8 @@ interface MessagesDao {
             up.tgl_lahir AS up_tgl_lahir,
             up.umur AS up_umur,
             up.alamat AS up_alamat,
+            up.gambar_profile AS up_gambar_profile,
+            up.gambar_banner AS up_gambar_banner,
             up.created_at AS up_created_at,
             up.updated_at AS up_updated_at,
     

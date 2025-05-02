@@ -11,34 +11,32 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        tools:src="@tools:sample/avatars" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_received"
-        android:padding="@dimen/dimen_8">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            tools:src="@tools:sample/avatars"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_nama"
-            app:layout_constraintTop_toTopOf="@id/tv_nama" />
+        android:padding="@dimen/dimen_8"
+        android:layout_marginStart="@dimen/dimen_4">
 
         <TextView
             android:id="@+id/tv_nama"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="39dp"
+            android:layout_height="19dp"
+            android:layout_marginStart="@dimen/dimen_4"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginStart="@dimen/dimen_4"
-            tools:text="Nama"
             app:layout_constraintBottom_toTopOf="@id/tv_pukul"
-            app:layout_constraintHorizontal_bias="0.63"
-            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintStart_toEndOf="@id/civ_profile"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.086" />
+            app:layout_constraintVertical_bias="0.086"
+            tools:text="Nama" />
 
         <!-- Fungsi android:maxEms akan dibatasi hingga 10 em lebar.
         Ini berarti bahwa teks tidak akan meluas melebihi batas yang ditentukan -->

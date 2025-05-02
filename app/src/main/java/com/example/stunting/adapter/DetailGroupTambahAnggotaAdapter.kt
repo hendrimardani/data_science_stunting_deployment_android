@@ -58,7 +58,6 @@ class DetailGroupTambahAnggotaAdapter(
                 listener.onTextChangedWhileSelected(selectedIds.isNotEmpty())
             }
 
-            // Klik tanpa lambda
             itemView.setOnClickListener {
                 val currentItem = getItem(adapterPosition)
                 val updatedItem = currentItem.copy(isSelected = !currentItem.isSelected)
@@ -68,11 +67,11 @@ class DetailGroupTambahAnggotaAdapter(
                 }
                 submitList(newList)
 
-                val id = updatedItem.userProfileWithUserRelation.userProfile?.userId
+                val userId = updatedItem.userProfileWithUserRelation.userProfile?.userId
                 if (updatedItem.isSelected) {
-                    selectedIds.add(id!!)
+                    selectedIds.add(userId!!)
                 } else {
-                    selectedIds.remove(id)
+                    selectedIds.remove(userId)
                 }
             }
         }

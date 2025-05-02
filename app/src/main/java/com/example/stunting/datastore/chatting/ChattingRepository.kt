@@ -189,7 +189,7 @@ class ChattingRepository(
         }
     }
 
-    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<List<UserGroupRelation>> {
+    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<UserGroupRelation> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserIdGroupId(userId, groupId)
     }
 

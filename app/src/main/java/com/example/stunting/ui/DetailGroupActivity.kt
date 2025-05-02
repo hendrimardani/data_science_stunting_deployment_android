@@ -45,10 +45,12 @@ class DetailGroupActivity : AppCompatActivity() {
         _binding = ActivityDetailGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT, 0)
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, 0)
 
         getUserGroups()
-        getUserGroupRelationByGroupId(groupId)
+        getUserGroupRelationByGroupId(groupId!!)
+        getUserGroupRelationByUserIdGroupId(userId!!, groupId!!)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             getUserGroups()
@@ -63,6 +65,27 @@ class DetailGroupActivity : AppCompatActivity() {
         binding.tvTambahAnggota.setOnClickListener {
             Toast.makeText(this@DetailGroupActivity, "Akan ditambahkan fitur ini, nantikan informasinya di github", Toast.LENGTH_LONG).show()
 //            showDialogCustomTambahAnggotaBinding()
+        }
+    }
+
+    private fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) {
+        viewModel.getUserGroupRelationByUserIdGroupId(userId, groupId).observe(this) { result ->
+            if (result?.userGroupEntity != null) {
+                val userGroup = result.userGroupEntity
+                if (userGroup.role == "admin") {
+                    binding.flIconEditProfile.visibility = View.VISIBLE
+                    binding.ivIconEditProfile.visibility = View.VISIBLE
+                    binding.flIconEditBanner.visibility = View.VISIBLE
+                    binding.ivIconEditBanner.visibility = View.VISIBLE
+                    binding.tvTambahAnggota.visibility = View.VISIBLE
+                } else {
+                    binding.flIconEditProfile.visibility = View.GONE
+                    binding.ivIconEditProfile.visibility = View.GONE
+                    binding.flIconEditBanner.visibility = View.GONE
+                    binding.ivIconEditBanner.visibility = View.GONE
+                    binding.tvTambahAnggota.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -158,27 +181,12 @@ class DetailGroupActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getUserGroupRelationByGroupId(groupId: Int?) {
+    private fun getUserGroupRelationByGroupId(groupId: Int) {
         viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { result ->
             val jumlahAnggota = result.size
 
             result.forEach { item ->
                 val groups = item.groupsEntity
-                val userGroup = item.userGroupEntity
-
-                if (userGroup.role == "admin") {
-                    binding.flIconEditProfile.visibility = View.VISIBLE
-                    binding.ivIconEditProfile.visibility = View.VISIBLE
-                    binding.flIconEditBanner.visibility = View.VISIBLE
-                    binding.ivIconEditBanner.visibility = View.VISIBLE
-                    binding.tvTambahAnggota.visibility = View.VISIBLE
-                } else {
-                    binding.flIconEditProfile.visibility = View.GONE
-                    binding.ivIconEditProfile.visibility = View.GONE
-                    binding.flIconEditBanner.visibility = View.GONE
-                    binding.ivIconEditBanner.visibility = View.GONE
-                    binding.tvTambahAnggota.visibility = View.GONE
-                }
 
                 if (groups.gambarProfile != null) {
                     Glide.with(this@DetailGroupActivity)
@@ -189,7 +197,7 @@ class DetailGroupActivity : AppCompatActivity() {
                         .load(R.drawable.ic_avatar_group_chat)
                         .into(binding.civEditProfile)
                 }
-9
+
                 binding.tvNamaGroup.text = groups.namaGroup
                 binding.tvDeskripsi.text = groups.deskripsi
                 binding.tvJumlahAnggota.text = "${jumlahAnggota} Anggota"
@@ -202,6 +210,7 @@ class DetailGroupActivity : AppCompatActivity() {
 
 
     companion object {
+        const val EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT = "extra_user_id_to_detail_group_chat"
         const val EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT = "extra_group_id_to_detail_group_chat"
     }
 }
