@@ -1,6 +1,5 @@
 package com.example.stunting.ui.navigation_drawer_fragment
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -30,7 +29,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.example.stunting.R
@@ -50,8 +48,6 @@ import com.example.stunting.utils.Functions.reduceFileImage
 import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class NavDrawerMainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration

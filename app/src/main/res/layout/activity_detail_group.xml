@@ -196,7 +196,7 @@
                     android:id="@+id/rv_anggota"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    tools:listitem="@layout/item_detail_group_adapter"
+                    tools:listitem="@layout/item_tambah_group_adapter"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_jumlah_anggota"

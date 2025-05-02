@@ -1,26 +1,32 @@
 package com.example.stunting.ui
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.example.stunting.R
 import com.example.stunting.ResultState
-import com.example.stunting.adapter.DetailGroupAdapter
+import com.example.stunting.adapter.DetailGroupAnggotaAdapter
+import com.example.stunting.adapter.DetailGroupTambahAnggotaAdapter
+import com.example.stunting.adapter.Interface.OnItemInteractionListener
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithSelection
 import com.example.stunting.databinding.ActivityDetailGroupBinding
+import com.example.stunting.databinding.DialogCustomTambahAnggotaBinding
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class DetailGroupActivity : AppCompatActivity() {
     private var _binding: ActivityDetailGroupBinding? = null
@@ -30,7 +36,8 @@ class DetailGroupActivity : AppCompatActivity() {
     }
     private var userId: Int? = null
     private var groupId: Int? = null
-    private val detailGroupAdapter = DetailGroupAdapter()
+    private val detailGroupAnggotaAdapter = DetailGroupAnggotaAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,28 +47,100 @@ class DetailGroupActivity : AppCompatActivity() {
 
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, 0)
 
-        getUserGroup()
+        getUserGroups()
         getUserGroupRelationByGroupId(groupId)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            getUserGroup()
+            getUserGroups()
             binding.swipeRefreshLayout.isRefreshing = false
         }
         binding.rvAnggota.apply {
             layoutManager = LinearLayoutManager(this@DetailGroupActivity, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
-            adapter = detailGroupAdapter
+            adapter = detailGroupAnggotaAdapter
+        }
+
+        binding.tvTambahAnggota.setOnClickListener {
+            Toast.makeText(this@DetailGroupActivity, "Akan ditambahkan fitur ini, nantikan informasinya di github", Toast.LENGTH_LONG).show()
+//            showDialogCustomTambahAnggotaBinding()
         }
     }
 
-    private fun getUserGroup() {
+    private fun getUserProfilesFromDatabase(detailGroupTambahAnggotaAdapter: DetailGroupTambahAnggotaAdapter) {
+        viewModel.getUserProfilesFromDatabase().observe(this) { result ->
+            // Convert ke UserProfileWithSelection
+            val listWithSelection = result.map {
+                UserProfileWithSelection(userProfileWithUserRelation = it)
+            }
+            detailGroupTambahAnggotaAdapter.submitList(listWithSelection)
+        }
+    }
+
+    private fun showDialogCustomTambahAnggotaBinding() {
+        val view = DialogCustomTambahAnggotaBinding.inflate(layoutInflater)
+        val viewDialog = Dialog(this)
+
+        viewDialog.setContentView(view.root)
+        viewDialog.setCanceledOnTouchOutside(false)
+        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUserGroup().observe(this) { result ->
+        val rgRole = view.rgRole
+        val selectedId = rgRole.checkedRadioButtonId
+        val selectedRadioButton = findViewById<RadioButton>(selectedId)
+        val selectedValue = selectedRadioButton.text.toString()
+
+        Log.d("RadioValue", "Dipilih: $selectedValue")
+
+        val detailGroupTambahAnggotaAdapter = DetailGroupTambahAnggotaAdapter(object : OnItemInteractionListener {
+            override fun onTextChangedWhileSelected(isAnyItemSelected: Boolean) {
+                if (isAnyItemSelected) {
+                    view.btnAdd.isEnabled = true
+                    view.btnAdd.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.blueSecond)
+                    )
+                } else {
+                    view.btnAdd.isEnabled = false
+                    view.btnAdd.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.buttonDisabledColor)
+                    )
+                    view.btnAdd.backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.white)
+                    )
+                }
+            }
+        })
+
+        view.rvAnggota.apply {
+            layoutManager = LinearLayoutManager(this@DetailGroupActivity, LinearLayoutManager.VERTICAL, false)
+            setHasFixedSize(true)
+            adapter = detailGroupTambahAnggotaAdapter
+        }
+
+        getUserProfilesFromDatabase(detailGroupTambahAnggotaAdapter)
+
+
+        view.btnAdd.setOnClickListener {
+            val idUserList = detailGroupTambahAnggotaAdapter.getSelectedIds()
+        }
+
+        view.btnCancel.setOnClickListener { viewDialog.dismiss() }
+        viewDialog.show()
+    }
+
+    private fun getUserGroups() {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserGroups().observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
@@ -84,7 +163,6 @@ class DetailGroupActivity : AppCompatActivity() {
             val jumlahAnggota = result.size
 
             result.forEach { item ->
-                val userProfile = item.userProfileEntity
                 val groups = item.groupsEntity
                 val userGroup = item.userGroupEntity
 
@@ -116,8 +194,7 @@ class DetailGroupActivity : AppCompatActivity() {
                 binding.tvDeskripsi.text = groups.deskripsi
                 binding.tvJumlahAnggota.text = "${jumlahAnggota} Anggota"
             }
-
-            detailGroupAdapter.submitList(result)
+            detailGroupAnggotaAdapter.submitList(result)
         }
     }
 

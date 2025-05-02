@@ -21,15 +21,15 @@ class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.
 
     class MyViewHolder(private val binding: ItemGroupChatListAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("UseCompatLoadingForDrawables")
-        fun bind(item: UserGroupRelation) {
-            binding.tvNamaGroup.text = item.groupsEntity.namaGroup
-            binding.tvDeskripsi.text = item.groupsEntity.deskripsi
-            val gambarProfile = item.groupsEntity.gambarProfile
+        fun bind(UserGroupRelation: UserGroupRelation) {
+            binding.tvNamaGroup.text = UserGroupRelation.groupsEntity.namaGroup
+            binding.tvDeskripsi.text = UserGroupRelation.groupsEntity.deskripsi
+            val gambarProfile = UserGroupRelation.groupsEntity.gambarProfile
             // 2025-04-05T12:41:07
-            val dateTime = item.groupsEntity.createdAt
+            val dateTime = UserGroupRelation.groupsEntity.createdAt
             binding.tvTanggal.text = dateTime?.substringBefore("T")
 
-            binding.tvCreatedBy.text = item.userGroupEntity.createdBy
+            binding.tvCreatedBy.text = UserGroupRelation.userGroupEntity.createdBy
             if (gambarProfile != null) {
                 Glide.with(itemView.context)
                     .load(gambarProfile)
@@ -41,8 +41,8 @@ class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.
             }
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, GroupChatActivity::class.java)
-                intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userGroupEntity.user_id)
-                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.userGroupEntity.group_id)
+                intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, UserGroupRelation.userGroupEntity.user_id)
+                intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, UserGroupRelation.userGroupEntity.group_id)
                 itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
         }

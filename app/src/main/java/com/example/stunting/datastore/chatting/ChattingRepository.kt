@@ -189,8 +189,8 @@ class ChattingRepository(
         }
     }
 
-    suspend fun deleteGroups() {
-        return chattingDatabase.groupsDao().deleteGroups()
+    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<List<UserGroupRelation>> {
+        return chattingDatabase.userGroupDao().getUserGroupRelationByUserIdGroupId(userId, groupId)
     }
 
     fun getUserGroupRelationByGroupId(groupId: Int): LiveData<List<UserGroupRelation>> {
@@ -202,7 +202,7 @@ class ChattingRepository(
     }
 
     // Menggunakan entitas pusat relasi
-    fun getUserGroup(): LiveData<ResultState<List<UserGroupEntity>>> {
+    fun getUserGroups(): LiveData<ResultState<List<UserGroupEntity>>> {
         resultListUserGroup.value = ResultState.Loading
 
         val response = apiService.getAllUserGroup()
@@ -431,8 +431,12 @@ class ChattingRepository(
         }
     }
 
-    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation>{
+    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation> {
         return chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
+    }
+
+    fun getUserProfilesFromDatabase(): LiveData<List<UserProfileWithUserRelation>> {
+        return chattingDatabase.userProfileDao().getUserProfilesFromDatabase()
     }
     
     // Menggunakan entitas pusat relasi

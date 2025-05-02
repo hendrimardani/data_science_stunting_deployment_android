@@ -26,18 +26,14 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
             emit(ResultState.Loading)
             emit(chattingRepository.addMessage(userId, groupId, isiPesan))
         }
-
-    fun deleteGroups() {
-        viewModelScope.launch {
-            chattingRepository.deleteGroups()
-        }
-    }
+    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
+        chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
 
     fun getUserGroupRelationByGroupId(groupId: Int) = chattingRepository.getUserGroupRelationByGroupId(groupId)
 
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
-    fun getUserGroup() = chattingRepository.getUserGroup()
+    fun getUserGroups() = chattingRepository.getUserGroups()
 
     fun addUserGroup(userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?) :
         LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
@@ -78,6 +74,8 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun getSession(): LiveData<UserModel> {
         return chattingRepository.getSession().asLiveData()
     }
+
+    fun getUserProfilesFromDatabase() = chattingRepository.getUserProfilesFromDatabase()
 
     fun getUsers() = chattingRepository.getUsers()
 

@@ -23,7 +23,7 @@ import com.example.stunting.MyNamaGroupEditText.Companion.MAX_CHARACTER_NAMA_GRO
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.GroupChatListAdapter
-import com.example.stunting.databinding.DialogCustomGroupChatListFragmentBinding
+import com.example.stunting.databinding.DialogCustomTambahGroupBinding
 import com.example.stunting.databinding.FragmentGroupChatListBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
@@ -64,10 +64,10 @@ class GroupChatListFragment : Fragment() {
             adapter = groupChatListAdapter
         }
 
-        binding.fabGroupChatList.setOnClickListener { showDialogCustomGroupChatListFragmentBinding(userId) }
+        binding.fabGroupChatList.setOnClickListener { showDialogCustomTambahGroupBinding(userId) }
     }
 
-    private fun textWatcherDialogCustomInput(view: DialogCustomGroupChatListFragmentBinding) {
+    private fun textWatcherDialogCustomTambahGroup(view: DialogCustomTambahGroupBinding) {
         val textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val namaGroup = view.tietNamaGroup.text.toString()
@@ -76,18 +76,18 @@ class GroupChatListFragment : Fragment() {
                 val isNamaGroupValid = namaGroup.length >= MAX_CHARACTER_NAMA_GROUP
                 val isDeskripsiGroupValid = deskripsiGroup.length >= MAX_CHARACTER_DESKRIPSI_GROUP
 
-                view.btnAddGroup.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty() &&
+                view.btnAdd.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty() &&
                     !isNamaGroupValid && !isDeskripsiGroupValid
 
-                if (view.btnAddGroup.isEnabled == true) {
-                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(
+                if (view.btnAdd.isEnabled == true) {
+                    view.btnAdd.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireActivity(), R.color.blueSecond)
                     )
                 } else {
-                    view.btnAddGroup.strokeColor = ColorStateList.valueOf(
+                    view.btnAdd.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor)
                     )
-                    view.btnAddGroup.backgroundTintList = ColorStateList.valueOf(
+                    view.btnAdd.backgroundTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(requireActivity(), R.color.white)
                     )
                 }
@@ -109,7 +109,7 @@ class GroupChatListFragment : Fragment() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUserGroup().observe(requireActivity()) { result ->
+        viewModel.getUserGroups().observe(requireActivity()) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
@@ -135,8 +135,8 @@ class GroupChatListFragment : Fragment() {
         }
     }
 
-    private fun showDialogCustomGroupChatListFragmentBinding(userId: Int?) {
-        val view = DialogCustomGroupChatListFragmentBinding.inflate(layoutInflater)
+    private fun showDialogCustomTambahGroupBinding(userId: Int?) {
+        val view = DialogCustomTambahGroupBinding.inflate(layoutInflater)
         val viewDialog = Dialog(requireActivity())
 
         viewDialog.setContentView(view.root)
@@ -149,9 +149,9 @@ class GroupChatListFragment : Fragment() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        textWatcherDialogCustomInput(view)
+        textWatcherDialogCustomTambahGroup(view)
 
-        view.btnAddGroup.setOnClickListener {
+        view.btnAdd.setOnClickListener {
             val userIdList = listOf(userId!!)
             val namaGroup = view.tietNamaGroup.text.toString()
             val deskripsi = view.tietDeskripsiGroup.text.toString()

@@ -1,0 +1,124 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_dialog_custom_input_fragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bluePrimary"
+        android:paddingHorizontal="@dimen/dimen_32"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:src="@drawable/ic_group_add_40"
+            android:layout_width="50dp"
+            android:layout_height="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_dialog_custom_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_add_group"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen_24"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:layout_constraintStart_toEndOf="@id/iv_header"
+            app:layout_constraintTop_toTopOf="@id/iv_header"
+            app:layout_constraintBottom_toBottomOf="@id/iv_header"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name_group"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:hint="@string/text_name_group"
+        android:textColorHint="?attr/colorTextHint"
+        android:layout_marginHorizontal="@dimen/dimen_12"
+        app:hintTextColor="?attr/colorSecondary"
+        app:boxStrokeColor="@color/box_stroke_color"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/red"
+        app:layout_constraintStart_toStartOf="@id/cl_header"
+        app:layout_constraintEnd_toEndOf="@id/cl_header"
+        app:layout_constraintTop_toBottomOf="@id/cl_header"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.example.stunting.MyNamaGroupEditText
+            android:id="@+id/tiet_nama_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorText"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_description_group"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:hint="@string/text_description_group"
+        android:textColorHint="?attr/colorTextHint"
+        android:layout_marginHorizontal="@dimen/dimen_12"
+        app:hintTextColor="?attr/colorSecondary"
+        app:boxStrokeColor="@color/box_stroke_color"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/red"
+        app:layout_constraintStart_toStartOf="@id/til_name_group"
+        app:layout_constraintEnd_toEndOf="@id/til_name_group"
+        app:layout_constraintTop_toBottomOf="@id/til_name_group"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.example.stunting.MyDeskripsiGroupEditText
+            android:id="@+id/tiet_deskripsi_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:textColor="?attr/colorText"
+            android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.Icon"
+        android:text="@string/text_cancel"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:layout_marginTop="@dimen/dimen_8"
+        app:strokeColor="@color/blueSecond"
+        app:layout_constraintTop_toBottomOf="@id/til_description_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_add"/>
+
+    9<com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:text="@string/text_add_group"
+        android:paddingHorizontal="20dp"
+        android:layout_marginStart="@dimen/dimen_12"
+        android:enabled="false"
+        app:strokeColor="@color/gray"
+        app:icon="@drawable/ic_group_add_24"
+        app:layout_constraintTop_toTopOf="@id/btn_cancel"
+        app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
+        app:layout_constraintStart_toEndOf="@id/btn_cancel"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
