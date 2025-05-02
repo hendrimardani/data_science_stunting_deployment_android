@@ -149,8 +149,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             progressBar.show()
-            // Nunggu 2 detik supaya data getUsers() masuk ke database
-            delay(2000)
+            // Nunggu 4 detik supaya data getUsers() masuk ke database
+            delay(4000)
             getDataExtra(progressBar)
         }
         getMenuNavigationView()
@@ -356,7 +356,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     private fun getUserProfileWithUserById(userId: Int) {
         viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
-            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
+//            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
             if (userProfileWithUserRelation != null) {
                 getHeaderView(userProfileWithUserRelation)
             }
@@ -415,7 +415,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun getHeaderView(userProfileWithUserRelation: UserProfileWithUserRelation?) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
@@ -424,6 +423,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val ivBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
         val name = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
         val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
+
+        val userProfile = userProfileWithUserRelation?.userProfile
 
         flProfile.setOnClickListener {
             isEditProfile = true
@@ -435,14 +436,13 @@ class NavDrawerMainActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        val urlProfile = userProfileWithUserRelation?.userProfile?.gambarProfile
-        if (urlProfile != null) {
+        if (userProfile?.gambarProfile != null) {
             Glide.with(this)
-                .load(urlProfile)
+                .load(userProfile.gambarProfile)
                 .into(civProfile)
         } else {
             Glide.with(this)
-                .load(getDrawable(R.drawable.ic_person_40))
+                .load(R.drawable.ic_person_40)
                 .into(civProfile)
         }
 

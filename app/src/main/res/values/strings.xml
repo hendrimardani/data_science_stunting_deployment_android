@@ -209,4 +209,5 @@
     <string name="text_ambil_kamera">Ambil kamera</string>
     <string name="text_ambil_dari_berkas">Ambil dari berkas</string>
     <string name="text_tentang_saya">Tentang Saya</string>
+    <string name="text_admin">admin</string>
 </resources>

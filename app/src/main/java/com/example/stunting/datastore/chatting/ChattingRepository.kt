@@ -181,6 +181,14 @@ class ChattingRepository(
         }
     }
 
+    suspend fun deleteGroups() {
+        return chattingDatabase.groupsDao().deleteGroups()
+    }
+
+    fun getUserGroupRelationByGroupId(groupId: Int): LiveData<List<UserGroupRelation>> {
+        return chattingDatabase.userGroupDao().getUserGroupRelationByGroupId(groupId)
+    }
+
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserId(userId)
     }
@@ -271,10 +279,42 @@ class ChattingRepository(
         return resultListUserGroup
     }
 
-    suspend fun addUserGroup(userId: Int, namaGroup: String, deskripsi: String): ResultState<AddingUserGroupResponse?> {
+    suspend fun addUserGroup(
+        userId: List<Int>, namaGroup: String, deskripsi: String,
+        gambarProfile: File?, gambarBanner: File?
+    ): ResultState<AddingUserGroupResponse?> {
         return try {
-            val requestBody = AddingUserGroupRequestJSON(namaGroup, deskripsi)
-            val response = apiService.addUserGroup(userId, requestBody)
+            val requestBodyJson = AddingUserGroupRequestJSON(namaGroup, deskripsi)
+
+            // Convert dataJson menjadi JSON String
+            val gson = GsonBuilder()
+                .serializeNulls() // Boleh null
+                .create()
+            val jsonData = gson.toJson(requestBodyJson)
+
+            // Convert JSON string to RequestBody
+            val dataRequestBody = jsonData.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            if (gambarProfile != null) {
+                requestImageProfileFile = gambarProfile.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageProfile = MultipartBody.Part.createFormData(
+                    "gambar_profile",
+                    gambarProfile.name,
+                    requestImageProfileFile!!
+                )
+            }
+
+            if (gambarBanner != null) {
+                requestImageBannerFile = gambarBanner.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageBanner = MultipartBody.Part.createFormData(
+                    "gambar_banner",
+                    gambarBanner.name,
+                    requestImageBannerFile!!
+                )
+            }
+            val response = apiService.addUserGroup(
+                userId, dataRequestBody, multipartBodyImageProfile, multipartBodyImageBanner
+            )
 
             if (response.isSuccessful) {
                 ResultState.Success(response.body())
@@ -323,7 +363,6 @@ class ChattingRepository(
         tglLahir: String?, gambarProfile: File?, gambarBanner: File?
     ): ResultState<UpdateUserProfileByIdResponse?> {
         return try {
-
             val requestBodyJson = UpdateUserProfileByIdRequestJSON(nama, nik, umur, alamat, jenisKelamin, tglLahir)
 
             // Convert dataJson menjadi JSON String
@@ -331,8 +370,6 @@ class ChattingRepository(
                 .serializeNulls() // Boleh null
                 .create()
             val jsonData = gson.toJson(requestBodyJson)
-            Log.d(TAG, requestBodyJson.toString())
-            Log.d(TAG, jsonData.toString())
 
             // Convert JSON string to RequestBody
             val dataRequestBody = jsonData.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -359,22 +396,22 @@ class ChattingRepository(
             )
 
             if (response.isSuccessful) {
-                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
+//                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBody")
                     ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }

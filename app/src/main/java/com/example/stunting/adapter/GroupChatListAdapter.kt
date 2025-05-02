@@ -15,7 +15,6 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupRelat
 import com.example.stunting.databinding.ItemGroupChatListAdapterBinding
 import com.example.stunting.ui.group_chat.GroupChatActivity
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_GROUP_ID_TO_GROUP_CHAT
-import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_NAMA_TO_GROUP_CHAT
 import com.example.stunting.ui.group_chat.GroupChatActivity.Companion.EXTRA_USER_ID_TO_GROUP_CHAT
 
 class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.MyViewHolder>(DIFF_CALLBACK){
@@ -44,7 +43,6 @@ class GroupChatListAdapter: ListAdapter<UserGroupRelation, GroupChatListAdapter.
                 val intent = Intent(itemView.context, GroupChatActivity::class.java)
                 intent.putExtra(EXTRA_USER_ID_TO_GROUP_CHAT, item.userGroupEntity.user_id)
                 intent.putExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, item.userGroupEntity.group_id)
-                intent.putExtra(EXTRA_NAMA_TO_GROUP_CHAT, item.groupsEntity.namaGroup)
                 itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
             }
         }

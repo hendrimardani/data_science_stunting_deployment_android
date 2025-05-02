@@ -9,8 +9,8 @@ import androidx.room.Query
 @Dao
 interface GroupsDao {
 
-    @Query("SELECT * FROM groups ORDER BY id_group ASC")
-    fun getGroups(): LiveData<List<GroupsEntity>>
+    @Query("DELETE FROM groups")
+    suspend fun deleteGroups()
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertGroups(groups: List<GroupsEntity>)

@@ -40,10 +40,13 @@ interface ApiService {
     @GET("user_profiles/groups")
     fun getAllUserGroup(): Call<GetAllUserGroupResponse>
 
-    @POST("user_profile/{user_id}/group")
+    @Multipart
+    @POST("user_profile/{userIdListString}/group")
     suspend fun addUserGroup(
-        @Path("user_id") userId: Int,
-        @Body addingUserGroupRequestJSON: AddingUserGroupRequestJSON
+        @Path("userIdListString") userIdListString: List<Int>,
+        @Part("dataJsonString") dataJsonString: RequestBody?,
+        @Part gambarProfile: MultipartBody.Part?,
+        @Part gambarBanner: MultipartBody.Part?
     ): Response<AddingUserGroupResponse>
 
     @DELETE("user/{id}")

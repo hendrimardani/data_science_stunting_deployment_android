@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,11 +28,11 @@ import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.GroupChatAdapter
 import com.example.stunting.databinding.ActivityGroupChatBinding
 import com.example.stunting.ui.DetailGroupActivity
+import com.example.stunting.ui.DetailGroupActivity.Companion.EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.bumil.BumilActivity
 import kotlin.math.max
 
 class GroupChatActivity : AppCompatActivity() {
@@ -44,7 +43,6 @@ class GroupChatActivity : AppCompatActivity() {
     }
     private var userId: Int? = null
     private var groupId: Int? = null
-    private var activityName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +52,10 @@ class GroupChatActivity : AppCompatActivity() {
 
         userId = intent?.getIntExtra(EXTRA_USER_ID_TO_GROUP_CHAT, 0)
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
-        activityName = intent?.getStringExtra(EXTRA_NAMA_TO_GROUP_CHAT)
-//        Log.d(TAG, "onGroupChatActivity group id : ${getExtraGroupId}")
+
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
-        getUserGroupRelationByUserId(userId)
+        getUserGroupRelationByGroupId(groupId)
         getMessages()
         getMessageByGroupId(groupId!!, groupChatAdapter)
 
@@ -74,6 +71,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         binding.toolbar.setOnClickListener {
             val intent = Intent(this, DetailGroupActivity::class.java)
+            intent.putExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, groupId)
             startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
         }
 
@@ -98,7 +96,7 @@ class GroupChatActivity : AppCompatActivity() {
                         is ResultState.Success -> {
                             progressBar.dismiss()
 //                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
-//                            getMessages()
+                            getMessages()
                             getMessageByGroupId(groupId!!, groupChatAdapter)
                         }
                         is ResultState.Unauthorized -> {
@@ -116,11 +114,11 @@ class GroupChatActivity : AppCompatActivity() {
         setCoordinatorFitsSystemWindows()
     }
 
-    private fun getUserGroupRelationByUserId(userId: Int?) {
-        viewModel.getUserGroupRelationByUserId(userId!!).observe(this) { result ->
+    private fun getUserGroupRelationByGroupId(groupId: Int?) {
+        viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { result ->
             result.forEach { item ->
-                val namaGroup =  item.groupsEntity.namaGroup
                 val gambarProfile = item.groupsEntity.gambarProfile
+                val namaGroup =  item.groupsEntity.namaGroup
                 setToolBar(gambarProfile, namaGroup)
             }
         }
@@ -197,27 +195,40 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun setToolBar(gambarProfile: String?, nama: String?) {
-        Glide.with(this)
-            .asDrawable()
-            .load(gambarProfile)
-            .override(100, 100)
-            .circleCrop()
-            .into(object : CustomTarget<Drawable>() {
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                    setSupportActionBar(binding.toolbar)
-                    supportActionBar!!.title = nama
-                    binding.toolbar.setTitleTextAppearance(this@GroupChatActivity, R.style.Theme_Stunting)
-                    binding.toolbar.setLogo(resource)
-                    if (supportActionBar != null) {
-                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            title = nama
+            setDisplayHomeAsUpEnabled(true)
+        }
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+        if (gambarProfile != null) {
+            Glide.with(this)
+                .asDrawable()
+                .load(gambarProfile)
+                .override(100, 100)
+                .circleCrop()
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        binding.toolbar.logo = resource
                     }
-                    binding.toolbar.setNavigationOnClickListener {
-                        onBackPressed()
-                    }
-                }
 
-                override fun onLoadCleared(placeholder: Drawable?) { }
-            })
+                    override fun onLoadCleared(placeholder: Drawable?) {  }
+                })
+        } else {
+            Glide.with(this)
+                .load(getDrawable(R.drawable.ic_avatar_group_chat))
+                .override(100, 100)
+                .circleCrop()
+                .into(object : CustomTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        binding.toolbar.logo = resource
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {  }
+                })
+        }
     }
 
     private fun setCoordinatorFitsSystemWindows() {
@@ -248,6 +259,5 @@ class GroupChatActivity : AppCompatActivity() {
         private val TAG = GroupChatActivity::class.java.simpleName
         const val EXTRA_USER_ID_TO_GROUP_CHAT = "extra_user_id_to_group_chat"
         const val EXTRA_GROUP_ID_TO_GROUP_CHAT = "extra_group_id_to_group_chat"
-        const val EXTRA_NAMA_TO_GROUP_CHAT = "extra_nama_to_group_chat"
     }
 }

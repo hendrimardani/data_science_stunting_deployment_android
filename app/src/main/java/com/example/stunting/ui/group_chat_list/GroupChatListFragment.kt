@@ -55,7 +55,6 @@ class GroupChatListFragment : Fragment() {
         userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
-        // Simpan ke database
         getUserGroupRelationByUserId(userId!!)
         getUserGroup()
 
@@ -153,10 +152,11 @@ class GroupChatListFragment : Fragment() {
         textWatcherDialogCustomInput(view)
 
         view.btnAddGroup.setOnClickListener {
+            val userIdList = listOf(userId!!)
             val namaGroup = view.tietNamaGroup.text.toString()
             val deskripsi = view.tietDeskripsiGroup.text.toString()
 
-            viewModel.addUserGroup(userId!!, namaGroup, deskripsi).observe(requireActivity()) { result ->
+            viewModel.addUserGroup(userIdList, namaGroup, deskripsi, null, null).observe(requireActivity()) { result ->
                 if (result != null) {
                     when (result) {
                         is ResultState.Loading -> progressBar.show()

@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_profile_group_chat"
+            android:id="@+id/civ_profile"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="@dimen/dimen_8"
@@ -22,41 +22,41 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
-            android:id="@+id/tv_nama_anggota"
+            android:id="@+id/tv_nama"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginStart="@dimen/dimen_8"
             tools:text="Nama Anggota"
-            app:layout_constraintTop_toTopOf="@id/civ_profile_group_chat"
-            app:layout_constraintStart_toEndOf="@id/civ_profile_group_chat" />
+            app:layout_constraintTop_toTopOf="@id/civ_profile"
+            app:layout_constraintStart_toEndOf="@id/civ_profile" />
 
         <TextView
-            android:id="@+id/tv_alamat_anggota"
+            android:id="@+id/tv_alamat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gray"
             tools:text="Alamat Anggota"
-            app:layout_constraintStart_toStartOf="@id/tv_nama_anggota"
-            app:layout_constraintTop_toBottomOf="@id/tv_nama_anggota" />
+            app:layout_constraintStart_toStartOf="@id/tv_nama"
+            app:layout_constraintTop_toBottomOf="@id/tv_nama" />
 
         <FrameLayout
-            android:id="@+id/fl_hak_akses"
+            android:id="@+id/fl_admin"
             android:layout_width="70dp"
             android:layout_height="30dp"
             android:background="@drawable/shape_hak_akses"
             android:visibility="visible"
-            android:paddingStart="16dp"
+            android:paddingStart="@dimen/dimen_16"
             android:layout_marginTop="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_8"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/tv_hak_akses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pemilik"
+                android:text="@string/text_admin"
                 android:textColor="@color/blueSecond" />
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

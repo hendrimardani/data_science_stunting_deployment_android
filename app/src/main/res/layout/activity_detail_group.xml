@@ -21,26 +21,73 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_banner"
+                android:id="@+id/iv_edit_banner"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                tools:src="@tools:sample/avatars"
+                android:background="@color/blueSecond_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/fl_icon_edit_banner"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom|end"
+                android:background="@drawable/shape_circle"
+                android:layout_marginEnd="@dimen/dimen_8"
+                android:layout_marginBottom="@dimen/dimen_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_icon_edit_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_edit_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_profile"
+    <FrameLayout
+        android:id="@+id/fl_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="200dp"
-        android:elevation="6dp"
-        tools:src="@tools:sample/avatars"
+        android:layout_marginEnd="@dimen/dimen_8"
+        android:layout_marginTop="210dp"
+        android:elevation="@dimen/dimen_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:contentDescription="@string/nav_header_desc"
+            android:src="@drawable/ic_avatar_group_chat" />
+
+        <FrameLayout
+            android:id="@+id/fl_icon_edit_profile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:layout_marginBottom="@dimen/dimen_8"
+            android:background="@drawable/shape_circle">
+
+            <ImageView
+                android:id="@+id/iv_icon_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_edit_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </FrameLayout>
+    </FrameLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_2"
@@ -107,35 +154,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/searchBar"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+            <TextView
+                android:id="@+id/tv_tambah_anggota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah anggota"
+                android:textSize="15sp"
+                android:textColor="@color/bluePrimary"
                 android:layout_margin="@dimen/dimen_8"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:navigationIcon="@drawable/ic_search_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.search.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:backgroundTint="@color/white"
-                android:hint="@string/hint_text_cari"
-                android:foregroundGravity="center"
-                app:layout_anchor="@id/searchBar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <com.google.android.material.search.SearchBar-->
+<!--                android:id="@+id/searchBar"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:layout_margin="@dimen/dimen_8"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                app:navigationIcon="@drawable/ic_search_24"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <com.google.android.material.search.SearchView-->
+<!--                android:id="@+id/searchView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="45dp"-->
+<!--                android:backgroundTint="@color/white"-->
+<!--                android:hint="@string/hint_text_cari"-->
+<!--                android:foregroundGravity="center"-->
+<!--                app:layout_anchor="@id/searchBar"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_anggota"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dimen_8"
-                tools:listitem="@layout/item_anggota_adapter"
+                tools:listitem="@layout/item_detail_group_adapter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_jumlah_anggota"

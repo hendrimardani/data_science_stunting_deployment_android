@@ -1,6 +1,5 @@
 package com.example.stunting.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -28,14 +27,22 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
             emit(chattingRepository.addMessage(userId, groupId, isiPesan))
         }
 
+    fun deleteGroups() {
+        viewModelScope.launch {
+            chattingRepository.deleteGroups()
+        }
+    }
+
+    fun getUserGroupRelationByGroupId(groupId: Int) = chattingRepository.getUserGroupRelationByGroupId(groupId)
+
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
     fun getUserGroup() = chattingRepository.getUserGroup()
 
-    fun addUserGroup(userId: Int, namaGroup: String, deskripsi: String) :
+    fun addUserGroup(userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?) :
         LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
             emit(ResultState.Loading)
-            emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi))
+            emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi, gambarProfile, gambarBanner))
         }
 
     fun deleteUserById(id: Int) = liveData {
