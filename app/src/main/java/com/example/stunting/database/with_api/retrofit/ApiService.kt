@@ -1,10 +1,12 @@
 package com.example.stunting.database.with_api.retrofit
 
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
+import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
@@ -12,6 +14,7 @@ import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,6 +40,15 @@ interface ApiService {
         @Body addingMessageRequestJSON: AddingMessageRequestJSON
     ): Response<AddingMessageResponse>
 
+    @Multipart
+    @PUT("group/{group_id}")
+    suspend fun updateGroupById(
+        @Path("group_id") groupId: Int,
+        @Part("dataJsonString") dataJsonString: RequestBody?,
+        @Part gambarProfile: MultipartBody.Part?,
+        @Part gambarBanner: MultipartBody.Part?
+    ): Response<UpdateGroupByIdResponse>
+
     @GET("user_profiles/groups")
     fun getAllUserGroup(): Call<GetAllUserGroupResponse>
 
@@ -48,6 +60,12 @@ interface ApiService {
         @Part gambarProfile: MultipartBody.Part?,
         @Part gambarBanner: MultipartBody.Part?
     ): Response<AddingUserGroupResponse>
+
+    @POST("group/{group_id}")
+    suspend fun addUserByGroupId(
+        @Path("group_id") groupId: Int,
+        @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
+    ): Response<AddingUserByGroupIdResponse>
 
     @DELETE("user/{id}")
     suspend fun deleteUserById(

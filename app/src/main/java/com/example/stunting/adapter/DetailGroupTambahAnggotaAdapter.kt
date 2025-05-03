@@ -19,7 +19,7 @@ class DetailGroupTambahAnggotaAdapter(
     private val listener: OnItemInteractionListener
 ) : ListAdapter<UserProfileWithSelection, DetailGroupTambahAnggotaAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
-    private val selectedIds = mutableSetOf<Int>()
+    private val selectedIds = mutableListOf<Int>()
 
     inner class MyViewHolder(private val binding: ItemTambahAnggotaAdapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -109,6 +109,6 @@ class DetailGroupTambahAnggotaAdapter(
         }
     }
 
-    fun getSelectedIds(): Set<Int> = selectedIds
+    fun getSelectedIds(): List<Int> = selectedIds
 }
 

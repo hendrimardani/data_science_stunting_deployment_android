@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/dimen_8">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_rectangle"
@@ -18,13 +17,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_camera"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:cardCornerRadius="@dimen/dimen_16"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="100dp"
         android:elevation="5dp"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toStartOf="@id/cv_gallery"
+        app:layout_constraintTop_toBottomOf="@id/iv_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -36,31 +38,32 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/ic_camera_alt_24"
+                android:layout_marginStart="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_ambil_kamera"
-                android:textSize="20sp"
+                android:text="@string/text_kamera"
                 android:layout_marginStart="@dimen/dimen_8"
-                app:layout_constraintStart_toEndOf="@id/iv_camera"
-                app:layout_constraintTop_toTopOf="@id/iv_camera"
-                app:layout_constraintBottom_toBottomOf="@id/iv_camera" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/iv_camera"
+                app:layout_constraintEnd_toEndOf="@id/iv_camera"
+                app:layout_constraintTop_toBottomOf="@id/iv_camera" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:cardCornerRadius="@dimen/dimen_16"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardCornerRadius="100dp"
         android:elevation="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cv_camera">
+        app:layout_constraintStart_toEndOf="@id/cv_camera"
+        app:layout_constraintTop_toTopOf="@id/cv_camera"
+        app:layout_constraintBottom_toBottomOf="@id/cv_camera"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -72,19 +75,19 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:src="@drawable/ic_collections_24"
+                android:layout_marginStart="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_ambil_dari_berkas"
-                android:textSize="20sp"
+                android:text="@string/text_berkas"
                 android:layout_marginStart="@dimen/dimen_8"
-                app:layout_constraintStart_toEndOf="@id/iv_gallery"
-                app:layout_constraintTop_toTopOf="@id/iv_gallery"
-                app:layout_constraintBottom_toBottomOf="@id/iv_gallery" />
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/iv_gallery"
+                app:layout_constraintEnd_toEndOf="@id/iv_gallery"
+                app:layout_constraintTop_toBottomOf="@id/iv_gallery" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

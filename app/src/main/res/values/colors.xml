@@ -5,7 +5,7 @@
     <color name="bluePrimary">#00A7F4</color>
     <color name="blueSecond">#00B0FF</color>
     <color name="blueSecond_200">#73D1FA</color>
-    <color name="blueSecond_500">#91D0F8</color>
+    <color name="blueSecond_500">#A573D1FA</color>
     <color name="light_blue">#DEF1FC</color>
     <color name="green">#11FF00</color>
     <color name="red">#FF0000</color>

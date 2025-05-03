@@ -23,11 +23,15 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupRelat
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
+import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
+import com.example.stunting.database.with_api.request_json.UpdateGroupByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.utils.AppExecutors
 import com.google.gson.GsonBuilder
@@ -37,6 +41,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -201,6 +206,66 @@ class ChattingRepository(
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserId(userId)
     }
 
+    suspend fun updateGroupById(
+        userId: Int, groupId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+    ): ResultState<UpdateGroupByIdResponse?> {
+        return try {
+            val requestBodyJson = UpdateGroupByIdRequestJSON(userId, namaGroup, deskripsi)
+
+            // Convert dataJson menjadi JSON String
+            val gson = GsonBuilder()
+                .serializeNulls() // Boleh null
+                .create()
+            val jsonData = gson.toJson(requestBodyJson)
+
+            // Convert JSON string to RequestBody
+            val dataRequestBody = jsonData.toRequestBody("text/plain".toMediaTypeOrNull())
+
+            if (gambarProfile != null) {
+                requestImageProfileFile = gambarProfile.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageProfile = MultipartBody.Part.createFormData(
+                    "gambar_profile",
+                    gambarProfile.name,
+                    requestImageProfileFile!!
+                )
+            }
+
+            if (gambarBanner != null) {
+                requestImageBannerFile = gambarBanner.asRequestBody("image/*".toMediaTypeOrNull())
+                multipartBodyImageBanner = MultipartBody.Part.createFormData(
+                    "gambar_banner",
+                    gambarBanner.name,
+                    requestImageBannerFile!!
+                )
+            }
+            val response = apiService.updateGroupById(
+                groupId, dataRequestBody, multipartBodyImageProfile, multipartBodyImageBanner
+            )
+
+            if (response.isSuccessful) {
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+
+                    val errorBodyJson = response.errorBody()?.string()
+                    Log.e(TAG, "onChattingRepository updateGroupById() Error ${response.code()}: $errorBodyJson")
+                    // Ubah dari JSON string ke JSON
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
     // Menggunakan entitas pusat relasi
     fun getUserGroups(): LiveData<ResultState<List<UserGroupEntity>>> {
         resultListUserGroup.value = ResultState.Loading
@@ -330,15 +395,43 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
+//                    Log.e(TAG, "onChattingRepository addUserGroup Error ${response.code()}: $errorBody")
                     ResultState.Error("Error ${response.code()}: $errorBody")
                 }
             }
         } catch (e: HttpException) {
-            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
+    suspend fun addUserByGroupId(groupId: Int, userId: List<Int>, role: String?): ResultState<AddingUserByGroupIdResponse?> {
+        return try {
+            val requestBody = AddingUserByGroupIdRequestJSON(userId, role)
+            val response = apiService.addUserByGroupId(groupId, requestBody)
+
+            if (response.isSuccessful) {
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBodyJson = response.errorBody()?.string()
+                    Log.e(TAG, "onChattingRepository addUserByGroupId Error ${response.code()}: $errorBodyJson")
+                    // Ubah dari JSON string ke JSON
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }

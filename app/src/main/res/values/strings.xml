@@ -206,11 +206,11 @@
     <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
     <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
     <string name="hint_text_cari">Cari anggota...</string>
-    <string name="text_ambil_kamera">Ambil kamera</string>
-    <string name="text_ambil_dari_berkas">Ambil dari berkas</string>
+    <string name="text_kamera">Kamera</string>
+    <string name="text_berkas">Berkas</string>
     <string name="text_tentang_saya">Tentang Saya</string>
     <string name="text_admin">admin</string>
     <string name="text_tambah_anggota">Tambah Anggota</string>
     <string name="text_role">Role</string>
-    <string name="text_member">Member</string>
+    <string name="text_member">member</string>
 </resources>

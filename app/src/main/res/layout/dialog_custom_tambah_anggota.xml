@@ -39,16 +39,30 @@
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/iv_icon_lock_person"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_lock_person_24"
+        android:layout_marginStart="@dimen/dimen_32"
+        android:layout_marginTop="@dimen/dimen_8"
+        app:layout_constraintTop_toBottomOf="@id/cl_header"
+        app:layout_constraintEnd_toStartOf="@id/tv_role"
+        app:layout_constraintStart_toStartOf="@id/cl_header" />
+
     <TextView
         android:id="@+id/tv_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_32"
-        android:layout_marginTop="8dp"
         android:text="@string/text_role"
+        android:textSize="20sp"
+        android:layout_marginStart="@dimen/dimen_4"
+        android:layout_marginTop="@dimen/dimen_8"
+        android:layout_marginBottom="@dimen/dimen_8"
         app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toStartOf="@id/cl_header"
-        app:layout_constraintTop_toBottomOf="@id/cl_header"
+        app:layout_constraintStart_toEndOf="@id/iv_icon_lock_person"
+        app:layout_constraintBottom_toBottomOf="@id/iv_icon_lock_person"
+        app:layout_constraintTop_toTopOf="@id/iv_icon_lock_person"
         app:layout_constraintEnd_toStartOf="@id/tv_role"/>
 
     <RadioGroup
@@ -66,6 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/dimen_48"
+            android:checked="true"
+            android:textSize="20sp"
             android:text="@string/text_member" />
     </RadioGroup>
 

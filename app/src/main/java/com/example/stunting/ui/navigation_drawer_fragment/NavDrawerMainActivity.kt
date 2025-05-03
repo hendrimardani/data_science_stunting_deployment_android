@@ -399,8 +399,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
         val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)
-        val civProfile = headerView.findViewById<CircleImageView>(R.id.civ_edit_profile)
-        val ivBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
+        val civEditProfile = headerView.findViewById<CircleImageView>(R.id.civ_edit_profile)
+        val ivEditBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
         val name = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
         val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
 
@@ -411,7 +411,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        ivBanner.setOnClickListener {
+        civEditProfile.setOnClickListener {
             isEditProfile = false
             showBottomSheetDialog()
         }
@@ -419,17 +419,17 @@ class NavDrawerMainActivity : AppCompatActivity() {
         if (userProfile?.gambarProfile != null) {
             Glide.with(this)
                 .load(userProfile.gambarProfile)
-                .into(civProfile)
+                .into(civEditProfile)
         } else {
             Glide.with(this)
                 .load(R.drawable.ic_person_40)
-                .into(civProfile)
+                .into(civEditProfile)
         }
 
         val urlBanner = userProfileWithUserRelation?.userProfile?.gambarBanner
         Glide.with(this)
             .load(urlBanner)
-            .into(ivBanner)
+            .into(ivEditBanner)
 
         name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
         email.text = userProfileWithUserRelation?.users?.email.toString()

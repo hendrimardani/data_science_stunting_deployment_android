@@ -7,9 +7,11 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
@@ -21,11 +23,13 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getMessages() = chattingRepository.getMessages()
 
-    fun addMessage(userId: Int, groupId: Int, isiPesan: String) :
-        LiveData<ResultState<AddingMessageResponse?>> = liveData {
-            emit(ResultState.Loading)
-            emit(chattingRepository.addMessage(userId, groupId, isiPesan))
-        }
+    fun addMessage(
+        userId: Int, groupId: Int, isiPesan: String
+    ): LiveData<ResultState<AddingMessageResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.addMessage(userId, groupId, isiPesan))
+    }
+
     fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
         chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
 
@@ -33,13 +37,30 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
+    fun updateGroupById(
+        userId: Int, groupId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+    ): LiveData<ResultState<UpdateGroupByIdResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(
+            chattingRepository.updateGroupById(userId, groupId, namaGroup, deskripsi, gambarProfile, gambarBanner)
+        )
+    }
+
     fun getUserGroups() = chattingRepository.getUserGroups()
 
-    fun addUserGroup(userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?) :
-        LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
-            emit(ResultState.Loading)
-            emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi, gambarProfile, gambarBanner))
-        }
+    fun addUserGroup(
+        userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?
+    ): LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi, gambarProfile, gambarBanner))
+    }
+
+    fun addUserByGroupId(
+        groupId: Int, userId: List<Int>, role: String?
+    ): LiveData<ResultState<AddingUserByGroupIdResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.addUserByGroupId(groupId, userId, role))
+    }
 
     fun deleteUserById(id: Int) = liveData {
         emitSource(chattingRepository.deleteUserById(id))
@@ -84,9 +105,10 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         emit(chattingRepository.login(email, password))
     }
 
-    fun register(nama: String, email: String, password: String, repeatPassword: String) :
-        LiveData<ResultState<RegisterResponse?>> = liveData {
-            emit(ResultState.Loading)
-            emit(chattingRepository.register(nama, email, password, repeatPassword))
-        }
+    fun register(
+        nama: String, email: String, password: String, repeatPassword: String
+    ): LiveData<ResultState<RegisterResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(chattingRepository.register(nama, email, password, repeatPassword))
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.stunting.ui
+package com.example.stunting.ui.detail_group
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
@@ -26,7 +25,10 @@ import com.example.stunting.adapter.Interface.OnItemInteractionListener
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithSelection
 import com.example.stunting.databinding.ActivityDetailGroupBinding
 import com.example.stunting.databinding.DialogCustomTambahAnggotaBinding
+import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.MainViewModel
+import com.example.stunting.ui.ViewModelFactory
 
 class DetailGroupActivity : AppCompatActivity() {
     private var _binding: ActivityDetailGroupBinding? = null
@@ -37,6 +39,7 @@ class DetailGroupActivity : AppCompatActivity() {
     private var userId: Int? = null
     private var groupId: Int? = null
     private val detailGroupAnggotaAdapter = DetailGroupAnggotaAdapter()
+    private var roleValueRadioButton = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,16 +59,29 @@ class DetailGroupActivity : AppCompatActivity() {
             getUserGroups()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+
+        binding.flIconEditBodyGroup.setOnClickListener {
+
+//            val namaGroup = binding.tvNamaGroup.text.toString().trim()
+//            val deskripsi = binding.tvDeskripsi.text.toString().trim()
+
+//            updateGroupById(userId, groupId, namaGroup, deskripsi, null, null)
+//            private fun updateGroupById(
+//                userId: Int, groupId: Int, namaGroup:String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+//            ) {
+//
+//            }
+        }
+
         binding.rvAnggota.apply {
-            layoutManager = LinearLayoutManager(this@DetailGroupActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(
+                this@DetailGroupActivity, LinearLayoutManager.VERTICAL, false
+            )
             setHasFixedSize(true)
             adapter = detailGroupAnggotaAdapter
         }
 
-        binding.tvTambahAnggota.setOnClickListener {
-            Toast.makeText(this@DetailGroupActivity, "Akan ditambahkan fitur ini, nantikan informasinya di github", Toast.LENGTH_LONG).show()
-//            showDialogCustomTambahAnggotaBinding()
-        }
+        binding.tvTambahAnggota.setOnClickListener { showDialogCustomTambahAnggotaBinding() }
     }
 
     private fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) {
@@ -113,13 +129,6 @@ class DetailGroupActivity : AppCompatActivity() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        val rgRole = view.rgRole
-        val selectedId = rgRole.checkedRadioButtonId
-        val selectedRadioButton = findViewById<RadioButton>(selectedId)
-        val selectedValue = selectedRadioButton.text.toString()
-
-        Log.d("RadioValue", "Dipilih: $selectedValue")
-
         val detailGroupTambahAnggotaAdapter = DetailGroupTambahAnggotaAdapter(object : OnItemInteractionListener {
             override fun onTextChangedWhileSelected(isAnyItemSelected: Boolean) {
                 if (isAnyItemSelected) {
@@ -147,13 +156,52 @@ class DetailGroupActivity : AppCompatActivity() {
 
         getUserProfilesFromDatabase(detailGroupTambahAnggotaAdapter)
 
-
         view.btnAdd.setOnClickListener {
+            val roleSelectedId = view.rgRole.checkedRadioButtonId
+            if (roleSelectedId != -1) {
+                val selectedRadioButton = viewDialog.findViewById<RadioButton>(roleSelectedId)
+                roleValueRadioButton = selectedRadioButton.text.toString()
+            }
+
             val idUserList = detailGroupTambahAnggotaAdapter.getSelectedIds()
+            addUserByGroupId(groupId!!, idUserList, roleValueRadioButton)
+            viewDialog.dismiss()
         }
 
         view.btnCancel.setOnClickListener { viewDialog.dismiss() }
         viewDialog.show()
+    }
+
+    private fun addUserByGroupId(groupId: Int, idUserList: List<Int>, role: String) {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.addUserByGroupId(groupId, idUserList, role).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+                        Toast.makeText(this, result.error, Toast.LENGTH_LONG).show()
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        Toast.makeText(this, "${idUserList.size} anggota berhasil ditambahkan", Toast.LENGTH_LONG).show()
+                        getUserGroups()
+                        getUserGroupRelationByGroupId(groupId)
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private fun getUserGroups() {
@@ -198,6 +246,11 @@ class DetailGroupActivity : AppCompatActivity() {
                         .into(binding.civEditProfile)
                 }
 
+                val urlBanner = groups.gambarBanner
+                Glide.with(this)
+                    .load(urlBanner)
+                    .into(binding.ivEditBanner)
+
                 binding.tvNamaGroup.text = groups.namaGroup
                 binding.tvDeskripsi.text = groups.deskripsi
                 binding.tvJumlahAnggota.text = "${jumlahAnggota} Anggota"
@@ -205,9 +258,6 @@ class DetailGroupActivity : AppCompatActivity() {
             detailGroupAnggotaAdapter.submitList(result)
         }
     }
-
-
-
 
     companion object {
         const val EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT = "extra_user_id_to_detail_group_chat"
