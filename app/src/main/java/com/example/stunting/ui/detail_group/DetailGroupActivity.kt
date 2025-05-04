@@ -7,6 +7,8 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
@@ -17,6 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
+import com.example.stunting.MyDeskripsiGroupEditText.Companion.MAX_CHARACTER_DESKRIPSI_GROUP
+import com.example.stunting.MyNamaGroupEditText.Companion.MAX_CHARACTER_NAMA_GROUP
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.DetailGroupAnggotaAdapter
@@ -24,7 +28,9 @@ import com.example.stunting.adapter.DetailGroupTambahAnggotaAdapter
 import com.example.stunting.adapter.Interface.OnItemInteractionListener
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithSelection
 import com.example.stunting.databinding.ActivityDetailGroupBinding
+import com.example.stunting.databinding.DialogCustomEditGroupBinding
 import com.example.stunting.databinding.DialogCustomTambahAnggotaBinding
+import com.example.stunting.databinding.DialogCustomTambahGroupBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
@@ -60,18 +66,7 @@ class DetailGroupActivity : AppCompatActivity() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        binding.flIconEditBodyGroup.setOnClickListener {
-
-//            val namaGroup = binding.tvNamaGroup.text.toString().trim()
-//            val deskripsi = binding.tvDeskripsi.text.toString().trim()
-
-//            updateGroupById(userId, groupId, namaGroup, deskripsi, null, null)
-//            private fun updateGroupById(
-//                userId: Int, groupId: Int, namaGroup:String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
-//            ) {
-//
-//            }
-        }
+        binding.flIconEditBodyGroup.setOnClickListener { showDialogCustomEditGroupBinding(groupId!!, userId!!) }
 
         binding.rvAnggota.apply {
             layoutManager = LinearLayoutManager(
@@ -82,6 +77,96 @@ class DetailGroupActivity : AppCompatActivity() {
         }
 
         binding.tvTambahAnggota.setOnClickListener { showDialogCustomTambahAnggotaBinding() }
+    }
+
+    private fun textWatcherDialogCustomEditGroup(view: DialogCustomEditGroupBinding) {
+        val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val namaGroup = view.tietNamaGroup.text.toString()
+                val deskripsiGroup = view.tietDeskripsiGroup.text.toString()
+
+                val isNamaGroupValid = namaGroup.length >= MAX_CHARACTER_NAMA_GROUP
+                val isDeskripsiGroupValid = deskripsiGroup.length >= MAX_CHARACTER_DESKRIPSI_GROUP
+
+                view.btnEdit.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty() &&
+                        !isNamaGroupValid && !isDeskripsiGroupValid
+
+                if (view.btnEdit.isEnabled == true) {
+                    view.btnEdit.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.blueSecond)
+                    )
+                } else {
+                    view.btnEdit.strokeColor = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.buttonDisabledColor)
+                    )
+                    view.btnEdit.backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(this@DetailGroupActivity, R.color.white)
+                    )
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        }
+        view.tietNamaGroup.addTextChangedListener(textWatcher)
+        view.tietDeskripsiGroup.addTextChangedListener(textWatcher)
+    }
+
+    private fun showDialogCustomEditGroupBinding(groupId: Int, userId: Int) {
+        val view = DialogCustomEditGroupBinding.inflate(layoutInflater)
+        val viewDialog = Dialog(this)
+
+        viewDialog.setContentView(view.root)
+        viewDialog.setCanceledOnTouchOutside(false)
+        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        textWatcherDialogCustomEditGroup(view)
+
+        view.btnEdit.setOnClickListener {
+            val namaGroup = view.tietNamaGroup.text.toString().trim()
+            val deskripsi = view.tietDeskripsiGroup.text.toString().trim()
+
+            viewModel.updateGroupById(
+                groupId, userId, namaGroup, deskripsi, null, null)
+                .observe(this) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> progressBar.show()
+                            is ResultState.Error -> progressBar.dismiss()
+                            is ResultState.Success -> {
+                                progressBar.dismiss()
+                                viewDialog.dismiss()
+
+                                val message = result.data?.message.toString()
+                                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+
+                                // Update kembali dari database
+                                getUserGroups()
+                                getUserGroupRelationByGroupId(groupId)
+
+                                view.tietNamaGroup.text?.clear()
+                                view.tietDeskripsiGroup.text?.clear()
+                            }
+                            is ResultState.Unauthorized -> {
+                                viewModel.logout()
+                                val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
+                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                                startActivity(intent)
+                            }
+                        }
+                    }
+                }
+        }
+        view.btnCancel.setOnClickListener { viewDialog.dismiss() }
+        viewDialog.show()
     }
 
     private fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) {

@@ -411,7 +411,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        civEditProfile.setOnClickListener {
+        ivEditBanner.setOnClickListener {
             isEditProfile = false
             showBottomSheetDialog()
         }

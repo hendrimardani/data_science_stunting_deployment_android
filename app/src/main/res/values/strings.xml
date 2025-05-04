@@ -179,7 +179,6 @@
     <string name="text_no_connected">Koneksi Internet Terputus</string>
     <string name="next_login">Lanjut login</string>
     <string name="text_no_internet">Ooopss... anda tidak terhubung ke internet.</string>
-    <string name="text_nama_group_chat">Nama Group</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -198,11 +197,11 @@
     <string name="text_yes">Ya</string>
     <string name="text_group_chat_list">Daftar Group Chat</string>
     <string name="text_add_group">Tambah Group</string>
-    <string name="text_name_group">Nama Group</string>
+    <string name="text_nama_group">Nama Group</string>
     <string name="text_description_group">Deskripsi Group</string>
     <string name="hint_text_mau_tanya_apa">Mau tanya apa ...</string>
     <string name="hint_text_kirim_pesan">Kirim pesan ...</string>
-    <string name="text_deskripsi_group_chat">deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi </string>
+    <string name="text_deskripsi_group">deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi </string>
     <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
     <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
     <string name="hint_text_cari">Cari anggota...</string>
@@ -213,4 +212,5 @@
     <string name="text_tambah_anggota">Tambah Anggota</string>
     <string name="text_role">Role</string>
     <string name="text_member">member</string>
+    <string name="text_edit_group">Edit Group</string>
 </resources>

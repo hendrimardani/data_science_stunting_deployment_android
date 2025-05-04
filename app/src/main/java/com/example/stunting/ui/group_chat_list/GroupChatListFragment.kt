@@ -56,7 +56,7 @@ class GroupChatListFragment : Fragment() {
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
         getUserGroupRelationByUserId(userId!!)
-        getUserGroup()
+        getUserGroups()
 
         binding.rvGroupChatList.apply {
             layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -102,7 +102,7 @@ class GroupChatListFragment : Fragment() {
     }
 
 
-    private fun getUserGroup() {
+    private fun getUserGroups() {
         val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
@@ -179,7 +179,7 @@ class GroupChatListFragment : Fragment() {
 
                                 // Simpan ke database lagi
                                 getUserGroupRelationByUserId(userId)
-                                getUserGroup()
+                                getUserGroups()
 
                                 view.tietNamaGroup.text?.clear()
                                 view.tietDeskripsiGroup.text?.clear()
@@ -201,7 +201,7 @@ class GroupChatListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // Supaya ketika ditekan tombol back muncul lagi data dari database
-        getUserGroup()
+        getUserGroups()
     }
 
     companion object {

@@ -194,6 +194,10 @@ class ChattingRepository(
         }
     }
 
+    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?): LiveData<UserGroupRelation> {
+        return chattingDatabase.userGroupDao().get
+    }
+
     fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<UserGroupRelation> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserIdGroupId(userId, groupId)
     }
@@ -207,7 +211,7 @@ class ChattingRepository(
     }
 
     suspend fun updateGroupById(
-        userId: Int, groupId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
     ): ResultState<UpdateGroupByIdResponse?> {
         return try {
             val requestBodyJson = UpdateGroupByIdRequestJSON(userId, namaGroup, deskripsi)

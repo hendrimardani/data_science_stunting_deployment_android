@@ -38,11 +38,11 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
 
     fun updateGroupById(
-        userId: Int, groupId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
     ): LiveData<ResultState<UpdateGroupByIdResponse?>> = liveData {
         emit(ResultState.Loading)
         emit(
-            chattingRepository.updateGroupById(userId, groupId, namaGroup, deskripsi, gambarProfile, gambarBanner)
+            chattingRepository.updateGroupById(groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner)
         )
     }
 

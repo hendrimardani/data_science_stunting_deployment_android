@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.edit_detail_group.EditDetailGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detail_group.DetailGroupActivity"
             android:exported="false" />
         <activity
