@@ -58,13 +58,23 @@ class GroupChatListFragment : Fragment() {
         getUserGroupRelationByUserId(userId!!)
         getUserGroups()
 
-        binding.rvGroupChatList.apply {
+        binding.rvGroup.apply {
             layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
             adapter = groupChatListAdapter
         }
 
-        binding.fabGroupChatList.setOnClickListener { showDialogCustomTambahGroupBinding(userId) }
+        getUserGroupRelationByUserIdRole(userId!!, ROLE_ADMIN)
+
+        binding.fabAdd.setOnClickListener { showDialogCustomTambahGroupBinding(userId) }
+    }
+
+    private fun getUserGroupRelationByUserIdRole(userId: Int, role: String) {
+        viewModel.getUserGroupRelationByUserIdRole(userId, role).observe(requireActivity()) { result ->
+            val groupIsCreated = result.size
+            if (groupIsCreated >= 1) binding.fabAdd.visibility = View.GONE
+            else binding.fabAdd.visibility = View.VISIBLE
+        }
     }
 
     private fun textWatcherDialogCustomTambahGroup(view: DialogCustomTambahGroupBinding) {
@@ -206,6 +216,7 @@ class GroupChatListFragment : Fragment() {
 
     companion object {
         private val TAG = GroupChatListFragment::class.java.simpleName
+        const val ROLE_ADMIN = "admin"
         const val EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET = "extra_user_id_to_group_chat_list_fragment"
     }
 }

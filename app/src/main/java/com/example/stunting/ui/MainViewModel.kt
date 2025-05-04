@@ -30,6 +30,9 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         emit(chattingRepository.addMessage(userId, groupId, isiPesan))
     }
 
+    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?) =
+        chattingRepository.getUserGroupRelationByUserIdRole(userId, role)
+
     fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
         chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
 

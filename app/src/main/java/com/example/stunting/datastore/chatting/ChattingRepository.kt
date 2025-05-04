@@ -194,8 +194,8 @@ class ChattingRepository(
         }
     }
 
-    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?): LiveData<UserGroupRelation> {
-        return chattingDatabase.userGroupDao().get
+    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?): LiveData<List<UserGroupRelation>> {
+        return chattingDatabase.userGroupDao().getUserGroupRelationByUserIdRole(userId, role!!)
     }
 
     fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int): LiveData<UserGroupRelation> {
