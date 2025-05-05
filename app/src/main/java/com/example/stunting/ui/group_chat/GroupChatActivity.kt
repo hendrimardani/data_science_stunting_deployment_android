@@ -119,8 +119,8 @@ class GroupChatActivity : AppCompatActivity() {
     }
 
     private fun getUserGroupRelationByGroupId(groupId: Int?) {
-        viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { result ->
-            result.forEach { item ->
+        viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { userGroupRelation ->
+            userGroupRelation.forEach { item ->
                 val gambarProfile = item.groupsEntity.gambarProfile
                 val namaGroup =  item.groupsEntity.namaGroup
                 setToolBar(gambarProfile, namaGroup)

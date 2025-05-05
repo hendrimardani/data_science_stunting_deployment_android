@@ -1,6 +1,7 @@
 package com.example.stunting.ui
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
@@ -19,6 +20,12 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
+
+    private var _updateGroupByidResult = MutableLiveData<ResultState<UpdateGroupByIdResponse?>>()
+    val updateGroupByIdResult = _updateGroupByidResult
+    private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
+    val updateUserProfileByIdResult = _updateUserProfileByIdResult
+
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
     fun getMessages() = chattingRepository.getMessages()
@@ -42,11 +49,12 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun updateGroupById(
         groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
-    ): LiveData<ResultState<UpdateGroupByIdResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(
-            chattingRepository.updateGroupById(groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner)
-        )
+    ) {
+        viewModelScope.launch {
+            _updateGroupByidResult.value = ResultState.Loading
+            val result = chattingRepository.updateGroupById(groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner)
+            _updateGroupByidResult.value = result
+        }
     }
 
     fun getUserGroups() = chattingRepository.getUserGroups()
@@ -72,13 +80,14 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun updateUserProfileById(
         userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
         tglLahir: String?, gambarProfile: File?, gambarBanner: File?
-    ): LiveData<ResultState<UpdateUserProfileByIdResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(
-            chattingRepository.updateUserProfileById(
+    ) {
+        viewModelScope.launch {
+            _updateUserProfileByIdResult.value = ResultState.Loading
+            val result = chattingRepository.updateUserProfileById(
                 userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, gambarProfile, gambarBanner
             )
-        )
+            _updateUserProfileByIdResult.value = result
+        }
     }
 
     fun logout() {

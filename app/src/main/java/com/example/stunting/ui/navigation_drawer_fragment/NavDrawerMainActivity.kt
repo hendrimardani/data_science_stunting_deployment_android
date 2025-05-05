@@ -35,7 +35,7 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
-import com.example.stunting.databinding.DialogBottomSheetNavDrawerMainActivityBinding
+import com.example.stunting.databinding.DialogBottomSheetFotoBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
@@ -57,8 +57,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
     }
     private var userId: Int? = null
     private var isEditProfile: Boolean = false
-    private var _bindingNavDrawerMainActivityBottomSheetDialog: DialogBottomSheetNavDrawerMainActivityBinding? = null
-    private val bindingNavDrawerMainActivityBottomSheetDialog get() = _bindingNavDrawerMainActivityBottomSheetDialog!!
+    private var _bindingFotoBottomSheetDialog: DialogBottomSheetFotoBinding? = null
+    private val bindingFotoBottomSheetDialog get() = _bindingFotoBottomSheetDialog!!
 
     private var currentImageProfileUri: Uri? = null
     private var currentImageBannerUri: Uri? = null
@@ -125,7 +125,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Binding BumilBottomSheetDialog for retrieve xml id
-        _bindingNavDrawerMainActivityBottomSheetDialog = DialogBottomSheetNavDrawerMainActivityBinding.inflate(layoutInflater)
+        _bindingFotoBottomSheetDialog = DialogBottomSheetFotoBinding.inflate(layoutInflater)
 
         // Ubah warna teks logout
         val menu = navView.menu
@@ -161,7 +161,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
                 viewModel.updateUserProfileById(
                     userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, imageProfileFile, null
-                ).observe(this) { result ->
+                )
+                viewModel.updateUserProfileByIdResult.observe(this) { result ->
                     if (result != null) {
                         when (result) {
                             is ResultState.Loading -> progressBar.show()
@@ -204,7 +205,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
                 viewModel.updateUserProfileById(
                     userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, null, imageBannerFile
-                ).observe(this) { result ->
+                )
+                viewModel.updateUserProfileByIdResult.observe(this) { result ->
                     if (result != null) {
                         when (result) {
                             is ResultState.Loading -> progressBar.show()
@@ -254,7 +256,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     private fun showBottomSheetDialog() {
         // Check if the view already has a parent
-        val viewBottomSheetDialog: View = bindingNavDrawerMainActivityBottomSheetDialog.root
+        _bindingFotoBottomSheetDialog = DialogBottomSheetFotoBinding.inflate(layoutInflater)
+        val viewBottomSheetDialog: View = bindingFotoBottomSheetDialog.root
 
         if (viewBottomSheetDialog.parent != null) {
             val parentViewGroup = viewBottomSheetDialog.parent as ViewGroup
@@ -265,7 +268,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         bottomSheetDialog.setContentView(viewBottomSheetDialog)
         bottomSheetDialog.show()
 
-        bindingNavDrawerMainActivityBottomSheetDialog.apply {
+        bindingFotoBottomSheetDialog.apply {
             cvCamera.setOnClickListener {
                 if (isEditProfile) {
                     startCameraProfile()
@@ -312,12 +315,12 @@ class NavDrawerMainActivity : AppCompatActivity() {
     private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
-        if (getExtraFragment == "LoginFragment") {
+        if (getExtraFragment == LOGIN_FRAGMENT) {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserProfileWithUserById(userId!!)
-        } else if (getExtraFragment == "OpeningFragment") {     // Langsung masuk
+        } else if (getExtraFragment == OPENING_FRAGMENT) {     // Langsung masuk
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
@@ -489,6 +492,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = NavDrawerMainActivity::class.java.simpleName
+        private const val LOGIN_FRAGMENT = "LoginFragment"
+        private const val OPENING_FRAGMENT = "OpeningFragment"
         const val EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_fragment_to_nav_drawer_main_activity"
         const val EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_id_to_nav_drawer_main_activity"
         const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_model_to_nav_drawer_main_activity"

@@ -89,7 +89,7 @@ class GroupChatListFragment : Fragment() {
                 view.btnAdd.isEnabled = namaGroup.isNotEmpty() && deskripsiGroup.isNotEmpty() &&
                     !isNamaGroupValid && !isDeskripsiGroupValid
 
-                if (view.btnAdd.isEnabled == true) {
+                if (view.btnAdd.isEnabled) {
                     view.btnAdd.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(requireActivity(), R.color.blueSecond)
                     )
@@ -134,7 +134,7 @@ class GroupChatListFragment : Fragment() {
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
                         val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
                         startActivity(intent)
                     }
                 }
@@ -143,8 +143,8 @@ class GroupChatListFragment : Fragment() {
     }
 
     private fun getUserGroupRelationByUserId(userId: Int?) {
-        viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { result ->
-            groupChatListAdapter.submitList(result)
+        viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { userGroupRelation ->
+            groupChatListAdapter.submitList(userGroupRelation)
         }
     }
 
@@ -197,7 +197,7 @@ class GroupChatListFragment : Fragment() {
                             is ResultState.Unauthorized -> {
                                 viewModel.logout()
                                 val intent = Intent(requireActivity(), MainActivity::class.java)
-                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
                                 startActivity(intent)
                             }
                         }
@@ -216,7 +216,8 @@ class GroupChatListFragment : Fragment() {
 
     companion object {
         private val TAG = GroupChatListFragment::class.java.simpleName
-        const val ROLE_ADMIN = "admin"
+        private const val ROLE_ADMIN = "admin"
+        private const val LOGIN_FRAGMENT = "LoginFragment"
         const val EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET = "extra_user_id_to_group_chat_list_fragment"
     }
 }

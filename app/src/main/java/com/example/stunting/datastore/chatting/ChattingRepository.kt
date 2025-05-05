@@ -252,9 +252,8 @@ class ChattingRepository(
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
-
                     val errorBodyJson = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository updateGroupById() Error ${response.code()}: $errorBodyJson")
+//                    Log.e(TAG, "onChattingRepository updateGroupById() Error ${response.code()}: $errorBodyJson")
                     // Ubah dari JSON string ke JSON
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")
@@ -262,10 +261,10 @@ class ChattingRepository(
                 }
             }
         } catch (e: HttpException) {
-            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }
@@ -506,9 +505,12 @@ class ChattingRepository(
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
-                    val errorBody = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBody")
-                    ResultState.Error("Error ${response.code()}: $errorBody")
+                    val errorBodyJson = response.errorBody()?.string()
+//                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBodyJson")
+                    // Ubah dari JSON string ke JSON
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
                 }
             }
         } catch (e: HttpException) {
