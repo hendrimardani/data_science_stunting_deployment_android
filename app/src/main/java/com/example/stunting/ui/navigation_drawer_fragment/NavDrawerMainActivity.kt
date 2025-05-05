@@ -44,6 +44,7 @@ import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
 import com.example.stunting.utils.Functions.getImageUri
+import com.example.stunting.utils.Functions.observeOnce
 import com.example.stunting.utils.Functions.reduceFileImage
 import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -56,7 +57,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var userId: Int? = null
-    private var isEditProfile: Boolean = false
+    private var isEditGambarProfile: Boolean = false
+
     private var _bindingFotoBottomSheetDialog: DialogBottomSheetFotoBinding? = null
     private val bindingFotoBottomSheetDialog get() = _bindingFotoBottomSheetDialog!!
 
@@ -270,7 +272,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
         bindingFotoBottomSheetDialog.apply {
             cvCamera.setOnClickListener {
-                if (isEditProfile) {
+                if (isEditGambarProfile) {
                     startCameraProfile()
                     bottomSheetDialog.dismiss()
                 } else {
@@ -279,7 +281,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 }
             }
             cvGallery.setOnClickListener {
-                if (isEditProfile) {
+                if (isEditGambarProfile) {
                     startGalleryProfile()
                     bottomSheetDialog.dismiss()
                 } else {
@@ -295,7 +297,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             val headerView = binding.navView.getHeaderView(0)
             val editBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
 
-            viewModel.getUserProfileWithUserById(userId!!).observe(this) { userProfileWithUserRelation ->
+            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
                 updateUserProfileById(userId!!, editBanner, false, userProfileWithUserRelation)
             }
         }
@@ -306,7 +308,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             val headerView = binding.navView.getHeaderView(0)
             val editProfile = headerView.findViewById<ImageView>(R.id.civ_edit_profile)
 
-            viewModel.getUserProfileWithUserById(userId!!).observe(this) { userProfileWithUserRelation ->
+            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
                 updateUserProfileById(userId!!, editProfile, true, userProfileWithUserRelation)
             }
         }
@@ -353,14 +355,15 @@ class NavDrawerMainActivity : AppCompatActivity() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUsers().observe(this) { result ->
+        viewModel.getUsersFromApi()
+        viewModel.getUsersResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> progressBar.dismiss()
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsers : ${result.data}")
+                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsersResult : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -410,12 +413,12 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val userProfile = userProfileWithUserRelation?.userProfile
 
         flProfile.setOnClickListener {
-            isEditProfile = true
+            isEditGambarProfile = true
             showBottomSheetDialog()
         }
 
         ivEditBanner.setOnClickListener {
-            isEditProfile = false
+            isEditGambarProfile = false
             showBottomSheetDialog()
         }
 
@@ -488,6 +491,11 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _bindingFotoBottomSheetDialog = null
     }
 
     companion object {

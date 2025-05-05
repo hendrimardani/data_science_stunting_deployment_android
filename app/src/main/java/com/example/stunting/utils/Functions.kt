@@ -27,6 +27,9 @@ import android.widget.EditText
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.exifinterface.media.ExifInterface
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.stunting.BuildConfig
 import com.example.stunting.R
 import com.example.stunting.databinding.DialogCustomeInfoBinding
@@ -48,6 +51,16 @@ object Functions {
     private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
     private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
     private const val MAXIMAL_SIZE = 1000000
+
+    // Supaya tidak melakukan observe secara terus meneurs infinite loop
+    fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+        observe(lifecycleOwner, object : Observer<T> {
+            override fun onChanged(value: T) {
+                observer.onChanged(value)
+                removeObserver(this)
+            }
+        })
+    }
 
     private fun createCustomTempFile(context: Context): File {
         val filesDir = context.externalCacheDir

@@ -56,7 +56,7 @@ class GroupChatActivity : AppCompatActivity() {
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
         getUserGroupRelationByGroupId(groupId)
-        getMessages()
+//        getMessages()
         getMessageByGroupId(groupId!!, groupChatAdapter)
 
         textWatcher()
@@ -105,7 +105,7 @@ class GroupChatActivity : AppCompatActivity() {
                         progressBar.dismiss()
 //                            Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
                         getMessageByGroupId(groupId!!, groupChatAdapter)
-                        getMessages()
+//                        getMessages()
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -128,41 +128,41 @@ class GroupChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMessages() {
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        viewModel.getMessages().observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
-                        if (result.data.isNotEmpty()) {
-                            binding.rvMessages.scrollToPosition(result.data.size - 1)
-                            binding.rvMessages.layoutManager!!.smoothScrollToPosition(
-                                binding.rvMessages, null, result.data.size - 1
-                            )
-                        }
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
+//    private fun getMessages() {
+//        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+//        progressBar.setTitleText(getString(R.string.title_loading))
+//        progressBar.setContentText(getString(R.string.description_loading))
+//            .progressHelper.barColor = Color.parseColor("#73D1FA")
+//        progressBar.setCancelable(false)
+//
+//        viewModel.getMessages().observe(this) { result ->
+//            if (result != null) {
+//                when (result) {
+//                    is ResultState.Loading -> progressBar.show()
+//                    is ResultState.Error -> {
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatActivity getMessages Error  : ${result.error}")
+//                    }
+//                    is ResultState.Success -> {
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatActivity getMessages Success : ${result.data}")
+//                        if (result.data.isNotEmpty()) {
+//                            binding.rvMessages.scrollToPosition(result.data.size - 1)
+//                            binding.rvMessages.layoutManager!!.smoothScrollToPosition(
+//                                binding.rvMessages, null, result.data.size - 1
+//                            )
+//                        }
+//                    }
+//                    is ResultState.Unauthorized -> {
+//                        viewModel.logout()
+//                        val intent = Intent(this, MainActivity::class.java)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
         viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
@@ -265,7 +265,7 @@ class GroupChatActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Supaya ketika ditekan tombol back muncul lagi data dari database
-        getMessages()
+//        getMessages()
     }
 
     override fun onDestroy() {

@@ -82,7 +82,7 @@ interface ApiService {
     ): Response<UpdateUserProfileByIdResponse>
 
     @GET("users")
-    fun getAllUsers(): Call<GetAllUsersResponse>
+    fun getAllUsers(): Response<GetAllUsersResponse>
 
     @POST("register")
     suspend fun register(

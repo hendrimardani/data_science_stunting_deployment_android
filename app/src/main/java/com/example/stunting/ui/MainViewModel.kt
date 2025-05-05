@@ -7,9 +7,11 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
+import com.example.stunting.database.with_api.response.DataUsersItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -23,12 +25,18 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     private var _updateGroupByidResult = MutableLiveData<ResultState<UpdateGroupByIdResponse?>>()
     val updateGroupByIdResult = _updateGroupByidResult
+
     private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
     val updateUserProfileByIdResult = _updateUserProfileByIdResult
 
+    private var _getUsersResult = MutableLiveData<ResultState<List<DataUsersItem?>>>()
+    val getUsersResult = _getUsersResult
+
+    val getUsersFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUsersFromLocal()
+
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
-    fun getMessages() = chattingRepository.getMessages()
+//    fun getMessages() = chattingRepository.getMessages()
 
     fun addMessage(
         userId: Int, groupId: Int, isiPesan: String
@@ -57,7 +65,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         }
     }
 
-    fun getUserGroups() = chattingRepository.getUserGroups()
+//    fun getUserGroups() = chattingRepository.getUserGroups()
 
     fun addUserGroup(
         userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?
@@ -110,7 +118,12 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUserProfilesFromDatabase() = chattingRepository.getUserProfilesFromDatabase()
 
-    fun getUsers() = chattingRepository.getUsers()
+    fun getUsersFromApi() {
+        viewModelScope.launch {
+            _getUsersResult.value = ResultState.Loading
+            _getUsersResult.value = chattingRepository.getUsersFromApi()
+        }
+    }
 
     fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {
         emit(ResultState.Loading)

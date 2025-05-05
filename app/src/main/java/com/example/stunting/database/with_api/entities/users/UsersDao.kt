@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface UsersDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUsers(users: List<UsersEntity>)
 
     @Query("SELECT * FROM users ORDER BY id_user ASC")

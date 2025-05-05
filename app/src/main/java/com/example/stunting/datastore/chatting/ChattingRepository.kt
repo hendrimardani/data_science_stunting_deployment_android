@@ -28,6 +28,7 @@ import com.example.stunting.database.with_api.request_json.UpdateGroupByIdReques
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
+import com.example.stunting.database.with_api.response.DataUsersItem
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -35,7 +36,9 @@ import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.utils.AppExecutors
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -71,103 +74,103 @@ class ChattingRepository(
     }
 
     // Menggunakan entitas pusat relasi
-    fun getMessages(): LiveData<ResultState<List<MessagesEntity>>> {
-        resultListMessages.value = ResultState.Loading
-        val response = apiService.getAllMessages()
-        response.enqueue(object : Callback<GetAllMessagesResponse> {
-            override fun onResponse(
-                call: Call<GetAllMessagesResponse>,
-                response: Response<GetAllMessagesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    // hasil: 2025-04-18T14:00:00+07:00
-                    val currentDateTime = OffsetDateTime.now(ZoneOffset.of("+07:00"))
-                    val dateTimeFormatted = currentDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-
-                    val messages = response.body()?.dataMessages
-//                    Log.d(TAG, "onChattingRepository getMessages success: $messages")
-
-                    val userProfileList = ArrayList<UserProfileEntity>()
-                    val groupsList = ArrayList<GroupsEntity>()
-                    val notificationsList = ArrayList<NotificationsEntity>()
-                    val messagesList = ArrayList<MessagesEntity>()
-
-                    appExecutors.diskIO.execute {
-                        messages?.forEach { item ->
-                            val userProfile = item?.userProfile
-                            val groups = item?.groups
-                            val notifications = item?.notifications
-
-                            if (userProfile != null && groups != null && notifications != null) {
-                                userProfileList.add(
-                                    UserProfileEntity(
-                                        id = userProfile.id,
-                                        userId = userProfile.userId,
-                                        nama = userProfile.nama,
-                                        nik = userProfile.nik,
-                                        jenisKelamin = userProfile.jenisKelamin,
-                                        tglLahir = userProfile.tglLahir,
-                                        umur = userProfile.umur,
-                                        alamat = userProfile.alamat,
-                                        gambarProfile = userProfile.gambarProfile,
-                                        gambarBanner = userProfile.gambarBanner,
-                                        createdAt = userProfile.createdAt,
-                                        updatedAt = userProfile.updatedAt
-                                    )
-                                )
-
-                                groupsList.add(
-                                    GroupsEntity(
-                                        id = groups.id,
-                                        namaGroup = groups.namaGroup,
-                                        deskripsi = groups.deskripsi,
-                                        gambarProfile = groups.gambarProfile,
-                                        gambarBanner = groups.gambarBanner,
-                                        createdAt = groups.createdAt,
-                                        updatedAt = groups.updatedAt
-                                    )
-                                )
-
-                                notificationsList.add(
-                                    NotificationsEntity(
-                                        id = notifications.id,
-                                        isStatus = notifications.isStatus,
-                                        createdAt = dateTimeFormatted,
-                                        updatedAt = dateTimeFormatted
-                                    )
-                                )
-
-                                messagesList.add(
-                                    MessagesEntity(
-                                        user_id = userProfile.userId ?: 0,
-                                        group_id = groups.id ?: 0,
-                                        notification_id = notifications.id ?: 0,
-                                        isi_pesan = item.isiPesan,
-                                        createdAt = dateTimeFormatted,
-                                        updatedAt = dateTimeFormatted
-                                    )
-                                )
-                            }
-                            chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
-                            chattingDatabase.groupsDao().insertGroups(groupsList)
-                            chattingDatabase.notificationsDao().insertNotifications(notificationsList)
-                            chattingDatabase.messagesDao().insertMessages(messagesList)
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GetAllMessagesResponse>, t: Throwable) {
-//                Log.d(TAG, "onChattingRepository getMessages Failed : ${t.message}")
-                resultListMessages.value = ResultState.Error(t.message.toString())
-            }
-        })
-        val localData = chattingDatabase.messagesDao().getMessages()
-        resultListMessages.addSource(localData) { userData: List<MessagesEntity> ->
-            resultListMessages.value = ResultState.Success(userData)
-        }
-        return resultListMessages
-    }
+//    fun getMessages(): LiveData<ResultState<List<MessagesEntity>>> {
+//        resultListMessages.value = ResultState.Loading
+//        val response = apiService.getAllMessages()
+//        response.enqueue(object : Callback<GetAllMessagesResponse> {
+//            override fun onResponse(
+//                call: Call<GetAllMessagesResponse>,
+//                response: Response<GetAllMessagesResponse>
+//            ) {
+//                if (response.isSuccessful) {
+//                    // hasil: 2025-04-18T14:00:00+07:00
+//                    val currentDateTime = OffsetDateTime.now(ZoneOffset.of("+07:00"))
+//                    val dateTimeFormatted = currentDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+//
+//                    val messages = response.body()?.dataMessages
+////                    Log.d(TAG, "onChattingRepository getMessages success: $messages")
+//
+//                    val userProfileList = ArrayList<UserProfileEntity>()
+//                    val groupsList = ArrayList<GroupsEntity>()
+//                    val notificationsList = ArrayList<NotificationsEntity>()
+//                    val messagesList = ArrayList<MessagesEntity>()
+//
+//                    appExecutors.diskIO.execute {
+//                        messages?.forEach { item ->
+//                            val userProfile = item?.userProfile
+//                            val groups = item?.groups
+//                            val notifications = item?.notifications
+//
+//                            if (userProfile != null && groups != null && notifications != null) {
+//                                userProfileList.add(
+//                                    UserProfileEntity(
+//                                        id = userProfile.id,
+//                                        userId = userProfile.userId,
+//                                        nama = userProfile.nama,
+//                                        nik = userProfile.nik,
+//                                        jenisKelamin = userProfile.jenisKelamin,
+//                                        tglLahir = userProfile.tglLahir,
+//                                        umur = userProfile.umur,
+//                                        alamat = userProfile.alamat,
+//                                        gambarProfile = userProfile.gambarProfile,
+//                                        gambarBanner = userProfile.gambarBanner,
+//                                        createdAt = userProfile.createdAt,
+//                                        updatedAt = userProfile.updatedAt
+//                                    )
+//                                )
+//
+//                                groupsList.add(
+//                                    GroupsEntity(
+//                                        id = groups.id,
+//                                        namaGroup = groups.namaGroup,
+//                                        deskripsi = groups.deskripsi,
+//                                        gambarProfile = groups.gambarProfile,
+//                                        gambarBanner = groups.gambarBanner,
+//                                        createdAt = groups.createdAt,
+//                                        updatedAt = groups.updatedAt
+//                                    )
+//                                )
+//
+//                                notificationsList.add(
+//                                    NotificationsEntity(
+//                                        id = notifications.id,
+//                                        isStatus = notifications.isStatus,
+//                                        createdAt = dateTimeFormatted,
+//                                        updatedAt = dateTimeFormatted
+//                                    )
+//                                )
+//
+//                                messagesList.add(
+//                                    MessagesEntity(
+//                                        user_id = userProfile.userId ?: 0,
+//                                        group_id = groups.id ?: 0,
+//                                        notification_id = notifications.id ?: 0,
+//                                        isi_pesan = item.isiPesan,
+//                                        createdAt = dateTimeFormatted,
+//                                        updatedAt = dateTimeFormatted
+//                                    )
+//                                )
+//                            }
+//                            chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+//                            chattingDatabase.groupsDao().insertGroups(groupsList)
+//                            chattingDatabase.notificationsDao().insertNotifications(notificationsList)
+//                            chattingDatabase.messagesDao().insertMessages(messagesList)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<GetAllMessagesResponse>, t: Throwable) {
+////                Log.d(TAG, "onChattingRepository getMessages Failed : ${t.message}")
+//                resultListMessages.value = ResultState.Error(t.message.toString())
+//            }
+//        })
+//        val localData = chattingDatabase.messagesDao().getMessages()
+//        resultListMessages.addSource(localData) { userData: List<MessagesEntity> ->
+//            resultListMessages.value = ResultState.Success(userData)
+//        }
+//        return resultListMessages
+//    }
 
     suspend fun addMessage(userId: Int, groupId: Int, isiPesan: String): ResultState<AddingMessageResponse?> {
         return try {
@@ -270,88 +273,88 @@ class ChattingRepository(
     }
 
     // Menggunakan entitas pusat relasi
-    fun getUserGroups(): LiveData<ResultState<List<UserGroupEntity>>> {
-        resultListUserGroup.value = ResultState.Loading
-
-        val response = apiService.getAllUserGroup()
-        response.enqueue(object : Callback<GetAllUserGroupResponse> {
-            override fun onResponse(
-                call: Call<GetAllUserGroupResponse>,
-                response: Response<GetAllUserGroupResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val userGroups = response.body()?.userGroups
-                    val groupList = ArrayList<GroupsEntity>()
-                    val userProfileList = ArrayList<UserProfileEntity>()
-                    val userGroupList = ArrayList<UserGroupEntity>()
-
-                    appExecutors.diskIO.execute {
-                        userGroups?.forEach { item ->
-                            val userProfile = item?.userProfile
-                            val groups = item?.groups
-
-                            if (groups != null && userProfile != null) {
-                                userProfileList.add(
-                                    UserProfileEntity(
-                                        id = userProfile.id,
-                                        userId = userProfile.userId,
-                                        nama = userProfile.nama,
-                                        nik = userProfile.nik,
-                                        jenisKelamin = userProfile.jenisKelamin,
-                                        tglLahir = userProfile.tglLahir,
-                                        umur = userProfile.umur,
-                                        alamat = userProfile.alamat,
-                                        gambarProfile = userProfile.gambarProfile,
-                                        gambarBanner = userProfile.gambarBanner,
-                                        createdAt = userProfile.createdAt,
-                                        updatedAt = userProfile.updatedAt
-                                    )
-                                )
-                                groupList.add(
-                                    GroupsEntity(
-                                        id = groups.id,
-                                        namaGroup = groups.namaGroup,
-                                        deskripsi = groups.deskripsi,
-                                        gambarProfile = groups.gambarProfile,
-                                        gambarBanner = groups.gambarBanner,
-                                        createdAt = groups.createdAt,
-                                        updatedAt = groups.updatedAt
-                                    )
-                                )
-                                userGroupList.add(
-                                    UserGroupEntity(
-                                        group_id = groups.id ?: 0,
-                                        user_id = userProfile.userId ?: 0,
-                                        role = item.role,
-                                        createdBy = item.createdBy,
-                                        createdAt = item.createdAt,
-                                        updatedAt = item.updatedAt
-                                    )
-                                )
-                            }
-                        }
-
-                        // Simpan ke Room
-                        chattingDatabase.groupsDao().insertGroups(groupList)
-                        chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
-                        chattingDatabase.userGroupDao().insertUserGroups(userGroupList)
-
-                        // Trigger ambil ulang data dari Room setelah simpan selesai
-                        val updatedData = chattingDatabase.userGroupDao().getUserGroup()
-                        resultListUserGroup.postValue(ResultState.Success(updatedData))
-                    }
-                } else {
-                    resultListUserGroup.postValue(ResultState.Error("Gagal mengambil data"))
-                }
-            }
-
-            override fun onFailure(call: Call<GetAllUserGroupResponse>, t: Throwable) {
-                resultListUserGroup.postValue(ResultState.Error(t.message ?: "Unknown error"))
-            }
-        })
-
-        return resultListUserGroup
-    }
+//    fun getUserGroups(): LiveData<ResultState<List<UserGroupEntity>>> {
+//        resultListUserGroup.value = ResultState.Loading
+//
+//        val response = apiService.getAllUserGroup()
+//        response.enqueue(object : Callback<GetAllUserGroupResponse> {
+//            override fun onResponse(
+//                call: Call<GetAllUserGroupResponse>,
+//                response: Response<GetAllUserGroupResponse>
+//            ) {
+//                if (response.isSuccessful) {
+//                    val userGroups = response.body()?.userGroups
+//                    val groupList = ArrayList<GroupsEntity>()
+//                    val userProfileList = ArrayList<UserProfileEntity>()
+//                    val userGroupList = ArrayList<UserGroupEntity>()
+//
+//                    appExecutors.diskIO.execute {
+//                        userGroups?.forEach { item ->
+//                            val userProfile = item?.userProfile
+//                            val groups = item?.groups
+//
+//                            if (groups != null && userProfile != null) {
+//                                userProfileList.add(
+//                                    UserProfileEntity(
+//                                        id = userProfile.id,
+//                                        userId = userProfile.userId,
+//                                        nama = userProfile.nama,
+//                                        nik = userProfile.nik,
+//                                        jenisKelamin = userProfile.jenisKelamin,
+//                                        tglLahir = userProfile.tglLahir,
+//                                        umur = userProfile.umur,
+//                                        alamat = userProfile.alamat,
+//                                        gambarProfile = userProfile.gambarProfile,
+//                                        gambarBanner = userProfile.gambarBanner,
+//                                        createdAt = userProfile.createdAt,
+//                                        updatedAt = userProfile.updatedAt
+//                                    )
+//                                )
+//                                groupList.add(
+//                                    GroupsEntity(
+//                                        id = groups.id,
+//                                        namaGroup = groups.namaGroup,
+//                                        deskripsi = groups.deskripsi,
+//                                        gambarProfile = groups.gambarProfile,
+//                                        gambarBanner = groups.gambarBanner,
+//                                        createdAt = groups.createdAt,
+//                                        updatedAt = groups.updatedAt
+//                                    )
+//                                )
+//                                userGroupList.add(
+//                                    UserGroupEntity(
+//                                        group_id = groups.id ?: 0,
+//                                        user_id = userProfile.userId ?: 0,
+//                                        role = item.role,
+//                                        createdBy = item.createdBy,
+//                                        createdAt = item.createdAt,
+//                                        updatedAt = item.updatedAt
+//                                    )
+//                                )
+//                            }
+//                        }
+//
+//                        // Simpan ke Room
+//                        chattingDatabase.groupsDao().insertGroups(groupList)
+//                        chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+//                        chattingDatabase.userGroupDao().insertUserGroups(userGroupList)
+//
+//                        // Trigger ambil ulang data dari Room setelah simpan selesai
+//                        val updatedData = chattingDatabase.userGroupDao().getUserGroup()
+//                        resultListUserGroup.postValue(ResultState.Success(updatedData))
+//                    }
+//                } else {
+//                    resultListUserGroup.postValue(ResultState.Error("Gagal mengambil data"))
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<GetAllUserGroupResponse>, t: Throwable) {
+//                resultListUserGroup.postValue(ResultState.Error(t.message ?: "Unknown error"))
+//            }
+//        })
+//
+//        return resultListUserGroup
+//    }
 
 
     suspend fun addUserGroup(
@@ -499,14 +502,36 @@ class ChattingRepository(
             )
 
             if (response.isSuccessful) {
-//                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
+                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
+                val updatedUserProfileByIdList = response.body()?.dataUpdateUserProfileById
+                val updatedUserProfileEntity = updatedUserProfileByIdList?.map { userProfile ->
+                    UserProfileEntity(
+                        id = userProfile?.id,
+                        userId = userProfile?.userId,
+                        nama = userProfile?.nama,
+                        nik = userProfile?.nik,
+                        jenisKelamin = userProfile?.jenisKelamin,
+                        tglLahir = userProfile?.tglLahir,
+                        umur = userProfile?.umur,
+                        alamat = userProfile?.alamat,
+                        gambarProfile = userProfile?.gambarProfile,
+                        gambarBanner = userProfile?.gambarBanner,
+                        createdAt = userProfile?.createdAt,
+                        updatedAt = userProfile?.updatedAt
+                    )
+                }
+                if (updatedUserProfileByIdList != null) {
+                    withContext(Dispatchers.IO) {
+                        chattingDatabase.userProfileDao().insertUserProfile(updatedUserProfileEntity!!)
+                    }
+                }
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBodyJson = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBodyJson")
+                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBodyJson")
                     // Ubah dari JSON string ke JSON
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")
@@ -514,10 +539,10 @@ class ChattingRepository(
                 }
             }
         } catch (e: HttpException) {
-//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }
@@ -537,73 +562,70 @@ class ChattingRepository(
     fun getUserProfilesFromDatabase(): LiveData<List<UserProfileWithUserRelation>> {
         return chattingDatabase.userProfileDao().getUserProfilesFromDatabase()
     }
-    
-    // Menggunakan entitas pusat relasi
-    fun getUsers(): LiveData<ResultState<List<UserProfileEntity>>> {
-        resultListUsers.value = ResultState.Loading
-        val response = apiService.getAllUsers()
-        response.enqueue(object: Callback<GetAllUsersResponse> {
-            override fun onResponse(
-                call: Call<GetAllUsersResponse>,
-                response: Response<GetAllUsersResponse>
-            ) {
-//                Log.d(TAG, "onChattingRepository getUsers raw response : ${response.raw()}")
-                if (response.isSuccessful) {
-                    val users = response.body()?.dataUsers
-//                    Log.d(TAG, "onChattingRepository getUsers Success : ${users}")
-                    val usersList = ArrayList<UsersEntity>()
-                    val userProfileList = ArrayList<UserProfileEntity>()
 
-                    appExecutors.diskIO.execute {
-                        users?.forEach { item ->
-                            val users = item?.users
-                            if (users != null) {
-                                // Simpan Users
-                                usersList.add(
-                                    UsersEntity(
-                                        id = item.users.id,
-                                        email = item.users.email,
-                                        password = item.users.password,
-                                        createdAt = item.createdAt,
-                                        updatedAt = item.updatedAt
-                                    )
-                                )
+    fun getUsersFromLocal(): LiveData<List<UserProfileEntity>> {
+        return chattingDatabase.userProfileDao().getUserProfiles()
+    }
 
-                                // Simpan UserProfile
-                                userProfileList.add(
-                                    UserProfileEntity(
-                                        id = item.id,
-                                        userId = item.userId,
-                                        nama = item.nama,
-                                        nik = item.nik,
-                                        jenisKelamin = item.jenisKelamin,
-                                        tglLahir = item.tglLahir,
-                                        umur = item.umur,
-                                        alamat = item.alamat,
-                                        gambarProfile = item.gambarProfile,
-                                        gambarBanner = item.gambarBanner,
-                                        createdAt = item.createdAt,
-                                        updatedAt = item.updatedAt,
-                                    )
-                                )
-                            }
-                        }
-                        chattingDatabase.usersDao().insertUsers(usersList)
-                        chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
-                    }
+    suspend fun getUsersFromApi(): ResultState<List<DataUsersItem?>> {
+        return try {
+            val response = apiService.getAllUsers()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataUsers ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertUsersToLocal(data)
                 }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
             }
-
-            override fun onFailure(call: Call<GetAllUsersResponse>, t: Throwable) {
-//                Log.d(TAG, "onChattingRepository getUsers Failed : ${t.message}")
-                resultListUsers.value = ResultState.Error(t.message.toString())
-            }
-        })
-        val localData = chattingDatabase.userProfileDao().getUserProfiles()
-        resultListUsers.addSource(localData) { userData: List<UserProfileEntity> ->
-            resultListUsers.value = ResultState.Success(userData)
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
         }
-        return resultListUsers
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertUsersToLocal(dataUsersItemList: List<DataUsersItem?>) {
+        val usersList = ArrayList<UsersEntity>()
+        val userProfileList = ArrayList<UserProfileEntity>()
+
+        dataUsersItemList.forEach { item ->
+            val usersEntity = item?.users
+
+            if (usersEntity != null) {
+                // Simpan Users
+                usersList.add(
+                    UsersEntity(
+                        id = usersEntity.id,
+                        email = usersEntity.email,
+                        password = usersEntity.password,
+                        createdAt = usersEntity.createdAt,
+                        updatedAt = usersEntity.updatedAt
+                    )
+                )
+                // Simpan UserProfile
+                userProfileList.add(
+                    UserProfileEntity(
+                        id = item.id,
+                        userId = item.userId,
+                        nama = item.nama,
+                        nik = item.nik,
+                        jenisKelamin = item.jenisKelamin,
+                        tglLahir = item.tglLahir,
+                        umur = item.umur,
+                        alamat = item.alamat,
+                        gambarProfile = item.gambarProfile,
+                        gambarBanner = item.gambarBanner,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt,
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.usersDao().insertUsers(usersList)
+            chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+        }
     }
 
     suspend fun login(email: String, password: String): ResultState<LoginResponse?> {
