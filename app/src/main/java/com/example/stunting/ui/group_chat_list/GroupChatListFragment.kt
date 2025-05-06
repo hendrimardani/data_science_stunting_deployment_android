@@ -55,8 +55,8 @@ class GroupChatListFragment : Fragment() {
         userId = arguments?.getInt(EXTRA_USER_ID_TO_GROUP_CHAT_LIST_FRAGMET)
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
+        getUserGroups()
         getUserGroupRelationByUserId(userId!!)
-//        getUserGroups()
 
         binding.rvGroup.apply {
             layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -112,35 +112,36 @@ class GroupChatListFragment : Fragment() {
     }
 
 
-//    private fun getUserGroups() {
-//        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
-//        progressBar.setTitleText(getString(R.string.title_loading))
-//        progressBar.setContentText(getString(R.string.description_loading))
-//            .progressHelper.barColor = Color.parseColor("#73D1FA")
-//        progressBar.setCancelable(false)
-//
-//        viewModel.getUserGroups().observe(requireActivity()) { result ->
-//            if (result != null) {
-//                when (result) {
-//                    is ResultState.Loading -> progressBar.show()
-//                    is ResultState.Error -> {
-//                        progressBar.dismiss()
-////                        Log.d(TAG, "onGroupChatListFragment getUserGroup Error  : ${result.error}")
-//                    }
-//                    is ResultState.Success -> {
-//                        progressBar.dismiss()
-////                        Log.d(TAG, "onGroupChatListFragment getUserGroup : ${result.data}")
-//                    }
-//                    is ResultState.Unauthorized -> {
-//                        viewModel.logout()
-//                        val intent = Intent(requireActivity(), MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
-//                        startActivity(intent)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private fun getUserGroups() {
+        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserGroupsFromApi()
+        viewModel.getUserGroupsResult.observe(requireActivity()) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+                        Log.d(TAG, "onGroupChatListFragment getUserGroups Error  : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        Log.d(TAG, "onGroupChatListFragment getUserGroups : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
 
     private fun getUserGroupRelationByUserId(userId: Int?) {
         viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { userGroupRelation ->
@@ -189,7 +190,7 @@ class GroupChatListFragment : Fragment() {
 
                                 // Simpan ke database lagi
                                 getUserGroupRelationByUserId(userId)
-//                                getUserGroups()
+                                getUserGroups()
 
                                 view.tietNamaGroup.text?.clear()
                                 view.tietDeskripsiGroup.text?.clear()
@@ -206,12 +207,6 @@ class GroupChatListFragment : Fragment() {
         }
             view.btnCancel.setOnClickListener { viewDialog.dismiss() }
             viewDialog.show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Supaya ketika ditekan tombol back muncul lagi data dari database
-//        getUserGroups()
     }
 
     companion object {

@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
@@ -16,6 +17,7 @@ import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
+import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
@@ -29,9 +31,14 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
     val updateUserProfileByIdResult = _updateUserProfileByIdResult
 
+    // UserGroup
+    private var _getUserGroupsResult = MutableLiveData<ResultState<List<UserGroupsItem?>>>()
+    val getUserGroupsResult = _getUserGroupsResult
+    val getUserGroupsFromLocal: LiveData<List<UserGroupEntity>> = chattingRepository.getUserGroupsFromLocal()
+
+    // UserProfile
     private var _getUsersResult = MutableLiveData<ResultState<List<DataUsersItem?>>>()
     val getUsersResult = _getUsersResult
-
     val getUsersFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUsersFromLocal()
 
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
@@ -65,7 +72,12 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         }
     }
 
-//    fun getUserGroups() = chattingRepository.getUserGroups()
+    fun getUserGroupsFromApi() {
+        viewModelScope.launch {
+            _getUserGroupsResult.value = ResultState.Loading
+            _getUserGroupsResult.value = chattingRepository.getUserGroupsFromApi()
+        }
+    }
 
     fun addUserGroup(
         userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?

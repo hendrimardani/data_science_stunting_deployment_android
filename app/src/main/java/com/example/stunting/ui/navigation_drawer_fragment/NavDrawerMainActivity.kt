@@ -363,7 +363,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
                     is ResultState.Error -> progressBar.dismiss()
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsersResult : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsersResult : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

@@ -50,7 +50,7 @@ interface ApiService {
     ): Response<UpdateGroupByIdResponse>
 
     @GET("user_profiles/groups")
-    fun getAllUserGroup(): Call<GetAllUserGroupResponse>
+    suspend fun getAllUserGroup(): Response<GetAllUserGroupResponse>
 
     @Multipart
     @POST("user_profile/{userIdListString}/group")
@@ -82,7 +82,7 @@ interface ApiService {
     ): Response<UpdateUserProfileByIdResponse>
 
     @GET("users")
-    fun getAllUsers(): Response<GetAllUsersResponse>
+    suspend fun getAllUsers(): Response<GetAllUsersResponse>
 
     @POST("register")
     suspend fun register(

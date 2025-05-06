@@ -171,8 +171,8 @@ interface UserGroupDao {
     fun getUserGroupRelationByUserId(userId: Int): LiveData<List<UserGroupRelation>>
 
     @Query("SELECT * FROM user_group ORDER BY user_id ASC")
-    fun getUserGroup(): List<UserGroupEntity>
+    fun getUserGroup(): LiveData<List<UserGroupEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserGroups(userGroups: List<UserGroupEntity>)
+    suspend fun insertUserGroups(userGroups: List<UserGroupEntity>)
 }

@@ -8,5 +8,5 @@ import androidx.room.OnConflictStrategy
 interface GroupsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGroups(groups: List<GroupsEntity>)
+    suspend fun insertGroups(groups: List<GroupsEntity>)
 }
