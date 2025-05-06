@@ -7,11 +7,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
+import com.example.stunting.database.with_api.response.DataMessage
+import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUsersItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -31,6 +34,11 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
     val updateUserProfileByIdResult = _updateUserProfileByIdResult
 
+    // Messages
+    private var _getMessagesResult = MutableLiveData<ResultState<List<DataMessagesItem?>>>()
+    val getMessagesResult = _getMessagesResult
+    val getMessagesFromLocal: LiveData<List<MessagesEntity>> = chattingRepository.getMessagesFromLocal()
+
     // UserGroup
     private var _getUserGroupsResult = MutableLiveData<ResultState<List<UserGroupsItem?>>>()
     val getUserGroupsResult = _getUserGroupsResult
@@ -43,7 +51,12 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
-//    fun getMessages() = chattingRepository.getMessages()
+    fun getMessagesFromApi() {
+        viewModelScope.launch {
+            _getMessagesResult.value = ResultState.Loading
+            _getMessagesResult.value = chattingRepository.getMessagesFromApi()
+        }
+    }
 
     fun addMessage(
         userId: Int, groupId: Int, isiPesan: String

@@ -31,7 +31,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("messages")
-    fun getAllMessages(): Call<GetAllMessagesResponse>
+    suspend fun getAllMessages(): Response<GetAllMessagesResponse>
 
     @POST("user_profile/{user_id}/group/{group_id}/notification")
     suspend fun addMessage(

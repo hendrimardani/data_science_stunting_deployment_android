@@ -126,11 +126,11 @@ class GroupChatListFragment : Fragment() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onGroupChatListFragment getUserGroups Error  : ${result.error}")
+//                        Log.d(TAG, "onGroupChatListFragment getUserGroups Error  : ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onGroupChatListFragment getUserGroups : ${result.data}")
+//                        Log.d(TAG, "onGroupChatListFragment getUserGroups : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -207,6 +207,11 @@ class GroupChatListFragment : Fragment() {
         }
             view.btnCancel.setOnClickListener { viewDialog.dismiss() }
             viewDialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getUserGroups()
     }
 
     companion object {
