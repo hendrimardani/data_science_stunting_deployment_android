@@ -9,9 +9,12 @@ import androidx.room.Query
 @Dao
 interface NotificationsDao {
 
+    @Query("SELECT * FROM notifications WHERE id_notification = :notificationId")
+    fun getNotificationsById(notificationId: Int): LiveData<NotificationsEntity>
+
     @Query("SELECT * FROM notifications ORDER BY id_notification ASC")
     fun getNotifications(): LiveData<List<NotificationsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertNotifications(groups: List<NotificationsEntity>)
+    fun insertNotifications(noitifcations: List<NotificationsEntity>)
 }

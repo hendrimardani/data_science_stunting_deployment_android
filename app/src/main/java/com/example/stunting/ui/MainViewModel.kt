@@ -8,6 +8,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
+import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
@@ -23,13 +24,14 @@ import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResp
 import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
+import com.example.stunting.utils.RealtimeMessagesRepository
 import kotlinx.coroutines.launch
 import java.io.File
 
 class MainViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
 
-    private var _updateGroupByidResult = MutableLiveData<ResultState<UpdateGroupByIdResponse?>>()
-    val updateGroupByIdResult = _updateGroupByidResult
+    private var _updateGroupByIdResult = MutableLiveData<ResultState<UpdateGroupByIdResponse?>>()
+    val updateGroupByIdResult = _updateGroupByIdResult
 
     private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
     val updateUserProfileByIdResult = _updateUserProfileByIdResult
@@ -48,6 +50,16 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     private var _getUsersResult = MutableLiveData<ResultState<List<DataUsersItem?>>>()
     val getUsersResult = _getUsersResult
     val getUsersFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUsersFromLocal()
+
+    // Connect to Realtime WebSocket
+    fun connect() {
+        chattingRepository.connect()
+    }
+
+    // Disconnect WebSocket
+    fun disconnect() {
+        chattingRepository.disconnect()
+    }
 
     fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
 
@@ -71,6 +83,8 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
         chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
 
+    fun getUserGroupRelationByGroupIdList(groupId: Int) = chattingRepository.getUserGroupRelationByGroupIdList(groupId)
+
     fun getUserGroupRelationByGroupId(groupId: Int) = chattingRepository.getUserGroupRelationByGroupId(groupId)
 
     fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
@@ -79,9 +93,11 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
     ) {
         viewModelScope.launch {
-            _updateGroupByidResult.value = ResultState.Loading
-            val result = chattingRepository.updateGroupById(groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner)
-            _updateGroupByidResult.value = result
+            _updateGroupByIdResult.value = ResultState.Loading
+            val result = chattingRepository.updateGroupById(
+                groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner
+            )
+            _updateGroupByIdResult.value = result
         }
     }
 

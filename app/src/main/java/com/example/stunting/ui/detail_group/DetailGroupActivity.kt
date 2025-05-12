@@ -32,6 +32,7 @@ import com.example.stunting.adapter.DetailGroupAnggotaAdapter
 import com.example.stunting.adapter.DetailGroupTambahAnggotaAdapter
 import com.example.stunting.adapter.Interface.OnItemInteractionListener
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
+import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithSelection
 import com.example.stunting.databinding.ActivityDetailGroupBinding
 import com.example.stunting.databinding.DialogBottomSheetFotoBinding
@@ -42,6 +43,7 @@ import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACT
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.Functions.getImageUri
+import com.example.stunting.utils.Functions.observeOnce
 import com.example.stunting.utils.Functions.reduceFileImage
 import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -118,7 +120,7 @@ class DetailGroupActivity : AppCompatActivity() {
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT, 0)
 
         getUserGroups()
-        getUserGroupRelationByGroupId(groupId!!)
+        getUserGroupRelationByGroupIdList(groupId!!)
         getUserGroupRelationByUserIdGroupId(userId!!, groupId!!)
 
         binding.flEditProfile.setOnClickListener {
@@ -131,7 +133,7 @@ class DetailGroupActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-//        binding.flIconEditBodyGroup.setOnClickListener { showDialogCustomEditGroupBinding(groupId!!, userId!!) }
+        binding.flIconEditBodyGroup.setOnClickListener { showDialogCustomEditGroupBinding(groupId!!, userId!!) }
 
         binding.rvAnggota.apply {
             layoutManager = LinearLayoutManager(
@@ -202,78 +204,88 @@ class DetailGroupActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareUpdateGroupById(
-        groupId: Int, userId: Int, imageView: ImageView, uri: Uri, isEditGambarProfile: Boolean, groupsEntity: GroupsEntity
+    private fun updateGroupById(
+        groupId: Int, userId: Int, imageView: ImageView, isEditGambarProfile: Boolean, userGroupRelation: UserGroupRelation
     ) {
         if (isEditGambarProfile) {
-            val namaGroup = groupsEntity.namaGroup
-            val deskripsi = groupsEntity.deskripsi
-            val imageProfileFile = uriToFile(uri, this).reduceFileImage()
+            currentImageProfileUri?.let { uri ->
+                val namaGroup = userGroupRelation.groupsEntity.namaGroup
+                val deskripsi = userGroupRelation.groupsEntity.deskripsi
+                val imageProfileFile = uriToFile(uri, this).reduceFileImage()
 
-            val progressBar = SweetAlertDialog(this@DetailGroupActivity, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText(getString(R.string.title_loading))
-            progressBar.setContentText(getString(R.string.description_loading))
-                .progressHelper.barColor = Color.parseColor("#73D1FA")
-            progressBar.setCancelable(false)
+                val progressBar = SweetAlertDialog(this@DetailGroupActivity, SweetAlertDialog.PROGRESS_TYPE)
+                progressBar.setTitleText(getString(R.string.title_loading))
+                progressBar.setContentText(getString(R.string.description_loading))
+                    .progressHelper.barColor = Color.parseColor("#73D1FA")
+                progressBar.setCancelable(false)
 
-            viewModel.updateGroupById(
-                groupId, userId, namaGroup, deskripsi, imageProfileFile, null
-            )
-            viewModel.updateGroupByIdResult.observe(this) { result ->
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> {
-                        progressBar.dismiss()
-                        Toast.makeText(
-                            this@DetailGroupActivity, "Gagal diubah", Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-                        imageView.setImageURI(uri)
-                        Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
+                viewModel.updateGroupById(
+                    groupId, userId, namaGroup, deskripsi, imageProfileFile, null
+                )
+                viewModel.updateGroupByIdResult.observe(this) { result ->
+                    if (result != null) {
+                        when (result) {
+                            is ResultState.Loading -> progressBar.show()
+                            is ResultState.Error -> {
+                                progressBar.dismiss()
+                                Toast.makeText(
+                                    this@DetailGroupActivity, "Gagal diubah", Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            is ResultState.Success -> {
+                                progressBar.dismiss()
+                                imageView.setImageURI(uri)
+                                Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+
+                                // Update ke database
+                                getUserGroups()
+                                getUserGroupRelationByGroupIdList(groupId)
+                            }
+                            is ResultState.Unauthorized -> {
+                                viewModel.logout()
+                                val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
+                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                                startActivity(intent)
+                            }
+                        }
                     }
                 }
             }
         } else {
-            val namaGroup = groupsEntity.namaGroup
-            val deskripsi = groupsEntity.deskripsi
-            val imageBannerFile = uriToFile(uri, this).reduceFileImage()
+            currentImageBannerUri?.let { uri ->
+                val namaGroup = userGroupRelation.groupsEntity.namaGroup
+                val deskripsi = userGroupRelation.groupsEntity.deskripsi
+                val imageBannerFile = uriToFile(uri, this).reduceFileImage()
 
-            val progressBar = SweetAlertDialog(this@DetailGroupActivity, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText(getString(R.string.title_loading))
-            progressBar.setContentText(getString(R.string.description_loading))
-                .progressHelper.barColor = Color.parseColor("#73D1FA")
-            progressBar.setCancelable(false)
+                val progressBar = SweetAlertDialog(this@DetailGroupActivity, SweetAlertDialog.PROGRESS_TYPE)
+                progressBar.setTitleText(getString(R.string.title_loading))
+                progressBar.setContentText(getString(R.string.description_loading))
+                    .progressHelper.barColor = Color.parseColor("#73D1FA")
+                progressBar.setCancelable(false)
 
-            viewModel.updateGroupById(
-                groupId, userId, namaGroup, deskripsi, null, imageBannerFile
-            )
-            viewModel.updateGroupByIdResult.observe(this) { result ->
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> {
-                        progressBar.dismiss()
-                        Toast.makeText(
-                            this@DetailGroupActivity, "Gagal diubah", Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-                        imageView.setImageURI(uri)
-                        Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
+                viewModel.updateGroupById(
+                    groupId, userId, namaGroup, deskripsi, null, imageBannerFile
+                )
+                viewModel.updateGroupByIdResult.observe(this) { result ->
+                    when (result) {
+                        is ResultState.Loading -> progressBar.show()
+                        is ResultState.Error -> {
+                            progressBar.dismiss()
+                            Toast.makeText(
+                                this@DetailGroupActivity, "Gagal diubah", Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        is ResultState.Success -> {
+                            progressBar.dismiss()
+                            imageView.setImageURI(uri)
+                            Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+                        }
+                        is ResultState.Unauthorized -> {
+                            viewModel.logout()
+                            val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
+                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -282,22 +294,16 @@ class DetailGroupActivity : AppCompatActivity() {
 
     private fun showImageBanner() {
         currentImageBannerUri?.let { uri ->
-            viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { userGroupRelation ->
-                userGroupRelation.forEach { item ->
-                    val groups = item.groupsEntity
-                    prepareUpdateGroupById(groupId!!, userId!!, binding.ivEditBanner, uri, false, groups)
-                }
+            viewModel.getUserGroupRelationByGroupId(groupId!!).observeOnce(this) { userGroupRelation ->
+                updateGroupById(groupId!!, userId!!, binding.ivEditBanner, false, userGroupRelation)
             }
         }
     }
 
     private fun showImageProfile() {
         currentImageProfileUri?.let { uri ->
-            viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { userGroupRelation ->
-                userGroupRelation.forEach { item ->
-                    val groups = item.groupsEntity
-                    prepareUpdateGroupById(groupId!!, userId!!, binding.civEditProfile, uri,true, groups)
-                }
+            viewModel.getUserGroupRelationByGroupId(groupId!!).observeOnce(this) { userGroupRelation ->
+                updateGroupById(groupId!!, userId!!, binding.civEditProfile,true, userGroupRelation)
             }
         }
     }
@@ -336,72 +342,72 @@ class DetailGroupActivity : AppCompatActivity() {
         view.tietDeskripsiGroup.addTextChangedListener(textWatcher)
     }
 
-//    private fun showDialogCustomEditGroupBinding(groupId: Int, userId: Int) {
-//        val view = DialogCustomEditGroupBinding.inflate(layoutInflater)
-//        val viewDialog = Dialog(this)
-//
-//        viewDialog.setContentView(view.root)
-//        viewDialog.setCanceledOnTouchOutside(false)
-//        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//        textWatcherDialogCustomEditGroup(view)
-//
-//        view.btnEdit.setOnClickListener {
-//            val namaGroup = view.tietNamaGroup.text.toString().trim()
-//            val deskripsi = view.tietDeskripsiGroup.text.toString().trim()
-//
-//            // Ubah group tanpa gambar
-//            updateGroupByIdNoGambar(
-//                groupId, userId, namaGroup, deskripsi, null, null, view, viewDialog
-//            )
-//        }
-//        view.btnCancel.setOnClickListener { viewDialog.dismiss() }
-//        viewDialog.show()
-//    }
+    private fun showDialogCustomEditGroupBinding(groupId: Int, userId: Int) {
+        val view = DialogCustomEditGroupBinding.inflate(layoutInflater)
+        val viewDialog = Dialog(this)
 
-//    private fun updateGroupByIdNoGambar(
-//        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?,
-//        gambarProfile: File?, gambarBanner: File?, view: DialogCustomEditGroupBinding, viewDialog: Dialog
-//    ) {
-//        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-//        progressBar.setTitleText(getString(R.string.title_loading))
-//        progressBar.setContentText(getString(R.string.description_loading))
-//            .progressHelper.barColor = Color.parseColor("#73D1FA")
-//        progressBar.setCancelable(false)
+        viewDialog.setContentView(view.root)
+        viewDialog.setCanceledOnTouchOutside(false)
+        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        textWatcherDialogCustomEditGroup(view)
+
+        view.btnEdit.setOnClickListener {
+            val namaGroup = view.tietNamaGroup.text.toString().trim()
+            val deskripsi = view.tietDeskripsiGroup.text.toString().trim()
+
+            // Ubah group tanpa gambar
+            updateGroupByIdNoGambar(
+                groupId, userId, namaGroup, deskripsi, null, null, view, viewDialog
+            )
+        }
+        view.btnCancel.setOnClickListener { viewDialog.dismiss() }
+        viewDialog.show()
+    }
+
+    private fun updateGroupByIdNoGambar(
+        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?,
+        gambarProfile: File?, gambarBanner: File?, view: DialogCustomEditGroupBinding, viewDialog: Dialog
+    ) {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
 //
-//        viewModel.updateGroupById(
-//            groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner
-//        )
-//        viewModel.updateGroupByIdResult.observe(this) { result ->
-//            if (result != null) {
-//                when (result) {
-//                    is ResultState.Loading -> progressBar.show()
-//                    is ResultState.Error -> progressBar.dismiss()
-//                    is ResultState.Success -> {
-//                        progressBar.dismiss()
-//                        viewDialog.dismiss()
-//
-//                        val message = result.data?.message.toString()
-//                        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-//                        Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
-//
-//                        // Update kembali dari database
-//                        getUserGroups()
-//                        getUserGroupRelationByGroupId(groupId)
-//
-//                        view.tietNamaGroup.text?.clear()
-//                        view.tietDeskripsiGroup.text?.clear()
-//                    }
-//                    is ResultState.Unauthorized -> {
-//                        viewModel.logout()
-//                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-//                        startActivity(intent)
-//                    }
-//                }
-//            }
-//        }
-//    }
+        viewModel.updateGroupById(
+            groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner
+        )
+        viewModel.updateGroupByIdResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        viewDialog.dismiss()
+
+                        val message = result.data?.message.toString()
+                        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@DetailGroupActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+
+                        // Update ke database
+                        getUserGroups()
+                        getUserGroupRelationByGroupIdList(groupId)
+
+                        view.tietNamaGroup.text?.clear()
+                        view.tietDeskripsiGroup.text?.clear()
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
 
     private fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) {
         viewModel.getUserGroupRelationByUserIdGroupId(userId, groupId).observe(this) { result ->
@@ -412,12 +418,14 @@ class DetailGroupActivity : AppCompatActivity() {
                     binding.ivIconEditProfile.visibility = View.VISIBLE
                     binding.flIconEditBanner.visibility = View.VISIBLE
                     binding.ivIconEditBanner.visibility = View.VISIBLE
+                    binding.flIconEditBodyGroup.visibility = View.VISIBLE
                     binding.tvTambahAnggota.visibility = View.VISIBLE
                 } else {
                     binding.flIconEditProfile.visibility = View.GONE
                     binding.ivIconEditProfile.visibility = View.GONE
                     binding.flIconEditBanner.visibility = View.GONE
                     binding.ivIconEditBanner.visibility = View.GONE
+                    binding.flIconEditBodyGroup.visibility = View.GONE
                     binding.tvTambahAnggota.visibility = View.GONE
                 }
             }
@@ -509,8 +517,9 @@ class DetailGroupActivity : AppCompatActivity() {
                     is ResultState.Success -> {
                         progressBar.dismiss()
                         Toast.makeText(this, "${idUserList.size} anggota berhasil ditambahkan", Toast.LENGTH_LONG).show()
+
 //                        getUserGroups()
-                        getUserGroupRelationByGroupId(groupId)
+//                        getUserGroupRelationByGroupId(groupId)
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -549,8 +558,8 @@ class DetailGroupActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getUserGroupRelationByGroupId(groupId: Int) {
-        viewModel.getUserGroupRelationByGroupId(groupId!!).observe(this) { userGroupRelation ->
+    private fun getUserGroupRelationByGroupIdList(groupId: Int) {
+        viewModel.getUserGroupRelationByGroupIdList(groupId).observe(this) { userGroupRelation ->
             val jumlahAnggota = userGroupRelation.size
 
             userGroupRelation.forEach { item ->

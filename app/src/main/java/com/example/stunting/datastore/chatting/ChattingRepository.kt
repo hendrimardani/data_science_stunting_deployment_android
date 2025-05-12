@@ -2,7 +2,7 @@ package com.example.stunting.datastore.chatting
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
@@ -10,14 +10,11 @@ import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.database.with_api.entities.notifications.NotificationsEntity
-import com.example.stunting.database.with_api.entities.user_group.UserGroupDao
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
-import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
-import com.example.stunting.database.with_api.response.GetAllUsersResponse
 import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
@@ -29,30 +26,33 @@ import com.example.stunting.database.with_api.request_json.UpdateGroupByIdReques
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
-import com.example.stunting.database.with_api.response.DataMessage
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUsersItem
-import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UserGroupsItem
-import com.example.stunting.utils.AppExecutors
+import com.example.stunting.utils.RealtimeMessagesRepository
+import com.example.stunting.utils.RealtimeMessagesRepository.Companion
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -62,12 +62,121 @@ class ChattingRepository(
     private val chattingDatabase: ChattingDatabase,
     private val apiService: ApiService,
     private val userPreference: UserPreference,
-    private val appExecutors: AppExecutors
 ) {
     var requestImageProfileFile: RequestBody? = null
     var multipartBodyImageProfile: MultipartBody.Part? = null
     var requestImageBannerFile: RequestBody? = null
     var multipartBodyImageBanner: MultipartBody.Part? = null
+
+    private lateinit var webSocket: WebSocket
+    private var userProfileEntity: UserProfileEntity? = null
+    private var groupsEntity: GroupsEntity? = null
+    private var notificationsEntity: NotificationsEntity? = null
+    private var messagesEntity: MessagesEntity? = null
+
+    fun connect() {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("wss://dgcgggdkpswliscglxoa.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnY2dnZ2RrcHN3bGlzY2dseG9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1NzU1ODAsImV4cCI6MjA1NzE1MTU4MH0.cSFoFmPKemPGjho2LlFuW2RhCTb2UNnaGh_B1vQFArE&vsn=1.0.0")
+            .build()
+
+
+        val listener = object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                Log.d(TAG, "WebSocket connected")
+
+                val joinPayload = """
+            {
+              "topic": "realtime:public:messages",
+              "event": "phx_join",
+              "ref": "1",
+              "payload": {
+                "config": {
+                  "postgres_changes": [
+                    {
+                      "event": "*",
+                      "schema": "public",
+                      "table": "messages"
+                    }
+                  ]
+                }
+              }
+            }
+        """.trimIndent()
+
+                webSocket.send(joinPayload)
+            }
+
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                Log.d(TAG, "Received: $text")
+
+                val json = JSONObject(text)
+                val event = json.optString("event")
+                if (event == "postgres_changes") {
+                    val record = json
+                        .optJSONObject("payload")
+                        ?.optJSONObject("data")
+                        ?.optJSONObject("record")
+
+                    val userId = record?.getString("user_id")!!.toInt()
+                    val groupId = record?.getString("group_id")!!.toInt()
+                    val notificationsId = record?.getString("notification_id")!!.toInt()
+
+                    val userProfileEntityList = mutableListOf<UserProfileEntity?>()
+
+//                    val userProfileWithUserRelation = chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
+//                    userProfileEntity = userProfileWithUserRelation.value?.userProfile
+                    userProfileEntity = UserProfileEntity(userId = userId)
+                    userProfileEntityList.add(userProfileEntity)
+
+                    val groupsEntityList = mutableListOf<GroupsEntity?>()
+//                    val userGroupReltion = chattingDatabase.userGroupDao().getUserGroupRelationByGroupId(groupId)
+//                    groupsEntity = userGroupReltion.value?.groupsEntity
+                    groupsEntity = GroupsEntity(id = groupId)
+                    groupsEntityList.add(groupsEntity)
+
+                    val notificationEntityList = mutableListOf<NotificationsEntity?>()
+//                    notificationsEntity = chattingDatabase.notificationsDao().getNotificationsById(notificationsId).value
+                    notificationsEntity = NotificationsEntity(id = notificationsId)
+                    notificationEntityList.add(notificationsEntity)
+
+                    val messagesEntityList = mutableListOf<MessagesEntity>()
+                    messagesEntityList.add(
+                        MessagesEntity(
+                            user_id = userId,
+                            group_id = groupId,
+                            notification_id = notificationsId,
+                            isi_pesan = record.getString("isi_pesan"),
+                            createdAt = record.getString("created_at"),
+                            updatedAt = record.getString("updated_at")
+                        )
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        chattingDatabase.userProfileDao().insertUserProfile(userProfileEntityList as List<UserProfileEntity>)
+                        chattingDatabase.groupsDao().insertGroups(groupsEntityList as List<GroupsEntity>)
+                        chattingDatabase.notificationsDao().insertNotifications(notificationEntityList as List<NotificationsEntity>)
+                        chattingDatabase.messagesDao().insertMessages(messagesEntityList as List<MessagesEntity>)
+                    }
+
+//                    messagesEntity = chattingDatabase.messagesDao().insertMessages(messagesEntityList as List<MessagesEntity>)
+//
+//                    MessagesRelation(userProfileEntity!!, groupsEntity!!, notificationsEntity!!, messagesEntity!!)
+                }
+            }
+
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                Log.e(TAG, "WebSocket error: ${t.message}")
+            }
+        }
+
+        webSocket = client.newWebSocket(request, listener)
+    }
+
+    fun disconnect() {
+        if (::webSocket.isInitialized) {
+            webSocket.close(1000, "Closing Websocket connection")
+        }
+    }
 
     fun getMessageRelationByGroupId(groupId: Int): LiveData<List<MessagesRelation>> {
         return chattingDatabase.messagesDao().getMessageRelationByGroupId(groupId)
@@ -85,6 +194,7 @@ class ChattingRepository(
                 withContext(Dispatchers.IO) {
                     insertMessagesToLocal(data)
                 }
+                Log.d(TAG, "onChattingRepository getMessagesFromApi() : Terpanggil")
                 ResultState.Success(data)
             } else {
                 ResultState.Error("Gagal ambil data: ${response.message()}")
@@ -202,7 +312,11 @@ class ChattingRepository(
         return chattingDatabase.userGroupDao().getUserGroupRelationByUserIdGroupId(userId, groupId)
     }
 
-    fun getUserGroupRelationByGroupId(groupId: Int): LiveData<List<UserGroupRelation>> {
+    fun getUserGroupRelationByGroupIdList(groupId: Int): LiveData<List<UserGroupRelation>> {
+        return chattingDatabase.userGroupDao().getUserGroupRelationByGroupIdList(groupId)
+    }
+
+    fun getUserGroupRelationByGroupId(groupId: Int): LiveData<UserGroupRelation> {
         return chattingDatabase.userGroupDao().getUserGroupRelationByGroupId(groupId)
     }
 
@@ -247,6 +361,24 @@ class ChattingRepository(
             )
 
             if (response.isSuccessful) {
+//                Log.d(TAG, "onChattingRepository updateGroupById() Success ${response.code()}: $response")
+                val updateGroupsByIdList = response.body()?.dataUpdateGroupById
+                val updatedGroupsEntity = updateGroupsByIdList?.map { group ->
+                    GroupsEntity(
+                        id = group?.id,
+                        namaGroup = group?.namaGroup,
+                        deskripsi = group?.deskripsi,
+                        gambarProfile = group?.gambarProfile,
+                        gambarBanner = group?.gambarBanner,
+                        createdAt = group?.createdAt,
+                        updatedAt = group?.updatedAt
+                    )
+                }
+                if (updateGroupsByIdList != null) {
+                    withContext(Dispatchers.IO) {
+                        chattingDatabase.groupsDao().insertGroups(updatedGroupsEntity!!)
+                    }
+                }
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
