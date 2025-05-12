@@ -201,7 +201,7 @@ class ChattingRepository(
             }
         } catch (e: Exception) {
             ResultState.Error(e.message ?: "Unknown error")
-        }s
+        }
     }
 
     // Menggunakan entitas pusat relasi
