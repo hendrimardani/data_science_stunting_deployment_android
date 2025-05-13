@@ -172,9 +172,9 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     }
 
     fun register(
-        nama: String, email: String, password: String, repeatPassword: String
+        nama: String, email: String, role: String, password: String, repeatPassword: String
     ): LiveData<ResultState<RegisterResponse?>> = liveData {
         emit(ResultState.Loading)
-        emit(chattingRepository.register(nama, email, password, repeatPassword))
+        emit(chattingRepository.register(nama, email, role, password, repeatPassword))
     }
 }

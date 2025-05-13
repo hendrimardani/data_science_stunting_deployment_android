@@ -19,6 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_CHATBOT", "\"AIzaSyDO13Ra3udlstDrWgYC3Ibs33nRECq_gfI\"" )
         buildConfigField("String", "API_CHATTING", "\"https://stunting-app-chattings-api-vercel.vercel.app/\"")
+        buildConfigField("String","SUPABASE_URL_WEBSOCKET", "\"wss://dgcgggdkpswliscglxoa.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnY2dnZ2RrcHN3bGlzY2dseG9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1NzU1ODAsImV4cCI6MjA1NzE1MTU4MH0.cSFoFmPKemPGjho2LlFuW2RhCTb2UNnaGh_B1vQFArE&vsn=1.0.0\"")
     }
 
     buildTypes {

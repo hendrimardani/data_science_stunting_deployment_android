@@ -30,7 +30,10 @@ data class Users(
 	val id: Int? = null,
 
 	@field:SerializedName("email")
-	val email: String? = null
+	val email: String? = null,
+
+	@field:SerializedName("role")
+	val role: String? = null
 ) : Parcelable
 
 @Parcelize

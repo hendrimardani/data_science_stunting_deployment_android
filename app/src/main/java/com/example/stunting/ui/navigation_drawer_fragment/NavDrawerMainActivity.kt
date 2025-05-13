@@ -75,15 +75,15 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private val launcherIntentCameraBanner = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { isSuccess ->
-        if (isSuccess) {
-            showImageBanner()
-        } else {
-            currentImageBannerUri = null
-        }
-    }
+//    private val launcherIntentCameraBanner = registerForActivityResult(
+//        ActivityResultContracts.TakePicture()
+//    ) { isSuccess ->
+//        if (isSuccess) {
+//            showImageBanner()
+//        } else {
+//            currentImageBannerUri = null
+//        }
+//    }
 
     private val launcherGalleryProfile = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -96,16 +96,16 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private val launcherGalleryBanner = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri ->
-        if (uri != null) {
-            currentImageBannerUri = uri
-            showImageBanner()
-        } else {
-            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
-        }
-    }
+//    private val launcherGalleryBanner = registerForActivityResult(
+//        ActivityResultContracts.PickVisualMedia()
+//    ) { uri ->
+//        if (uri != null) {
+//            currentImageBannerUri = uri
+//            showImageBanner()
+//        } else {
+//            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -234,11 +234,11 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGalleryBanner() {
-        launcherGalleryBanner.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
-    }
+//    private fun startGalleryBanner() {
+//        launcherGalleryBanner.launch(
+//            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+//        )
+//    }
 
     private fun startGalleryProfile() {
         launcherGalleryProfile.launch(
@@ -246,10 +246,10 @@ class NavDrawerMainActivity : AppCompatActivity() {
         )
     }
 
-    private fun startCameraBanner() {
-        currentImageBannerUri = getImageUri(this)
-        launcherIntentCameraBanner.launch(currentImageBannerUri)
-    }
+//    private fun startCameraBanner() {
+//        currentImageBannerUri = getImageUri(this)
+//        launcherIntentCameraBanner.launch(currentImageBannerUri)
+//    }
 
     private fun startCameraProfile() {
         currentImageProfileUri = getImageUri(this)
@@ -276,8 +276,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
                     startCameraProfile()
                     bottomSheetDialog.dismiss()
                 } else {
-                    startCameraBanner()
-                    bottomSheetDialog.dismiss()
+//                    startCameraBanner()
+//                    bottomSheetDialog.dismiss()
                 }
             }
             cvGallery.setOnClickListener {
@@ -285,23 +285,23 @@ class NavDrawerMainActivity : AppCompatActivity() {
                     startGalleryProfile()
                     bottomSheetDialog.dismiss()
                 } else {
-                    startGalleryBanner()
-                    bottomSheetDialog.dismiss()
+//                    startGalleryBanner()
+//                    bottomSheetDialog.dismiss()
                 }
             }
         }
     }
 
-    private fun showImageBanner() {
-        currentImageBannerUri?.let { uri ->
-            val headerView = binding.navView.getHeaderView(0)
-            val editBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
-
-            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
-                updateUserProfileById(userId!!, editBanner, false, userProfileWithUserRelation)
-            }
-        }
-    }
+//    private fun showImageBanner() {
+//        currentImageBannerUri?.let { uri ->
+//            val headerView = binding.navView.getHeaderView(0)
+//            val editBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
+//
+//            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
+//                updateUserProfileById(userId!!, editBanner, false, userProfileWithUserRelation)
+//            }
+//        }
+//    }
 
     private fun showImageProfile() {
         currentImageProfileUri?.let { uri ->
@@ -406,9 +406,10 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val headerView = binding.navView.getHeaderView(0)
         val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)
         val civEditProfile = headerView.findViewById<CircleImageView>(R.id.civ_edit_profile)
-        val ivEditBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
+//        val ivEditBanner = headerView.findViewById<ImageView>(R.id.iv_edit_banner)
         val name = headerView.findViewById<TextView>(R.id.tv_name_nav_view)
         val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
+        val role = headerView.findViewById<TextView>(R.id.tv_role_nav_view)
 
         val userProfile = userProfileWithUserRelation?.userProfile
 
@@ -417,10 +418,10 @@ class NavDrawerMainActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        ivEditBanner.setOnClickListener {
-            isEditGambarProfile = false
-            showBottomSheetDialog()
-        }
+//        ivEditBanner.setOnClickListener {
+//            isEditGambarProfile = false
+//            showBottomSheetDialog()
+//        }
 
         if (userProfile?.gambarProfile != null) {
             Glide.with(this)
@@ -432,13 +433,15 @@ class NavDrawerMainActivity : AppCompatActivity() {
                 .into(civEditProfile)
         }
 
-        val urlBanner = userProfileWithUserRelation?.userProfile?.gambarBanner
-        Glide.with(this)
-            .load(urlBanner)
-            .into(ivEditBanner)
+//        val urlBanner = userProfileWithUserRelation?.userProfile?.gambarBanner
+//        Glide.with(this)
+//            .load(urlBanner)
+//            .into(ivEditBanner)
 
         name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
         email.text = userProfileWithUserRelation?.users?.email.toString()
+        role.text = "Anda sebagai : ${userProfileWithUserRelation?.users?.role.toString()}"
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

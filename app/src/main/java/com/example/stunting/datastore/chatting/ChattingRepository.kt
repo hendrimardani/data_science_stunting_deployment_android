@@ -2,9 +2,9 @@ package com.example.stunting.datastore.chatting
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
+import com.example.stunting.BuildConfig
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
@@ -33,8 +33,6 @@ import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UserGroupsItem
-import com.example.stunting.utils.RealtimeMessagesRepository
-import com.example.stunting.utils.RealtimeMessagesRepository.Companion
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,9 +75,8 @@ class ChattingRepository(
     fun connect() {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("wss://dgcgggdkpswliscglxoa.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRnY2dnZ2RrcHN3bGlzY2dseG9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1NzU1ODAsImV4cCI6MjA1NzE1MTU4MH0.cSFoFmPKemPGjho2LlFuW2RhCTb2UNnaGh_B1vQFArE&vsn=1.0.0")
+            .url(BuildConfig.SUPABASE_URL_WEBSOCKET)
             .build()
-
 
         val listener = object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -194,7 +191,7 @@ class ChattingRepository(
                 withContext(Dispatchers.IO) {
                     insertMessagesToLocal(data)
                 }
-                Log.d(TAG, "onChattingRepository getMessagesFromApi() : Terpanggil")
+//                Log.d(TAG, "onChattingRepository getMessagesFromApi() : Terpanggil")
                 ResultState.Success(data)
             } else {
                 ResultState.Error("Gagal ambil data: ${response.message()}")
@@ -721,6 +718,7 @@ class ChattingRepository(
                         id = usersEntity.id,
                         email = usersEntity.email,
                         password = usersEntity.password,
+                        role = usersEntity.role,
                         createdAt = usersEntity.createdAt,
                         updatedAt = usersEntity.updatedAt
                     )
@@ -783,27 +781,29 @@ class ChattingRepository(
         return userPreference.getSession()
     }
 
-    suspend fun register(nama: String, email: String, password: String, repeatPassword: String): ResultState<RegisterResponse?> {
+    suspend fun register(nama: String, email: String, role: String, password: String, repeatPassword: String): ResultState<RegisterResponse?> {
         return try {
-            val requestBody = RegisterRequestJSON(nama, email, password, repeatPassword)
+            val requestBody = RegisterRequestJSON(nama, email, role, password, repeatPassword)
             val response = apiService.register(requestBody)
 
             if (response.isSuccessful) {
+                Log.e(TAG, "onChattingRepository register Success ${response.code()} : ${response.body()}")
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
-                    val errorBody = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBody")
-                    ResultState.Error("Error ${response.code()}: $errorBody")
-                }
+                    val errorBodyJson = response.errorBody()?.string()
+                    Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBodyJson")
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)                }
             }
         } catch (e: HttpException) {
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }

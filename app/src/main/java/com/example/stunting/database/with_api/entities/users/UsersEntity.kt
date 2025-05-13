@@ -9,6 +9,7 @@ data class UsersEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_user") val id: Int? = null,
     @ColumnInfo(name = "email") val email: String? = null,
+    @ColumnInfo(name = "role") val role: String? = null,
     @ColumnInfo(name = "password") val password: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null

@@ -77,15 +77,15 @@ class DetailGroupActivity : AppCompatActivity() {
         }
     }
 
-    private val launcherIntentCameraBanner = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { isSuccess ->
-        if (isSuccess) {
-            showImageBanner()
-        } else {
-            currentImageBannerUri = null
-        }
-    }
+//    private val launcherIntentCameraBanner = registerForActivityResult(
+//        ActivityResultContracts.TakePicture()
+//    ) { isSuccess ->
+//        if (isSuccess) {
+//            showImageBanner()
+//        } else {
+//            currentImageBannerUri = null
+//        }
+//    }
 
     private val launcherGalleryProfile = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -98,16 +98,16 @@ class DetailGroupActivity : AppCompatActivity() {
         }
     }
 
-    private val launcherGalleryBanner = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri ->
-        if (uri != null) {
-            currentImageBannerUri = uri
-            showImageBanner()
-        } else {
-            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
-        }
-    }
+//    private val launcherGalleryBanner = registerForActivityResult(
+//        ActivityResultContracts.PickVisualMedia()
+//    ) { uri ->
+//        if (uri != null) {
+//            currentImageBannerUri = uri
+//            showImageBanner()
+//        } else {
+//            Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,10 +128,10 @@ class DetailGroupActivity : AppCompatActivity() {
             showBottomSheetDialog()
         }
 
-        binding.ivEditBanner.setOnClickListener {
-            isEditGambarProfile = false
-            showBottomSheetDialog()
-        }
+//        binding.ivEditBanner.setOnClickListener {
+//            isEditGambarProfile = false
+//            showBottomSheetDialog()
+//        }
 
         binding.flIconEditBodyGroup.setOnClickListener { showDialogCustomEditGroupBinding(groupId!!, userId!!) }
 
@@ -146,11 +146,11 @@ class DetailGroupActivity : AppCompatActivity() {
         binding.tvTambahAnggota.setOnClickListener { showDialogCustomTambahAnggotaBinding() }
     }
 
-    private fun startGalleryBanner() {
-        launcherGalleryBanner.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
-    }
+//    private fun startGalleryBanner() {
+//        launcherGalleryBanner.launch(
+//            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+//        )
+//    }
 
     private fun startGalleryProfile() {
         launcherGalleryProfile.launch(
@@ -158,10 +158,10 @@ class DetailGroupActivity : AppCompatActivity() {
         )
     }
 
-    private fun startCameraBanner() {
-        currentImageBannerUri = getImageUri(this)
-        launcherIntentCameraBanner.launch(currentImageBannerUri)
-    }
+//    private fun startCameraBanner() {
+//        currentImageBannerUri = getImageUri(this)
+//        launcherIntentCameraBanner.launch(currentImageBannerUri)
+//    }
 
     private fun startCameraProfile() {
         currentImageProfileUri = getImageUri(this)
@@ -188,8 +188,8 @@ class DetailGroupActivity : AppCompatActivity() {
                     startCameraProfile()
                     bottomSheetDialog.dismiss()
                 } else {
-                    startCameraBanner()
-                    bottomSheetDialog.dismiss()
+//                    startCameraBanner()
+//                    bottomSheetDialog.dismiss()
                 }
             }
             cvGallery.setOnClickListener {
@@ -197,8 +197,8 @@ class DetailGroupActivity : AppCompatActivity() {
                     startGalleryProfile()
                     bottomSheetDialog.dismiss()
                 } else {
-                    startGalleryBanner()
-                    bottomSheetDialog.dismiss()
+//                    startGalleryBanner()
+//                    bottomSheetDialog.dismiss()
                 }
             }
         }
@@ -292,13 +292,13 @@ class DetailGroupActivity : AppCompatActivity() {
         }
     }
 
-    private fun showImageBanner() {
-        currentImageBannerUri?.let { uri ->
-            viewModel.getUserGroupRelationByGroupId(groupId!!).observeOnce(this) { userGroupRelation ->
-                updateGroupById(groupId!!, userId!!, binding.ivEditBanner, false, userGroupRelation)
-            }
-        }
-    }
+//    private fun showImageBanner() {
+//        currentImageBannerUri?.let { uri ->
+//            viewModel.getUserGroupRelationByGroupId(groupId!!).observeOnce(this) { userGroupRelation ->
+//                updateGroupById(groupId!!, userId!!, binding.ivEditBanner, false, userGroupRelation)
+//            }
+//        }
+//    }
 
     private fun showImageProfile() {
         currentImageProfileUri?.let { uri ->
@@ -416,15 +416,15 @@ class DetailGroupActivity : AppCompatActivity() {
                 if (userGroup.role == "admin") {
                     binding.flIconEditProfile.visibility = View.VISIBLE
                     binding.ivIconEditProfile.visibility = View.VISIBLE
-                    binding.flIconEditBanner.visibility = View.VISIBLE
-                    binding.ivIconEditBanner.visibility = View.VISIBLE
+//                    binding.flIconEditBanner.visibility = View.VISIBLE
+//                    binding.ivIconEditBanner.visibility = View.VISIBLE
                     binding.flIconEditBodyGroup.visibility = View.VISIBLE
                     binding.tvTambahAnggota.visibility = View.VISIBLE
                 } else {
                     binding.flIconEditProfile.visibility = View.GONE
                     binding.ivIconEditProfile.visibility = View.GONE
-                    binding.flIconEditBanner.visibility = View.GONE
-                    binding.ivIconEditBanner.visibility = View.GONE
+//                    binding.flIconEditBanner.visibility = View.GONE
+//                    binding.ivIconEditBanner.visibility = View.GONE
                     binding.flIconEditBodyGroup.visibility = View.GONE
                     binding.tvTambahAnggota.visibility = View.GONE
                 }
@@ -575,10 +575,10 @@ class DetailGroupActivity : AppCompatActivity() {
                         .into(binding.civEditProfile)
                 }
 
-                val urlBanner = groups.gambarBanner
-                Glide.with(this)
-                    .load(urlBanner)
-                    .into(binding.ivEditBanner)
+//                val urlBanner = groups.gambarBanner
+//                Glide.with(this)
+//                    .load(urlBanner)
+//                    .into(binding.ivEditBanner)
 
                 binding.tvNamaGroup.text = groups.namaGroup
                 binding.tvDeskripsi.text = groups.deskripsi

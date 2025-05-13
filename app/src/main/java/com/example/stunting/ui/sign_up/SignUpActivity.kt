@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -33,6 +34,8 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var networkLiveData: NetworkLiveData
     private var sweetAlertDialog: SweetAlertDialog? = null
+
+    private var roleValueRadioButton = ""
 
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
@@ -130,6 +133,11 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnSignUp.setOnClickListener {
             val nama = binding.tietNama.text.toString().trim()
             val email = binding.tietEmail.text.toString().trim()
+            val roleSelectedId = binding.rgRole.checkedRadioButtonId
+            if (roleSelectedId != -1) {
+                val selectedRadioButton = findViewById<RadioButton>(roleSelectedId)
+                roleValueRadioButton = selectedRadioButton.text.toString()
+            }
             val password = binding.tietPassword.text.toString().trim()
             val repeatPassword = binding.tietRepeatPassword.text.toString().trim()
 
@@ -139,7 +147,7 @@ class SignUpActivity : AppCompatActivity() {
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
             progressBar.setCancelable(false)
 
-            viewModel.register(nama, email, password, repeatPassword).observe(this) { result ->
+            viewModel.register(nama, email, roleValueRadioButton, password, repeatPassword).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is ResultState.Loading -> progressBar.show()

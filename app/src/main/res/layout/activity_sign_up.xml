@@ -68,7 +68,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_login"
         android:layout_width="340dp"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         android:layout_marginTop="280dp"
         android:background="@drawable/shadow_background_constraint_layout"
         android:elevation="@dimen/dimen_4"
@@ -162,17 +162,62 @@
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorText"
                     android:inputType="textEmailAddress" />
-
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/iv_role"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_lock_person_24"
+                app:layout_constraintTop_toBottomOf="@id/iv_email"
+                app:layout_constraintStart_toStartOf="@id/iv_email"
+                app:layout_constraintEnd_toEndOf="@id/iv_email" />
+
+            <TextView
+                android:id="@+id/tv_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_role"
+                android:layout_marginStart="@dimen/dimen_4"
+                android:layout_marginTop="@dimen/dimen_8"
+                android:layout_marginBottom="@dimen/dimen_8"
+                app:layout_constraintHorizontal_bias="0.052"
+                app:layout_constraintStart_toEndOf="@id/iv_role"
+                app:layout_constraintBottom_toBottomOf="@id/iv_role"
+                app:layout_constraintTop_toTopOf="@id/iv_role"
+                app:layout_constraintEnd_toStartOf="@id/tv_role"/>
+
+            <RadioGroup
+                android:id="@+id/rg_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/tv_role"
+                app:layout_constraintTop_toTopOf="@id/tv_role"
+                app:layout_constraintBottom_toBottomOf="@id/tv_role">
+
+                <RadioButton
+                    android:id="@+id/rb_pasien"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:text="@string/text_pasien" />
+
+                <RadioButton
+                    android:id="@+id/rb_pegawai"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/text_petugas" />
+            </RadioGroup>
 
             <ImageView
                 android:id="@+id/iv_password"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_key_24"
-                app:layout_constraintStart_toStartOf="@id/iv_email"
-                app:layout_constraintEnd_toStartOf="@id/til_email"
-                app:layout_constraintTop_toBottomOf="@id/til_email" />
+                app:layout_constraintStart_toStartOf="@id/iv_role"
+                app:layout_constraintEnd_toEndOf="@id/iv_role"
+                app:layout_constraintTop_toBottomOf="@id/iv_role" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_password"
@@ -198,7 +243,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorText"
                     android:inputType="textPassword" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -259,7 +303,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_login_view_2"
-        android:layout_marginTop="590dp"
+        android:layout_marginTop="640dp"
         android:layout_marginEnd="@dimen/dimen_12"
         android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -271,7 +315,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_login_view_1"
-        android:layout_marginTop="590dp"
+        android:layout_marginTop="640dp"
         android:layout_marginStart="@dimen/dimen_12"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"

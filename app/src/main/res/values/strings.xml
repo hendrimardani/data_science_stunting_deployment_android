@@ -182,8 +182,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_name">Nama</string>
-    <string name="nav_header_email">email@android.com</string>
+    <string name="text_email">email@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -213,4 +212,7 @@
     <string name="text_role">Role</string>
     <string name="text_member">member</string>
     <string name="text_edit_group">Edit Group</string>
+    <string name="text_pasien">pasien</string>
+    <string name="text_petugas">petugas</string>
+    <string name="text_nama">Nama</string>
 </resources>

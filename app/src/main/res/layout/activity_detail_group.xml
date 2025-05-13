@@ -20,37 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_edit_banner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/blueSecond_200"
-                android:scaleType="fitXY"
-                tools:src="@tools:sample/avatars"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_edit_banner"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@color/blueSecond_200"-->
+<!--                android:scaleType="fitXY"-->
+<!--                tools:src="@tools:sample/avatars"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <FrameLayout
-                android:id="@+id/fl_icon_edit_banner"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/shape_circle"
-                android:layout_marginEnd="@dimen/dimen_8"
-                android:layout_marginBottom="@dimen/dimen_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:id="@+id/iv_icon_edit_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_edit_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-            </FrameLayout>
+/
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
