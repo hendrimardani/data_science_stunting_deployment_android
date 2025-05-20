@@ -136,7 +136,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         spannable.setSpan(ForegroundColorSpan(Color.RED), 0, spannable.length, 0)
         logoutItem.title = spannable
 
-        getUsers()
+        getUserProfiles()
         getDataExtra()
         getMenuNavigationView()
     }
@@ -317,12 +317,12 @@ class NavDrawerMainActivity : AppCompatActivity() {
     private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
 
-        if (getExtraFragment == LOGIN_FRAGMENT) {
+        if (getExtraFragment == "LoginFragment") {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
             getUserProfileWithUserById(userId!!)
-        } else if (getExtraFragment == OPENING_FRAGMENT) {     // Langsung masuk
+        } else if (getExtraFragment == "OpeningFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
@@ -348,22 +348,25 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUsers() {
+    private fun getUserProfiles() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUsersFromApi()
-        viewModel.getUsersResult.observe(this) { result ->
+        viewModel.getUserProfilesFromApi()
+        viewModel.getUserProfilesResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> progressBar.dismiss()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUserProfilesResult : ${result.error}")
+                    }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUsersResult : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivity from LoginFragment getUserProfilesResult : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -440,7 +443,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
         name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
         email.text = userProfileWithUserRelation?.users?.email.toString()
-        role.text = "Anda sebagai : ${userProfileWithUserRelation?.users?.role.toString()}"
+        role.text = "Anda sebagai ${userProfileWithUserRelation?.users?.role.toString()}"
 
     }
 
@@ -503,8 +506,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = NavDrawerMainActivity::class.java.simpleName
-        private const val LOGIN_FRAGMENT = "LoginFragment"
-        private const val OPENING_FRAGMENT = "OpeningFragment"
         const val EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_fragment_to_nav_drawer_main_activity"
         const val EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_id_to_nav_drawer_main_activity"
         const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY = "extra_user_model_to_nav_drawer_main_activity"

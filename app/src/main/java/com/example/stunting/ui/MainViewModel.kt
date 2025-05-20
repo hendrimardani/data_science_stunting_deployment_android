@@ -16,7 +16,7 @@ import com.example.stunting.database.with_api.response.AddingUserByGroupIdRespon
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataMessage
 import com.example.stunting.database.with_api.response.DataMessagesItem
-import com.example.stunting.database.with_api.response.DataUsersItem
+import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -47,8 +47,8 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     val getUserGroupsFromLocal: LiveData<List<UserGroupEntity>> = chattingRepository.getUserGroupsFromLocal()
 
     // UserProfile
-    private var _getUsersResult = MutableLiveData<ResultState<List<DataUsersItem?>>>()
-    val getUsersResult = _getUsersResult
+    private var _getUserProfilesResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
+    val getUserProfilesResult = _getUserProfilesResult
     val getUsersFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUsersFromLocal()
 
     // Connect to Realtime WebSocket
@@ -159,10 +159,10 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getUserProfilesFromDatabase() = chattingRepository.getUserProfilesFromDatabase()
 
-    fun getUsersFromApi() {
+    fun getUserProfilesFromApi() {
         viewModelScope.launch {
-            _getUsersResult.value = ResultState.Loading
-            _getUsersResult.value = chattingRepository.getUsersFromApi()
+            _getUserProfilesResult.value = ResultState.Loading
+            _getUserProfilesResult.value = chattingRepository.getUsersFromApi()
         }
     }
 

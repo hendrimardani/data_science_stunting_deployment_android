@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,17 +21,21 @@ import com.example.stunting.MyPasswordEditText.Companion.MIN_CHARACTER_PASSWORD
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.response.DataLogin
-import com.example.stunting.database.with_api.response.DataLoginUserProfile
+import com.example.stunting.database.with_api.response.PasienUser
+import com.example.stunting.database.with_api.response.PetugasUser
 import com.example.stunting.databinding.FragmentLoginBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
+import com.example.stunting.ui.OpeningUserProfilePatient
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.utils.NetworkLiveData
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -39,6 +44,8 @@ class LoginFragment : Fragment() {
     private lateinit var networkLiveData: NetworkLiveData
     private var sweetAlertDialog: SweetAlertDialog? = null
 
+    private var userModel: UserModel? = null
+    private val gson = Gson()
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
@@ -140,9 +147,19 @@ class LoginFragment : Fragment() {
                         }
                         is ResultState.Success -> {
                             progressBar.dismiss()
-                            val user = result.data?.dataLogin?.dataLoginUserProfile
                             val dataLogin = result.data?.dataLogin
-                            showSweetAlertDialog(result.data?.message.toString(), 2, user, dataLogin)
+                            val role = result?.data?.dataLogin?.role
+                            Log.d(TAG, "onLogin role : ${role}")
+
+                            if (role == "pasien") {
+                                // Role pasien
+                                val user = result.data.dataLogin.dataLoginUser
+                                showSweetAlertDialog(result.data?.message.toString(), 2, role, user, dataLogin)
+                            } else {
+                                // Role petugas
+                                val user = result.data?.dataLogin?.dataLoginUser
+                                showSweetAlertDialog(result.data?.message.toString(), 2, role, user, dataLogin)
+                            }
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()
@@ -156,12 +173,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun showSweetAlertDialog(message: String, type: Int, userProfile: DataLoginUserProfile? = null, dataLogin: DataLogin? = null) {
-        val userId = userProfile?.userId
-        val nama = userProfile?.nama.toString()
-        val token = dataLogin?.token.toString()
-        val userModel = UserModel(userId.toString(), nama, token)
-
+    private fun showSweetAlertDialog(
+        message: String, type: Int, role: String? = null, dataLoginUser: JsonObject? = null, dataLogin: DataLogin? = null
+    ) {
         if (type == 1) {
             val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.ERROR_TYPE)
             sweetAlertDialog.setTitleText(getString(R.string.title_validation_error))
@@ -169,25 +183,59 @@ class LoginFragment : Fragment() {
             sweetAlertDialog.setCancelable(false)
             sweetAlertDialog.show()
         } else if (type == 2) {
-            val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.SUCCESS_TYPE)
-            sweetAlertDialog.setTitleText(getString(R.string.title_message_success))
-            sweetAlertDialog.setContentText(message)
-            sweetAlertDialog.setCancelable(false)
-            sweetAlertDialog.setConfirmText(getString(R.string.ok))
+            if (role == "pasien") {
+                val pasienUser = gson.fromJson(dataLoginUser, PasienUser::class.java)
+                val userPatientId = pasienUser?.userPatientId
+                val namaBumil = pasienUser?.namaBumil.toString()
+                val token = dataLogin?.token.toString()
+                userModel = UserModel(userPatientId.toString(), namaBumil, token)
 
-            viewModel.saveSession(userModel)
-            sweetAlertDialog.setConfirmClickListener { dialog ->
-                dialog.dismiss()
-//                Log.d(TAG, "onLoginSucces: ${user.email}")
+                val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                sweetAlertDialog.setTitleText(getString(R.string.title_message_success))
+                sweetAlertDialog.setContentText(message)
+                sweetAlertDialog.setCancelable(false)
+                sweetAlertDialog.setConfirmText(getString(R.string.ok))
 
-                val intent = Intent(requireActivity(), NavDrawerMainActivity::class.java)
-                intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
-                intent.putExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, userId)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                requireActivity().finish()
+                viewModel.saveSession(userModel!!)
+                sweetAlertDialog.setConfirmClickListener { dialog ->
+                    dialog.dismiss()
+//                    Log.d(TAG, "onLoginSucces: ${pasienUser.namaBumil}")
+
+                    val intent = Intent(requireActivity(), OpeningUserProfilePatient::class.java)
+                    intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
+                    intent.putExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, userPatientId)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                sweetAlertDialog.show()
+            } else {
+                val petugasUser = gson.fromJson(dataLoginUser, PetugasUser::class.java)
+                val userId = petugasUser?.userId
+                val nama = petugasUser?.nama.toString()
+                val token = dataLogin?.token.toString()
+                userModel = UserModel(userId.toString(), nama, token)
+
+                val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                sweetAlertDialog.setTitleText(getString(R.string.title_message_success))
+                sweetAlertDialog.setContentText(message)
+                sweetAlertDialog.setCancelable(false)
+                sweetAlertDialog.setConfirmText(getString(R.string.ok))
+
+                viewModel.saveSession(userModel!!)
+                sweetAlertDialog.setConfirmClickListener { dialog ->
+                    dialog.dismiss()
+//                    Log.d(TAG, "onLoginSucces: ${petugasUser.nama}")
+
+                    val intent = Intent(requireActivity(), NavDrawerMainActivity::class.java)
+                    intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
+                    intent.putExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, userId)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                sweetAlertDialog.show()
             }
-            sweetAlertDialog.show()
         }
     }
 

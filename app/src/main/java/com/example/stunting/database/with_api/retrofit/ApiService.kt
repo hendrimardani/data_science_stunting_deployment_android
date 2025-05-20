@@ -11,7 +11,7 @@ import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
-import com.example.stunting.database.with_api.response.GetAllUsersResponse
+import com.example.stunting.database.with_api.response.GetAllUserProfilesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -82,8 +82,8 @@ interface ApiService {
         @Part gambarBanner: MultipartBody.Part?
     ): Response<UpdateUserProfileByIdResponse>
 
-    @GET("users")
-    suspend fun getAllUsers(): Response<GetAllUsersResponse>
+    @GET("user_profiles")
+    suspend fun getAllUsers(): Response<GetAllUserProfilesResponse>
 
     @POST("register")
     suspend fun register(

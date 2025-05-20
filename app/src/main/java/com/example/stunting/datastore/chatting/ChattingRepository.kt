@@ -27,7 +27,7 @@ import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataMessagesItem
-import com.example.stunting.database.with_api.response.DataUsersItem
+import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -686,11 +686,11 @@ class ChattingRepository(
         return chattingDatabase.userProfileDao().getUserProfiles()
     }
 
-    suspend fun getUsersFromApi(): ResultState<List<DataUsersItem?>> {
+    suspend fun getUsersFromApi(): ResultState<List<DataUserProfilesItem?>> {
         return try {
             val response = apiService.getAllUsers()
             if (response.isSuccessful) {
-                val data = response.body()?.dataUsers ?: emptyList()
+                val data = response.body()?.dataUserProfiles ?: emptyList()
                 withContext(Dispatchers.IO) {
                     insertUsersToLocal(data)
                 }
@@ -704,11 +704,11 @@ class ChattingRepository(
     }
 
     // Menggunakan entitas pusat relasi
-    private suspend fun insertUsersToLocal(dataUsersItemList: List<DataUsersItem?>) {
+    private suspend fun insertUsersToLocal(dataUserProfilesItem: List<DataUserProfilesItem?>) {
         val usersList = ArrayList<UsersEntity>()
         val userProfileList = ArrayList<UserProfileEntity>()
 
-        dataUsersItemList.forEach { item ->
+        dataUserProfilesItem.forEach { item ->
             val usersEntity = item?.users
 
             if (usersEntity != null) {
@@ -797,7 +797,8 @@ class ChattingRepository(
                     Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBodyJson")
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")
-                    ResultState.Error(message)                }
+                    ResultState.Error(message)
+                }
             }
         } catch (e: HttpException) {
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
