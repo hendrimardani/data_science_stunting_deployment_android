@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -28,7 +29,8 @@ import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
-import com.example.stunting.ui.OpeningUserProfilePatient
+import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity
+import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
@@ -111,7 +113,7 @@ class LoginFragment : Fragment() {
 
                 binding.btnLogin.isEnabled = isEmailValid && isPasswordValid
 
-                if (binding.btnLogin.isEnabled == true) {
+                if (binding.btnLogin.isEnabled) {
                     binding.btnLogin.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.blueSecond))
                 } else {
                     binding.btnLogin.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor))
@@ -201,11 +203,10 @@ class LoginFragment : Fragment() {
                     dialog.dismiss()
 //                    Log.d(TAG, "onLoginSucces: ${pasienUser.namaBumil}")
 
-                    val intent = Intent(requireActivity(), OpeningUserProfilePatient::class.java)
-                    intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
-                    intent.putExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, userPatientId)
+                    val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
+                    intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
                     requireActivity().finish()
                 }
                 sweetAlertDialog.show()

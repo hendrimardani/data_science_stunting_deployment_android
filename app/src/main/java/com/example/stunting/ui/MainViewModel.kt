@@ -162,7 +162,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun getUserProfilesFromApi() {
         viewModelScope.launch {
             _getUserProfilesResult.value = ResultState.Loading
-            _getUserProfilesResult.value = chattingRepository.getUsersFromApi()
+            _getUserProfilesResult.value = chattingRepository.getUserProfilesFromApi()
         }
     }
 

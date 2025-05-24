@@ -10,7 +10,7 @@ import androidx.room.Query
 interface UsersDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUsers(users: List<UsersEntity>)
+    suspend fun insertUsers(users: List<UsersEntity>)
 
     @Query("SELECT * FROM users ORDER BY id_user ASC")
     fun getUsers(): LiveData<List<UsersEntity>>

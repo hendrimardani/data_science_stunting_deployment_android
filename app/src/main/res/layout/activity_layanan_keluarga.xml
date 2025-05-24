@@ -74,7 +74,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_name_keluarga"
+                android:src="@drawable/ic_nama_ayah"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/til_nama_keluarga"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +85,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="@string/hint_nama_kepala_keluarga"
+                android:hint="@string/text_nama_ayah"
                 android:textColorHint="?attr/colorTextHint"
                 app:hintTextColor="?attr/colorSecondary"
                 app:boxStrokeColor="@color/box_stroke_color"
@@ -111,7 +111,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_dusun"
+                android:src="@drawable/ic_alamat"
                 app:layout_constraintEnd_toStartOf="@id/til_dusun_keluarga"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_nama_keluarga" />

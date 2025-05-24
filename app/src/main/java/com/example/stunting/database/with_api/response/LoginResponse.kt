@@ -35,9 +35,6 @@ data class PasienUser(
 	@field:SerializedName("nik_bumil")
 	val nikBumil: String? = null,
 
-	@field:SerializedName("children_patient_id")
-	val childrenPatientId: Int? = null,
-
 	@field:SerializedName("umur_bumil")
 	val umurBumil: String? = null,
 

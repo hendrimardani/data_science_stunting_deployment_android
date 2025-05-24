@@ -49,6 +49,7 @@ android {
 
 dependencies {
     // Ui
+    implementation(libs.slide.to.act)
     implementation(libs.glide)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.lifecycle.livedata.ktx)

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
+    <color name="dark_navy_blue">#1862B4</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bluePrimary">#00A7F4</color>
+    <color name="bluePrimary">#00A6FF</color>
     <color name="blueSecond">#00B0FF</color>
     <color name="blueSecond_200">#73D1FA</color>
     <color name="blueSecond_500">#A573D1FA</color>

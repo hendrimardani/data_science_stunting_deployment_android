@@ -686,13 +686,13 @@ class ChattingRepository(
         return chattingDatabase.userProfileDao().getUserProfiles()
     }
 
-    suspend fun getUsersFromApi(): ResultState<List<DataUserProfilesItem?>> {
+    suspend fun getUserProfilesFromApi(): ResultState<List<DataUserProfilesItem?>> {
         return try {
             val response = apiService.getAllUsers()
             if (response.isSuccessful) {
                 val data = response.body()?.dataUserProfiles ?: emptyList()
                 withContext(Dispatchers.IO) {
-                    insertUsersToLocal(data)
+                    insertUserProfilesToLocal(data)
                 }
                 ResultState.Success(data)
             } else {
@@ -704,7 +704,7 @@ class ChattingRepository(
     }
 
     // Menggunakan entitas pusat relasi
-    private suspend fun insertUsersToLocal(dataUserProfilesItem: List<DataUserProfilesItem?>) {
+    private suspend fun insertUserProfilesToLocal(dataUserProfilesItem: List<DataUserProfilesItem?>) {
         val usersList = ArrayList<UsersEntity>()
         val userProfileList = ArrayList<UserProfileEntity>()
 

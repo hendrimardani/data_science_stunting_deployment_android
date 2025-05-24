@@ -18,7 +18,10 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
-            android:name=".ui.OpeningUserProfilePatient"
+            android:name=".ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.opening_user_profile_patient.OpeningUserProfilePatientActivity"
             android:exported="false" />
         <activity
             android:name=".ui.edit_detail_group.EditDetailGroupActivity"

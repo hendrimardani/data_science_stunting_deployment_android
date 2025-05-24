@@ -101,7 +101,6 @@
     <string name="rb_tidak">TIDAK</string>
     <string name="kirim">Kirim</string>
     <string name="tampilkan_data">Tampilkan Data</string>
-    <string name="hint_nama_kepala_keluarga">Nama kepala keluarga</string>
     <string name="hint_dusun">Dusun</string>
     <string name="hint_nama_lengkap_ibu_hamil">Nama lengkap ibu hamil</string>
     <string name="hint_nama_anak">Nama anak</string>
@@ -215,4 +214,18 @@
     <string name="text_pasien">pasien</string>
     <string name="text_petugas">petugas</string>
     <string name="text_nama">Nama</string>
+    <string name="text_isi_sekarang">ISI SEKARANG</string>
+    <string name="text_nama_bumil">Nama Ibu Hamil</string>
+    <string name="text_nik">Nomor Induk Kependudukan</string>
+    <string name="text_tgl_lahir">Tanggal Lahir</string>
+    <string name="text_umur_bumil">Umur Ibu Hamil</string>
+    <string name="text_alamat">Alamat</string>
+    <string name="text_kembali">Kembali</string>
+    <string name="text_lanjut">Lanjut</string>
+    <string name="text_nama_ayah">Nama Ayah</string>
+    <string name="text_nama_anak">Nama Anak</string>
+    <string name="text_laki_laki">laki-laki</string>
+    <string name="text_perempuan">perempuan</string>
+    <string name="text_umur_anak">Umur Anak</string>
+    <string name="text_simpan">Simpan</string>
 </resources>
