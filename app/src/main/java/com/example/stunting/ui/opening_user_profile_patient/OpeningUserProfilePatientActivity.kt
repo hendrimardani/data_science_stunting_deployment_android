@@ -69,6 +69,12 @@ class OpeningUserProfilePatientActivity : AppCompatActivity() {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.slideToActView.resetSlider()
+        cancelAndResetElementAnimations()
+    }
+
     private fun startFadeOutAnimation() {
         if (binding.tvIsiSekarang.alpha > 0f) {
             binding.tvIsiSekarang.animate()
