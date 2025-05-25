@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.stunting.database.with_api.entities.branch.BranchDao
+import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsDao
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesDao
@@ -20,11 +22,13 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
 @Database(
     entities = [
         UsersEntity::class, UserProfileEntity::class, GroupsEntity::class,
-        UserGroupEntity::class, NotificationsEntity::class, MessagesEntity::class
+        UserGroupEntity::class, NotificationsEntity::class, MessagesEntity::class,
+        BranchEntity::class
                 ],
-    version = 33
+    version = 34
 )
 abstract class ChattingDatabase: RoomDatabase() {
+    abstract fun branchDao(): BranchDao
     abstract fun userGroupDao(): UserGroupDao
     abstract fun groupsDao(): GroupsDao
     abstract fun userProfileDao(): UserProfileDao

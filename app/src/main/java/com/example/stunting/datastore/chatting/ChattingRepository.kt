@@ -6,6 +6,7 @@ import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
 import com.example.stunting.BuildConfig
 import com.example.stunting.database.with_api.ChattingDatabase
+import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesRelation
@@ -26,6 +27,7 @@ import com.example.stunting.database.with_api.request_json.UpdateGroupByIdReques
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
+import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
@@ -561,6 +563,49 @@ class ChattingRepository(
         }
     }
 
+    fun getBranchesFromLocal(): LiveData<List<BranchEntity>> =
+        chattingDatabase.branchDao().getBranches()
+
+    suspend fun getBranchesFromApi(): ResultState<List<DataBranchesItem?>> {
+        return try {
+            val response = apiService.getAllBranches()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataBranches ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertBranchesToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertBranchesToLocal(dataBranchesItem: List<DataBranchesItem?>) {
+        val branchsList = ArrayList<BranchEntity>()
+
+        dataBranchesItem.forEach { item ->
+            if (item != null) {
+                branchsList.add(
+                    BranchEntity(
+                        id = item.id,
+                        namaCabang = item.namaCabang,
+                        noTlp = item.noTlp,
+                        alamat = item.alamat,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.branchDao().insertBranch(branchsList)
+        }
+    }
+
     suspend fun deleteUserById(id: Int) = liveData {
         emit(ResultState.Loading)
         try {
@@ -674,17 +719,14 @@ class ChattingRepository(
         }
     }
 
-    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation> {
-        return chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
-    }
+    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation> =
+        chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
 
-    fun getUserProfilesFromDatabase(): LiveData<List<UserProfileWithUserRelation>> {
-        return chattingDatabase.userProfileDao().getUserProfilesFromDatabase()
-    }
+    fun getUserProfileWithUserRelationFromLocal(): LiveData<List<UserProfileWithUserRelation>> =
+        chattingDatabase.userProfileDao().getUserProfileWithUserRelationFromLocal()
 
-    fun getUsersFromLocal(): LiveData<List<UserProfileEntity>> {
-        return chattingDatabase.userProfileDao().getUserProfiles()
-    }
+    fun getUserProfilesFromLocal(): LiveData<List<UserProfileEntity>> =
+        chattingDatabase.userProfileDao().getUserProfilesFromLocal()
 
     suspend fun getUserProfilesFromApi(): ResultState<List<DataUserProfilesItem?>> {
         return try {
@@ -781,9 +823,11 @@ class ChattingRepository(
         return userPreference.getSession()
     }
 
-    suspend fun register(nama: String, email: String, role: String, password: String, repeatPassword: String): ResultState<RegisterResponse?> {
+    suspend fun register(
+        nama: String, email: String, role: String, namaCabang: String, password: String, repeatPassword: String
+    ): ResultState<RegisterResponse?> {
         return try {
-            val requestBody = RegisterRequestJSON(nama, email, role, password, repeatPassword)
+            val requestBody = RegisterRequestJSON(nama, email, role, namaCabang, password, repeatPassword)
             val response = apiService.register(requestBody)
 
             if (response.isSuccessful) {

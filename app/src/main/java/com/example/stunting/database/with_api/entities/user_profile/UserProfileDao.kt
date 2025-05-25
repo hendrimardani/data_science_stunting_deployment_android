@@ -19,10 +19,10 @@ interface UserProfileDao {
 
     @Transaction
     @Query("SELECT * FROM users")
-    fun getUserProfilesFromDatabase(): LiveData<List<UserProfileWithUserRelation>>
+    fun getUserProfileWithUserRelationFromLocal(): LiveData<List<UserProfileWithUserRelation>>
 
     @Query("SELECT * FROM user_profile ORDER BY id_user_profile ASC")
-    fun getUserProfiles(): LiveData<List<UserProfileEntity>>
+    fun getUserProfilesFromLocal(): LiveData<List<UserProfileEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserProfile(userProfile: List<UserProfileEntity>)

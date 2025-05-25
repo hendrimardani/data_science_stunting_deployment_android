@@ -7,8 +7,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -24,10 +29,9 @@ import com.example.stunting.ResultState
 import com.example.stunting.databinding.ActivitySignUpBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
-import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.NetworkLiveData
-
+import android.view.animation.AnimationUtils
 class SignUpActivity : AppCompatActivity() {
     private var _binding: ActivitySignUpBinding? = null
     private val binding get() = _binding!!
@@ -36,8 +40,9 @@ class SignUpActivity : AppCompatActivity() {
     private var sweetAlertDialog: SweetAlertDialog? = null
 
     private var roleValueRadioButton = ""
+    private var namaCabang = ""
 
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<SignUpViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
@@ -54,14 +59,77 @@ class SignUpActivity : AppCompatActivity() {
         networkLiveData = NetworkLiveData(application)
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
+                getBranchesFromApi()
                 showNoInternet(false)
                 Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
                 animationStart()
                 textWatcher()
                 signUpButton()
+                spinnerCabang()
             } else {
                 showNoInternet(true)
                 Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun getBranchesFromApi() {
+        viewModel.getBranchesResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> {  }
+                    is ResultState.Error -> {
+                        Log.d(TAG, "onGetBranchesFromApi Error : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        Log.d(TAG, "onGetBranchesFromApi Success : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun spinnerCabang() {
+        val items = mutableListOf("Pilih Cabang")
+
+        viewModel.getBranchesFromLocal().observe(this) { branchEntityList ->
+            branchEntityList.forEach { item ->
+                items.add(item.namaCabang.toString())
+            }
+        }
+
+        val adapter = object: ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items) {
+            override fun isEnabled(position: Int): Boolean {
+                // Item di posisi 0 tidak bisa dipilih
+                return position != 0
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view as TextView
+
+                if (position == 0) {
+                    textView.setTextColor(getColor(R.color.buttonDisabledColor))
+                }
+                return view
+            }
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sCabang.adapter = adapter
+
+        binding.sCabang.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                namaCabang = parent?.getItemAtPosition(position).toString()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
             }
         }
     }
@@ -105,11 +173,12 @@ class SignUpActivity : AppCompatActivity() {
                 val pattern = getString(R.string.pattern)
                 val isNamaValid = nama.length >= MIN_CHARACTER_NAMA
                 val isEmailValid = email.contains(Regex(pattern))
+                val namaCabangIsNotEmpty = namaCabang.isNotEmpty()
                 val isPasswordValid = password.length >= MIN_CHARACTER_PASSWORD
                 val isRepeatPasswordValid = password == repeatPassword
 
                 binding.btnSignUp.isEnabled = isNamaValid && isEmailValid &&
-                        isPasswordValid && isRepeatPasswordValid
+                        namaCabangIsNotEmpty && isPasswordValid && isRepeatPasswordValid
 
                 if (binding.btnSignUp.isEnabled == true) {
                     binding.btnSignUp.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(this@SignUpActivity, R.color.blueSecond))
@@ -147,7 +216,7 @@ class SignUpActivity : AppCompatActivity() {
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
             progressBar.setCancelable(false)
 
-            viewModel.register(nama, email, roleValueRadioButton, password, repeatPassword).observe(this) { result ->
+            viewModel.register(nama, email, roleValueRadioButton, namaCabang, password, repeatPassword).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is ResultState.Loading -> progressBar.show()
@@ -223,5 +292,9 @@ class SignUpActivity : AppCompatActivity() {
         super.onDestroy()
         _binding = null
         if (sweetAlertDialog != null) sweetAlertDialog = null
+    }
+
+    companion object {
+        private val TAG = SignUpActivity::class.java.simpleName
     }
 }

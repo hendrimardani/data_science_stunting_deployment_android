@@ -46,7 +46,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_login_view_2"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="230dp"
         android:layout_marginStart="@dimen/dimen_12"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
         android:id="@+id/v_2"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="230dp"
         android:background="@drawable/shape_login_view_1"
         android:elevation="5dp"
         android:layout_marginEnd="@dimen/dimen_8"
@@ -69,8 +69,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_login"
         android:layout_width="340dp"
-        android:layout_height="400dp"
-        android:layout_marginTop="280dp"
+        android:layout_height="450dp"
+        android:layout_marginTop="240dp"
         android:background="@drawable/shadow_background_constraint_layout"
         android:elevation="@dimen/dimen_4"
         app:cardUseCompatPadding="true"
@@ -198,13 +198,32 @@
             </RadioGroup>
 
             <ImageView
+                android:id="@+id/iv_cabang"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_home_work_24"
+                app:layout_constraintTop_toBottomOf="@id/iv_role"
+                app:layout_constraintStart_toStartOf="@id/iv_role"
+                app:layout_constraintEnd_toEndOf="@id/iv_role" />
+
+            <Spinner
+                android:id="@+id/s_cabang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_spinner"
+                app:layout_constraintStart_toEndOf="@id/iv_cabang"
+                app:layout_constraintTop_toTopOf="@id/iv_cabang"
+                app:layout_constraintBottom_toBottomOf="@id/iv_cabang" />
+
+            <ImageView
                 android:id="@+id/iv_password"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_key_24"
-                app:layout_constraintStart_toStartOf="@id/iv_role"
-                app:layout_constraintEnd_toEndOf="@id/iv_role"
-                app:layout_constraintTop_toBottomOf="@id/iv_role" />
+                app:layout_constraintStart_toStartOf="@id/iv_cabang"
+                app:layout_constraintEnd_toEndOf="@id/iv_cabang"
+                app:layout_constraintTop_toBottomOf="@id/iv_cabang" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_password"
@@ -290,7 +309,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_login_view_2"
-        android:layout_marginTop="640dp"
+        android:layout_marginTop="650dp"
         android:layout_marginEnd="@dimen/dimen_12"
         android:elevation="5dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -302,7 +321,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_login_view_1"
-        android:layout_marginTop="640dp"
+        android:layout_marginTop="650dp"
         android:layout_marginStart="@dimen/dimen_12"
         android:elevation="5dp"
         app:layout_constraintStart_toStartOf="parent"

@@ -7,14 +7,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
-import com.example.stunting.database.with_api.entities.messages.MessagesRelation
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
-import com.example.stunting.database.with_api.response.DataMessage
+import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
@@ -24,7 +24,6 @@ import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResp
 import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.datastore.chatting.UserModel
-import com.example.stunting.utils.RealtimeMessagesRepository
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -49,7 +48,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     // UserProfile
     private var _getUserProfilesResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
     val getUserProfilesResult = _getUserProfilesResult
-    val getUsersFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUsersFromLocal()
+    val getUserProfilesFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUserProfilesFromLocal()
 
     // Connect to Realtime WebSocket
     fun connect() {
@@ -157,7 +156,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         return chattingRepository.getSession().asLiveData()
     }
 
-    fun getUserProfilesFromDatabase() = chattingRepository.getUserProfilesFromDatabase()
+    fun getUserProfileWithUserRelationFromLocal() = chattingRepository.getUserProfileWithUserRelationFromLocal()
 
     fun getUserProfilesFromApi() {
         viewModelScope.launch {
@@ -169,12 +168,5 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {
         emit(ResultState.Loading)
         emit(chattingRepository.login(email, password))
-    }
-
-    fun register(
-        nama: String, email: String, role: String, password: String, repeatPassword: String
-    ): LiveData<ResultState<RegisterResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.register(nama, email, role, password, repeatPassword))
     }
 }
