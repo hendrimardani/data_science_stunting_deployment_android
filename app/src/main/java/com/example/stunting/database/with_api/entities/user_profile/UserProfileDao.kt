@@ -6,9 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
-import com.example.stunting.database.with_api.entities.users.UsersEntity
-import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 
 @Dao
 interface UserProfileDao {

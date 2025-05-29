@@ -31,7 +31,7 @@ import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.NetworkLiveData
-import android.view.animation.AnimationUtils
+
 class SignUpActivity : AppCompatActivity() {
     private var _binding: ActivitySignUpBinding? = null
     private val binding get() = _binding!!
@@ -98,8 +98,8 @@ class SignUpActivity : AppCompatActivity() {
     private fun spinnerCabang() {
         val items = mutableListOf("Pilih Cabang")
 
-        viewModel.getBranchesFromLocal().observe(this) { branchEntityList ->
-            branchEntityList.forEach { item ->
+        viewModel.getBranchesFromLocal().observe(this) { branchesList ->
+            branchesList.forEach { item ->
                 items.add(item.namaCabang.toString())
             }
         }

@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
 
     private var userModel: UserModel? = null
     private val gson = Gson()
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
 
@@ -151,7 +151,7 @@ class LoginFragment : Fragment() {
                             progressBar.dismiss()
                             val dataLogin = result.data?.dataLogin
                             val role = result?.data?.dataLogin?.role
-                            Log.d(TAG, "onLogin role : ${role}")
+//                            Log.d(TAG, "onLogin role : ${role}")
 
                             if (role == "pasien") {
                                 // Role pasien

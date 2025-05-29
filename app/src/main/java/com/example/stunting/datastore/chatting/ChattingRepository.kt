@@ -21,6 +21,8 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupEntit
 import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithBranchesRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateGroupByIdRequestJSON
@@ -29,6 +31,7 @@ import com.example.stunting.database.with_api.response.AddingUserByGroupIdRespon
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
+import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -563,48 +566,8 @@ class ChattingRepository(
         }
     }
 
-    fun getBranchesFromLocal(): LiveData<List<BranchEntity>> =
-        chattingDatabase.branchDao().getBranches()
-
-    suspend fun getBranchesFromApi(): ResultState<List<DataBranchesItem?>> {
-        return try {
-            val response = apiService.getAllBranches()
-            if (response.isSuccessful) {
-                val data = response.body()?.dataBranches ?: emptyList()
-                withContext(Dispatchers.IO) {
-                    insertBranchesToLocal(data)
-                }
-                ResultState.Success(data)
-            } else {
-                ResultState.Error("Gagal ambil data: ${response.message()}")
-            }
-        } catch (e: Exception) {
-            ResultState.Error(e.message ?: "Unknown error")
-        }
-    }
-
-    // Menggunakan entitas pusat relasi
-    private suspend fun insertBranchesToLocal(dataBranchesItem: List<DataBranchesItem?>) {
-        val branchsList = ArrayList<BranchEntity>()
-
-        dataBranchesItem.forEach { item ->
-            if (item != null) {
-                branchsList.add(
-                    BranchEntity(
-                        id = item.id,
-                        namaCabang = item.namaCabang,
-                        noTlp = item.noTlp,
-                        alamat = item.alamat,
-                        createdAt = item.createdAt,
-                        updatedAt = item.updatedAt
-                    )
-                )
-            }
-        }
-        withContext(Dispatchers.IO) {
-            chattingDatabase.branchDao().insertBranch(branchsList)
-        }
-    }
+    fun getBranchById(id: Int): LiveData<List<BranchEntity>> =
+        chattingDatabase.branchDao().getBranchById(id)
 
     suspend fun deleteUserById(id: Int) = liveData {
         emit(ResultState.Loading)
@@ -625,6 +588,85 @@ class ChattingRepository(
         } catch (e: HttpException) {
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             emit(ResultState.Error(e.message.toString()))
+        }
+    }
+
+    fun getUserProfilePatientWithBranchesRelationFromLocal(): LiveData<List<UserProfilePatientWithBranchesRelation>> =
+        chattingDatabase.userProfilePatientDao().getUserProfilePatientWithBranchesRelationFromLocal()
+
+    fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>> =
+        chattingDatabase.userProfilePatientDao().getUserProfilePatientsFromLocal()
+
+    suspend fun getUserProfilePatientsFromApi(): ResultState<List<DataUserProfilePatientsItem?>> {
+        return try {
+            val response = apiService.getAllUserProfilePatients()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataUserProfilePatients ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertUserProfilePatientsToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertUserProfilePatientsToLocal(dataUserProfilePatiensItem: List<DataUserProfilePatientsItem?>) {
+        val usersList = ArrayList<UsersEntity>()
+        val branchesList = ArrayList<BranchEntity>()
+        val userProfilePatientsList = ArrayList<UserProfilePatientEntity>()
+
+        dataUserProfilePatiensItem.forEach { item ->
+            val usersEntity = item?.users
+            val branchEntity = item?.branch
+
+            if (usersEntity != null && branchEntity != null) {
+                usersList.add(
+                    UsersEntity(
+                        id = usersEntity.id,
+                        email = usersEntity.email,
+                        password = usersEntity.password,
+                        role = usersEntity.role,
+                        createdAt = usersEntity.createdAt,
+                        updatedAt = usersEntity.updatedAt
+                    )
+                )
+                branchesList.add(
+                    BranchEntity(
+                        id = branchEntity.id,
+                        namaCabang = branchEntity.namaCabang,
+                        noTlp = branchEntity.noTlp,
+                        alamat = branchEntity.alamat,
+                        createdAt = branchEntity.createdAt,
+                        updatedAt = branchEntity.updatedAt
+                    )
+                )
+                userProfilePatientsList.add(
+                    UserProfilePatientEntity(
+                        id = item.id,
+                        userPatientId = item.userPatientId,
+                        branchId = item.branchId,
+                        namaBumil = item.namaBumil,
+                        nikBumil = item.nikBumil,
+                        tglLahirBumil = item.tglLahirBumil,
+                        umurBumil = item.umurBumil,
+                        namaAyah = item.namaAyah,
+                        gambarProfile = item.gambarProfile,
+                        gambarBanner = item.gambarBanner,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt,
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.usersDao().insertUsers(usersList)
+            chattingDatabase.branchDao().insertBranch(branchesList)
+            chattingDatabase.userProfilePatientDao().insertUserProfilePatient(userProfilePatientsList)
         }
     }
 
@@ -730,7 +772,7 @@ class ChattingRepository(
 
     suspend fun getUserProfilesFromApi(): ResultState<List<DataUserProfilesItem?>> {
         return try {
-            val response = apiService.getAllUsers()
+            val response = apiService.getAllUserProfiles()
             if (response.isSuccessful) {
                 val data = response.body()?.dataUserProfiles ?: emptyList()
                 withContext(Dispatchers.IO) {
@@ -748,13 +790,14 @@ class ChattingRepository(
     // Menggunakan entitas pusat relasi
     private suspend fun insertUserProfilesToLocal(dataUserProfilesItem: List<DataUserProfilesItem?>) {
         val usersList = ArrayList<UsersEntity>()
+        val branchesList = ArrayList<BranchEntity>()
         val userProfileList = ArrayList<UserProfileEntity>()
 
         dataUserProfilesItem.forEach { item ->
             val usersEntity = item?.users
+            val branchEntity = item?.branch
 
-            if (usersEntity != null) {
-                // Simpan Users
+            if (usersEntity != null && branchEntity != null) {
                 usersList.add(
                     UsersEntity(
                         id = usersEntity.id,
@@ -765,11 +808,21 @@ class ChattingRepository(
                         updatedAt = usersEntity.updatedAt
                     )
                 )
-                // Simpan UserProfile
+                branchesList.add(
+                    BranchEntity(
+                        id = branchEntity.id,
+                        namaCabang = branchEntity.namaCabang,
+                        noTlp = branchEntity.noTlp,
+                        alamat = branchEntity.alamat,
+                        createdAt = branchEntity.createdAt,
+                        updatedAt = branchEntity.updatedAt
+                    )
+                )
                 userProfileList.add(
                     UserProfileEntity(
                         id = item.id,
                         userId = item.userId,
+                        branchId = item.branchId,
                         nama = item.nama,
                         nik = item.nik,
                         jenisKelamin = item.jenisKelamin,
@@ -786,6 +839,7 @@ class ChattingRepository(
         }
         withContext(Dispatchers.IO) {
             chattingDatabase.usersDao().insertUsers(usersList)
+            chattingDatabase.branchDao().insertBranch(branchesList)
             chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
         }
     }
@@ -831,7 +885,7 @@ class ChattingRepository(
             val response = apiService.register(requestBody)
 
             if (response.isSuccessful) {
-                Log.e(TAG, "onChattingRepository register Success ${response.code()} : ${response.body()}")
+//                Log.e(TAG, "onChattingRepository register Success ${response.code()} : ${response.body()}")
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
@@ -850,6 +904,49 @@ class ChattingRepository(
         } catch (e: Exception) {
             Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
+    fun getBranchesFromLocal(): LiveData<List<BranchEntity>> =
+        chattingDatabase.branchDao().getBranches()
+
+    suspend fun getBranchesFromApi(): ResultState<List<DataBranchesItem?>> {
+        return try {
+            val response = apiService.getAllBranches()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataBranches ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertBranchesToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertBranchesToLocal(dataBranchesItem: List<DataBranchesItem?>) {
+        val branchsList = ArrayList<BranchEntity>()
+
+        dataBranchesItem.forEach { item ->
+            if (item != null) {
+                branchsList.add(
+                    BranchEntity(
+                        id = item.id,
+                        namaCabang = item.namaCabang,
+                        noTlp = item.noTlp,
+                        alamat = item.alamat,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.branchDao().insertBranch(branchsList)
         }
     }
 

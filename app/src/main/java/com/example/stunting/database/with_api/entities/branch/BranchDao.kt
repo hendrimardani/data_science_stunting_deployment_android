@@ -9,6 +9,9 @@ import androidx.room.Query
 @Dao
 interface BranchDao {
 
+    @Query("SELECT * FROM branch WHERE id_branch = :id")
+    fun getBranchById(id: Int): LiveData<List<BranchEntity>>
+
     @Query("SELECT * FROM branch ORDER BY id_branch ASC")
     fun getBranches(): LiveData<List<BranchEntity>>
 

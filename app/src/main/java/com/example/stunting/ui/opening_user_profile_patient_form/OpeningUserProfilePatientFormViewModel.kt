@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.entities.branch.BranchEntity
-import com.example.stunting.database.with_api.response.DataBranchesItem
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithBranchesRelation
+import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import kotlinx.coroutines.launch
 
@@ -14,21 +14,20 @@ class OpeningUserProfilePatientFormViewModel(
     private val chattingRepository: ChattingRepository
 ): ViewModel() {
 
-    // Branch
-    private var _getBranchesResult = MutableLiveData<ResultState<List<DataBranchesItem?>>>()
-    val getBranchesResult = _getBranchesResult
-    val getBranchesFromLocal: LiveData<List<BranchEntity>> = chattingRepository.getBranchesFromLocal()
+    private var _getUserProfilePatientsResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()
+    val getUserProfilePatientsResult: LiveData<ResultState<List<DataUserProfilePatientsItem?>>> = _getUserProfilePatientsResult
+
+    val getUserProfilePatientWithBranchesRelationFromLocal: LiveData<List<UserProfilePatientWithBranchesRelation>> =
+        chattingRepository.getUserProfilePatientWithBranchesRelationFromLocal()
 
     init {
-        getBranchesFromApi()
+        getUserProfilePatientsFromApi()
     }
 
-    private fun getBranchesFromLocal() = chattingRepository.getBranchesFromLocal()
-
-    fun getBranchesFromApi() {
+    private fun getUserProfilePatientsFromApi() {
         viewModelScope.launch {
-            _getBranchesResult.value = ResultState.Loading
-            _getBranchesResult.value = chattingRepository.getBranchesFromApi()
+            _getUserProfilePatientsResult.value = ResultState.Loading
+            _getUserProfilePatientsResult.value = chattingRepository.getUserProfilePatientsFromApi()
         }
     }
 }

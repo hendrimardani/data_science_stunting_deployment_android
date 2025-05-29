@@ -1,4 +1,4 @@
-package com.example.stunting.database.with_api.entities.user_profile
+package com.example.stunting.database.with_api.entities.user_profile_patient
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
@@ -7,17 +7,16 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import com.example.stunting.database.with_api.entities.branch.BranchDao
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Entity(
-    tableName = "user_profile",
+    tableName = "user_profile_patient",
     foreignKeys = [
         ForeignKey(
             entity = UsersEntity::class,
             parentColumns = ["id_user"],
-            childColumns = ["user_id"],
+            childColumns = ["user_patient_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -27,19 +26,18 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
             onDelete = ForeignKey.CASCADE
         )
                   ],
-    indices = [Index(value = ["user_id"], unique = true)] // One-to-one: unique index
+    indices = [Index(value = ["user_patient_id"], unique = true)] // One-to-one: unique index
 )
-data class UserProfileEntity(
+data class UserProfilePatientEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id_user_profile") val id: Int? = null,
-    @ColumnInfo(name = "user_id") val userId: Int? = null,
+    @ColumnInfo(name = "id_user_profile_patient") val id: Int? = null,
+    @ColumnInfo(name = "user_patient_id") val userPatientId: Int? = null,
     @ColumnInfo(name = "branch_id") val branchId: Int? = null,
-    @ColumnInfo(name = "nama") val nama: String? = null,
-    @ColumnInfo(name = "nik") val nik: String? = null,
-    @ColumnInfo(name = "jenis_kelamin") val jenisKelamin: String? = null,
-    @ColumnInfo(name = "tgl_lahir") val tglLahir: String? = null,
-    @ColumnInfo(name = "umur") val umur: String? = null,
-    @ColumnInfo(name = "alamat") val alamat: String? = null,
+    @ColumnInfo(name = "nama_bumil") val namaBumil: String? = null,
+    @ColumnInfo(name = "nik_bumil") val nikBumil: String? = null,
+    @ColumnInfo(name = "tgl_lahir_bumil") val tglLahirBumil: String? = null,
+    @ColumnInfo(name = "umur_bumil") val umurBumil: String? = null,
+    @ColumnInfo(name = "nama_ayah") val namaAyah: String? = null,
     @ColumnInfo(name = "gambar_profile") val gambarProfile: String? = null,
     @ColumnInfo(name = "gambar_banner") val gambarBanner: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
@@ -47,24 +45,23 @@ data class UserProfileEntity(
 )
 
 // One to one
-data class UserProfileWithUserRelation(
+data class UserProfilePatientWithUserRelation(
     @Embedded val users: UsersEntity,
 
     @Relation(
         parentColumn = "id_user",
-        entityColumn = "user_id"
+        entityColumn = "user_patient_id"
     )
-    val userProfile: UserProfileEntity?
+    val userProfilePatient: UserProfilePatientEntity?
 )
 
 // One to many
-data class UserProfileWithBranchRelation(
+data class UserProfilePatientWithBranchesRelation(
     @Embedded val branch: BranchEntity,
 
     @Relation(
         parentColumn = "id_branch",
         entityColumn = "branch_id"
     )
-    val userProfile: List<UserProfileEntity?>
+    val userProfilePatient: List<UserProfilePatientEntity?>
 )
-

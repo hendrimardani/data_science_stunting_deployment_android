@@ -2,7 +2,6 @@ package com.example.stunting.database.with_api.retrofit
 
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
-import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.response.AddingMessageResponse
@@ -12,6 +11,7 @@ import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllBranchesResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
+import com.example.stunting.database.with_api.response.GetAllUserProfilePatientsResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilesResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
@@ -69,13 +69,13 @@ interface ApiService {
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
 
-    @GET("branches")
-    suspend fun getAllBranches(): Response<GetAllBranchesResponse>
-
     @DELETE("user/{id}")
     suspend fun deleteUserById(
         @Path("id") id: Int
     ): Response<DeleteUserByIdResponse>
+
+    @GET("user_profile_patients")
+    suspend fun getAllUserProfilePatients(): Response<GetAllUserProfilePatientsResponse>
 
     @Multipart
     @PUT("user_profile/{user_id}")
@@ -87,7 +87,7 @@ interface ApiService {
     ): Response<UpdateUserProfileByIdResponse>
 
     @GET("user_profiles")
-    suspend fun getAllUsers(): Response<GetAllUserProfilesResponse>
+    suspend fun getAllUserProfiles(): Response<GetAllUserProfilesResponse>
 
     @POST("register")
     suspend fun register(
@@ -98,4 +98,7 @@ interface ApiService {
     suspend fun login(
         @Body requesttBody: LoginRequestJSON
     ): Response<LoginResponse>
+
+    @GET("branches")
+    suspend fun getAllBranches(): Response<GetAllBranchesResponse>
 }

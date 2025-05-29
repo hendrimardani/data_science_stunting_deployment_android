@@ -16,6 +16,8 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupDao
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileDao
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientDao
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
 import com.example.stunting.database.with_api.entities.users.UsersDao
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 
@@ -23,11 +25,12 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
     entities = [
         UsersEntity::class, UserProfileEntity::class, GroupsEntity::class,
         UserGroupEntity::class, NotificationsEntity::class, MessagesEntity::class,
-        BranchEntity::class
+        BranchEntity::class, UserProfilePatientEntity::class
                 ],
-    version = 34
+    version = 36
 )
 abstract class ChattingDatabase: RoomDatabase() {
+    abstract fun userProfilePatientDao(): UserProfilePatientDao
     abstract fun branchDao(): BranchDao
     abstract fun userGroupDao(): UserGroupDao
     abstract fun groupsDao(): GroupsDao

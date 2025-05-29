@@ -1,6 +1,7 @@
 package com.example.stunting.ui.opening_user_profile_patient_form
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -9,14 +10,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.stunting.R
 import com.example.stunting.databinding.ActivityOpeningUserProfilePatientFormBinding
-import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 
 class OpeningUserProfilePatientFormActivity : AppCompatActivity() {
     private var _binding: ActivityOpeningUserProfilePatientFormBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<OpeningUserProfilePatientFormViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private var userPatientId: Int? = null
@@ -32,6 +32,8 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity() {
             insets
         }
         userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_FORM, 0)
+
+        getUserProfilePatients()
 
         binding.llBack.visibility = View.INVISIBLE
         binding.llNext.visibility = View.VISIBLE
@@ -50,11 +52,11 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserPatientId() {
-
+    private fun getUserProfilePatients() {
     }
 
     companion object {
+        private val TAG = OpeningUserProfilePatientFormActivity::class.java.simpleName
         const val EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_FORM = "extra_user_patient_id_to_opening_user_profile_patient_form"
     }
 }

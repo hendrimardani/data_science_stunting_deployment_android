@@ -7,18 +7,14 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
-import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
-import com.example.stunting.database.with_api.response.LoginResponse
-import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UserGroupsItem
@@ -163,10 +159,5 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
             _getUserProfilesResult.value = ResultState.Loading
             _getUserProfilesResult.value = chattingRepository.getUserProfilesFromApi()
         }
-    }
-
-    fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.login(email, password))
     }
 }

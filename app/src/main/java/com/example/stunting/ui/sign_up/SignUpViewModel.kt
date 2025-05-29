@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
 
-    // Branch
     private var _getBranchesResult = MutableLiveData<ResultState<List<DataBranchesItem?>>>()
     val getBranchesResult = _getBranchesResult
 
