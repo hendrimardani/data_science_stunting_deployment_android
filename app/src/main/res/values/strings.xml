@@ -232,4 +232,9 @@
     <string name="text_cabang">Cabang</string>
     <string name="text_nik_anak">NIK Anak</string>
     <string name="error_text_nik_validation">Harus 16 karakter</string>
+    <string name="title_activity_nav_drawer_main_patient">NavDrawerMainActivityPatient</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
 </resources>

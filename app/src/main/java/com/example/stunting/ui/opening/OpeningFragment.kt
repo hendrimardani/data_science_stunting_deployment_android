@@ -15,11 +15,13 @@ import com.example.stunting.databinding.FragmentOpeningBinding
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.login.LoginFragment
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.sign_up.SignUpActivity
 import android.content.SharedPreferences
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.datastore.chatting.UserModel
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
 
 class OpeningFragment : Fragment() {
     private var _binding: FragmentOpeningBinding? = null
@@ -41,17 +43,15 @@ class OpeningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.getSession().observe(viewLifecycleOwner) { userModel ->
 //            Log.d(TAG, "onOpeningFragment : Apakah sudah login?: ${userModel.isLogin}")
 //            Log.d(TAG, "onOpeningFragment : Email anda: ${userModel.email}")
             if (userModel.isLogin) {
-                val intent = Intent(requireActivity(), NavDrawerMainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
-                intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY, userModel)
-                startActivity(intent)
-                requireActivity().finish()
+                when (userModel.role) {
+                    "pasien" -> gotoPasienActivity(userModel)
+                    "petugas" -> gotoPetugasActivity(userModel)
+                    "admin" -> { /*TODO */ }
+                }
             }
         }
 
@@ -83,6 +83,24 @@ class OpeningFragment : Fragment() {
 
             override fun onTransitionTrigger(motionLayout: MotionLayout, triggerId: Int, positive: Boolean, progress: Float) { }
         })
+    }
+
+    private fun gotoPetugasActivity(userModel: UserModel) {
+        val intent = Intent(requireActivity(), NavDrawerMainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
+        intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY, userModel)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
+    private fun gotoPasienActivity(userModel: UserModel) {
+        val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY, TAG)
+        intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY, userModel)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun goToLoginFragment() {

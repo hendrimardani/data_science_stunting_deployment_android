@@ -1,4 +1,4 @@
-package com.example.stunting.ui.navigation_drawer_fragment.home
+package com.example.stunting.ui.nav_drawer_fragment.home
 
 import android.annotation.SuppressLint
 import android.content.Intent

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/iv_edit_banner"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:scaleType="fitXY"-->
+    <!--        android:background="@color/blueSecond_200"-->
+    <!--        tools:src="@tools:sample/avatars"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/fl_icon_edit_banner"-->
+    <!--        android:layout_width="30dp"-->
+    <!--        android:layout_height="30dp"-->
+    <!--        android:background="@drawable/shape_circle"-->
+    <!--        android:layout_marginEnd="@dimen/dimen_8"-->
+    <!--        android:layout_marginBottom="@dimen/dimen_8"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/iv_icon_edit_banner"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:src="@drawable/ic_edit_24"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent" />-->
+    <!--    </FrameLayout>-->
+
+    <FrameLayout
+        android:id="@+id/fl_profile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="@dimen/dimen_8"
+        android:layout_marginEnd="@dimen/dimen_8"
+        android:layout_marginTop="@dimen/dimen_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/nav_header_desc"
+            android:src="@drawable/ic_person_40"
+            android:layout_marginStart="@dimen/dimen_8" />
+
+        <FrameLayout
+            android:id="@+id/fl_icon_edit_profile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/shape_circle"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:layout_marginBottom="@dimen/dimen_8">
+
+            <ImageView
+                android:id="@+id/iv_icon_edit_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_edit_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_name_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_4"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/fl_profile"
+        app:layout_constraintTop_toBottomOf="@+id/fl_profile"
+        tools:text="@string/text_nama" />
+
+    <TextView
+        android:id="@+id/tv_email_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/text_email"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="@id/tv_name_nav_view"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_nav_view"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/tv_role_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/text_role"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/tv_email_nav_view"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_nav_view"
+        tools:layout_editor_absoluteX="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

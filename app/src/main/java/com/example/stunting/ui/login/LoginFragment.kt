@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,13 +27,12 @@ import com.example.stunting.databinding.FragmentLoginBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
-import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity
 import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
-import com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.utils.NetworkLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -190,7 +188,7 @@ class LoginFragment : Fragment() {
                 val userPatientId = pasienUser?.userPatientId
                 val namaBumil = pasienUser?.namaBumil.toString()
                 val token = dataLogin?.token.toString()
-                userModel = UserModel(userPatientId.toString(), namaBumil, token)
+                userModel = UserModel(userPatientId.toString(), namaBumil, role, token)
 
                 val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.SUCCESS_TYPE)
                 sweetAlertDialog.setTitleText(getString(R.string.title_message_success))
@@ -215,7 +213,7 @@ class LoginFragment : Fragment() {
                 val userId = petugasUser?.userId
                 val nama = petugasUser?.nama.toString()
                 val token = dataLogin?.token.toString()
-                userModel = UserModel(userId.toString(), nama, token)
+                userModel = UserModel(userId.toString(), nama, role!!, token)
 
                 val sweetAlertDialog = SweetAlertDialog(requireActivity(), SweetAlertDialog.SUCCESS_TYPE)
                 sweetAlertDialog.setTitleText(getString(R.string.title_message_success))

@@ -1,4 +1,4 @@
-package com.example.stunting.ui.navigation_drawer_fragment
+package com.example.stunting.ui.nav_drawer_fragment
 
 import android.app.Dialog
 import android.content.Intent
@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -34,7 +33,7 @@ import com.bumptech.glide.Glide
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
-import com.example.stunting.databinding.ActivityNavigationDrawerMainBinding
+import com.example.stunting.databinding.ActivityNavDrawerMainBinding
 import com.example.stunting.databinding.DialogBottomSheetFotoBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
@@ -42,7 +41,7 @@ import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.navigation_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
+import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
 import com.example.stunting.utils.Functions.getImageUri
 import com.example.stunting.utils.Functions.observeOnce
 import com.example.stunting.utils.Functions.reduceFileImage
@@ -52,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class NavDrawerMainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityNavigationDrawerMainBinding
+    private lateinit var binding: ActivityNavDrawerMainBinding
     private val viewModel by viewModels<MainViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -109,14 +108,14 @@ class NavDrawerMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNavigationDrawerMainBinding.inflate(layoutInflater)
+        binding = ActivityNavDrawerMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarNavigationDrawerMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main)
+        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity)
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -126,7 +125,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Binding BumilBottomSheetDialog for retrieve xml id
         _bindingFotoBottomSheetDialog = DialogBottomSheetFotoBinding.inflate(layoutInflater)
 
         // Ubah warna teks logout
@@ -335,7 +333,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val bundle = Bundle().apply {
             putInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT, userId!!)
         }
-        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main)
+        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity)
         navController.navigate(R.id.nav_home, bundle)
     }
 
@@ -448,7 +446,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main)
+        val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 

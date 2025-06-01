@@ -1,4 +1,4 @@
-package com.example.stunting.ui.navigation_drawer_fragment.settings
+package com.example.stunting.ui.nav_drawer_fragment.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.navigation_drawer_fragment.NavDrawerMainActivity">
+    tools:context=".ui.nav_drawer_fragment.NavDrawerMainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -20,6 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_navigation_drawer_main" />
+    <include layout="@layout/content_nav_drawer_main_activity" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

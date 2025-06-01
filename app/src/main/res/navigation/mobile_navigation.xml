@@ -16,9 +16,9 @@
     </fragment>
     <activity
         android:id="@+id/navigationDrawerMainActivity"
-        android:name="com.example.stunting.ui.navigation_drawer_fragment.NavDrawerMainActivity"
+        android:name="com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity"
         android:label="app_bar_navigation_drawer_main"
-        tools:layout="@layout/app_bar_navigation_drawer_main" />
+        tools:layout="@layout/app_bar_nav_drawer_main_activity" />
     <fragment
         android:id="@+id/nav_opening"
         android:name="com.example.stunting.ui.opening.OpeningFragment"
