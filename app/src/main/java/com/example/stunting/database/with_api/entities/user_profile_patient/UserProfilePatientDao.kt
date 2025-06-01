@@ -6,14 +6,21 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.stunting.ResultState
+import androidx.room.Update
 
 @Dao
 interface UserProfilePatientDao {
 
+    @Update
+    suspend fun updateUserProfilePatientByIdFromLocal(userProfilePatient: UserProfilePatientEntity)
+
     @Transaction
-    @Query("SELECT * FROM branch")
-    fun getUserProfilePatientWithBranchesRelationFromLocal(): LiveData<List<UserProfilePatientWithBranchesRelation>>
+    @Query("""
+        SELECT * FROM user_profile_patient
+        INNER JOIN branch ON branch.id_branch = user_profile_patient.branch_id 
+        WHERE user_patient_id = :userPatientId
+        """)
+    fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation>
 
     @Query("SELECT * FROM user_profile_patient ORDER BY id_user_profile_patient ASC")
     fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>>

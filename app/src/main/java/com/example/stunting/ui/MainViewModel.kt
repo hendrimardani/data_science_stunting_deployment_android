@@ -31,91 +31,91 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     private var _updateUserProfileByIdResult = MutableLiveData<ResultState<UpdateUserProfileByIdResponse?>>()
     val updateUserProfileByIdResult = _updateUserProfileByIdResult
 
-    // Messages
-    private var _getMessagesResult = MutableLiveData<ResultState<List<DataMessagesItem?>>>()
-    val getMessagesResult = _getMessagesResult
-    val getMessagesFromLocal: LiveData<List<MessagesEntity>> = chattingRepository.getMessagesFromLocal()
-
-    // UserGroup
-    private var _getUserGroupsResult = MutableLiveData<ResultState<List<UserGroupsItem?>>>()
-    val getUserGroupsResult = _getUserGroupsResult
-    val getUserGroupsFromLocal: LiveData<List<UserGroupEntity>> = chattingRepository.getUserGroupsFromLocal()
+//    // Messages
+//    private var _getMessagesResult = MutableLiveData<ResultState<List<DataMessagesItem?>>>()
+//    val getMessagesResult = _getMessagesResult
+//    val getMessagesFromLocal: LiveData<List<MessagesEntity>> = chattingRepository.getMessagesFromLocal()
+//
+//    // UserGroup
+//    private var _getUserGroupsResult = MutableLiveData<ResultState<List<UserGroupsItem?>>>()
+//    val getUserGroupsResult = _getUserGroupsResult
+//    val getUserGroupsFromLocal: LiveData<List<UserGroupEntity>> = chattingRepository.getUserGroupsFromLocal()
 
     // UserProfile
     private var _getUserProfilesResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
     val getUserProfilesResult = _getUserProfilesResult
     val getUserProfilesFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUserProfilesFromLocal()
 
-    // Connect to Realtime WebSocket
-    fun connect() {
-        chattingRepository.connect()
-    }
-
-    // Disconnect WebSocket
-    fun disconnect() {
-        chattingRepository.disconnect()
-    }
-
-    fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
-
-    fun getMessagesFromApi() {
-        viewModelScope.launch {
-            _getMessagesResult.value = ResultState.Loading
-            _getMessagesResult.value = chattingRepository.getMessagesFromApi()
-        }
-    }
-
-    fun addMessage(
-        userId: Int, groupId: Int, isiPesan: String
-    ): LiveData<ResultState<AddingMessageResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.addMessage(userId, groupId, isiPesan))
-    }
-
-    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?) =
-        chattingRepository.getUserGroupRelationByUserIdRole(userId, role)
-
-    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
-        chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
-
-    fun getUserGroupRelationByGroupIdList(groupId: Int) = chattingRepository.getUserGroupRelationByGroupIdList(groupId)
-
-    fun getUserGroupRelationByGroupId(groupId: Int) = chattingRepository.getUserGroupRelationByGroupId(groupId)
-
-    fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
-
-    fun updateGroupById(
-        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
-    ) {
-        viewModelScope.launch {
-            _updateGroupByIdResult.value = ResultState.Loading
-            val result = chattingRepository.updateGroupById(
-                groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner
-            )
-            _updateGroupByIdResult.value = result
-        }
-    }
-
-    fun getUserGroupsFromApi() {
-        viewModelScope.launch {
-            _getUserGroupsResult.value = ResultState.Loading
-            _getUserGroupsResult.value = chattingRepository.getUserGroupsFromApi()
-        }
-    }
-
-    fun addUserGroup(
-        userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?
-    ): LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi, gambarProfile, gambarBanner))
-    }
-
-    fun addUserByGroupId(
-        groupId: Int, userId: List<Int>, role: String?
-    ): LiveData<ResultState<AddingUserByGroupIdResponse?>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.addUserByGroupId(groupId, userId, role))
-    }
+//    // Connect to Realtime WebSocket
+//    fun connect() {
+//        chattingRepository.connect()
+//    }
+//
+//    // Disconnect WebSocket
+//    fun disconnect() {
+//        chattingRepository.disconnect()
+//    }
+//
+//    fun getMessageRelationByGroupId(groupId: Int) = chattingRepository.getMessageRelationByGroupId(groupId)
+//
+//    fun getMessagesFromApi() {
+//        viewModelScope.launch {
+//            _getMessagesResult.value = ResultState.Loading
+//            _getMessagesResult.value = chattingRepository.getMessagesFromApi()
+//        }
+//    }
+//
+//    fun addMessage(
+//        userId: Int, groupId: Int, isiPesan: String
+//    ): LiveData<ResultState<AddingMessageResponse?>> = liveData {
+//        emit(ResultState.Loading)
+//        emit(chattingRepository.addMessage(userId, groupId, isiPesan))
+//    }
+//
+//    fun getUserGroupRelationByUserIdRole(userId: Int, role: String?) =
+//        chattingRepository.getUserGroupRelationByUserIdRole(userId, role)
+//
+//    fun getUserGroupRelationByUserIdGroupId(userId: Int, groupId: Int) =
+//        chattingRepository.getUserGroupRelationByUserIdGroupId(userId, groupId)
+//
+//    fun getUserGroupRelationByGroupIdList(groupId: Int) = chattingRepository.getUserGroupRelationByGroupIdList(groupId)
+//
+//    fun getUserGroupRelationByGroupId(groupId: Int) = chattingRepository.getUserGroupRelationByGroupId(groupId)
+//
+//    fun getUserGroupRelationByUserId(userId: Int) = chattingRepository.getUserGroupRelationByUserId(userId)
+//
+//    fun updateGroupById(
+//        groupId: Int, userId: Int, namaGroup: String?, deskripsi: String?, gambarProfile: File?, gambarBanner: File?
+//    ) {
+//        viewModelScope.launch {
+//            _updateGroupByIdResult.value = ResultState.Loading
+//            val result = chattingRepository.updateGroupById(
+//                groupId, userId, namaGroup, deskripsi, gambarProfile, gambarBanner
+//            )
+//            _updateGroupByIdResult.value = result
+//        }
+//    }
+//
+//    fun getUserGroupsFromApi() {
+//        viewModelScope.launch {
+//            _getUserGroupsResult.value = ResultState.Loading
+//            _getUserGroupsResult.value = chattingRepository.getUserGroupsFromApi()
+//        }
+//    }
+//
+//    fun addUserGroup(
+//        userId: List<Int>, namaGroup: String, deskripsi: String, gambarProfile: File?, gambarBanner: File?
+//    ): LiveData<ResultState<AddingUserGroupResponse?>> = liveData {
+//        emit(ResultState.Loading)
+//        emit(chattingRepository.addUserGroup(userId, namaGroup, deskripsi, gambarProfile, gambarBanner))
+//    }
+//
+//    fun addUserByGroupId(
+//        groupId: Int, userId: List<Int>, role: String?
+//    ): LiveData<ResultState<AddingUserByGroupIdResponse?>> = liveData {
+//        emit(ResultState.Loading)
+//        emit(chattingRepository.addUserByGroupId(groupId, userId, role))
+//    }
 
     fun deleteUserById(id: Int) = liveData {
         emitSource(chattingRepository.deleteUserById(id))

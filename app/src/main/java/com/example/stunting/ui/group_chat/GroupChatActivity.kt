@@ -54,12 +54,12 @@ class GroupChatActivity : AppCompatActivity() {
         userId = intent?.getIntExtra(EXTRA_USER_ID_TO_GROUP_CHAT, 0)
         groupId = intent?.getIntExtra(EXTRA_GROUP_ID_TO_GROUP_CHAT, 0)
 
-        getMessagesFromApi()
+//        getMessagesFromApi()
         val groupChatAdapter = GroupChatAdapter(userId!!)
 
-        getUserGroupRelationByGroupIdList(groupId)
-        getMessageByGroupId(groupId!!, groupChatAdapter)
-        viewModel.connect()
+//        getUserGroupRelationByGroupIdList(groupId)
+//        getMessageByGroupId(groupId!!, groupChatAdapter)
+//        viewModel.connect()
 
         textWatcher()
 
@@ -80,76 +80,76 @@ class GroupChatActivity : AppCompatActivity() {
 
         binding.btnSend.setOnClickListener {
             val isiPesan = binding.tietMessage.text.toString().trim()
-            addMessage(userId!!, groupId!!, groupChatAdapter, isiPesan)
+//            addMessage(userId!!, groupId!!, groupChatAdapter, isiPesan)
         }
 
         // Supaya tidak ada margin di atas app bar dan dibawah
         setCoordinatorFitsSystemWindows()
     }
 
-    private fun addMessage(userId: Int, groupId: Int, groupChatAdapter: GroupChatAdapter, isiPesan: String) {
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
+//    private fun addMessage(userId: Int, groupId: Int, groupChatAdapter: GroupChatAdapter, isiPesan: String) {
+//        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+//        progressBar.setTitleText(getString(R.string.title_loading))
+//        progressBar.setContentText(getString(R.string.description_loading))
+//            .progressHelper.barColor = Color.parseColor("#73D1FA")
+//        progressBar.setCancelable(false)
+//
+//        viewModel.addMessage(userId, groupId, isiPesan).observe(this@GroupChatActivity) { result ->
+//            if (result != null) {
+//                when (result) {
+//                    is ResultState.Loading -> { progressBar.show() }
+//                    is ResultState.Error ->{
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
+//                    }
+//                    is ResultState.Success -> {
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
+//                        binding.tietMessage.text?.clear()
+//                    }
+//                    is ResultState.Unauthorized -> {
+//                        viewModel.logout()
+//                        val intent = Intent(this, MainActivity::class.java)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-        viewModel.addMessage(userId, groupId, isiPesan).observe(this@GroupChatActivity) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> { progressBar.show() }
-                    is ResultState.Error ->{
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatActivity getMessageByGroupId Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatActivity addMessage Success : ${result.data}")
-                        binding.tietMessage.text?.clear()
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
+//    private fun getUserGroupRelationByGroupIdList(groupId: Int?) {
+//        viewModel.getUserGroupRelationByGroupIdList(groupId!!).observe(this) { userGroupRelation ->
+//            userGroupRelation.forEach { item ->
+//                val gambarProfile = item.groupsEntity.gambarProfile
+//                val namaGroup =  item.groupsEntity.namaGroup
+//                setToolBar(gambarProfile, namaGroup)
+//            }
+//        }
+//    }
 
-    private fun getUserGroupRelationByGroupIdList(groupId: Int?) {
-        viewModel.getUserGroupRelationByGroupIdList(groupId!!).observe(this) { userGroupRelation ->
-            userGroupRelation.forEach { item ->
-                val gambarProfile = item.groupsEntity.gambarProfile
-                val namaGroup =  item.groupsEntity.namaGroup
-                setToolBar(gambarProfile, namaGroup)
-            }
-        }
-    }
+//    private fun getMessagesFromApi() {
+//        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+//        progressBar.setTitleText(getString(R.string.title_loading))
+//        progressBar.setContentText(getString(R.string.description_loading))
+//            .progressHelper.barColor = Color.parseColor("#73D1FA")
+//        progressBar.setCancelable(false)
+//
+//        viewModel.getMessagesFromApi()
+//    }
 
-    private fun getMessagesFromApi() {
-        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        viewModel.getMessagesFromApi()
-    }
-
-    private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
-        viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
-//            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
-            groupChatAdapter.submitList(result)
-            if (result.isNotEmpty()) {
-                binding.rvMessages.scrollToPosition(result.size - 1)
-                binding.rvMessages.layoutManager!!.smoothScrollToPosition(
-                    binding.rvMessages, null, result.size - 1
-                )
-            }
-        }
-    }
+//    private fun getMessageByGroupId(groupId: Int, groupChatAdapter: GroupChatAdapter) {
+//        viewModel.getMessageRelationByGroupId(groupId).observe(this) { result ->
+////            Log.d(TAG, "onGroupChatActivity getMessageRelationByGroupId suceess ${result.size}")
+//            groupChatAdapter.submitList(result)
+//            if (result.isNotEmpty()) {
+//                binding.rvMessages.scrollToPosition(result.size - 1)
+//                binding.rvMessages.layoutManager!!.smoothScrollToPosition(
+//                    binding.rvMessages, null, result.size - 1
+//                )
+//            }
+//        }
+//    }
 
     private fun textWatcher() {
         val textWatcher = object : TextWatcher {
@@ -238,7 +238,7 @@ class GroupChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        viewModel.disconnect()
+//        viewModel.disconnect()
     }
 
     companion object {

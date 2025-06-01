@@ -216,7 +216,7 @@
     <string name="text_nama">Nama</string>
     <string name="text_isi_sekarang">ISI SEKARANG</string>
     <string name="text_nama_bumil">Nama Ibu Hamil</string>
-    <string name="text_nik">Nomor Induk Kependudukan</string>
+    <string name="text_nik_bumil">NIK Ibu Hamil</string>
     <string name="text_tgl_lahir">Tanggal Lahir</string>
     <string name="text_umur_bumil">Umur Ibu Hamil</string>
     <string name="text_alamat">Alamat</string>
@@ -228,4 +228,8 @@
     <string name="text_perempuan">perempuan</string>
     <string name="text_umur_anak">Umur Anak</string>
     <string name="text_simpan">Simpan</string>
+    <string name="text_tgl_lahir_anak">Tanggal Lahir Anak</string>
+    <string name="text_cabang">Cabang</string>
+    <string name="text_nik_anak">NIK Anak</string>
+    <string name="error_text_nik_validation">Harus 16 karakter</string>
 </resources>

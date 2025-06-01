@@ -40,6 +40,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -244,6 +247,21 @@ object Functions {
             MotionToast.LONG_DURATION,
             ResourcesCompat.getFont(activity, www.sanju.motiontoast.R.font.helveticabold)
         )
+    }
+
+    fun calculateAge(birthDateString: String): String {
+        // Format tanggal (ubah format jika perlu)
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val birthDate = LocalDate.parse(birthDateString, formatter)
+
+        // Tanggal hari ini
+        val today = LocalDate.now()
+
+        // Hitung umur
+        val period = Period.between(birthDate, today)
+//        Log.e("TEST RESULT PERIOD ", period.toString())
+
+        return "${period.years} tahun, ${period.months} bulan"
     }
 
     fun setCalendarTglLahir(etTanggal: EditText) {

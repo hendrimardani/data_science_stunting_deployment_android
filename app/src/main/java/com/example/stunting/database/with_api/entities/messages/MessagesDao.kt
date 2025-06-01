@@ -14,6 +14,7 @@ interface MessagesDao {
             -- user_profile
             up.id_user_profile AS up_id_user_profile,
             up.user_id AS up_user_id,
+            up.branch_id AS up_branch_id,
             up.nama AS up_nama,
             up.nik AS up_nik,
             up.jenis_kelamin AS up_jenis_kelamin,

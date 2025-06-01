@@ -28,6 +28,7 @@ import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
+import com.example.stunting.utils.Functions.calculateAge
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
 import com.example.stunting.utils.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.Functions.linkToDirectory
@@ -76,25 +77,18 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Toolbar
         setToolBar()
-
-        // Collapsed Toolbar
         collapsedHandlerToolbar()
 
-        // Binding BumilBottomSheetDialog for retrieve xml id
         _bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
 
-        // Call database
         _bumilDao = (application as DatabaseApp).dbApp.bumilDao()
 
-        // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirBumil)
         setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
         setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
 
-        // getRadioButtomValue
         getRadioButtonValue(R.id.rg_bumil)
 
         binding.etTglLahirBumil.setOnClickListener(this)
@@ -104,16 +98,9 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnSubmitBumil.setOnClickListener(this)
         binding.btnTampilDataBumil.setOnClickListener(this)
 
-        // Get all items
         getAll(bumilDao)
-
-        // Set inputText umur from calculate tgl lahir
-        setInputTextUmur()
-
-        // Set inputText tanggalPerkiraanLahir
+        setTglLahirBumil()
         setInputTextTanggalPerkiraanLahir()
-
-        // Set inputText gestationalAge from calculate hari pertama haid terakhir
         setInputTextUmurKehamilan()
     }
 
@@ -195,14 +182,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         val dueDate = firstDayOfLastPeriod.plusDays(7).minusMonths(3).let {
             if (it.isBefore(firstDayOfLastPeriod)) it.plusYears(1) else it
         }
-
-        // Format hasil
         return dueDate.format(formatter)
     }
 
 
-    private fun setInputTextUmur() {
-        // Ketika tiap sentuh inputText, inputText umur akan terupdate
+    private fun setTglLahirBumil() {
         binding.etTglLahirBumil.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
@@ -210,34 +194,15 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun afterTextChanged(s: Editable?) {
                 val tglLahir = s.toString()
-                // Log format untuk debugging
 //                Log.e("TEST FORMAT", tglLahir)
-
-                // Pastikan tglLahir tidak kosong sebelum mencoba menghitung umur
                 if (tglLahir.isNotEmpty()) {
                     val umur = calculateAge(tglLahir)
                     binding.etUmurBumil.setText(umur)
                 } else {
-                    // Clear tglLahir jika input tanggal kosong
                     binding.etUmurBumil.setText("")
                 }
             }
         })
-    }
-
-    private fun calculateAge(birthDateString: String): String {
-        // Format tanggal (ubah format jika perlu)
-        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-        val birthDate = LocalDate.parse(birthDateString, formatter)
-
-        // Tanggal hari ini
-        val today = LocalDate.now()
-
-        // Hitung umur
-        val period = Period.between(birthDate, today)
-//        Log.e("TEST RESULT PERIOD ", period.toString())
-
-        return "${period.years} tahun, ${period.months} bulan"
     }
 
     private fun collapsedHandlerToolbar() {

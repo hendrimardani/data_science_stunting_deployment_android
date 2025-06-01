@@ -17,6 +17,7 @@ import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
+import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -73,6 +74,13 @@ interface ApiService {
     suspend fun deleteUserById(
         @Path("id") id: Int
     ): Response<DeleteUserByIdResponse>
+
+    @Multipart
+    @PUT("user_profile_patient/{user_patient_id}")
+    suspend fun updateUserProfilePatientById(
+        @Path("user_patient_id") userPatientId: Int,
+        @Part("dataJsonString") dataJsonString: RequestBody?
+    ): Response<UpdateUserProfilePatientByIdResponse>
 
     @GET("user_profile_patients")
     suspend fun getAllUserProfilePatients(): Response<GetAllUserProfilePatientsResponse>

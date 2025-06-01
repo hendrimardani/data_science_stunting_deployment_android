@@ -23,21 +23,20 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Database(
     entities = [
-        UsersEntity::class, UserProfileEntity::class, GroupsEntity::class,
-        UserGroupEntity::class, NotificationsEntity::class, MessagesEntity::class,
+        UsersEntity::class, UserProfileEntity::class,
         BranchEntity::class, UserProfilePatientEntity::class
                 ],
-    version = 36
+    version = 38
 )
 abstract class ChattingDatabase: RoomDatabase() {
     abstract fun userProfilePatientDao(): UserProfilePatientDao
     abstract fun branchDao(): BranchDao
-    abstract fun userGroupDao(): UserGroupDao
-    abstract fun groupsDao(): GroupsDao
+//    abstract fun userGroupDao(): UserGroupDao
+//    abstract fun groupsDao(): GroupsDao
     abstract fun userProfileDao(): UserProfileDao
     abstract fun usersDao(): UsersDao
-    abstract fun notificationsDao(): NotificationsDao
-    abstract fun messagesDao(): MessagesDao
+//    abstract fun notificationsDao(): NotificationsDao
+//    abstract fun messagesDao(): MessagesDao
 
     companion object {
         @Volatile

@@ -26,7 +26,7 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
             onDelete = ForeignKey.CASCADE
         )
                   ],
-    indices = [Index(value = ["user_patient_id"], unique = true)] // One-to-one: unique index
+    indices = [Index(value = ["user_patient_id"], unique = true)]
 )
 data class UserProfilePatientEntity(
     @PrimaryKey(autoGenerate = true)
@@ -37,6 +37,7 @@ data class UserProfilePatientEntity(
     @ColumnInfo(name = "nik_bumil") val nikBumil: String? = null,
     @ColumnInfo(name = "tgl_lahir_bumil") val tglLahirBumil: String? = null,
     @ColumnInfo(name = "umur_bumil") val umurBumil: String? = null,
+    @ColumnInfo(name = "alamat") val alamat: String? = null,
     @ColumnInfo(name = "nama_ayah") val namaAyah: String? = null,
     @ColumnInfo(name = "gambar_profile") val gambarProfile: String? = null,
     @ColumnInfo(name = "gambar_banner") val gambarBanner: String? = null,
@@ -55,13 +56,13 @@ data class UserProfilePatientWithUserRelation(
     val userProfilePatient: UserProfilePatientEntity?
 )
 
-// One to many
-data class UserProfilePatientWithBranchesRelation(
+// Many to one
+data class UserProfilePatientsWithBranchRelation(
     @Embedded val branch: BranchEntity,
 
     @Relation(
         parentColumn = "id_branch",
         entityColumn = "branch_id"
     )
-    val userProfilePatient: List<UserProfilePatientEntity?>
+    val userProfilePatients: List<UserProfilePatientEntity?>
 )

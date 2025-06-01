@@ -90,6 +90,8 @@
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_nama_bumil"
@@ -97,7 +99,7 @@
                     app:shapeAppearance="@style/Rounded">
 
                     <com.example.stunting.MyNamaEditText
-                        android:id="@+id/tiet_nama_lengkap"
+                        android:id="@+id/tiet_nama_bumil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
@@ -120,21 +122,23 @@
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:elevation="5dp"
-                    android:hint="@string/text_nik"
+                    android:hint="@string/text_nik_bumil"
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_nik_bumil"
                     app:layout_constraintTop_toTopOf="@id/iv_nik_bumil"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.example.stunting.MyNikEditText
                         android:id="@+id/tiet_nik_bumil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="?attr/colorText" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +168,7 @@
                     app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_bumil"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_tgl_lahir_bumil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -194,13 +198,15 @@
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_umur_bumil"
                     app:layout_constraintTop_toTopOf="@id/iv_umur_bumil"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_umur_bumil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -217,7 +223,7 @@
                     android:src="@drawable/ic_alamat"
                     app:layout_constraintEnd_toStartOf="@id/til_alamat"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_umur_bumil" />
+                    app:layout_constraintTop_toBottomOf="@id/til_umur_bumil" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_alamat"
@@ -229,17 +235,20 @@
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_alamat"
                     app:layout_constraintTop_toTopOf="@id/iv_alamat"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_alamat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:maxLines="4"
+                        android:inputType="textMultiLine"
                         android:textColor="?attr/colorText" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -251,7 +260,7 @@
                     android:src="@drawable/ic_nama_ayah"
                     app:layout_constraintEnd_toStartOf="@id/til_nama_ayah"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_alamat" />
+                    app:layout_constraintTop_toTopOf="@id/til_nama_ayah" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_nama_ayah"
@@ -263,10 +272,12 @@
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_nama_ayah"
-                    app:layout_constraintTop_toTopOf="@id/iv_nama_ayah"
+                    app:layout_constraintTop_toBottomOf="@id/til_alamat"
                     app:shapeAppearance="@style/Rounded">
 
                     <com.example.stunting.MyNamaEditText
@@ -303,6 +314,8 @@
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_nama_anak"
@@ -333,21 +346,23 @@
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:elevation="5dp"
-                    android:hint="@string/text_nama_anak"
+                    android:hint="@string/text_nik_anak"
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/red"
                     app:hintTextColor="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_nik_anak"
                     app:layout_constraintTop_toTopOf="@id/iv_nik_anak"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.example.stunting.MyNikEditText
                         android:id="@+id/tiet_nik_anak"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="?attr/colorText" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -399,7 +414,7 @@
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:elevation="5dp"
-                    android:hint="@string/text_tgl_lahir"
+                    android:hint="@string/text_tgl_lahir_anak"
                     android:textColorHint="?attr/colorTextHint"
                     app:boxStrokeColor="@color/box_stroke_color"
                     app:boxStrokeWidth="2dp"
@@ -409,7 +424,7 @@
                     app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_anak"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_tgl_lahir_anak"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -445,8 +460,43 @@
                     app:layout_constraintTop_toTopOf="@id/iv_umur_anak"
                     app:shapeAppearance="@style/Rounded">
 
-                    <com.example.stunting.MyNamaEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tiet_umur_anak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:inputType="text"
+                        android:textColor="?attr/colorText" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/iv_cabang"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="@dimen/dimen_8"
+                    android:src="@drawable/ic_home_work_24"
+                    app:layout_constraintEnd_toStartOf="@id/til_cabang"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_umur_anak" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_cabang"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:hint="@string/text_cabang"
+                    android:textColorHint="?attr/colorTextHint"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:boxStrokeWidth="2dp"
+                    app:hintTextColor="?attr/colorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_cabang"
+                    app:layout_constraintTop_toTopOf="@id/iv_cabang"
+                    app:shapeAppearance="@style/Rounded">
+
+                    <com.example.stunting.MyNamaEditText
+                        android:id="@+id/tiet_cabang"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
@@ -542,6 +592,7 @@
                 android:paddingHorizontal="@dimen/dimen_16"
                 android:layout_marginEnd="@dimen/dimen_8"
                 android:visibility="gone"
+                android:enabled="false"
                 app:layout_constraintBottom_toBottomOf="@id/ll_back"
                 app:layout_constraintTop_toTopOf="@id/ll_back"
                 app:layout_constraintEnd_toEndOf="parent" />

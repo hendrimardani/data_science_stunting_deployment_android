@@ -56,7 +56,7 @@ class GroupChatListFragment : Fragment() {
 //        Log.d(TAG, "onGroupChatListFragment id user : ${userId}")
 
         getUserGroups()
-        getUserGroupRelationByUserId(userId!!)
+//        getUserGroupRelationByUserId(userId!!)
 
         binding.rvGroup.apply {
             layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
@@ -64,18 +64,18 @@ class GroupChatListFragment : Fragment() {
             adapter = groupChatListAdapter
         }
 
-        getUserGroupRelationByUserIdRole(userId!!, ROLE_ADMIN)
+//        getUserGroupRelationByUserIdRole(userId!!, ROLE_ADMIN)
 
-        binding.fabAdd.setOnClickListener { showDialogCustomTambahGroupBinding(userId) }
+//        binding.fabAdd.setOnClickListener { showDialogCustomTambahGroupBinding(userId) }
     }
 
-    private fun getUserGroupRelationByUserIdRole(userId: Int, role: String) {
-        viewModel.getUserGroupRelationByUserIdRole(userId, role).observe(requireActivity()) { result ->
-            val groupIsCreated = result.size
-            if (groupIsCreated >= 1) binding.fabAdd.visibility = View.GONE
-            else binding.fabAdd.visibility = View.VISIBLE
-        }
-    }
+//    private fun getUserGroupRelationByUserIdRole(userId: Int, role: String) {
+//        viewModel.getUserGroupRelationByUserIdRole(userId, role).observe(requireActivity()) { result ->
+//            val groupIsCreated = result.size
+//            if (groupIsCreated >= 1) binding.fabAdd.visibility = View.GONE
+//            else binding.fabAdd.visibility = View.VISIBLE
+//        }
+//    }
 
     private fun textWatcherDialogCustomTambahGroup(view: DialogCustomTambahGroupBinding) {
         val textWatcher = object : TextWatcher {
@@ -119,95 +119,95 @@ class GroupChatListFragment : Fragment() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUserGroupsFromApi()
-        viewModel.getUserGroupsResult.observe(requireActivity()) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> progressBar.show()
-                    is ResultState.Error -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatListFragment getUserGroups Error  : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-                        progressBar.dismiss()
-//                        Log.d(TAG, "onGroupChatListFragment getUserGroups : ${result.data}")
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
+//        viewModel.getUserGroupsFromApi()
+//        viewModel.getUserGroupsResult.observe(requireActivity()) { result ->
+//            if (result != null) {
+//                when (result) {
+//                    is ResultState.Loading -> progressBar.show()
+//                    is ResultState.Error -> {
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatListFragment getUserGroups Error  : ${result.error}")
+//                    }
+//                    is ResultState.Success -> {
+//                        progressBar.dismiss()
+////                        Log.d(TAG, "onGroupChatListFragment getUserGroups : ${result.data}")
+//                    }
+//                    is ResultState.Unauthorized -> {
+//                        viewModel.logout()
+//                        val intent = Intent(requireActivity(), MainActivity::class.java)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
+//                        startActivity(intent)
+//                    }
+//                }
+//            }
+//        }
     }
 
-    private fun getUserGroupRelationByUserId(userId: Int?) {
-        viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { userGroupRelation ->
-            groupChatListAdapter.submitList(userGroupRelation)
-        }
-    }
+//    private fun getUserGroupRelationByUserId(userId: Int?) {
+//        viewModel.getUserGroupRelationByUserId(userId!!).observe(requireActivity()) { userGroupRelation ->
+//            groupChatListAdapter.submitList(userGroupRelation)
+//        }
+//    }
 
-    private fun showDialogCustomTambahGroupBinding(userId: Int?) {
-        val view = DialogCustomTambahGroupBinding.inflate(layoutInflater)
-        val viewDialog = Dialog(requireActivity())
-
-        viewDialog.setContentView(view.root)
-        viewDialog.setCanceledOnTouchOutside(false)
-        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
-        progressBar.setTitleText(getString(R.string.title_loading))
-        progressBar.setContentText(getString(R.string.description_loading))
-            .progressHelper.barColor = Color.parseColor("#73D1FA")
-        progressBar.setCancelable(false)
-
-        textWatcherDialogCustomTambahGroup(view)
-
-        view.btnAdd.setOnClickListener {
-            val userIdList = listOf(userId!!)
-            val namaGroup = view.tietNamaGroup.text.toString()
-            val deskripsi = view.tietDeskripsiGroup.text.toString()
-
-            viewModel.addUserGroup(
-                userIdList, namaGroup, deskripsi, null, null)
-                .observe(requireActivity()) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultState.Loading -> progressBar.show()
-                            is ResultState.Error -> {
-                                progressBar.dismiss()
-    //                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
-                            }
-                            is ResultState.Success -> {
-                                progressBar.dismiss()
-                                viewDialog.dismiss()
-
-                                val message = result.data?.message.toString()
-    //                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
-                                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
-
-                                // Simpan ke database lagi
-                                getUserGroupRelationByUserId(userId)
-                                getUserGroups()
-
-                                view.tietNamaGroup.text?.clear()
-                                view.tietDeskripsiGroup.text?.clear()
-                            }
-                            is ResultState.Unauthorized -> {
-                                viewModel.logout()
-                                val intent = Intent(requireActivity(), MainActivity::class.java)
-                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
-                                startActivity(intent)
-                            }
-                        }
-                    }
-                }
-        }
-            view.btnCancel.setOnClickListener { viewDialog.dismiss() }
-            viewDialog.show()
-    }
+//    private fun showDialogCustomTambahGroupBinding(userId: Int?) {
+//        val view = DialogCustomTambahGroupBinding.inflate(layoutInflater)
+//        val viewDialog = Dialog(requireActivity())
+//
+//        viewDialog.setContentView(view.root)
+//        viewDialog.setCanceledOnTouchOutside(false)
+//        viewDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//        val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
+//        progressBar.setTitleText(getString(R.string.title_loading))
+//        progressBar.setContentText(getString(R.string.description_loading))
+//            .progressHelper.barColor = Color.parseColor("#73D1FA")
+//        progressBar.setCancelable(false)
+//
+//        textWatcherDialogCustomTambahGroup(view)
+//
+//        view.btnAdd.setOnClickListener {
+//            val userIdList = listOf(userId!!)
+//            val namaGroup = view.tietNamaGroup.text.toString()
+//            val deskripsi = view.tietDeskripsiGroup.text.toString()
+//
+//            viewModel.addUserGroup(
+//                userIdList, namaGroup, deskripsi, null, null)
+//                .observe(requireActivity()) { result ->
+//                    if (result != null) {
+//                        when (result) {
+//                            is ResultState.Loading -> progressBar.show()
+//                            is ResultState.Error -> {
+//                                progressBar.dismiss()
+//    //                            Log.d(TAG, "onGroupChatListFragment error : ${result.error}")
+//                            }
+//                            is ResultState.Success -> {
+//                                progressBar.dismiss()
+//                                viewDialog.dismiss()
+//
+//                                val message = result.data?.message.toString()
+//    //                            Log.d(TAG, "onGroupChatListFragment success adding the group : ${result.data}}")
+//                                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
+//
+//                                // Simpan ke database lagi
+//                                getUserGroupRelationByUserId(userId)
+//                                getUserGroups()
+//
+//                                view.tietNamaGroup.text?.clear()
+//                                view.tietDeskripsiGroup.text?.clear()
+//                            }
+//                            is ResultState.Unauthorized -> {
+//                                viewModel.logout()
+//                                val intent = Intent(requireActivity(), MainActivity::class.java)
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
+//                                startActivity(intent)
+//                            }
+//                        }
+//                    }
+//                }
+//        }
+//            view.btnCancel.setOnClickListener { viewDialog.dismiss() }
+//            viewDialog.show()
+//    }
 
     override fun onResume() {
         super.onResume()

@@ -79,10 +79,10 @@ class SignUpActivity : AppCompatActivity() {
                 when (result) {
                     is ResultState.Loading -> {  }
                     is ResultState.Error -> {
-                        Log.d(TAG, "onGetBranchesFromApi Error : ${result.error}")
+//                        Log.d(TAG, "onGetBranchesFromApi Error : ${result.error}")
                     }
                     is ResultState.Success -> {
-                        Log.d(TAG, "onGetBranchesFromApi Success : ${result.data}")
+//                        Log.d(TAG, "onGetBranchesFromApi Success : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
