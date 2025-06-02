@@ -27,8 +27,8 @@ import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity
+import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY
 import com.example.stunting.utils.Functions.calculateAge
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
 import com.example.stunting.utils.Functions.setCalendarTglLahir
@@ -135,12 +135,10 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                                         updatedAt = updatedUserProfilePatient.updatedAt
                                     )
                                 )
-                                val intent = Intent(this, NavDrawerMainActivityPatient::class.java)
-                                intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
-                                intent.putExtra(EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userPatientId)
+                                val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
+                                intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY, userPatientId)
                                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                 startActivity(intent)
-                                finish()
                             }
                         }
                         is ResultState.Unauthorized -> {

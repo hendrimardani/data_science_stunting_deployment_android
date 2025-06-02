@@ -45,7 +45,7 @@ class OpeningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getSession().observe(viewLifecycleOwner) { userModel ->
 //            Log.d(TAG, "onOpeningFragment : Apakah sudah login?: ${userModel.isLogin}")
-//            Log.d(TAG, "onOpeningFragment : Email anda: ${userModel.email}")
+//            Log.d(TAG, "onOpeningFragment : Nama anda: ${userModel.nama}")
             if (userModel.isLogin) {
                 when (userModel.role) {
                     "pasien" -> gotoPasienActivity(userModel)

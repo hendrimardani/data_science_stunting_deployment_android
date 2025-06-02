@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient"
             android:exported="false"
             android:label="@string/title_activity_nav_drawer_main_patient"
