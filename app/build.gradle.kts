@@ -49,6 +49,7 @@ android {
 
 dependencies {
     // Ui
+    implementation(libs.tag.sphere)
     implementation(libs.slide.to.act)
     implementation(libs.glide)
     implementation(libs.androidx.recyclerview)

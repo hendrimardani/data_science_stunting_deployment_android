@@ -7,19 +7,13 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.home.HomePatientFragment"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.home.NavHomePatientFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/nav_fragment_home_patient" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_settings"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.settings.NavSettingsPatientFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.settings.SlideshowFragment"
-        android:label="@string/menu_slideshow"
         tools:layout="@layout/nav_fragment_settings_patient" />
 </navigation>
