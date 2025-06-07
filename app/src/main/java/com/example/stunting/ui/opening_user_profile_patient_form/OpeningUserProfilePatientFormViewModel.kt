@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 class OpeningUserProfilePatientFormViewModel(
     private val chattingRepository: ChattingRepository
 ): ViewModel() {
-
     private var _updateUserProfilePatientById = MutableLiveData<ResultState<UpdateUserProfilePatientByIdResponse?>>()
     val updateUserProfilePatientById = _updateUserProfilePatientById
     private var _getUserProfilePatientsResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()

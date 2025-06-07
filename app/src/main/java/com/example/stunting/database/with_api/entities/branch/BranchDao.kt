@@ -16,5 +16,5 @@ interface BranchDao {
     fun getBranches(): LiveData<List<BranchEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertBranch(userProfile: List<BranchEntity>)
+    suspend fun insertBranch(branches: List<BranchEntity>)
 }

@@ -9,6 +9,7 @@ import com.example.stunting.database.with_api.response.AddingUserByGroupIdRespon
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllBranchesResponse
+import com.example.stunting.database.with_api.response.GetAllChecksResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilePatientsResponse
@@ -69,6 +70,9 @@ interface ApiService {
         @Path("group_id") groupId: Int,
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
+
+    @GET("checks")
+    suspend fun getAllChecks(): Response<GetAllChecksResponse>
 
     @DELETE("user/{id}")
     suspend fun deleteUserById(

@@ -41,7 +41,7 @@ class TableViewAdapter(context: Context) : AbstractTableAdapter<ColumnHeader, Ro
         val cell = cellItemModel as Cell
         val cellViewHolder = holder as CellViewHolder
         val selected = isSelected(columnPosition, rowPosition)
-        cellViewHolder.bind(cell, selected)
+        cellViewHolder.bind(cell, selected, rowPosition)
     }
 
     override fun onCreateColumnHeaderViewHolder(parent: ViewGroup, viewType: Int): AbstractViewHolder {

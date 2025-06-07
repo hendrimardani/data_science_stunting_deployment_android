@@ -7,6 +7,9 @@ import com.example.stunting.ResultState
 import com.example.stunting.BuildConfig
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
+import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
+import com.example.stunting.database.with_api.entities.checks.ChecksRelation
+import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesRelation
@@ -31,6 +34,7 @@ import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
+import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
@@ -568,6 +572,86 @@ class ChattingRepository(
         }
     }
 
+    fun getChecksRelationByChildrenPatientId(childrenPatientId: Int): LiveData<List<ChecksRelation>> =
+        chattingDatabase.checksDao().getChecksRelationByChildrenPatientId(childrenPatientId)
+
+
+    suspend fun getChecksFromApi(): ResultState<List<DataChecksItem?>> {
+        return try {
+            val response = apiService.getAllChecks()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataChecks ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertChecksToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertChecksToLocal(dataChecksItem: List<DataChecksItem?>) {
+        val userProfilesList = ArrayList<UserProfileEntity>()
+        val childrenPatientsList = ArrayList<ChildrenPatientEntity>()
+        val categoryServicesList = ArrayList<CategoryServiceEntity>()
+
+
+        dataChecksItem.forEach { item ->
+            val userProfileEntity = item?.userProfile
+            val childrenPatientEntity = item?.childrenPatient
+            val categoryServiceEntity = item?.categoryService
+
+            if (userProfileEntity != null && childrenPatientEntity != null && categoryServiceEntity != null) {
+                userProfilesList.add(
+                    UserProfileEntity(
+                        id = userProfileEntity.id,
+                        userId = userProfileEntity.userId,
+                        branchId = userProfileEntity.branchId,
+                        nama = userProfileEntity.nama,
+                        jenisKelamin = userProfileEntity.jenisKelamin,
+                        tglLahir = userProfileEntity.tglLahir,
+                        umur = userProfileEntity.umur,
+                        alamat = userProfileEntity.alamat,
+                        gambarProfile = userProfileEntity.gambarProfile,
+                        gambarBanner = userProfileEntity.gambarBanner,
+                        createdAt = userProfileEntity.createdAt,
+                        updatedAt = userProfileEntity.updatedAt
+                    )
+                )
+                childrenPatientsList.add(
+                    ChildrenPatientEntity(
+                        id = childrenPatientEntity.id,
+                        userPatientId = childrenPatientEntity.userPatientId,
+                        namaAnak  = childrenPatientEntity.namaAnak,
+                        nikAnak = childrenPatientEntity.nikAnak,
+                        jenisKelaminAnak = childrenPatientEntity.jenisKelaminAnak,
+                        tglLahirAnak = childrenPatientEntity.tglLahirAnak,
+                        umurAnak = childrenPatientEntity.umurAnak,
+                        createdAt = childrenPatientEntity.createdAt,
+                        updatedAt = childrenPatientEntity.updatedAt
+                    )
+                )
+                categoryServicesList.add(
+                    CategoryServiceEntity(
+                        id = categoryServiceEntity.id,
+                        namaLayanan = categoryServiceEntity.namaLayanan,
+                        createdAt = categoryServiceEntity.createdAt,
+                        updatedAt = categoryServiceEntity.updatedAt,
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.userProfileDao().insertUserProfiles(userProfilesList)
+            chattingDatabase.childrenPatientDao().insertChildrenPatients(childrenPatientsList)
+            chattingDatabase.categoryServiceDao().insertCategoryServices(categoryServicesList)
+        }
+    }
+
     fun getBranchById(id: Int): LiveData<List<BranchEntity>> =
         chattingDatabase.branchDao().getBranchById(id)
 
@@ -804,7 +888,7 @@ class ChattingRepository(
                 }
                 if (updatedUserProfileByIdList != null) {
                     withContext(Dispatchers.IO) {
-                        chattingDatabase.userProfileDao().insertUserProfile(updatedUserProfileEntity!!)
+                        chattingDatabase.userProfileDao().insertUserProfiles(updatedUserProfileEntity!!)
                     }
                 }
                 ResultState.Success(response.body())
@@ -916,7 +1000,7 @@ class ChattingRepository(
         withContext(Dispatchers.IO) {
             chattingDatabase.usersDao().insertUsers(usersList)
             chattingDatabase.branchDao().insertBranch(branchesList)
-            chattingDatabase.userProfileDao().insertUserProfile(userProfileList)
+            chattingDatabase.userProfileDao().insertUserProfiles(userProfileList)
         }
     }
 

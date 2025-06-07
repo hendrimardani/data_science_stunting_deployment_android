@@ -6,6 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.stunting.database.with_api.entities.branch.BranchDao
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
+import com.example.stunting.database.with_api.entities.category_service.CategoryServiceDao
+import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
+import com.example.stunting.database.with_api.entities.checks.ChecksDao
+import com.example.stunting.database.with_api.entities.checks.ChecksEntity
+import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientDao
+import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsDao
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesDao
@@ -23,12 +29,16 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
 
 @Database(
     entities = [
-        UsersEntity::class, UserProfileEntity::class,
-        BranchEntity::class, UserProfilePatientEntity::class
+        UsersEntity::class, UserProfileEntity::class, BranchEntity::class,
+        UserProfilePatientEntity::class, ChildrenPatientEntity::class, CategoryServiceEntity::class,
+        ChecksEntity::class
                 ],
-    version = 38
+    version = 39
 )
 abstract class ChattingDatabase: RoomDatabase() {
+    abstract fun checksDao(): ChecksDao
+    abstract fun categoryServiceDao(): CategoryServiceDao
+    abstract fun childrenPatientDao(): ChildrenPatientDao
     abstract fun userProfilePatientDao(): UserProfilePatientDao
     abstract fun branchDao(): BranchDao
 //    abstract fun userGroupDao(): UserGroupDao

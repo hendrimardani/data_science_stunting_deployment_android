@@ -26,7 +26,6 @@ import com.example.stunting.databinding.ActivityOpeningUserProfilePatientFormBin
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
 import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity
 import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY
 import com.example.stunting.utils.Functions.calculateAge
@@ -39,13 +38,13 @@ import java.util.Locale
 class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityOpeningUserProfilePatientFormBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<OpeningUserProfilePatientFormViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     private lateinit var cal: Calendar
     private var dataSetListenerTgllahirAnak: DatePickerDialog.OnDateSetListener? = null
 
-    private val viewModel by viewModels<OpeningUserProfilePatientFormViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
     private var userPatientId: Int? = null
     private var jenisKelaminAnakValueRadioButton = ""
 

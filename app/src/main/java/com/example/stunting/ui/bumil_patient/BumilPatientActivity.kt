@@ -1,18 +1,24 @@
 package com.example.stunting.ui.bumil_patient
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
 import com.example.stunting.R
+import com.example.stunting.ResultState
 import com.example.stunting.databinding.ActivityBumilPatientBinding
+import com.example.stunting.ui.MainActivity
+import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormViewModel
 import com.example.stunting.utils.table_view.TableViewAdapter
-import com.example.stunting.utils.table_view.TableViewModel
-import com.example.stunting.utils.table_view.holder.CellViewHolder
 import com.example.stunting.utils.table_view.model.Cell
 import com.example.stunting.utils.table_view.model.ColumnHeader
 import com.example.stunting.utils.table_view.model.RowHeader
@@ -29,8 +35,11 @@ data class Person(
 class BumilPatientActivity : AppCompatActivity() {
     private var _binding: ActivityBumilPatientBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<BumilPatientViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
-    private var tableViewModel = TableViewModel()
+    private var userPatientId: Int? = null
     private var tableViewAdapter = TableViewAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +53,36 @@ class BumilPatientActivity : AppCompatActivity() {
             insets
         }
 
+//        userPatientId = intent?.getIntExtra()
+
         initializeTableView()
+    }
+
+    private fun getChecksRelationByChildrenPatientId(userPatientId: Int) {
+
+    }
+
+    private fun getChecksFromApi() {
+        viewModel.getChecksFromApi.observe(this) { result ->
+            if (result != null) {
+                when(result) {
+                    is ResultState.Loading -> {  }
+                    is ResultState.Error -> {
+                        Log.d(TAG, "getChecksFromApi Error : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        Log.d(TAG, "getChecksFromApi Success : ${result.data}")
+//                        getChecksRelationByChildrenPatientId(userPatientId!!)
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@BumilPatientActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private fun initializeTableView() {
@@ -55,11 +93,10 @@ class BumilPatientActivity : AppCompatActivity() {
         )
 
         val columnHeaderList = listOf(
-            ColumnHeader("id", "ID"),
-            ColumnHeader("name", "Name"),
-            ColumnHeader("age", "Age"),
-            ColumnHeader("mood", "Mood"),
-            ColumnHeader("gender", "Gender")
+            ColumnHeader("namaBumil", "Nama Bumil"),
+            ColumnHeader("nikBumil", "NIK Bumil"),
+            ColumnHeader("pemeriksa", "Pemeriksa"),
+            ColumnHeader("cabang", "Cabang")
         )
 
         val rowHeaderList = people.mapIndexed { index, person ->
@@ -81,7 +118,6 @@ class BumilPatientActivity : AppCompatActivity() {
         binding.tableview.setTableViewListener(object : ITableViewListener {
             override fun onCellClicked(cellView: RecyclerView.ViewHolder, column: Int, row: Int) {
                 (binding.tableview.adapter as? TableViewAdapter)?.setSelectedPosition(column, row)
-
             }
 
             override fun onCellDoubleClicked(cellView: RecyclerView.ViewHolder, column: Int, row: Int) { }
@@ -101,5 +137,9 @@ class BumilPatientActivity : AppCompatActivity() {
             override fun onRowHeaderLongPressed(rowHeaderView: RecyclerView.ViewHolder, row: Int) { }
         })
         tableViewAdapter.setAllItems(columnHeaderList, rowHeaderList, cellList)
+    }
+
+    companion object {
+        private val TAG = BumilPatientActivity::class.java.simpleName
     }
 }

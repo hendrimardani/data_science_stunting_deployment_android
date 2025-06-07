@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.di.Injection
+import com.example.stunting.ui.bumil_patient.BumilPatientViewModel
 import com.example.stunting.ui.login.LoginViewModel
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatientViewModel
 import com.example.stunting.ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormViewModel
@@ -29,6 +30,9 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
             }
             modelClass.isAssignableFrom(NavDrawerMainActivityPatientViewModel::class.java) -> {
                 NavDrawerMainActivityPatientViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(BumilPatientViewModel::class.java) -> {
+                BumilPatientViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

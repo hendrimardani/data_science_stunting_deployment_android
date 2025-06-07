@@ -5,11 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -22,9 +22,13 @@ import androidx.core.app.ActivityOptionsCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.databinding.ActivityNavDrawerMainPatientBinding
+import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY
 
 class NavDrawerMainActivityPatient : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -32,6 +36,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     private val viewModel by viewModels<NavDrawerMainActivityPatientViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private var userPatientId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +59,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
+
         // Ubah warna teks logout
         val menu = navView.menu
         val logoutItem = menu.findItem(R.id.nav_logout)
@@ -62,7 +69,28 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         logoutItem.title = spannable
 
         setupAnimationRotationContent()
+        getDataExtra()
         getMenuNavigationView()
+    }
+
+    private fun getDataExtra() {
+        val getExtraFragment = intent.getStringExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT)
+
+        if (getExtraFragment == "LoginFragment") {
+            userPatientId = intent.getIntExtra(
+                EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
+            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from LoginFragment : ${userPatientId}")
+//            sendDataToNavHomeFragment(userId)
+//            getUserProfileWithUserById(userId!!)
+        } else if (getExtraFragment == "OpeningFragment") {
+            val userModel = intent.getParcelableExtra<UserModel>(
+                EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+            )!!
+            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
+            userPatientId = userModel.id.toInt()
+//            sendDataToNavHomeFragment(userId)
+//            getUserProfileWithUserById(userId!!)
+        }
     }
 
     private fun getMenuNavigationView() {
@@ -124,7 +152,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     }
 
     companion object {
+        private val TAG = NavDrawerMainActivityPatient::class.java.simpleName
         const val EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_activity_to_nav_drawer_main_activity_patient"
         const val EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_patient_id_to_nav_drawer_main_activity_patient"
+        const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_model_to_Nnav_drawer_main_activity_patient"
     }
 }
