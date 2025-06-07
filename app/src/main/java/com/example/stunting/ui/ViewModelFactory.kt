@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.di.Injection
 import com.example.stunting.ui.login.LoginViewModel
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatientViewModel
 import com.example.stunting.ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormViewModel
 import com.example.stunting.ui.sign_up.SignUpViewModel
 
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val repository: ChattingRepository) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -24,6 +26,9 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
             }
             modelClass.isAssignableFrom(OpeningUserProfilePatientFormViewModel::class.java) -> {
                 OpeningUserProfilePatientFormViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(NavDrawerMainActivityPatientViewModel::class.java) -> {
+                NavDrawerMainActivityPatientViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

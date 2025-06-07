@@ -237,4 +237,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="menu_gallery">Gallery</string>
     <string name="text_sedang_menyiapkan">SEDANG MENYIAPKAN...</string>
+    <string name="text_layanan">Layanan</string>
+    <string name="text_no">No</string>
 </resources>

@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.home.NavHomePatientFragment"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/nav_fragment_home_patient" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.ui.settings.NavSettingsPatientFragment"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.settings.NavSettingsPatientFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/nav_fragment_settings_patient" />
 </navigation>

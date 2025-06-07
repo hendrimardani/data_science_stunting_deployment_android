@@ -1,4 +1,4 @@
-package com.example.stunting.ui.nav_drawer_patient_fragment.ui.home
+package com.example.stunting.ui.nav_drawer_patient_fragment.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
