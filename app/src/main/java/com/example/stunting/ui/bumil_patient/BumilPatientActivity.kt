@@ -23,15 +23,6 @@ import com.example.stunting.utils.table_view.model.Cell
 import com.example.stunting.utils.table_view.model.ColumnHeader
 import com.example.stunting.utils.table_view.model.RowHeader
 
-data class Person(
-    val id: Int,
-    val name: String,
-    val age: Int,
-    val mood: String,
-    val gender: String
-)
-
-
 class BumilPatientActivity : AppCompatActivity() {
     private var _binding: ActivityBumilPatientBinding? = null
     private val binding get() = _binding!!
@@ -62,7 +53,6 @@ class BumilPatientActivity : AppCompatActivity() {
     private fun getChecksRelationByCategoryServiceId(userPatientId: Int, categryServiceId: Int) {
         viewModel.getChecksRelationByUserPatientIdCategoryServiceId(userPatientId, categryServiceId)
             .observe(this) { checksRelationList ->
-                Log.d(TAG, "onBumilPatientActivity : ${checksRelationList}")
                 initializeTableView(checksRelationList)
         }
     }
@@ -91,17 +81,13 @@ class BumilPatientActivity : AppCompatActivity() {
     }
 
     private fun initializeTableView(checksRelationList: List<ChecksRelation>) {
-        val people = listOf(
-            Person(1, "Alice", 25, "Happy", "Female"),
-            Person(2, "Bob", 30, "Sad", "Male"),
-            Person(3, "Carol", 28, "Happy", "Female")
-        )
-
         val columnHeaderList = listOf(
             ColumnHeader("namaBumil", "Nama Bumil"),
             ColumnHeader("nikBumil", "NIK Bumil"),
             ColumnHeader("pemeriksa", "Pemeriksa"),
-            ColumnHeader("cabang", "Cabang")
+            ColumnHeader("cabang", "Cabang"),
+            ColumnHeader("catatan", "Catatan"),
+            ColumnHeader("tglPemeriksaan", "Tanggal Pemeriksaan")
         )
 
         val rowHeaderList = checksRelationList.mapIndexed { index, _ ->
@@ -109,15 +95,18 @@ class BumilPatientActivity : AppCompatActivity() {
         }
 
         val cellList: List<List<Cell>> = checksRelationList.mapIndexed { rowIndex, checksRelation ->
-//            val branchEntity = checksRelation.
+            val branchEntity = checksRelation.branchEntity
             val userProfileEntity = checksRelation.userProfileEntity
+            val userProfilePatientEntity = checksRelation.userProfilePatientEntity
+            val checksEntity = checksRelation.checksEntity
 
             listOf(
-                Cell("0-$rowIndex", userProfileEntity.id),
-                Cell("1-$rowIndex", userProfileEntity.nama),
-                Cell("2-$rowIndex", userProfileEntity.branchId),
-                Cell("3-$rowIndex", userProfileEntity.alamat)
-//                Cell("4-$rowIndex", branchEntity.namaCabang)
+                Cell("0-$rowIndex", userProfilePatientEntity.namaBumil),
+                Cell("1-$rowIndex", userProfilePatientEntity.nikBumil),
+                Cell("2-$rowIndex", userProfileEntity.nama),
+                Cell("3-$rowIndex", branchEntity.namaCabang),
+                Cell("3-$rowIndex", checksEntity.catatan),
+                Cell("3-$rowIndex", checksEntity.tglPemeriksaan)
             )
         }
 
