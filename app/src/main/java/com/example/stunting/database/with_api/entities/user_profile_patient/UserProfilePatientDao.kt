@@ -17,6 +17,14 @@ interface UserProfilePatientDao {
     @Transaction
     @Query("""
         SELECT * FROM user_profile_patient
+        INNER JOIN users ON users.id_user = user_profile_patient.user_patient_id
+        WHERE user_patient_id = :userPatientId
+    """)
+    fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientWithUserRelation>
+
+    @Transaction
+    @Query("""
+        SELECT * FROM user_profile_patient
         INNER JOIN branch ON branch.id_branch = user_profile_patient.branch_id 
         WHERE user_patient_id = :userPatientId
         """)
@@ -26,5 +34,5 @@ interface UserProfilePatientDao {
     fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProfilePatient(userProfilePatient: List<UserProfilePatientEntity>)
+    suspend fun insertUserProfilePatients(userProfilePatient: List<UserProfilePatientEntity>)
 }

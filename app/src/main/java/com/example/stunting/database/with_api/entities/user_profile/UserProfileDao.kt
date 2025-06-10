@@ -22,5 +22,5 @@ interface UserProfileDao {
     fun getUserProfilesFromLocal(): LiveData<List<UserProfileEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUserProfiles(userProfile: List<UserProfileEntity>)
+    suspend fun insertUserProfiles(userProfiles: List<UserProfileEntity>)
 }

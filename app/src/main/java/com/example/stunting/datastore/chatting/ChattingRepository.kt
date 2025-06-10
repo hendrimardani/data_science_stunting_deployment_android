@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.stunting.ResultState
-import com.example.stunting.BuildConfig
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
+import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
@@ -25,6 +25,7 @@ import com.example.stunting.database.with_api.entities.user_group.UserGroupRelat
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
@@ -47,6 +48,7 @@ import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,7 +80,7 @@ class ChattingRepository(
     var multipartBodyImageBanner: MultipartBody.Part? = null
 
     private lateinit var webSocket: WebSocket
-    private var userProfileEntity: UserProfileEntity? = null
+//    private var userProfileEntity: UserProfileEntity? = null
 //    private var groupsEntity: GroupsEntity? = null
 //    private var notificationsEntity: NotificationsEntity? = null
 //    private var messagesEntity: MessagesEntity? = null
@@ -572,9 +574,6 @@ class ChattingRepository(
         }
     }
 
-    fun getChecksRelationByChildrenPatientId(childrenPatientId: Int): LiveData<List<ChecksRelation>> =
-        chattingDatabase.checksDao().getChecksRelationByChildrenPatientId(childrenPatientId)
-
 
     suspend fun getChecksFromApi(): ResultState<List<DataChecksItem?>> {
         return try {
@@ -596,16 +595,21 @@ class ChattingRepository(
     // Menggunakan entitas pusat relasi
     private suspend fun insertChecksToLocal(dataChecksItem: List<DataChecksItem?>) {
         val userProfilesList = ArrayList<UserProfileEntity>()
+        val userProfilePatientsList = ArrayList<UserProfilePatientEntity>()
         val childrenPatientsList = ArrayList<ChildrenPatientEntity>()
         val categoryServicesList = ArrayList<CategoryServiceEntity>()
+        val checksList = ArrayList<ChecksEntity>()
 
 
         dataChecksItem.forEach { item ->
             val userProfileEntity = item?.userProfile
+            val userProfilePatientEntity = item?.userProfilePatient
             val childrenPatientEntity = item?.childrenPatient
             val categoryServiceEntity = item?.categoryService
 
-            if (userProfileEntity != null && childrenPatientEntity != null && categoryServiceEntity != null) {
+            if (userProfileEntity != null && userProfilePatientEntity != null &&
+                childrenPatientEntity != null && categoryServiceEntity != null
+                ) {
                 userProfilesList.add(
                     UserProfileEntity(
                         id = userProfileEntity.id,
@@ -613,6 +617,7 @@ class ChattingRepository(
                         branchId = userProfileEntity.branchId,
                         nama = userProfileEntity.nama,
                         jenisKelamin = userProfileEntity.jenisKelamin,
+                        nik = userProfileEntity.nik,
                         tglLahir = userProfileEntity.tglLahir,
                         umur = userProfileEntity.umur,
                         alamat = userProfileEntity.alamat,
@@ -620,6 +625,23 @@ class ChattingRepository(
                         gambarBanner = userProfileEntity.gambarBanner,
                         createdAt = userProfileEntity.createdAt,
                         updatedAt = userProfileEntity.updatedAt
+                    )
+                )
+                userProfilePatientsList.add(
+                    UserProfilePatientEntity(
+                        id = userProfilePatientEntity.id,
+                        userPatientId = userProfilePatientEntity.userPatientId,
+                        branchId = userProfilePatientEntity.branchId,
+                        namaBumil = userProfilePatientEntity.namaBumil,
+                        nikBumil = userProfilePatientEntity.nikBumil,
+                        tglLahirBumil = userProfilePatientEntity.tglLahirBumil,
+                        umurBumil = userProfilePatientEntity.umurBumil,
+                        alamat = userProfilePatientEntity.alamat,
+                        namaAyah = userProfilePatientEntity.namaAyah,
+                        gambarProfile = userProfilePatientEntity.gambarProfile,
+                        gambarBanner = userProfilePatientEntity.gambarBanner,
+                        createdAt = userProfilePatientEntity.createdAt,
+                        updatedAt = userProfilePatientEntity.updatedAt
                     )
                 )
                 childrenPatientsList.add(
@@ -643,12 +665,27 @@ class ChattingRepository(
                         updatedAt = categoryServiceEntity.updatedAt,
                     )
                 )
+                checksList.add(
+                    ChecksEntity(
+                        id = item.id ?: 0,
+                        userId = item.userId ?: 0,
+                        userPatientId = item.userPatientId ?: 0,
+                        childrenPatientId = item.childrenPatientId ?: 0,
+                        categoryServiceId = item.categoryServiceId ?: 0,
+                        tglPemeriksaan = item.tglPemeriksaan,
+                        catatan = item.catatan,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt
+                    )
+                )
             }
         }
         withContext(Dispatchers.IO) {
             chattingDatabase.userProfileDao().insertUserProfiles(userProfilesList)
+            chattingDatabase.userProfilePatientDao().insertUserProfilePatients(userProfilePatientsList)
             chattingDatabase.childrenPatientDao().insertChildrenPatients(childrenPatientsList)
             chattingDatabase.categoryServiceDao().insertCategoryServices(categoryServicesList)
+            chattingDatabase.checksDao().insertChecks(checksList)
         }
     }
 
@@ -751,6 +788,9 @@ class ChattingRepository(
         }
     }
 
+    fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientWithUserRelation> =
+        chattingDatabase.userProfilePatientDao().getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId)
+
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
 
@@ -825,8 +865,8 @@ class ChattingRepository(
         }
         withContext(Dispatchers.IO) {
             chattingDatabase.usersDao().insertUsers(usersList)
-            chattingDatabase.branchDao().insertBranch(branchesList)
-            chattingDatabase.userProfilePatientDao().insertUserProfilePatient(userProfilePatientsList)
+            chattingDatabase.branchDao().insertBranches(branchesList)
+            chattingDatabase.userProfilePatientDao().insertUserProfilePatients(userProfilePatientsList)
         }
     }
 
@@ -999,7 +1039,7 @@ class ChattingRepository(
         }
         withContext(Dispatchers.IO) {
             chattingDatabase.usersDao().insertUsers(usersList)
-            chattingDatabase.branchDao().insertBranch(branchesList)
+            chattingDatabase.branchDao().insertBranches(branchesList)
             chattingDatabase.userProfileDao().insertUserProfiles(userProfileList)
         }
     }
@@ -1106,7 +1146,7 @@ class ChattingRepository(
             }
         }
         withContext(Dispatchers.IO) {
-            chattingDatabase.branchDao().insertBranch(branchsList)
+            chattingDatabase.branchDao().insertBranches(branchsList)
         }
     }
 

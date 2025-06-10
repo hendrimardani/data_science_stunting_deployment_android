@@ -48,6 +48,9 @@ class NavHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        userId = arguments?.getInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT)
+//        Log.d(TAG, "onNavHomeFragment id user : ${userId}")
+
         // bottomSheetCoordinatorLayout
         setupBottomSheet()
         setupViews()
@@ -56,15 +59,8 @@ class NavHomeFragment : Fragment() {
         binding.rvCegahStunting.setHasFixedSize(true)
         list.addAll(getListCegahStuntingData())
         showRecyclerList()
-
-        getDataExtraFromNavDrawerMainActivity()
-    }
-
-    private fun getDataExtraFromNavDrawerMainActivity() {
-        userId = arguments?.getInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT)
-//        Log.d(TAG, "onNavHomeFragment id user : ${userId}")
         navigation(userId)
-        }
+    }
 
     private fun navigation(userId: Int?) {
         binding.apply {

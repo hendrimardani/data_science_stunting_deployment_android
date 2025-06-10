@@ -7,7 +7,6 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import com.example.stunting.database.with_api.entities.branch.BranchDao
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 

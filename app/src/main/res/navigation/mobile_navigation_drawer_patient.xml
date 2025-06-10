@@ -2,17 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation2"
-    app:startDestination="@+id/nav_home">
+    android:id="@+id/mobile_navigation_drawer_patient"
+    app:startDestination="@+id/nav_home_patient"
+    tools:ignore="InvalidNavigation">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_home_patient"
         android:name="com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/nav_fragment_home_patient" />
 
     <fragment
-        android:id="@+id/nav_settings"
+        android:id="@+id/nav_settings_patient"
         android:name="com.example.stunting.ui.nav_drawer_patient_fragment.settings.NavSettingsPatientFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/nav_fragment_settings_patient" />

@@ -17,7 +17,6 @@ import com.example.stunting.databinding.ActivityBumilPatientBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormViewModel
 import com.example.stunting.utils.table_view.TableViewAdapter
 import com.example.stunting.utils.table_view.model.Cell
 import com.example.stunting.utils.table_view.model.ColumnHeader
@@ -40,6 +39,7 @@ class BumilPatientActivity : AppCompatActivity() {
     }
 
     private var userPatientId: Int? = null
+    private var categryServiceId: Int? = null
     private var tableViewAdapter = TableViewAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,17 +53,19 @@ class BumilPatientActivity : AppCompatActivity() {
             insets
         }
 
-//        userPatientId = intent?.getIntExtra()
+        userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
+        categryServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
 
         initializeTableView()
+//        getChecksFromApi()
     }
 
-    private fun getChecksRelationByChildrenPatientId(userPatientId: Int) {
+    private fun getChecksRelationByCategoryServiceId(categryServiceId: Int) {
 
     }
 
     private fun getChecksFromApi() {
-        viewModel.getChecksFromApi.observe(this) { result ->
+        viewModel.getChecksFromApiResult.observe(this) { result ->
             if (result != null) {
                 when(result) {
                     is ResultState.Loading -> {  }
@@ -141,5 +143,7 @@ class BumilPatientActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = BumilPatientActivity::class.java.simpleName
+        const val EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY = "extra_user_patient_id_to_bumil_patient_activity"
+        const val EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY = "extra_category_service_id_to_bumil_patient_activity"
     }
 }

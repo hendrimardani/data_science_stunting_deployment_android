@@ -15,7 +15,7 @@ import com.example.stunting.database.with_api.response.ChildrenPatient
     foreignKeys = [
         ForeignKey(
             entity = UserProfilePatientEntity::class,
-            parentColumns = ["id_user_profile_patient"],
+            parentColumns = ["user_patient_id"],
             childColumns = ["user_patient_id"],
             onDelete = ForeignKey.CASCADE
         )
@@ -40,7 +40,7 @@ data class ChildrenPatientWithUserProfilePatient(
     @Embedded val userProfilePatient: UserProfilePatientEntity,
 
     @Relation(
-        parentColumn = "id_user_profile_patient",
+        parentColumn = "user_patient_id",
         entityColumn = "user_patient_id"
     )
     val childrenPatient: ChildrenPatient?

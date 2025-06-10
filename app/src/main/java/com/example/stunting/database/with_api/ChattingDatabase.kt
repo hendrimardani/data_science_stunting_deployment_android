@@ -33,7 +33,7 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
         UserProfilePatientEntity::class, ChildrenPatientEntity::class, CategoryServiceEntity::class,
         ChecksEntity::class
                 ],
-    version = 39
+    version = 45
 )
 abstract class ChattingDatabase: RoomDatabase() {
     abstract fun checksDao(): ChecksDao

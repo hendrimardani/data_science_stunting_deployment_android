@@ -9,20 +9,17 @@ import com.example.stunting.datastore.chatting.ChattingRepository
 import kotlinx.coroutines.launch
 
 class BumilPatientViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    private var _getChecksFromApi = MutableLiveData<ResultState<List<DataChecksItem?>>>()
-    val getChecksFromApi = _getChecksFromApi
+    private var _getChecksFromApiResult = MutableLiveData<ResultState<List<DataChecksItem?>>>()
+    val getChecksFromApiResult = _getChecksFromApiResult
 
     init {
         getChecksFromApi()
     }
 
-    fun getChecksRelationByChildrenPatientId(childrenPatientId: Int) =
-        chattingRepository.getChecksRelationByChildrenPatientId(childrenPatientId)
-
     private fun getChecksFromApi() {
         viewModelScope.launch {
-            _getChecksFromApi.value = ResultState.Loading
-            _getChecksFromApi.value = chattingRepository.getChecksFromApi()
+            _getChecksFromApiResult.value = ResultState.Loading
+            _getChecksFromApiResult.value = chattingRepository.getChecksFromApi()
         }
     }
 

@@ -41,9 +41,6 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 //    val getUserGroupsResult = _getUserGroupsResult
 //    val getUserGroupsFromLocal: LiveData<List<UserGroupEntity>> = chattingRepository.getUserGroupsFromLocal()
 
-    // UserProfile
-    private var _getUserProfilesResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
-    val getUserProfilesResult = _getUserProfilesResult
     val getUserProfilesFromLocal: LiveData<List<UserProfileEntity>> = chattingRepository.getUserProfilesFromLocal()
 
 //    // Connect to Realtime WebSocket
@@ -150,14 +147,5 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
 
     fun getSession(): LiveData<UserModel> {
         return chattingRepository.getSession().asLiveData()
-    }
-
-    fun getUserProfileWithUserRelationFromLocal() = chattingRepository.getUserProfileWithUserRelationFromLocal()
-
-    fun getUserProfilesFromApi() {
-        viewModelScope.launch {
-            _getUserProfilesResult.value = ResultState.Loading
-            _getUserProfilesResult.value = chattingRepository.getUserProfilesFromApi()
-        }
     }
 }

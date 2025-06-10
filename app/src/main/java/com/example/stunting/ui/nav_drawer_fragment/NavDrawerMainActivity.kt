@@ -52,7 +52,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class NavDrawerMainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNavDrawerMainBinding
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<NavDrawerMainViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private var userId: Int? = null
@@ -68,7 +68,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
         ActivityResultContracts.TakePicture()
     ) { isSuccess ->
         if (isSuccess) {
-            showImageProfile()
+//            showImageProfile()
         } else {
             currentImageProfileUri = null
         }
@@ -89,7 +89,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
     ) { uri ->
         if (uri != null) {
             currentImageProfileUri = uri
-            showImageProfile()
+//            showImageProfile()
         } else {
             Toast.makeText(this, "Tidak ada gambar yang dipilih", Toast.LENGTH_LONG).show()
         }
@@ -139,98 +139,98 @@ class NavDrawerMainActivity : AppCompatActivity() {
         getMenuNavigationView()
     }
 
-    private fun updateUserProfileById(
-        userId: Int, imageView: ImageView, isEditGambarProfile: Boolean,
-        userProfileWithUserRelation: UserProfileWithUserRelation
-    ) {
-        if (isEditGambarProfile) {
-            currentImageProfileUri?.let { uri ->
-                val nama = userProfileWithUserRelation.userProfile?.nama
-                val nik = userProfileWithUserRelation.userProfile?.nik
-                val umur = userProfileWithUserRelation.userProfile?.umur
-                val alamat = userProfileWithUserRelation.userProfile?.alamat
-                val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
-                val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
-                val imageProfileFile = uriToFile(uri, this).reduceFileImage()
-
-                val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
-                progressBar.setTitleText(getString(R.string.title_loading))
-                progressBar.setContentText(getString(R.string.description_loading))
-                    .progressHelper.barColor = Color.parseColor("#73D1FA")
-                progressBar.setCancelable(false)
-
-                viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, imageProfileFile, null
-                )
-                viewModel.updateUserProfileByIdResult.observe(this) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultState.Loading -> progressBar.show()
-                            is ResultState.Error -> {
-                                progressBar.dismiss()
-                                Toast.makeText(
-                                    this@NavDrawerMainActivity, "Gagal diubah", Toast.LENGTH_LONG
-                                ).show()
-                            }
-                            is ResultState.Success -> {
-                                progressBar.dismiss()
-                                imageView.setImageURI(uri)
-                                Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
-                            }
-                            is ResultState.Unauthorized -> {
-                                viewModel.logout()
-                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
-                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                                startActivity(intent)
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            currentImageBannerUri?.let { uri ->
-                val nama = userProfileWithUserRelation.userProfile?.nama
-                val nik = userProfileWithUserRelation.userProfile?.nik
-                val umur = userProfileWithUserRelation.userProfile?.umur
-                val alamat = userProfileWithUserRelation.userProfile?.alamat
-                val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
-                val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
-                val imageBannerFile = uriToFile(uri, this).reduceFileImage()
-
-                val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
-                progressBar.setTitleText(getString(R.string.title_loading))
-                progressBar.setContentText(getString(R.string.description_loading))
-                    .progressHelper.barColor = Color.parseColor("#73D1FA")
-                progressBar.setCancelable(false)
-
-                viewModel.updateUserProfileById(
-                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, null, imageBannerFile
-                )
-                viewModel.updateUserProfileByIdResult.observe(this) { result ->
-                    if (result != null) {
-                        when (result) {
-                            is ResultState.Loading -> progressBar.show()
-                            is ResultState.Error -> {
-                                progressBar.dismiss()
-                                Toast.makeText(this@NavDrawerMainActivity, "Gagal diubah", Toast.LENGTH_LONG).show()
-                            }
-                            is ResultState.Success -> {
-                                progressBar.dismiss()
-                                imageView.setImageURI(uri)
-                                Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
-                            }
-                            is ResultState.Unauthorized -> {
-                                viewModel.logout()
-                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
-                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                                startActivity(intent)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    private fun updateUserProfileById(
+//        userId: Int, imageView: ImageView, isEditGambarProfile: Boolean,
+//        userProfileWithUserRelation: UserProfileWithUserRelation
+//    ) {
+//        if (isEditGambarProfile) {
+//            currentImageProfileUri?.let { uri ->
+//                val nama = userProfileWithUserRelation.userProfile?.nama
+//                val nik = userProfileWithUserRelation.userProfile?.nik
+//                val umur = userProfileWithUserRelation.userProfile?.umur
+//                val alamat = userProfileWithUserRelation.userProfile?.alamat
+//                val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
+//                val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
+//                val imageProfileFile = uriToFile(uri, this).reduceFileImage()
+//
+//                val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
+//                progressBar.setTitleText(getString(R.string.title_loading))
+//                progressBar.setContentText(getString(R.string.description_loading))
+//                    .progressHelper.barColor = Color.parseColor("#73D1FA")
+//                progressBar.setCancelable(false)
+//
+//                viewModel.updateUserProfileById(
+//                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, imageProfileFile, null
+//                )
+//                viewModel.updateUserProfileByIdResult.observe(this) { result ->
+//                    if (result != null) {
+//                        when (result) {
+//                            is ResultState.Loading -> progressBar.show()
+//                            is ResultState.Error -> {
+//                                progressBar.dismiss()
+//                                Toast.makeText(
+//                                    this@NavDrawerMainActivity, "Gagal diubah", Toast.LENGTH_LONG
+//                                ).show()
+//                            }
+//                            is ResultState.Success -> {
+//                                progressBar.dismiss()
+//                                imageView.setImageURI(uri)
+//                                Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+//                            }
+//                            is ResultState.Unauthorized -> {
+//                                viewModel.logout()
+//                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                                startActivity(intent)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            currentImageBannerUri?.let { uri ->
+//                val nama = userProfileWithUserRelation.userProfile?.nama
+//                val nik = userProfileWithUserRelation.userProfile?.nik
+//                val umur = userProfileWithUserRelation.userProfile?.umur
+//                val alamat = userProfileWithUserRelation.userProfile?.alamat
+//                val jenisKelamin = userProfileWithUserRelation.userProfile?.jenisKelamin
+//                val tglLahir = userProfileWithUserRelation.userProfile?.tglLahir
+//                val imageBannerFile = uriToFile(uri, this).reduceFileImage()
+//
+//                val progressBar = SweetAlertDialog(this@NavDrawerMainActivity, SweetAlertDialog.PROGRESS_TYPE)
+//                progressBar.setTitleText(getString(R.string.title_loading))
+//                progressBar.setContentText(getString(R.string.description_loading))
+//                    .progressHelper.barColor = Color.parseColor("#73D1FA")
+//                progressBar.setCancelable(false)
+//
+//                viewModel.updateUserProfileById(
+//                    userId, nama, nik, umur, alamat, jenisKelamin, tglLahir, null, imageBannerFile
+//                )
+//                viewModel.updateUserProfileByIdResult.observe(this) { result ->
+//                    if (result != null) {
+//                        when (result) {
+//                            is ResultState.Loading -> progressBar.show()
+//                            is ResultState.Error -> {
+//                                progressBar.dismiss()
+//                                Toast.makeText(this@NavDrawerMainActivity, "Gagal diubah", Toast.LENGTH_LONG).show()
+//                            }
+//                            is ResultState.Success -> {
+//                                progressBar.dismiss()
+//                                imageView.setImageURI(uri)
+//                                Toast.makeText(this@NavDrawerMainActivity, "Berhasil diubah", Toast.LENGTH_LONG).show()
+//                            }
+//                            is ResultState.Unauthorized -> {
+//                                viewModel.logout()
+//                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                                startActivity(intent)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 //    private fun startGalleryBanner() {
 //        launcherGalleryBanner.launch(
@@ -301,16 +301,16 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //        }
 //    }
 
-    private fun showImageProfile() {
-        currentImageProfileUri?.let { uri ->
-            val headerView = binding.navView.getHeaderView(0)
-            val editProfile = headerView.findViewById<ImageView>(R.id.civ_edit_profile)
-
-            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
-                updateUserProfileById(userId!!, editProfile, true, userProfileWithUserRelation)
-            }
-        }
-    }
+//    private fun showImageProfile() {
+//        currentImageProfileUri?.let { uri ->
+//            val headerView = binding.navView.getHeaderView(0)
+//            val editProfile = headerView.findViewById<ImageView>(R.id.civ_edit_profile)
+//
+//            viewModel.getUserProfileWithUserById(userId!!).observeOnce(this) { userProfileWithUserRelation ->
+//                updateUserProfileById(userId!!, editProfile, true, userProfileWithUserRelation)
+//            }
+//        }
+//    }
 
     private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY)
@@ -319,13 +319,13 @@ class NavDrawerMainActivity : AppCompatActivity() {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId)
-            getUserProfileWithUserById(userId!!)
+//            getUserProfileWithUserById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
             sendDataToNavHomeFragment(userId)
-            getUserProfileWithUserById(userId!!)
+//            getUserProfileWithUserById(userId!!)
         }
     }
 
@@ -337,14 +337,14 @@ class NavDrawerMainActivity : AppCompatActivity() {
         navController.navigate(R.id.nav_home, bundle)
     }
 
-    private fun getUserProfileWithUserById(userId: Int) {
-        viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
-//            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
-            if (userProfileWithUserRelation != null) {
-                getHeaderView(userProfileWithUserRelation)
-            }
-        }
-    }
+//    private fun getUserProfileWithUserById(userId: Int) {
+//        viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
+////            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
+//            if (userProfileWithUserRelation != null) {
+//                getHeaderView(userProfileWithUserRelation)
+//            }
+//        }
+//    }
 
     private fun getUserProfiles() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
@@ -353,8 +353,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUserProfilesFromApi()
-        viewModel.getUserProfilesResult.observe(this) { result ->
+        viewModel.getUserProfilesFromApiResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
@@ -442,7 +441,6 @@ class NavDrawerMainActivity : AppCompatActivity() {
         name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
         email.text = userProfileWithUserRelation?.users?.email.toString()
         role.text = "Anda sebagai ${userProfileWithUserRelation?.users?.role.toString()}"
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

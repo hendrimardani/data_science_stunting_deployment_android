@@ -12,10 +12,13 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_nav_login_to_navigationDrawerMainActivity"
-            app:destination="@id/navigationDrawerMainActivity" />
+            app:destination="@id/navDrawerMainActivity" />
+        <action
+            android:id="@+id/action_nav_login_to_navDrawerMainActivityPatient"
+            app:destination="@id/navDrawerMainActivityPatient" />
     </fragment>
     <activity
-        android:id="@+id/navigationDrawerMainActivity"
+        android:id="@+id/navDrawerMainActivity"
         android:name="com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity"
         android:label="app_bar_navigation_drawer_main"
         tools:layout="@layout/app_bar_nav_drawer_main_activity" />
@@ -28,4 +31,9 @@
             android:id="@+id/action_nav_opening_to_nav_login"
             app:destination="@id/nav_login" />
     </fragment>
+    <activity
+        android:id="@+id/navDrawerMainActivityPatient"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient"
+        android:label="app_bar_nav_drawer_main_activity_patient"
+        tools:layout="@layout/app_bar_nav_drawer_main_activity_patient" />
 </navigation>

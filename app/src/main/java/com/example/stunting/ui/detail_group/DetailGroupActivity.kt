@@ -432,15 +432,15 @@ class DetailGroupActivity : AppCompatActivity() {
 //        }
 //    }
 
-    private fun getUserProfileWithUserRelationFromLocal(detailGroupTambahAnggotaAdapter: DetailGroupTambahAnggotaAdapter) {
-        viewModel.getUserProfileWithUserRelationFromLocal().observe(this) { result ->
-            // Convert ke UserProfileWithSelection
-            val listWithSelection = result.map {
-                UserProfileWithSelection(userProfileWithUserRelation = it)
-            }
-            detailGroupTambahAnggotaAdapter.submitList(listWithSelection)
-        }
-    }
+//    private fun getUserProfileWithUserRelationFromLocal(detailGroupTambahAnggotaAdapter: DetailGroupTambahAnggotaAdapter) {
+//        viewModel.getUserProfileWithUserRelationFromLocal().observe(this) { result ->
+//            // Convert ke UserProfileWithSelection
+//            val listWithSelection = result.map {
+//                UserProfileWithSelection(userProfileWithUserRelation = it)
+//            }
+//            detailGroupTambahAnggotaAdapter.submitList(listWithSelection)
+//        }
+//    }
 
     private fun showDialogCustomTambahAnggotaBinding() {
         val view = DialogCustomTambahAnggotaBinding.inflate(layoutInflater)
@@ -481,7 +481,7 @@ class DetailGroupActivity : AppCompatActivity() {
             adapter = detailGroupTambahAnggotaAdapter
         }
 
-        getUserProfileWithUserRelationFromLocal(detailGroupTambahAnggotaAdapter)
+//        getUserProfileWithUserRelationFromLocal(detailGroupTambahAnggotaAdapter)
 
         view.btnAdd.setOnClickListener {
             val roleSelectedId = view.rgRole.checkedRadioButtonId

@@ -49,6 +49,7 @@ android {
 
 dependencies {
     // Ui
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.com.github.evrencoskun)
     implementation(libs.tag.sphere)
     implementation(libs.slide.to.act)
