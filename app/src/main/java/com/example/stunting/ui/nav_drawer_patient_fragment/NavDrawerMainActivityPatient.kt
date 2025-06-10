@@ -130,11 +130,11 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.error}")
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -148,16 +148,15 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     }
 
     private fun getUserProfiles() {
-        // Ambil data petugas supaya tidak error Foregin Key Constraint
         viewModel.getUserProfilesFromApiResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> {  }
                     is ResultState.Error -> {
-                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.error}")
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.error}")
                     }
                     is ResultState.Success -> {
-                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.data}")
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

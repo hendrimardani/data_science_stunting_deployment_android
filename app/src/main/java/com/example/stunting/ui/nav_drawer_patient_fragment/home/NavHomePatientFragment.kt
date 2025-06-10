@@ -30,9 +30,6 @@ import com.magicgoop.tagsphere.item.TagItem
 class NavHomePatientFragment : Fragment() {
     private var _binding: NavFragmentHomePatientBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<NavHomePatientViewModel> {
-        ViewModelFactory.getInstance(requireActivity())
-    }
 
     private var userPatientId: Int? = null
     private var categoryServiceId: Int? = null
@@ -51,37 +48,6 @@ class NavHomePatientFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT)
         setupTagSphereView()
-        getChecksFromApi()
-    }
-
-    private fun getChecksFromApi() {
-        viewModel.getChecksFromApiResult.observe(requireActivity()) { result ->
-//            val progressBar = SweetAlertDialog(requireActivity(), SweetAlertDialog.PROGRESS_TYPE)
-//            progressBar.setTitleText(getString(R.string.title_loading))
-//            progressBar.setContentText(getString(R.string.description_loading))
-//                .progressHelper.barColor = Color.parseColor("#73D1FA")
-//            progressBar.setCancelable(false)
-
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> {  }
-                    is ResultState.Error -> {
-//                        progressBar.dismiss()
-                        Log.d(TAG, "onNavHomePatient from LoginFragment getChecksFromApi : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-//                        progressBar.dismiss()
-                        Log.d(TAG, "onNavHomePatient from LoginFragment getChecksFromApi : ${result.data}")
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
     }
 
     private fun getVectorDrawable(id: Int): Drawable? = ContextCompat.getDrawable(requireContext(), id)

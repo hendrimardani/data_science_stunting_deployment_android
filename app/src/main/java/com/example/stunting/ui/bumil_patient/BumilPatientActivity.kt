@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.evrencoskun.tableview.listener.ITableViewListener
 import com.example.stunting.R
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.databinding.ActivityBumilPatientBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
@@ -55,30 +56,32 @@ class BumilPatientActivity : AppCompatActivity() {
 
         userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
         categryServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
-
-        initializeTableView()
-//        getChecksFromApi()
+        getChecksFromApi()
     }
 
-    private fun getChecksRelationByCategoryServiceId(categryServiceId: Int) {
-
+    private fun getChecksRelationByCategoryServiceId(userPatientId: Int, categryServiceId: Int) {
+        viewModel.getChecksRelationByUserPatientIdCategoryServiceId(userPatientId, categryServiceId)
+            .observe(this) { checksRelationList ->
+                Log.d(TAG, "onBumilPatientActivity : ${checksRelationList}")
+                initializeTableView(checksRelationList)
+        }
     }
 
     private fun getChecksFromApi() {
         viewModel.getChecksFromApiResult.observe(this) { result ->
             if (result != null) {
-                when(result) {
+                when (result) {
                     is ResultState.Loading -> {  }
                     is ResultState.Error -> {
-                        Log.d(TAG, "getChecksFromApi Error : ${result.error}")
+//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
-                        Log.d(TAG, "getChecksFromApi Success : ${result.data}")
-//                        getChecksRelationByChildrenPatientId(userPatientId!!)
+//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
+                        getChecksRelationByCategoryServiceId(userPatientId!!, categryServiceId!!)
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@BumilPatientActivity, MainActivity::class.java)
+                        val intent = Intent(this, MainActivity::class.java)
                         intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
@@ -87,7 +90,7 @@ class BumilPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeTableView() {
+    private fun initializeTableView(checksRelationList: List<ChecksRelation>) {
         val people = listOf(
             Person(1, "Alice", 25, "Happy", "Female"),
             Person(2, "Bob", 30, "Sad", "Male"),
@@ -101,17 +104,20 @@ class BumilPatientActivity : AppCompatActivity() {
             ColumnHeader("cabang", "Cabang")
         )
 
-        val rowHeaderList = people.mapIndexed { index, person ->
+        val rowHeaderList = checksRelationList.mapIndexed { index, _ ->
             RowHeader(index.toString(), "${index + 1}")
         }
 
-        val cellList: List<List<Cell>> = people.mapIndexed { rowIndex, person ->
+        val cellList: List<List<Cell>> = checksRelationList.mapIndexed { rowIndex, checksRelation ->
+//            val branchEntity = checksRelation.
+            val userProfileEntity = checksRelation.userProfileEntity
+
             listOf(
-                Cell("0-$rowIndex", person.id),
-                Cell("1-$rowIndex", person.name),
-                Cell("2-$rowIndex", person.age),
-                Cell("3-$rowIndex", person.mood),
-                Cell("4-$rowIndex", person.gender)
+                Cell("0-$rowIndex", userProfileEntity.id),
+                Cell("1-$rowIndex", userProfileEntity.nama),
+                Cell("2-$rowIndex", userProfileEntity.branchId),
+                Cell("3-$rowIndex", userProfileEntity.alamat)
+//                Cell("4-$rowIndex", branchEntity.namaCabang)
             )
         }
 

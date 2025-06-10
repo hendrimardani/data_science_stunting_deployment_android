@@ -574,6 +574,8 @@ class ChattingRepository(
         }
     }
 
+    fun getChecksRelationByUserPatientIdCategoryServiceId(userPatientId: Int, categoryServiceId: Int) =
+        chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceId(userPatientId, categoryServiceId)
 
     suspend fun getChecksFromApi(): ResultState<List<DataChecksItem?>> {
         return try {

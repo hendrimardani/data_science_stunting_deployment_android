@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
@@ -55,7 +56,9 @@ data class ChecksEntity(
 )
 
 data class ChecksRelation(
+    @Embedded(prefix = "b_") val branchEntity: BranchEntity,
     @Embedded(prefix = "up_") val userProfileEntity: UserProfileEntity,
+    @Embedded(prefix = "upp_") val userProfilePatientEntity: UserProfilePatientEntity,
     @Embedded(prefix = "cp_") val childrenPatientEntity: ChildrenPatientEntity,
     @Embedded(prefix = "cs_") val categoryServiceEntity: CategoryServiceEntity,
     @Embedded(prefix = "c_") val checksEntity: ChecksEntity
