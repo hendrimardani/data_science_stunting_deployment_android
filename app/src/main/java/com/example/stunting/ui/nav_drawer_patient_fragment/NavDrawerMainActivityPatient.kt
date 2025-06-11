@@ -86,7 +86,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         if (getExtraFragment == "OpeningUserProfilePatientReadyActivity") {
             userPatientId = intent.getIntExtra(
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
-//            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from OpeningUserProfilePatientReadyActivity : ${userPatientId}")
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)
         } else if (getExtraFragment == "OpeningFragment") {
