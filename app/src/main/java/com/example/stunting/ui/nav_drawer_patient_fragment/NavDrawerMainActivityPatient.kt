@@ -83,17 +83,17 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     private fun getDataExtra() {
         val getExtraFragment = intent.getStringExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT)
 
-        if (getExtraFragment == "LoginFragment") {
+        if (getExtraFragment == "OpeningUserProfilePatientReadyActivity") {
             userPatientId = intent.getIntExtra(
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
-//            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from LoginFragment : ${userPatientId}")
+            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from OpeningUserProfilePatientReadyActivity : ${userPatientId}")
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)
-        } else if (getExtraFragment == "OpeningFragment") {
+        } else if (getExtraFragment == "OpeningActivity") {
             val userModel = intent.getParcelableExtra<UserModel>(
                 EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
             )!!
-//            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
+            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
             userPatientId = userModel.id.toInt()
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)
@@ -274,6 +274,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         private val TAG = NavDrawerMainActivityPatient::class.java.simpleName
         const val EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_activity_to_nav_drawer_main_activity_patient"
         const val EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_patient_id_to_nav_drawer_main_activity_patient"
-        const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_model_to_Nnav_drawer_main_activity_patient"
+        const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_model_to_nav_drawer_main_activity_patient"
     }
 }

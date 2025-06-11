@@ -744,11 +744,12 @@ class ChattingRepository(
             )
 
             if (response.isSuccessful) {
-//                Log.d(TAG, "onChattingRepository updateUserProfileById() Success ${response.code()}: $response")
+//                Log.d(TAG, "onChattingRepository updateUserProfilePatientByIdFromApi Success ${response.code()}: $response")
                 val updatedUserProfileByIdList = response.body()?.dataUpdateUserProfilePatientById
                 val updatedUserProfileEntity = updatedUserProfileByIdList?.map { userProfilePatient ->
                     UserProfilePatientEntity(
                         id = userProfilePatient?.id,
+                        userPatientId = userProfilePatient?.userPatientId,
                         branchId = userProfilePatient?.branchId,
                         namaBumil = userProfilePatient?.namaBumil,
                         nikBumil = userProfilePatient?.nikBumil,
@@ -774,7 +775,7 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBodyJson = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository updateUserProfileById() Error ${response.code()}: $errorBodyJson")
+//                    Log.e(TAG, "onChattingRepository updateUserProfilePatientByIdFromApi Error ${response.code()}: $errorBodyJson")
                     // Ubah dari JSON string ke JSON
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")

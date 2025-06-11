@@ -1,8 +1,13 @@
 package com.example.stunting.ui.bumil_patient
 
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -34,6 +39,10 @@ class BumilPatientActivity : AppCompatActivity() {
     private var categryServiceId: Int? = null
     private var tableViewAdapter = TableViewAdapter(this)
 
+    private var initialY = 0f
+    private var isDragging = false
+    private val maxDrag = 300f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,10 +53,20 @@ class BumilPatientActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
         categryServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
+
         getChecksFromApi()
+        setupSwipeToRefresh()
+    }
+
+    private fun setupSwipeToRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            // Simulasi loading
+            binding.swipeRefreshLayout.postDelayed({
+                binding.swipeRefreshLayout.isRefreshing = false
+            }, 2000)
+        }
     }
 
     private fun getChecksRelationByCategoryServiceId(userPatientId: Int, categryServiceId: Int) {
