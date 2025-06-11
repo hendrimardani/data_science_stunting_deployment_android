@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.evrencoskun.tableview.listener.ITableViewListener
 import com.example.stunting.R
 import com.example.stunting.ResultState
@@ -23,6 +24,7 @@ import com.example.stunting.databinding.ActivityBumilPatientBinding
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.utils.NetworkLiveData
 import com.example.stunting.utils.table_view.TableViewAdapter
 import com.example.stunting.utils.table_view.model.Cell
 import com.example.stunting.utils.table_view.model.ColumnHeader
@@ -34,14 +36,12 @@ class BumilPatientActivity : AppCompatActivity() {
     private val viewModel by viewModels<BumilPatientViewModel> {
         ViewModelFactory.getInstance(this)
     }
+    private lateinit var networkLiveData: NetworkLiveData
 
     private var userPatientId: Int? = null
     private var categryServiceId: Int? = null
     private var tableViewAdapter = TableViewAdapter(this)
 
-    private var initialY = 0f
-    private var isDragging = false
-    private val maxDrag = 300f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,16 +56,25 @@ class BumilPatientActivity : AppCompatActivity() {
         userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
         categryServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
 
-        getChecksFromApi()
+        isConnected()
         setupSwipeToRefresh()
+        getChecksRelationByCategoryServiceId(userPatientId!!, categryServiceId!!)
+    }
+
+    private fun isConnected() {
+        networkLiveData = NetworkLiveData(this.application)
+        networkLiveData.observe(this) { isConnected ->
+            if (isConnected) {
+                getChecksFromApi()
+                getChecksRelationByCategoryServiceId(userPatientId!!, categryServiceId!!)
+            }
+        }
     }
 
     private fun setupSwipeToRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
-            // Simulasi loading
-            binding.swipeRefreshLayout.postDelayed({
-                binding.swipeRefreshLayout.isRefreshing = false
-            }, 2000)
+            getChecksFromApi()
+            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -77,16 +86,23 @@ class BumilPatientActivity : AppCompatActivity() {
     }
 
     private fun getChecksFromApi() {
+        val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
         viewModel.getChecksFromApiResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultState.Loading -> {  }
+                    is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
+                        progressBar.dismiss()
 //                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
+                        progressBar.dismiss()
 //                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
-                        getChecksRelationByCategoryServiceId(userPatientId!!, categryServiceId!!)
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

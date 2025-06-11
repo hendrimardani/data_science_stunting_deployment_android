@@ -38,6 +38,7 @@ slideToActVersion = "0.11.0"
 tagSphereVersion = "1.0.0"
 tableViewVersion = "v0.8.9.4"
 swipeRefreshLayoutVersion = "1.1.0"
+mpAndroidChartVersion = "v3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -77,6 +78,7 @@ slide-to-act = { module = "com.ncorti:slidetoact", version.ref = "slideToActVers
 tag-sphere = { module = "com.github.magic-goop:tag-sphere", version.ref = "tagSphereVersion" }
 com-github-evrencoskun = { module = "com.github.evrencoskun:TableView", version.ref = "tableViewVersion" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swipeRefreshLayoutVersion" }
+com-github-philjay-mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpAndroidChartVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
