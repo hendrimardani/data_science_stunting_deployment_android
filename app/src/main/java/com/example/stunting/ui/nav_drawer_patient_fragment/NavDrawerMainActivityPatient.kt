@@ -86,14 +86,14 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         if (getExtraFragment == "OpeningUserProfilePatientReadyActivity") {
             userPatientId = intent.getIntExtra(
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
-            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from OpeningUserProfilePatientReadyActivity : ${userPatientId}")
+//            Log.d(TAG, "onNavDrawerMainActivityPatient userPatientId from OpeningUserProfilePatientReadyActivity : ${userPatientId}")
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)
-        } else if (getExtraFragment == "OpeningActivity") {
+        } else if (getExtraFragment == "OpeningFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(
                 EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
             )!!
-            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
+//            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
             userPatientId = userModel.id.toInt()
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)

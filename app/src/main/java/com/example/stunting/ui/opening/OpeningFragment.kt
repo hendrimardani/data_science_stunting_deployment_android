@@ -18,6 +18,7 @@ import com.example.stunting.ui.login.LoginFragment
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.sign_up.SignUpActivity
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY
