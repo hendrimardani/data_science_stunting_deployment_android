@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.stunting.datastore.chatting.ChattingRepository
 import com.example.stunting.di.Injection
+import com.example.stunting.ui.anak_patient.AnakPatientViewModel
 import com.example.stunting.ui.bumil_patient.BumilPatientViewModel
 import com.example.stunting.ui.login.LoginViewModel
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainViewModel
@@ -35,6 +36,10 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
             modelClass.isAssignableFrom(BumilPatientViewModel::class.java) -> {
                 BumilPatientViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(AnakPatientViewModel::class.java) -> {
+                BumilPatientViewModel(repository) as T
+            }
+
 
             modelClass.isAssignableFrom(NavDrawerMainViewModel::class.java) -> {
                 NavDrawerMainViewModel(repository) as T

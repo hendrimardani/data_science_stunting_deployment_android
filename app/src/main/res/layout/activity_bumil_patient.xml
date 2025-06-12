@@ -54,20 +54,41 @@
                     android:textColor="?attr/colorText" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.evrencoskun.tableview.TableView
-                android:id="@+id/table_view"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@drawable/shape"
                 android:layout_width="match_parent"
                 android:layout_height="360dp"
-                android:layout_marginTop="@dimen/dimen_4"
-                android:elevation="5dp"
-                android:background="@drawable/shape"
-                app:allow_click_inside_cell="true"
-                app:allow_click_inside_column_header="true"
-                app:allow_click_inside_row_header="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/til_cari" />
+                app:layout_constraintTop_toBottomOf="@id/til_cari" >
+
+                <com.evrencoskun.tableview.TableView
+                    android:id="@+id/table_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:layout_marginTop="@dimen/dimen_4"
+                    android:elevation="5dp"
+                    android:visibility="visible"
+                    app:allow_click_inside_cell="true"
+                    app:allow_click_inside_column_header="true"
+                    app:allow_click_inside_row_header="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lav_no_result_data"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:elevation="5dp"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="@dimen/dimen_24"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/animation_no_data_result"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

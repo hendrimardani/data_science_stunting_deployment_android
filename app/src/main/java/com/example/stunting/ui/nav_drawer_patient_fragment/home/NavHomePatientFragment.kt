@@ -20,6 +20,8 @@ import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.anak_patient.AnakPatientActivity
+import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_PATIENT_ACTIVITY
+import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_ANAK_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
@@ -92,8 +94,8 @@ class NavHomePatientFragment : Fragment() {
                         "ic_anak" -> {
                             categoryServiceId = 2
                             val intent = Intent(requireActivity(), AnakPatientActivity::class.java)
-                            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY, userPatientId)
-                            intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, categoryServiceId)
+                            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_ANAK_PATIENT_ACTIVITY, userPatientId)
+                            intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_PATIENT_ACTIVITY, categoryServiceId)
                             startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
 
                         }

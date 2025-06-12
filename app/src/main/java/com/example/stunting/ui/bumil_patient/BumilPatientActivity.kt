@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -162,10 +163,19 @@ class BumilPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categryServiceId: Int, querySearch: String) {
-        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categryServiceId, querySearch)
-            .observe(this) { checksRelationList ->
-                setupTableView(checksRelationList)
+    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+        userPatientId: Int, categryServiceId: Int, querySearch: String
+    ) {
+        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+            userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
+                if (checksRelationList.isNotEmpty()) {
+                    binding.tableView.visibility = View.VISIBLE
+                    binding.lavNoResultData.visibility = View.GONE
+                    setupTableView(checksRelationList)
+                } else {
+                    binding.tableView.visibility = View.GONE
+                    binding.lavNoResultData.visibility = View.VISIBLE
+                }
         }
     }
 
