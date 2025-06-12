@@ -574,8 +574,10 @@ class ChattingRepository(
         }
     }
 
-    fun getChecksRelationByUserPatientIdCategoryServiceId(userPatientId: Int, categoryServiceId: Int) =
-        chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceId(userPatientId, categoryServiceId)
+    fun getTransactionCountByMonth() = chattingDatabase.checksDao().getTransactionCountByMonth()
+
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
+        chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categoryServiceId, searchQuery)
 
     suspend fun getChecksFromApi(): ResultState<List<DataChecksItem?>> {
         return try {

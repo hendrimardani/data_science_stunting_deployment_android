@@ -39,7 +39,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             goToMainActivity()
-        }, 5000L)
+        }, 2000L)
 
         slideHide()
     }

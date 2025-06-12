@@ -202,7 +202,7 @@
     <string name="text_deskripsi_group">deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi deskripsi </string>
     <string name="error_text_nama_group_validation">Tidak boleh lebih dari 15 karakter</string>
     <string name="error_text_deskripsi_group_validation">Tidak boleh lebih dari 80 karakter</string>
-    <string name="hint_text_cari">Cari anggota...</string>
+    <string name="hint_text_cari_anggota">Cari anggota...</string>
     <string name="text_kamera">Kamera</string>
     <string name="text_berkas">Berkas</string>
     <string name="text_tentang_saya">Tentang Saya</string>
@@ -239,4 +239,5 @@
     <string name="text_sedang_menyiapkan">SEDANG MENYIAPKAN...</string>
     <string name="text_layanan">Layanan</string>
     <string name="text_no">No</string>
+    <string name="hint_text_cari">Cari...</string>
 </resources>

@@ -9,6 +9,17 @@ import androidx.room.Query
 @Dao
 interface ChecksDao {
     @Query("""
+        SELECT
+            strftime('%Y', tgl_pemeriksaan) as year,
+            strftime('%m', tgl_pemeriksaan) as month,
+            COUNT(id_pemeriksaan) as count
+        FROM checks
+        GROUP BY year, month
+        ORDER BY year ASC, month ASC  -- Diubah ke ASC agar urutan waktu benar dari kiri ke kanan
+    """)
+    fun getTransactionCountByMonth(): LiveData<List<MonthlyTransactionCount>>
+
+    @Query("""
         SELECT 
             -- Branch
             b.id_branch AS b_id_branch,
@@ -72,6 +83,7 @@ interface ChecksDao {
             c.children_patient_id AS c_children_patient_id,
             c.category_service_id AS c_category_service_id,
             c.tgl_pemeriksaan AS c_tgl_pemeriksaan,
+            c.catatan AS c_catatan,
             c.created_at AS c_created_at,
             c.updated_at AS c_updated_at
     
@@ -81,9 +93,18 @@ interface ChecksDao {
         INNER JOIN user_profile_patient upp ON upp.user_patient_id = c.user_patient_id
         INNER JOIN children_patient cp ON cp.id_children_patient = c.children_patient_id
         INNER JOIN category_service cs ON cs.id_category_service = c.category_service_id
-        WHERE c.user_patient_id = :userPatientId AND c.category_service_id = :categoryServiceId
+        WHERE
+            c.user_patient_id = :userPatientId 
+            AND c.category_service_id = :categoryServiceId
+            AND upp.nama_bumil LIKE '%' || :searchQuery || '%'
+            OR upp.nik_bumil LIKE '%' || :searchQuery || '%'
+            OR up.nama LIKE '%' || :searchQuery || '%'
+            OR b.nama_cabang LIKE '%' || :searchQuery || '%'
+            OR c.catatan LIKE '%' || :searchQuery || '%'
     """)
-    fun getChecksRelationByUserPatientIdCategoryServiceId(userPatientId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>>
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+        userPatientId: Int, categoryServiceId: Int, searchQuery: String
+    ): LiveData<List<ChecksRelation>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertChecks(checks: List<ChecksEntity>)

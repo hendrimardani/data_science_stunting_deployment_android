@@ -1,5 +1,6 @@
 package com.example.stunting.ui.bumil_patient
 
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +18,10 @@ class BumilPatientViewModel(private val chattingRepository: ChattingRepository):
         getChecksFromApi()
     }
 
-    fun getChecksRelationByUserPatientIdCategoryServiceId(userPatientId: Int, categoryServiceId: Int) =
-        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceId(userPatientId, categoryServiceId)
+    fun getTransactionCountByMonth() = chattingRepository.getTransactionCountByMonth()
+
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
+        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categoryServiceId, searchQuery)
 
     private fun getChecksFromApi() {
         viewModelScope.launch {
