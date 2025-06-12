@@ -37,7 +37,7 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
                 BumilPatientViewModel(repository) as T
             }
             modelClass.isAssignableFrom(AnakPatientViewModel::class.java) -> {
-                BumilPatientViewModel(repository) as T
+                AnakPatientViewModel(repository) as T
             }
 
 

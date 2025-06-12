@@ -62,7 +62,7 @@ class BumilPatientActivity : AppCompatActivity() {
 
         isConnected()
         setupSwipeToRefresh()
-        getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+        getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId!!, categryServiceId!!, "")
         getTransactionCountByMonth()
         setupSearch()
     }
@@ -74,7 +74,7 @@ class BumilPatientActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, s.toString())
+                getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId!!, categryServiceId!!, s.toString())
             }
         }
         binding.tietCari.addTextChangedListener(textWatcher)
@@ -85,7 +85,7 @@ class BumilPatientActivity : AppCompatActivity() {
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
                 getChecksFromApi()
-                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+                getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId!!, categryServiceId!!, "")
             }
         }
     }
@@ -163,10 +163,10 @@ class BumilPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(
         userPatientId: Int, categryServiceId: Int, querySearch: String
     ) {
-        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(
             userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
                 if (checksRelationList.isNotEmpty()) {
                     binding.tableView.visibility = View.VISIBLE

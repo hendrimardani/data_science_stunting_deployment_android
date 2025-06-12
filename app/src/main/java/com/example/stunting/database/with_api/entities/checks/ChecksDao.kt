@@ -71,10 +71,10 @@ interface ChecksDao {
             cp.updated_at AS cp_updated_at,
             
             -- CategoryService
-            cs.id_category_service AS cs_id_category_service,
-            cs.nama_layanan AS cs_nama_layanan,
-            cs.created_at AS cs_created_at,
-            cs.updated_at AS cs_updated_at,
+            cats.id_category_service AS cats_id_category_service,
+            cats.nama_layanan AS cats_nama_layanan,
+            cats.created_at AS cats_created_at,
+            cats.updated_at AS cats_updated_at,
             
             -- Checks
             c.id_pemeriksaan AS c_id_pemeriksaan,
@@ -92,7 +92,7 @@ interface ChecksDao {
         INNER JOIN user_profile up ON up.user_id = c.user_id
         INNER JOIN user_profile_patient upp ON upp.user_patient_id = c.user_patient_id
         INNER JOIN children_patient cp ON cp.id_children_patient = c.children_patient_id
-        INNER JOIN category_service cs ON cs.id_category_service = c.category_service_id
+        INNER JOIN category_service cats ON cats.id_category_service = c.category_service_id
         WHERE
             c.user_patient_id = :userPatientId 
             AND c.category_service_id = :categoryServiceId
@@ -102,7 +102,7 @@ interface ChecksDao {
             OR b.nama_cabang LIKE '%' || :searchQuery || '%'
             OR c.catatan LIKE '%' || :searchQuery || '%'
     """)
-    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(
         userPatientId: Int, categoryServiceId: Int, searchQuery: String
     ): LiveData<List<ChecksRelation>>
 

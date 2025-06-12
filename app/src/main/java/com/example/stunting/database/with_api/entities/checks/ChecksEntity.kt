@@ -56,11 +56,12 @@ data class ChecksEntity(
 )
 
 data class ChecksRelation(
+    @Embedded(prefix = "a_") val branchEntity: BranchEntity,
     // Tidak ada relasi di entitas checks, hanya memanggil entitas branch
     @Embedded(prefix = "b_") val branchEntity: BranchEntity,
     @Embedded(prefix = "up_") val userProfileEntity: UserProfileEntity,
     @Embedded(prefix = "upp_") val userProfilePatientEntity: UserProfilePatientEntity,
     @Embedded(prefix = "cp_") val childrenPatientEntity: ChildrenPatientEntity,
-    @Embedded(prefix = "cs_") val categoryServiceEntity: CategoryServiceEntity,
+    @Embedded(prefix = "cats_") val categoryServiceEntity: CategoryServiceEntity,
     @Embedded(prefix = "c_") val checksEntity: ChecksEntity
 )

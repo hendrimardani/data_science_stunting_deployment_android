@@ -20,8 +20,8 @@ class BumilPatientViewModel(private val chattingRepository: ChattingRepository):
 
     fun getTransactionCountByMonth() = chattingRepository.getTransactionCountByMonth()
 
-    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
-        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categoryServiceId, searchQuery)
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
+        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId, categoryServiceId, searchQuery)
 
     private fun getChecksFromApi() {
         viewModelScope.launch {
