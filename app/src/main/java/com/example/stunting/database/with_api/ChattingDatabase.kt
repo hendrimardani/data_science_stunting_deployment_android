@@ -18,6 +18,8 @@ import com.example.stunting.database.with_api.entities.messages.MessagesDao
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
 import com.example.stunting.database.with_api.entities.notifications.NotificationsDao
 import com.example.stunting.database.with_api.entities.notifications.NotificationsEntity
+import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceDao
+import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
 import com.example.stunting.database.with_api.entities.user_group.UserGroupDao
 import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileDao
@@ -31,11 +33,12 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
     entities = [
         UsersEntity::class, UserProfileEntity::class, BranchEntity::class,
         UserProfilePatientEntity::class, ChildrenPatientEntity::class, CategoryServiceEntity::class,
-        ChecksEntity::class
+        ChecksEntity::class, PregnantMomServiceEntity::class
                 ],
-    version = 45
+    version = 55
 )
 abstract class ChattingDatabase: RoomDatabase() {
+    abstract fun pregnantMomServiceDao(): PregnantMomServiceDao
     abstract fun checksDao(): ChecksDao
     abstract fun categoryServiceDao(): CategoryServiceDao
     abstract fun childrenPatientDao(): ChildrenPatientDao

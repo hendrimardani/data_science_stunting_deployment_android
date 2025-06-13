@@ -61,7 +61,7 @@ class AnakPatientActivity : AppCompatActivity() {
 
         isConnected()
         setupSwipeToRefresh()
-        getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+//        getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
         getTransactionCountByMonth()
         setupSearch()
     }
@@ -73,7 +73,7 @@ class AnakPatientActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, s.toString())
+//                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, s.toString())
             }
         }
         binding.tietCari.addTextChangedListener(textWatcher)
@@ -84,7 +84,7 @@ class AnakPatientActivity : AppCompatActivity() {
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
                 getChecksFromApi()
-                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+//                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
             }
         }
     }
@@ -166,21 +166,21 @@ class AnakPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
-        userPatientId: Int, categryServiceId: Int, querySearch: String
-    ) {
-        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
-            userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
-            if (checksRelationList.isNotEmpty()) {
-                binding.tableView.visibility = View.VISIBLE
-                binding.lavNoResultData.visibility = View.GONE
-                setupTableView(checksRelationList)
-            } else {
-                binding.tableView.visibility = View.GONE
-                binding.lavNoResultData.visibility = View.VISIBLE
-            }
-        }
-    }
+//    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+//        userPatientId: Int, categryServiceId: Int, querySearch: String
+//    ) {
+//        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
+//            userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
+//            if (checksRelationList.isNotEmpty()) {
+//                binding.tableView.visibility = View.VISIBLE
+//                binding.lavNoResultData.visibility = View.GONE
+//                setupTableView(checksRelationList)
+//            } else {
+//                binding.tableView.visibility = View.GONE
+//                binding.lavNoResultData.visibility = View.VISIBLE
+//            }
+//        }
+//    }
 
     private fun getChecksFromApi() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
@@ -229,7 +229,7 @@ class AnakPatientActivity : AppCompatActivity() {
         }
 
         val cellList: List<List<Cell>> = checksRelationList.mapIndexed { rowIndex, checksRelation ->
-            val branchEntity = checksRelation.branchEntity
+//            val branchEntity = checksRelation.branchEntity
             val userProfileEntity = checksRelation.userProfileEntity
             val childrenPatientEntity = checksRelation.childrenPatientEntity
             val checksEntity = checksRelation.checksEntity
@@ -241,7 +241,7 @@ class AnakPatientActivity : AppCompatActivity() {
                 Cell(rowIndex.toString(), childrenPatientEntity.tglLahirAnak),
                 Cell(rowIndex.toString(), childrenPatientEntity.umurAnak),
                 Cell(rowIndex.toString(), userProfileEntity.nama),
-                Cell(rowIndex.toString(), branchEntity.namaCabang),
+//                Cell(rowIndex.toString(), branchEntity.namaCabang),
                 Cell(rowIndex.toString(), checksEntity.tglPemeriksaan)
             )
         }

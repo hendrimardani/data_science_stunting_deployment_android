@@ -20,7 +20,14 @@ interface ChecksDao {
     fun getTransactionCountByMonth(): LiveData<List<MonthlyTransactionCount>>
 
     @Query("""
-        SELECT 
+        SELECT
+            -- PregnantMomService
+            pms.id_pregnant_mom_service AS pms_id_pregnant_mom_service,
+            pms.pemeriksaan_id AS pms_pemeriksaan_id,
+            pms.status_gizi_kesehatan AS pms_status_gizi_kesehatan,
+            pms.created_at AS pms_created_at,
+            pms.updated_at AS b_updated_at,
+            
             -- Branch
             b.id_branch AS b_id_branch,
             b.nama_cabang AS b_nama_cabang,
@@ -88,6 +95,7 @@ interface ChecksDao {
             c.updated_at AS c_updated_at
     
         FROM checks c
+        INNER JOIN pregnant_mom_service pms ON pms.pemeriksaan_id = c.id_pemeriksaan
         INNER JOIN branch b ON b.id_branch = upp.branch_id
         INNER JOIN user_profile up ON up.user_id = c.user_id
         INNER JOIN user_profile_patient upp ON upp.user_patient_id = c.user_patient_id

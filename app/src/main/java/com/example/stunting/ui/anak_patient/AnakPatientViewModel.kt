@@ -19,8 +19,8 @@ class AnakPatientViewModel(private val chattingRepository: ChattingRepository): 
 
     fun getTransactionCountByMonth() = chattingRepository.getTransactionCountByMonth()
 
-    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
-        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categoryServiceId, searchQuery)
+//    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
+//        chattingRepository.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId, categoryServiceId, searchQuery)
 
     private fun getChecksFromApi() {
         viewModelScope.launch {

@@ -8,6 +8,7 @@ import androidx.room.Index
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
+import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
 
@@ -56,7 +57,7 @@ data class ChecksEntity(
 )
 
 data class ChecksRelation(
-    @Embedded(prefix = "a_") val branchEntity: BranchEntity,
+    @Embedded(prefix = "pms_") val pregnantMomServiceEntity: PregnantMomServiceEntity,
     // Tidak ada relasi di entitas checks, hanya memanggil entitas branch
     @Embedded(prefix = "b_") val branchEntity: BranchEntity,
     @Embedded(prefix = "up_") val userProfileEntity: UserProfileEntity,

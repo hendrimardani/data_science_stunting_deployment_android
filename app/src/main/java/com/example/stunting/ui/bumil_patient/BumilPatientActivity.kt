@@ -192,11 +192,11 @@ class BumilPatientActivity : AppCompatActivity() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
+                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
+                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -213,6 +213,7 @@ class BumilPatientActivity : AppCompatActivity() {
         val columnHeaderList = listOf(
             ColumnHeader("namaBumil", "Nama Bumil"),
             ColumnHeader("nikBumil", "NIK Bumil"),
+            ColumnHeader("statusGiziKesehatan", "Status Gizi Kesehatan"),
             ColumnHeader("pemeriksa", "Pemeriksa"),
             ColumnHeader("cabang", "Cabang"),
             ColumnHeader("catatan", "Catatan"),
@@ -227,11 +228,13 @@ class BumilPatientActivity : AppCompatActivity() {
             val branchEntity = checksRelation.branchEntity
             val userProfileEntity = checksRelation.userProfileEntity
             val userProfilePatientEntity = checksRelation.userProfilePatientEntity
+//            val pregnantMomServiceEntity = checksRelation.pregnantMomServiceEntity
             val checksEntity = checksRelation.checksEntity
 
             listOf(
                 Cell(rowIndex.toString(), userProfilePatientEntity.namaBumil),
                 Cell(rowIndex.toString(), userProfilePatientEntity.nikBumil),
+//                Cell(rowIndex.toString(), pregnantMomServiceEntity.statusGiziKesehatan),
                 Cell(rowIndex.toString(), userProfileEntity.nama),
                 Cell(rowIndex.toString(), branchEntity.namaCabang),
                 Cell(rowIndex.toString(), checksEntity.catatan),

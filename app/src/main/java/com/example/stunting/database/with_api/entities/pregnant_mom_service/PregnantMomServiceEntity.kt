@@ -19,11 +19,11 @@ import com.example.stunting.database.with_api.entities.checks.ChecksEntity
     ],
     indices = [Index(value = ["id_pregnant_mom_service"], unique = true)]
 )
-data class ChildServiceEntity(
+data class PregnantMomServiceEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_pregnant_mom_service") val id: Int? = null,
-    @ColumnInfo(name = "pemeriksaan_id") val pemeriksaanId: String? = null,
-    @ColumnInfo(name = "status_gizi_kesehatan") val tinggiCm: String? = null,
+    @ColumnInfo(name = "pemeriksaan_id") val pemeriksaanId: Int? = null,
+    @ColumnInfo(name = "status_gizi_kesehatan") val statusGiziKesehatan: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
