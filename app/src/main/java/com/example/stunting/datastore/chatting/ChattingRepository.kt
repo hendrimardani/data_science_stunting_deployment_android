@@ -38,6 +38,7 @@ import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
+import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
@@ -575,6 +576,43 @@ class ChattingRepository(
         }
     }
 
+    suspend fun getPregnantMomServiceFromApi(): ResultState<List<DataPregnantMomServicesItem?>> {
+        return try {
+            val response = apiService.getAllPregnantMomServices()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataPregnantMomServices ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertPregnantMomServiceToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertPregnantMomServiceToLocal(dataPregnantMomServicesItemList: List<DataPregnantMomServicesItem?>) {
+        val pregnantMomServiceList = ArrayList<PregnantMomServiceEntity>()
+
+        dataPregnantMomServicesItemList.forEach { item ->
+            pregnantMomServiceList.add(
+                PregnantMomServiceEntity(
+                    id = item?.id,
+                    pemeriksaanId = item?.pemeriksaanId,
+                    statusGiziKesehatan = item?.statusGiziKesehatan,
+                    createdAt = item?.createdAt,
+                    updatedAt = item?.updatedAt
+                )
+            )
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.pregnantMomServiceDao().insertPregnantMomServices(pregnantMomServiceList)
+        }
+    }
+
     fun getTransactionCountByMonth() = chattingDatabase.checksDao().getTransactionCountByMonth()
 
     fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
@@ -597,18 +635,15 @@ class ChattingRepository(
         }
     }
 
-    pr
-
     // Menggunakan entitas pusat relasi
-    private suspend fun insertChecksToLocal(dataChecksItem: List<DataChecksItem?>) {
+    private suspend fun insertChecksToLocal(dataChecksItemList: List<DataChecksItem?>) {
         val userProfilesList = ArrayList<UserProfileEntity>()
         val userProfilePatientsList = ArrayList<UserProfilePatientEntity>()
         val childrenPatientsList = ArrayList<ChildrenPatientEntity>()
         val categoryServicesList = ArrayList<CategoryServiceEntity>()
         val checksList = ArrayList<ChecksEntity>()
-        val pregnantMomServiceList = ArrayList<PregnantMomServiceEntity>()
 
-        dataChecksItem.forEach { item ->
+        dataChecksItemList.forEach { item ->
             val userProfileEntity = item?.userProfile
             val userProfilePatientEntity = item?.userProfilePatient
             val childrenPatientEntity = item?.childrenPatient
@@ -685,16 +720,6 @@ class ChattingRepository(
                         updatedAt = item.updatedAt
                     )
                 )
-//                pregnantMomServiceList.add(
-//                    PregnantMomServiceEntity(
-//                        id = 1,
-//                        pemeriksaanId = 2,
-//                        statusGiziKesehatan = "YA",
-//                        null,
-//                        null
-//                    )
-//                )
-
             }
         }
         withContext(Dispatchers.IO) {
@@ -703,7 +728,6 @@ class ChattingRepository(
             chattingDatabase.childrenPatientDao().insertChildrenPatients(childrenPatientsList)
             chattingDatabase.categoryServiceDao().insertCategoryServices(categoryServicesList)
             chattingDatabase.checksDao().insertChecks(checksList)
-//            chattingDatabase.pregnantMomServiceDao().insertPregnantMomServices(pregnantMomServiceList)
         }
     }
 

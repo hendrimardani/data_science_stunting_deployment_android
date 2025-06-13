@@ -11,6 +11,7 @@ import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllBranchesResponse
 import com.example.stunting.database.with_api.response.GetAllChecksResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
+import com.example.stunting.database.with_api.response.GetAllPregnantMomServicesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilePatientsResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilesResponse
@@ -70,6 +71,9 @@ interface ApiService {
         @Path("group_id") groupId: Int,
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
+
+    @GET("pregnant_mom_services")
+    suspend fun getAllPregnantMomServices(): Response<GetAllPregnantMomServicesResponse>
 
     @GET("checks")
     suspend fun getAllChecks(): Response<GetAllChecksResponse>

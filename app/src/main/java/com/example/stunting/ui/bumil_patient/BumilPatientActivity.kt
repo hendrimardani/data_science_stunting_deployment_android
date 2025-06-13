@@ -195,6 +195,7 @@ class BumilPatientActivity : AppCompatActivity() {
                         Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
+                        viewModel.getPregnantMomServiceFromApi()
                         progressBar.dismiss()
                         Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
                     }
@@ -228,13 +229,13 @@ class BumilPatientActivity : AppCompatActivity() {
             val branchEntity = checksRelation.branchEntity
             val userProfileEntity = checksRelation.userProfileEntity
             val userProfilePatientEntity = checksRelation.userProfilePatientEntity
-//            val pregnantMomServiceEntity = checksRelation.pregnantMomServiceEntity
+            val pregnantMomServiceEntity = checksRelation.pregnantMomServiceEntity
             val checksEntity = checksRelation.checksEntity
 
             listOf(
                 Cell(rowIndex.toString(), userProfilePatientEntity.namaBumil),
                 Cell(rowIndex.toString(), userProfilePatientEntity.nikBumil),
-//                Cell(rowIndex.toString(), pregnantMomServiceEntity.statusGiziKesehatan),
+                Cell(rowIndex.toString(), pregnantMomServiceEntity.statusGiziKesehatan),
                 Cell(rowIndex.toString(), userProfileEntity.nama),
                 Cell(rowIndex.toString(), branchEntity.namaCabang),
                 Cell(rowIndex.toString(), checksEntity.catatan),
