@@ -119,8 +119,8 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
     }
 
     fun updateUserProfileById(
-        userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
-        tglLahir: String?, gambarProfile: File?, gambarBanner: File?
+        userId: Int, nama: String, nik: String, umur: String, alamat: String, jenisKelamin: String,
+        tglLahir: String, gambarProfile: File?, gambarBanner: File?
     ) {
         viewModelScope.launch {
             _updateUserProfileByIdResult.value = ResultState.Loading

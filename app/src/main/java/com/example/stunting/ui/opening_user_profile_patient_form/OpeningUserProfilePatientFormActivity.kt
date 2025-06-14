@@ -42,6 +42,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
         ViewModelFactory.getInstance(this)
     }
 
+    private var sweetAlertDialog: SweetAlertDialog? = null
     private lateinit var cal: Calendar
     private var dataSetListenerTgllahirAnak: DatePickerDialog.OnDateSetListener? = null
 
@@ -92,60 +93,105 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
             }
             val tglLahirAnak = binding.tietTglLahirAnak.text.toString().trim()
             val umurAnak = binding.tietUmurAnak.text.toString().trim()
-            val namaCabang = binding.tietCabang.text.toString().trim()
 
-            val progressBar = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.PROGRESS_TYPE)
-            progressBar.setTitleText(getString(R.string.title_loading))
-            progressBar.setContentText(getString(R.string.description_loading))
-                .progressHelper.barColor = Color.parseColor("#73D1FA")
-            progressBar.setCancelable(false)
+            addChildrenPatientByUserPatientId(userPatientId!!, namaAnak, nikAnak, jenisKelaminAnakValueRadioButton, tglLahirAnak, umurAnak)
+            updateUserProfilePatientByIdFromApi(namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah)
 
-            viewModel.updateUserProfilePatientByIdFromApi(
-                userPatientId!!, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah, namaAnak,
-                nikAnak, jenisKelaminAnakValueRadioButton, tglLahirAnak, umurAnak, namaCabang
-            ).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is ResultState.Loading -> progressBar.show()
-                        is ResultState.Error -> {
-                            progressBar.dismiss()
-//                            Log.d(TAG, "onUpdateUserProfilePatientById : Error ${result.error}")
-                        }
-                        is ResultState.Success -> {
-                            progressBar.dismiss()
-//                            Log.d(TAG, "onUpdateUserProfilePatientById : Success ${result.data}")
-                            val updatedUserProfilePatient = result.data?.dataUpdateUserProfilePatientById?.get(0)
+            val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
+            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY, userPatientId)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+    }
 
-                            if (updatedUserProfilePatient != null) {
-                                viewModel.updateUserProfilePatientByIdFromLocal(
-                                    UserProfilePatientEntity(
-                                        id = updatedUserProfilePatient.id,
-                                        userPatientId = updatedUserProfilePatient.userPatientId,
-                                        branchId = updatedUserProfilePatient.branchId,
-                                        namaBumil = updatedUserProfilePatient.namaBumil,
-                                        nikBumil = updatedUserProfilePatient.nikBumil,
-                                        tglLahirBumil = updatedUserProfilePatient.tglLahirBumil,
-                                        umurBumil = updatedUserProfilePatient.umurBumil,
-                                        alamat = updatedUserProfilePatient.alamat,
-                                        namaAyah = updatedUserProfilePatient.namaAyah,
-                                        gambarProfile = updatedUserProfilePatient.gambarProfile,
-                                        gambarBanner = updatedUserProfilePatient.gambarBanner,
-                                        createdAt = updatedUserProfilePatient.createdAt,
-                                        updatedAt = updatedUserProfilePatient.updatedAt
-                                    )
+    private fun addChildrenPatientByUserPatientId(
+        userPatientId: Int, namaAnak: String, nikAnak: String, jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
+    ) {
+        val progressBar = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.addChildrenPatientByUserPatientId(
+            userPatientId, namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
+        ).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "addChildrenPatientByIdFromApi : Error ${result.error}")
+                        sweetAlertDialog = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.ERROR_TYPE)
+                        sweetAlertDialog!!.setTitleText(getString(R.string.title_validation_error))
+                        sweetAlertDialog!!.setContentText(result.error)
+                        sweetAlertDialog!!.setCancelable(false)
+                        sweetAlertDialog!!.show()
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateUserProfilePatientByIdFromApi(
+        namaBumil: String, nikBumil: String, tglLahirBumil: String, umurBumil: String, alamat: String, namaAyah: String
+    ) {
+        val progressBar = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.updateUserProfilePatientByIdFromApi(
+            userPatientId!!, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
+        ).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
+                        val updatedUserProfilePatient = result.data?.dataUpdateUserProfilePatientById?.get(0)
+
+                        if (updatedUserProfilePatient != null) {
+                            viewModel.updateUserProfilePatientByIdFromLocal(
+                                UserProfilePatientEntity(
+                                    id = updatedUserProfilePatient.id,
+                                    userPatientId = updatedUserProfilePatient.userPatientId,
+                                    branchId = updatedUserProfilePatient.branchId,
+                                    namaBumil = updatedUserProfilePatient.namaBumil,
+                                    nikBumil = updatedUserProfilePatient.nikBumil,
+                                    tglLahirBumil = updatedUserProfilePatient.tglLahirBumil,
+                                    umurBumil = updatedUserProfilePatient.umurBumil,
+                                    alamat = updatedUserProfilePatient.alamat,
+                                    namaAyah = updatedUserProfilePatient.namaAyah,
+                                    gambarProfile = updatedUserProfilePatient.gambarProfile,
+                                    gambarBanner = updatedUserProfilePatient.gambarBanner,
+                                    createdAt = updatedUserProfilePatient.createdAt,
+                                    updatedAt = updatedUserProfilePatient.updatedAt
                                 )
-                                val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
-                                intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY, userPatientId)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                            }
+                            )
                         }
-                        is ResultState.Unauthorized -> {
-                            viewModel.logout()
-                            val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
-                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
-                            startActivity(intent)
-                        }
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
                     }
                 }
             }

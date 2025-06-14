@@ -10,6 +10,8 @@ import com.example.stunting.database.with_api.entities.category_service.Category
 import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksDao
 import com.example.stunting.database.with_api.entities.checks.ChecksEntity
+import com.example.stunting.database.with_api.entities.child_service.ChildServiceDao
+import com.example.stunting.database.with_api.entities.child_service.ChildServiceEntity
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientDao
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsDao
@@ -33,11 +35,12 @@ import com.example.stunting.database.with_api.entities.users.UsersEntity
     entities = [
         UsersEntity::class, UserProfileEntity::class, BranchEntity::class,
         UserProfilePatientEntity::class, ChildrenPatientEntity::class, CategoryServiceEntity::class,
-        ChecksEntity::class, PregnantMomServiceEntity::class
+        ChecksEntity::class, PregnantMomServiceEntity::class, ChildServiceEntity::class
                 ],
-    version = 56
+    version = 57
 )
 abstract class ChattingDatabase: RoomDatabase() {
+    abstract fun childServiceDao(): ChildServiceDao
     abstract fun pregnantMomServiceDao(): PregnantMomServiceDao
     abstract fun checksDao(): ChecksDao
     abstract fun categoryServiceDao(): CategoryServiceDao

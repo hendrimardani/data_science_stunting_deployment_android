@@ -9,6 +9,7 @@ import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.category_service.CategoryServiceEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksRelation
+import com.example.stunting.database.with_api.entities.child_service.ChildServiceEntity
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.database.with_api.entities.groups.GroupsEntity
 import com.example.stunting.database.with_api.entities.messages.MessagesEntity
@@ -29,14 +30,17 @@ import com.example.stunting.database.with_api.entities.user_profile_patient.User
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
+import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateGroupByIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfilePatientByIdRequestJSON
+import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataChecksItem
+import com.example.stunting.database.with_api.response.DataChildServicesItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
@@ -576,6 +580,47 @@ class ChattingRepository(
         }
     }
 
+    fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
+        chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId, categoryServiceId, searchQuery)
+
+    suspend fun getChildServiceFromApi(): ResultState<List<DataChildServicesItem?>> {
+        return try {
+            val response = apiService.getAllChildServices()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataChildServices ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertChildServiceToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertChildServiceToLocal(dataChildServicesItemList: List<DataChildServicesItem?>) {
+        val childServicesList = ArrayList<ChildServiceEntity>()
+
+        dataChildServicesItemList.forEach { item ->
+            childServicesList.add(
+                ChildServiceEntity(
+                    id = item?.id,
+                    pemeriksaanId = item?.pemeriksaanId,
+                    tinggiCm = item?.tinggiCm,
+                    hasilPemeriksaan = item?.hasilPemeriksaan,
+                    createdAt = item?.createdAt,
+                    updatedAt = item?.updatedAt
+                )
+            )
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.childServiceDao().insertChildServices(childServicesList)
+        }
+    }
+
     suspend fun getPregnantMomServiceFromApi(): ResultState<List<DataPregnantMomServicesItem?>> {
         return try {
             val response = apiService.getAllPregnantMomServices()
@@ -760,14 +805,12 @@ class ChattingRepository(
         chattingDatabase.userProfilePatientDao().updateUserProfilePatientByIdFromLocal(userProfilePatientEntity)
 
     suspend fun updateUserProfilePatientByIdFromApi(
-        userPatientId: Int, namaBumil: String, nikBumil: String, tglLahirBumil: String, umurBumil: String, alamat: String,
-        namaAyah: String, namaAnak: String, nikAnak: String, jenisKelaminAnak: String,
-        tglLahirAnak: String, umurAnak: String, namaCabang: String
+        userPatientId: Int, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        umurBumil: String, alamat: String, namaAyah: String
     ): ResultState<UpdateUserProfilePatientByIdResponse?> {
         return try {
             val requestBodyJson = UpdateUserProfilePatientByIdRequestJSON(
-                namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah,
-                namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak, namaCabang
+                namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
             )
 
             // Convert dataJson menjadi JSON String
@@ -818,6 +861,37 @@ class ChattingRepository(
 //                    Log.e(TAG, "onChattingRepository updateUserProfilePatientByIdFromApi Error ${response.code()}: $errorBodyJson")
                     // Ubah dari JSON string ke JSON
                     val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
+    suspend fun addChildrenPatientByUserPatientId(
+        userPatientId: Int, namaAnak: String, nikAnak: String, jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
+    ): ResultState<AddingChildrenPatientByUserPatientIdResponse?> {
+        return try {
+            val requestBody = AddingChildrenPatientByUserPatientIdRequestJSON(
+                namaAnak, nikAnak, jenisKelaminAnak,tglLahirAnak, umurAnak
+            )
+            val response = apiService.addChildrenPatientByUserPatientId(userPatientId, requestBody)
+
+            if (response.isSuccessful) {
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBodyJsonString = response.errorBody()?.string()
+//                    Log.e(TAG, "onChattingRepository addChildrenPatientByUserPatientId Error ${response.code()}: $errorBody")
+                    val jsonObject = JSONObject(errorBodyJsonString)
                     val message = jsonObject.getString("message")
                     ResultState.Error(message)
                 }
@@ -914,8 +988,8 @@ class ChattingRepository(
     }
 
     suspend fun updateUserProfileById(
-        userId: Int, nama: String?, nik: String?, umur: String?, alamat: String?, jenisKelamin: String?,
-        tglLahir: String?, gambarProfile: File?, gambarBanner: File?
+        userId: Int, nama: String, nik: String, umur: String, alamat: String, jenisKelamin: String,
+        tglLahir: String, gambarProfile: File?, gambarBanner: File?
     ): ResultState<UpdateUserProfileByIdResponse?> {
         return try {
             val requestBodyJson = UpdateUserProfileByIdRequestJSON(nama, nik, umur, alamat, jenisKelamin, tglLahir)

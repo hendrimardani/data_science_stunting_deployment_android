@@ -61,7 +61,7 @@ class AnakPatientActivity : AppCompatActivity() {
 
         isConnected()
         setupSwipeToRefresh()
-//        getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+        getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId!!, categryServiceId!!, "")
         getTransactionCountByMonth()
         setupSearch()
     }
@@ -73,7 +73,7 @@ class AnakPatientActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, s.toString())
+                getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId!!, categryServiceId!!, s.toString())
             }
         }
         binding.tietCari.addTextChangedListener(textWatcher)
@@ -84,7 +84,7 @@ class AnakPatientActivity : AppCompatActivity() {
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
                 getChecksFromApi()
-//                getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(userPatientId!!, categryServiceId!!, "")
+                getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId!!, categryServiceId!!, "")
             }
         }
     }
@@ -166,21 +166,21 @@ class AnakPatientActivity : AppCompatActivity() {
         }
     }
 
-//    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
-//        userPatientId: Int, categryServiceId: Int, querySearch: String
-//    ) {
-//        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearch(
-//            userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
-//            if (checksRelationList.isNotEmpty()) {
-//                binding.tableView.visibility = View.VISIBLE
-//                binding.lavNoResultData.visibility = View.GONE
-//                setupTableView(checksRelationList)
-//            } else {
-//                binding.tableView.visibility = View.GONE
-//                binding.lavNoResultData.visibility = View.VISIBLE
-//            }
-//        }
-//    }
+    private fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(
+        userPatientId: Int, categryServiceId: Int, querySearch: String
+    ) {
+        viewModel.getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(
+            userPatientId, categryServiceId, querySearch).observe(this) { checksRelationList ->
+            if (checksRelationList.isNotEmpty()) {
+                binding.tableView.visibility = View.VISIBLE
+                binding.lavNoResultData.visibility = View.GONE
+                setupTableView(checksRelationList)
+            } else {
+                binding.tableView.visibility = View.GONE
+                binding.lavNoResultData.visibility = View.VISIBLE
+            }
+        }
+    }
 
     private fun getChecksFromApi() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
@@ -198,6 +198,7 @@ class AnakPatientActivity : AppCompatActivity() {
 //                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
+                        viewModel.getChildServiceFromApi()
                         progressBar.dismiss()
 //                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
                     }

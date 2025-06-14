@@ -192,12 +192,12 @@ class BumilPatientActivity : AppCompatActivity() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
+                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
                         viewModel.getPregnantMomServiceFromApi()
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
+                        Log.d(TAG, "onBumilPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

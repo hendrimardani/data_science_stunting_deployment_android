@@ -1,15 +1,18 @@
 package com.example.stunting.database.with_api.retrofit
 
+import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
+import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllBranchesResponse
 import com.example.stunting.database.with_api.response.GetAllChecksResponse
+import com.example.stunting.database.with_api.response.GetAllChildServicesResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllPregnantMomServicesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
@@ -72,6 +75,9 @@ interface ApiService {
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
 
+    @GET("child_services")
+    suspend fun getAllChildServices(): Response<GetAllChildServicesResponse>
+
     @GET("pregnant_mom_services")
     suspend fun getAllPregnantMomServices(): Response<GetAllPregnantMomServicesResponse>
 
@@ -89,6 +95,12 @@ interface ApiService {
         @Path("user_patient_id") userPatientId: Int,
         @Part("dataJsonString") dataJsonString: RequestBody?
     ): Response<UpdateUserProfilePatientByIdResponse>
+
+    @POST("children_patient/{user_patient_id}")
+    suspend fun addChildrenPatientByUserPatientId(
+        @Path("user_patient_id") userPatientId: Int,
+        @Body requesttBody: AddingChildrenPatientByUserPatientIdRequestJSON
+    ): Response<AddingChildrenPatientByUserPatientIdResponse>
 
     @GET("user_profile_patients")
     suspend fun getAllUserProfilePatients(): Response<GetAllUserProfilePatientsResponse>
