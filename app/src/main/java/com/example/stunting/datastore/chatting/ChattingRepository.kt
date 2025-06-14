@@ -805,12 +805,12 @@ class ChattingRepository(
         chattingDatabase.userProfilePatientDao().updateUserProfilePatientByIdFromLocal(userProfilePatientEntity)
 
     suspend fun updateUserProfilePatientByIdFromApi(
-        userPatientId: Int, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        userPatientId: Int, namaCabang: String, namaBumil: String, nikBumil: String, tglLahirBumil: String,
         umurBumil: String, alamat: String, namaAyah: String
     ): ResultState<UpdateUserProfilePatientByIdResponse?> {
         return try {
             val requestBodyJson = UpdateUserProfilePatientByIdRequestJSON(
-                namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
+                namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
             )
 
             // Convert dataJson menjadi JSON String

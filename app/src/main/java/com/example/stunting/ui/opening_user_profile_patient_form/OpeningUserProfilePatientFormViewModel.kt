@@ -29,13 +29,13 @@ class OpeningUserProfilePatientFormViewModel(private val chattingRepository: Cha
     }
 
     fun updateUserProfilePatientByIdFromApi(
-        userPatientId: Int, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        userPatientId: Int, namaCabang: String, namaBumil: String, nikBumil: String, tglLahirBumil: String,
         umurBumil: String, alamat: String, namaAyah: String
     ): LiveData<ResultState<UpdateUserProfilePatientByIdResponse?>> = liveData {
         emit(ResultState.Loading)
         emit(
             chattingRepository.updateUserProfilePatientByIdFromApi(
-                userPatientId, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
+                userPatientId, namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
             )
         )
     }

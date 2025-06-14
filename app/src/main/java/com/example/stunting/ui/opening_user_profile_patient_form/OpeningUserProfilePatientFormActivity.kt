@@ -78,6 +78,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
 
     private fun btnSave() {
         binding.btnSave.setOnClickListener {
+            val namaCabang = binding.tietCabang.text.toString().trim()
             val namaBumil = binding.tietNamaBumil.text.toString().trim()
             val nikBumil = binding.tietNikBumil.text.toString().trim()
             val tglLahirBumil = binding.tietTglLahirBumil.text.toString().trim()
@@ -94,18 +95,17 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
             val tglLahirAnak = binding.tietTglLahirAnak.text.toString().trim()
             val umurAnak = binding.tietUmurAnak.text.toString().trim()
 
-            addChildrenPatientByUserPatientId(userPatientId!!, namaAnak, nikAnak, jenisKelaminAnakValueRadioButton, tglLahirAnak, umurAnak)
-            updateUserProfilePatientByIdFromApi(namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah)
-
-            val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
-            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY, userPatientId)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+            addChildrenPatientByUserPatientId(
+                namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah,
+                namaAnak, nikAnak, jenisKelaminAnakValueRadioButton, tglLahirAnak, umurAnak
+            )
         }
     }
 
     private fun addChildrenPatientByUserPatientId(
-        userPatientId: Int, namaAnak: String, nikAnak: String, jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
+        namaCabang: String, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        umurBumil: String, alamat: String, namaAyah: String, namaAnak: String, nikAnak: String,
+        jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
     ) {
         val progressBar = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
@@ -114,7 +114,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
         progressBar.setCancelable(false)
 
         viewModel.addChildrenPatientByUserPatientId(
-            userPatientId, namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
+            userPatientId!!, namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
         ).observe(this) { result ->
             if (result != null) {
                 when (result) {
@@ -131,6 +131,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     is ResultState.Success -> {
                         progressBar.dismiss()
 //                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
+                        updateUserProfilePatientByIdFromApi(namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah)
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -144,7 +145,8 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
     }
 
     private fun updateUserProfilePatientByIdFromApi(
-        namaBumil: String, nikBumil: String, tglLahirBumil: String, umurBumil: String, alamat: String, namaAyah: String
+        namaCabang: String, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        umurBumil: String, alamat: String, namaAyah: String
     ) {
         val progressBar = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
@@ -153,18 +155,18 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
         progressBar.setCancelable(false)
 
         viewModel.updateUserProfilePatientByIdFromApi(
-            userPatientId!!, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
+            userPatientId!!, namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
         ).observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
+//                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
+//                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
                         val updatedUserProfilePatient = result.data?.dataUpdateUserProfilePatientById?.get(0)
 
                         if (updatedUserProfilePatient != null) {
@@ -185,6 +187,10 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                                     updatedAt = updatedUserProfilePatient.updatedAt
                                 )
                             )
+                            val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
+                            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY, userPatientId)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
                         }
                     }
                     is ResultState.Unauthorized -> {
