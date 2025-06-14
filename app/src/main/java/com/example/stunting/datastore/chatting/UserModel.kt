@@ -9,5 +9,6 @@ data class UserModel(
     val nama: String,
     val role: String,
     val token: String,
-    val isLogin: Boolean = false
+    val isLogin: Boolean = false,
+    val isUpdateUserProfilePatient: Boolean = false
 ): Parcelable

@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,11 @@ import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_FRAGMENT_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+import com.example.stunting.ui.opening.OpeningFragment
+import com.example.stunting.ui.opening.OpeningFragment.Companion
 import com.example.stunting.utils.NetworkLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -73,6 +79,41 @@ class LoginFragment : Fragment() {
             } else {
                 showNoInternet(true)
                 Toast.makeText(requireActivity(), getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun getChildrenPatientByUserPatientId(userPatientId: Int) {
+        viewModel.getChildrenPatientByUserPatientId(userPatientId).observe(requireActivity()) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+                        // Jika belum pernah tambah data anak
+//                        Log.d(TAG, "onGetChildrenPatientByUserPatientId error : ${result.error}")
+                        val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
+                        intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
+                        requireActivity().finish()
+                    }
+                    is ResultState.Success -> {
+                        // Jika sudah pernah tambah data anak
+//                        Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
+                        val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
+                        intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }
@@ -200,12 +241,7 @@ class LoginFragment : Fragment() {
                 sweetAlertDialog.setConfirmClickListener { dialog ->
                     dialog.dismiss()
 //                    Log.d(TAG, "onLoginSucces: ${pasienUser.namaBumil}")
-
-                    val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
-                    intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
-                    requireActivity().finish()
+                    getChildrenPatientByUserPatientId(userPatientId!!)
                 }
                 sweetAlertDialog.show()
             } else {

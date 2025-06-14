@@ -88,7 +88,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
             sendDataToNavHomePatientFragment(userPatientId!!)
             getUserProfilePatientWithUserById(userPatientId!!)
-        } else if (getExtraFragment == "OpeningFragment") {
+        } else if (getExtraFragment == "OpeningFragment" || getExtraFragment == "LoginFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(
                 EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
             )!!

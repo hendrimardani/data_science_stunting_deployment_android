@@ -41,10 +41,12 @@ import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataChildServicesItem
+import com.example.stunting.database.with_api.response.DataChildrenPatientByUserPatientIdItem
 import com.example.stunting.database.with_api.response.DataMessagesItem
 import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
+import com.example.stunting.database.with_api.response.GetChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -871,6 +873,21 @@ class ChattingRepository(
         } catch (e: Exception) {
 //            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
+    suspend fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int): ResultState<List<DataChildrenPatientByUserPatientIdItem?>> {
+        return try {
+            val response = apiService.getChildrenPatientByUserPatientId(userPatientId)
+            Log.d(TAG, "getChildrenPatientByUserPatientIdFromApi : ${response}")
+            if (response.isSuccessful) {
+                val data = response.body()?.dataChildrenPatientByUserPatientId ?: emptyList()
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
         }
     }
 

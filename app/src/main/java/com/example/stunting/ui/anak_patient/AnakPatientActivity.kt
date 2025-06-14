@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -195,12 +196,12 @@ class AnakPatientActivity : AppCompatActivity() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
+                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
                         viewModel.getChildServiceFromApi()
                         progressBar.dismiss()
-//                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
+                        Log.d(TAG, "onAnakPatientActivity from LoginFragment getChecksFromApi : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -230,7 +231,7 @@ class AnakPatientActivity : AppCompatActivity() {
         }
 
         val cellList: List<List<Cell>> = checksRelationList.mapIndexed { rowIndex, checksRelation ->
-//            val branchEntity = checksRelation.branchEntity
+            val branchEntity = checksRelation.branchEntity
             val userProfileEntity = checksRelation.userProfileEntity
             val childrenPatientEntity = checksRelation.childrenPatientEntity
             val checksEntity = checksRelation.checksEntity
@@ -242,7 +243,7 @@ class AnakPatientActivity : AppCompatActivity() {
                 Cell(rowIndex.toString(), childrenPatientEntity.tglLahirAnak),
                 Cell(rowIndex.toString(), childrenPatientEntity.umurAnak),
                 Cell(rowIndex.toString(), userProfileEntity.nama),
-//                Cell(rowIndex.toString(), branchEntity.namaCabang),
+                Cell(rowIndex.toString(), branchEntity.namaCabang),
                 Cell(rowIndex.toString(), checksEntity.tglPemeriksaan)
             )
         }
@@ -274,6 +275,7 @@ class AnakPatientActivity : AppCompatActivity() {
     }
 
     companion object {
+        private val TAG = AnakPatientActivity::class.java.simpleName
         const val EXTRA_USER_PATIENT_ID_TO_ANAK_PATIENT_ACTIVITY = "extra_user_patient_id_to_anak_patient_activity"
         const val EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_PATIENT_ACTIVITY = "extra_category_service_id_to_anak_patient_activity"
     }

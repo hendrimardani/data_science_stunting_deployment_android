@@ -18,6 +18,7 @@ import com.example.stunting.database.with_api.response.GetAllPregnantMomServices
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilePatientsResponse
 import com.example.stunting.database.with_api.response.GetAllUserProfilesResponse
+import com.example.stunting.database.with_api.response.GetChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
@@ -116,6 +117,11 @@ interface ApiService {
 
     @GET("user_profiles")
     suspend fun getAllUserProfiles(): Response<GetAllUserProfilesResponse>
+
+    @GET("/children_patient/{user_patient_id}")
+    suspend fun getChildrenPatientByUserPatientId(
+        @Path("user_patient_id") userPatientId: Int
+    ): Response<GetChildrenPatientByUserPatientIdResponse>
 
     @POST("register")
     suspend fun register(
