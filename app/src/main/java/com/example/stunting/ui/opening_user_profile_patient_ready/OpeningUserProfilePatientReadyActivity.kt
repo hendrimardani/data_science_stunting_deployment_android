@@ -13,6 +13,7 @@ import com.example.stunting.R
 import com.example.stunting.databinding.ActivityOpeningUserProfilePatientReadyBinding
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -56,6 +57,7 @@ class OpeningUserProfilePatientReadyActivity : AppCompatActivity() {
             val intent = Intent(this@OpeningUserProfilePatientReadyActivity, NavDrawerMainActivityPatient::class.java)
             intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
             intent.putExtra(EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userPatientId)
+            intent.putExtra(EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, true)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@OpeningUserProfilePatientReadyActivity).toBundle())
             finish()

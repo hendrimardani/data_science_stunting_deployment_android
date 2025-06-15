@@ -101,11 +101,11 @@ class BumilPatientActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayDataKunjunganInBarChart(data: List<MonthlyTransactionCount>) {
+    private fun displayDataKunjunganInBarChart(monthlyTransactionCountList: List<MonthlyTransactionCount>) {
         val barEntries = ArrayList<BarEntry>()
         val xAxisLabels = ArrayList<String>()
 
-        data.forEachIndexed { index, monthlyCount ->
+        monthlyTransactionCountList.forEachIndexed { index, monthlyCount ->
             barEntries.add(BarEntry(index.toFloat(), monthlyCount.count.toFloat()))
             val monthLabel = mapMonth(monthlyCount.month)
             val yearLabel = "'${monthlyCount.year.takeLast(2)}"
@@ -131,7 +131,7 @@ class BumilPatientActivity : AppCompatActivity() {
 
         binding.barChart.isDragEnabled = true // Aktifkan geser horizontal
         binding.barChart.setVisibleXRangeMaximum(12f) // Tampilkan maksimal 12 bar sekaligus
-        binding.barChart.moveViewToX(data.size.toFloat()) // Mulai dari data paling kanan (terbaru)
+        binding.barChart.moveViewToX(monthlyTransactionCountList.size.toFloat()) // Mulai dari data paling kanan (terbaru)
 
         binding.barChart.animateY(1000)
         binding.barChart.invalidate()

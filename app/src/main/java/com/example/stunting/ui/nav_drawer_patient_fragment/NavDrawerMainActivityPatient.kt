@@ -3,25 +3,25 @@ package com.example.stunting.ui.nav_drawer_patient_fragment
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.viewModels
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.example.stunting.R
@@ -33,7 +33,11 @@ import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
+import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
+
 
 class NavDrawerMainActivityPatient : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -42,6 +46,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var userPatientId: Int? = null
+    private var getExtraFragment: String? = null
+    private var isTaptTargetViewActived: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         binding = ActivityNavDrawerMainPatientBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarNavDrawerMainActivityPatient.toolbar)
+        setSupportActionBar(binding.appBarNavDrawerMainActivityPatient.toolbarPatient)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -65,6 +71,12 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         userPatientId = intent?.getIntExtra(EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
+        getExtraFragment = intent.getStringExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT)
+        isTaptTargetViewActived = intent?.getBooleanExtra(EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, false)
+
+        if (isTaptTargetViewActived!!) {
+            isTapTargetViewActived()
+        }
 
         // Ubah warna teks logout
         val menu = navView.menu
@@ -80,9 +92,25 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         getMenuNavigationView()
     }
 
-    private fun getDataExtra() {
-        val getExtraFragment = intent.getStringExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT)
+    private fun isTapTargetViewActived() {
+        TapTargetView.showFor(this,
+            TapTarget.forToolbarNavigationIcon(binding.appBarNavDrawerMainActivityPatient.toolbarPatient, "Navigation Drawer", "Daftar menu yang tersedia seperti profile, pengaturan.")
+                .outerCircleColor(R.color.bluePrimary)
+                .targetCircleColor(R.color.white)
+                .titleTextSize(20)
+                .textTypeface(Typeface.DEFAULT_BOLD)
+                .tintTarget(true)
+                .descriptionTextSize(15)
+                .cancelable(true),
+            object : TapTargetView.Listener() {
+                override fun onTargetClick(view: TapTargetView) {
+                    super.onTargetClick(view)
+                }
+            }
+        )
+    }
 
+    private fun getDataExtra() {
         if (getExtraFragment == "OpeningUserProfilePatientReadyActivity") {
             userPatientId = intent.getIntExtra(
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
@@ -271,6 +299,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 
     companion object {
         private val TAG = NavDrawerMainActivityPatient::class.java.simpleName
+        const val EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_tap_target_view_actived_to_nav_drawer_main_activity_patient"
         const val EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_activity_to_nav_drawer_main_activity_patient"
         const val EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_patient_id_to_nav_drawer_main_activity_patient"
         const val EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT = "extra_user_model_to_nav_drawer_main_activity_patient"

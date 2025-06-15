@@ -879,7 +879,6 @@ class ChattingRepository(
     suspend fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int): ResultState<List<DataChildrenPatientByUserPatientIdItem?>> {
         return try {
             val response = apiService.getChildrenPatientByUserPatientId(userPatientId)
-            Log.d(TAG, "getChildrenPatientByUserPatientIdFromApi : ${response}")
             if (response.isSuccessful) {
                 val data = response.body()?.dataChildrenPatientByUserPatientId ?: emptyList()
                 ResultState.Success(data)

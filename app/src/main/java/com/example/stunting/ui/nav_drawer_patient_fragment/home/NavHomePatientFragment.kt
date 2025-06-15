@@ -1,24 +1,17 @@
 package com.example.stunting.ui.nav_drawer_patient_fragment.home
 
 import android.content.Intent
-import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
-import com.example.stunting.ResultState
 import com.example.stunting.databinding.NavFragmentHomePatientBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
-import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.anak_patient.AnakPatientActivity
 import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_PATIENT_ACTIVITY
 import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_ANAK_PATIENT_ACTIVITY

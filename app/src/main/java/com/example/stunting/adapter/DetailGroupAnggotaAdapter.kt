@@ -49,7 +49,7 @@ class DetailGroupAnggotaAdapter: ListAdapter<UserGroupRelation, DetailGroupAnggo
     }
 
     companion object {
-        private val TAG = ItemTambahGroupAdapterBinding::class.java.simpleName
+        private val TAG = DetailGroupAnggotaAdapter::class.java.simpleName
         val DIFF_CALLBACK: DiffUtil.ItemCallback<UserGroupRelation> =
             object : DiffUtil.ItemCallback<UserGroupRelation>() {
                 override fun areItemsTheSame(oldItem: UserGroupRelation, newItem: UserGroupRelation): Boolean {
