@@ -3,6 +3,7 @@ package com.example.stunting.datastore.chatting
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.room.ColumnInfo
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
@@ -686,6 +687,9 @@ class ChattingRepository(
                 PregnantMomServiceEntity(
                     id = item?.id,
                     pemeriksaanId = item?.pemeriksaanId,
+                    hariPertamaHaidTerakhir = item?.hariPertamaHaidTerakhir,
+                    tglPerkiraanLahir = item?.tglPerkiraanLahir,
+                    umurKehamilan = item?.umurKehamilan,
                     statusGiziKesehatan = item?.statusGiziKesehatan,
                     createdAt = item?.createdAt,
                     updatedAt = item?.updatedAt
@@ -963,6 +967,9 @@ class ChattingRepository(
 
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+
+    fun getChecksRelationByUserIdCategoryServiceId(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>> =
+        chattingDatabase.checksDao().getChecksRelationByUserIdCategoryServiceId(userId, categoryServiceId)
 
     fun getUserProfilePatientByNamaBumil(namaBumil: String): LiveData<UserProfilePatientEntity> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientByNamaBumil(namaBumil)

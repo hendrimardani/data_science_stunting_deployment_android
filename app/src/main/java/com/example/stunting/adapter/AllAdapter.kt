@@ -9,9 +9,10 @@ import com.example.stunting.database.no_api.bumil.BumilEntity
 import com.example.stunting.database.no_api.calon_pengantin.CalonPengantinEntity
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriEntity
 import com.example.stunting.R
+import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.databinding.ItemAllAdapterBinding
 
-class BumilAdapter(val items: ArrayList<BumilEntity>) : RecyclerView.Adapter<BumilAdapter.ViewHolder>() {
+class BumilAdapter(val items: List<ChecksRelation>) : RecyclerView.Adapter<BumilAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemAllAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         val llItem = binding.llItem
@@ -31,10 +32,11 @@ class BumilAdapter(val items: ArrayList<BumilEntity>) : RecyclerView.Adapter<Bum
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-
-        holder.tgl.text = item.tanggal
-        holder.nik.text = item.nikBumil
-        holder.nama.text = item.namaBumil
+        val userProfilePatientEntity = item.userProfilePatientEntity
+        val checkEntity = item.checksEntity
+        holder.tgl.text = checkEntity.tglPemeriksaan
+        holder.nik.text = userProfilePatientEntity.nikBumil
+        holder.nama.text = userProfilePatientEntity.namaBumil
 
         // Inside the RecyclerView Adapter's onBindViewHolder method
         val context = holder.itemView.context

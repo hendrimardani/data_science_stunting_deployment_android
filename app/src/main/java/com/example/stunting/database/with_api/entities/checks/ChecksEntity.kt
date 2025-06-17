@@ -58,9 +58,9 @@ data class ChecksEntity(
 )
 
 data class ChecksRelation(
-    // Relasi dari services ke checks
-    @Embedded(prefix = "cs_") val childServiceEntity: ChildServiceEntity,
-    @Embedded(prefix = "pms_") val pregnantMomServiceEntity: PregnantMomServiceEntity,
+    // Relasi dari services ke checks di atur ke nullable supaya tidak error
+    @Embedded(prefix = "cs_") val childServiceEntity: ChildServiceEntity?,
+    @Embedded(prefix = "pms_") val pregnantMomServiceEntity: PregnantMomServiceEntity?,
     // Tidak ada relasi di entitas checks, hanya memanggil entitas branch
     @Embedded(prefix = "b_") val branchEntity: BranchEntity,
     @Embedded(prefix = "up_") val userProfileEntity: UserProfileEntity,

@@ -30,7 +30,7 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.BumilAdapter
 import com.example.stunting.database.no_api.bumil.BumilDao
-import com.example.stunting.database.no_api.bumil.BumilEntity
+import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
@@ -40,7 +40,6 @@ import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACT
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.Functions.calculateAge
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
-import com.example.stunting.utils.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.Functions.linkToDirectory
 import com.example.stunting.utils.Functions.setCalendarTglLahir
 import com.example.stunting.utils.Functions.showCustomeInfoDialog
@@ -115,6 +114,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnSubmitBumil.setOnClickListener(this)
         binding.btnTampilDataBumil.setOnClickListener(this)
 
+        getChecksFromApi()
         getUserProfilePatient()
         setTglLahirBumil()
         setInputTextTanggalPerkiraanLahir()
@@ -401,24 +401,57 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun getChecksFromApi() {
+        viewModel.getChecksFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        viewModel.getPregnantMomServiceFromApi()
+                        getChecksRelationByUserIdCategoryServiceId(userId!!)
+                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
     private fun addPregnantMomService(
         catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String, tglPerkiraanLahir: String,
         umurKehamilan: String, statusGiziKesehatan: String
     ) {
+        val progressBar = SweetAlertDialog(this@BumilActivity, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
         viewModel.addPregnantMomServiceByUserId(
             userId!!, categoriServiceId!!, catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan
         ).observe(this) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultState.Loading -> { }
+                    is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
+                        progressBar.dismiss()
 //                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.error}")
                     }
                     is ResultState.Success -> {
+                        progressBar.dismiss()
                         toastInfo(
                             this@BumilActivity, getString(R.string.title_saved_data),
                             getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
                         )
+                        getChecksFromApi()
 //                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
@@ -432,55 +465,28 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
-    private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
-        if (bumilList.isNotEmpty()) {
-            val allAdapter = BumilAdapter(bumilList)
-            // Count item list
-            countItem = bumilList.size
-            bindingBumilBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
-            bindingBumilBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
-            bindingBumilBottomSheetDialog.rvBottomSheet.adapter = allAdapter
-            // To scrolling automatic when data entered
-            bindingBumilBottomSheetDialog.rvBottomSheet.smoothScrollToPosition(countItem - 1)
-
-            // When input data automatically to last index
-            bindingBumilBottomSheetDialog.rvBottomSheet
-                .layoutManager!!.smoothScrollToPosition(bindingBumilBottomSheetDialog
-                    .rvBottomSheet, null, countItem - 1)
+    private fun getChecksRelationByUserIdCategoryServiceId(userId: Int) {
+        viewModel.getChecksRelationByUserIdCategoryServiceId(userId, categoriServiceId!!).observe(this) { checkRelationList ->
+            if (checkRelationList.isNotEmpty()) {
+                setupListOfDataIntoRecyclerView(checkRelationList)
+            }
         }
-//        Log.e("HASILNA", bumilList.toString())
     }
 
-    private fun addRecord(bumilDao: BumilDao, nama: String, nik: String, tglLahir: String,
-                          umur: String, hariPertamaHaidTerakhir: String, tanggalPerkiraanLahir: String,
-                          umurKehamilan: String, statusGiziKesehatan: String) {
+    private fun setupListOfDataIntoRecyclerView(checksRelationList: List<ChecksRelation>) {
+        val allAdapter = BumilAdapter(checksRelationList)
+        // Count item list
+        countItem = checksRelationList.size
+        bindingBumilBottomSheetDialog.tvTotalData.text = getString(R.string.setup_recycler_view_sum_data, countItem.toString())
+        bindingBumilBottomSheetDialog.rvBottomSheet.layoutManager = LinearLayoutManager(this)
+        bindingBumilBottomSheetDialog.rvBottomSheet.adapter = allAdapter
+        // To scrolling automatic when data entered
+        bindingBumilBottomSheetDialog.rvBottomSheet.smoothScrollToPosition(countItem - 1)
 
-        val date = getDateTimePrimaryKey()
-
-        lifecycleScope.launch {
-            bumilDao.insert(
-                BumilEntity(
-                    tanggal = date, namaBumil = nama, nikBumil = nik, tglLahirBumil = tglLahir,
-                    umurBumil = umur, hariPertamaHaidTerakhirBumil = hariPertamaHaidTerakhir,
-                    tanggalPerkiraanLahirBumil = tanggalPerkiraanLahir, umurKehamilanBumil = umurKehamilan,
-                    statusGiziKesehatanBumil = statusGiziKesehatan
-                )
-            )
-        }
-        toastInfo(
-            this@BumilActivity, getString(R.string.title_saved_data),
-            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
-        )
-
-        // Clear the text when data saved !!! (success)
-//        binding.etNamaBumil.text!!.clear()
-        binding.etNikBumil.text!!.clear()
-        binding.etTglLahirBumil.text!!.clear()
-        binding.etUmurBumil.text!!.clear()
-        binding.etTglHariPertamaHaidTerakhirBumil.text!!.clear()
-        binding.etTglPerkiraanLahirBumil.text!!.clear()
-        binding.etUmurKehamilanBumil.text!!.clear()
+        // When input data automatically to last index
+        bindingBumilBottomSheetDialog.rvBottomSheet
+            .layoutManager!!.smoothScrollToPosition(bindingBumilBottomSheetDialog
+                .rvBottomSheet, null, countItem - 1)
     }
 
     private fun setCalendarTglPerkiraanLahir(etTanggal: EditText) {

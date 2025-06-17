@@ -23,6 +23,9 @@ data class PregnantMomServiceEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_pregnant_mom_service") val id: Int? = null,
     @ColumnInfo(name = "pemeriksaan_id") val pemeriksaanId: Int? = null,
+    @ColumnInfo(name = "hari_pertama_haid_terakhir") val hariPertamaHaidTerakhir: String? = null,
+    @ColumnInfo(name = "tgl_perkiraan_lahir") val tglPerkiraanLahir: String? = null,
+    @ColumnInfo(name = "umur_kehamilan") val umurKehamilan: String? = null,
     @ColumnInfo(name = "status_gizi_kesehatan") val statusGiziKesehatan: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null

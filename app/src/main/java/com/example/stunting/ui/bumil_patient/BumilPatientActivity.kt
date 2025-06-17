@@ -235,7 +235,7 @@ class BumilPatientActivity : AppCompatActivity() {
             listOf(
                 Cell(rowIndex.toString(), userProfilePatientEntity.namaBumil),
                 Cell(rowIndex.toString(), userProfilePatientEntity.nikBumil),
-                Cell(rowIndex.toString(), pregnantMomServiceEntity.statusGiziKesehatan),
+                Cell(rowIndex.toString(), pregnantMomServiceEntity?.statusGiziKesehatan),
                 Cell(rowIndex.toString(), userProfileEntity.nama),
                 Cell(rowIndex.toString(), branchEntity.namaCabang),
                 Cell(rowIndex.toString(), checksEntity.catatan),
