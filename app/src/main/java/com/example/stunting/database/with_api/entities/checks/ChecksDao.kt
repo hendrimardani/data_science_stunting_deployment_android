@@ -405,5 +405,5 @@ interface ChecksDao {
     fun getChecksRelationByUserIdCategoryServiceId(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertChecks(checks: List<ChecksEntity>)
+    suspend fun insertChecks(checksList: List<ChecksEntity>)
 }

@@ -30,7 +30,9 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.BumilAdapter
 import com.example.stunting.database.no_api.bumil.BumilDao
+import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksRelation
+import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
 import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
@@ -46,6 +48,7 @@ import com.example.stunting.utils.Functions.showCustomeInfoDialog
 import com.example.stunting.utils.Functions.toastInfo
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
@@ -92,7 +95,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         userId = intent?.getIntExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, 0)!!
         categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 0)
         setToolBar()
@@ -115,6 +117,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnTampilDataBumil.setOnClickListener(this)
 
         getChecksFromApi()
+        getChecksRelationByUserIdCategoryServiceId(userId!!)
         getUserProfilePatient()
         setTglLahirBumil()
         setInputTextTanggalPerkiraanLahir()
@@ -407,12 +410,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 when (result) {
                     is ResultState.Loading -> { }
                     is ResultState.Error -> {
-                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi : ${result.error}")
+//                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi error : ${result.error}")
                     }
                     is ResultState.Success -> {
                         viewModel.getPregnantMomServiceFromApi()
-                        getChecksRelationByUserIdCategoryServiceId(userId!!)
-                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi : ${result.data}")
+//                        Log.d(TAG, "onBumilActivity from LoginFragment getChecksFromApi success : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -443,7 +445,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.error}")
+//                        Log.d(TAG, "onBumilActivity addPregnantMomService error: ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
@@ -451,8 +453,42 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                             this@BumilActivity, getString(R.string.title_saved_data),
                             getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
                         )
-                        getChecksFromApi()
-//                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.data}")
+//                        Log.d(TAG, "onBumilActivity addPregnantMomService success : ${result.data}")
+                        val checksEntity = result.data?.dataPregnantMomService?.checks
+                        val pregnantMomServiceEntity = result.data?.dataPregnantMomService
+
+                        val checksEntityList = ArrayList<ChecksEntity>()
+                        val pregnantMomServiceEntityList = ArrayList<PregnantMomServiceEntity>()
+
+                        checksEntityList.add(
+                            ChecksEntity(
+                                id = checksEntity?.id ?: 0,
+                                userId = checksEntity?.userId ?: 0,
+                                userPatientId = checksEntity?.userPatientId ?: 0,
+                                childrenPatientId = checksEntity?.childrenPatientId ?: 0,
+                                categoryServiceId = checksEntity?.categoryServiceId ?: 0,
+                                tglPemeriksaan = checksEntity?.tglPemeriksaan,
+                                catatan = checksEntity?.catatan,
+                                createdAt = checksEntity?.createdAt,
+                                updatedAt = checksEntity?.updatedAt
+                            )
+                        )
+                        pregnantMomServiceEntityList.add(
+                            PregnantMomServiceEntity(
+                                id = pregnantMomServiceEntity?.id,
+                                pemeriksaanId = pregnantMomServiceEntity?.pemeriksaanId,
+                                hariPertamaHaidTerakhir = pregnantMomServiceEntity?.hariPertamaHaidTerakhir,
+                                tglPerkiraanLahir = pregnantMomServiceEntity?.tglPerkiraanLahir,
+                                umurKehamilan = pregnantMomServiceEntity?.umurKehamilan,
+                                statusGiziKesehatan = pregnantMomServiceEntity?.statusGiziKesehatan,
+                                createdAt = pregnantMomServiceEntity?.createdAt,
+                                updatedAt = pregnantMomServiceEntity?.updatedAt
+                            )
+                        )
+                        lifecycleScope.launch {
+                            viewModel.insertChecks(checksEntityList)
+                            viewModel.insertPregnantMomServices(pregnantMomServiceEntityList)
+                        }
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -487,6 +523,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         bindingBumilBottomSheetDialog.rvBottomSheet
             .layoutManager!!.smoothScrollToPosition(bindingBumilBottomSheetDialog
                 .rvBottomSheet, null, countItem - 1)
+
     }
 
     private fun setCalendarTglPerkiraanLahir(etTanggal: EditText) {

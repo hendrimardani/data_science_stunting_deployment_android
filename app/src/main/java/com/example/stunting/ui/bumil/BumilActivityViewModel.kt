@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.checks.ChecksEntity
+import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
 import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
 import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
@@ -27,6 +29,12 @@ class BumilActivityViewModel(private val chattingRepository: ChattingRepository)
         getUserProfilePatientsFromApi()
         getChecksFromApi()
     }
+
+    suspend fun insertPregnantMomServices(pregnantMomServiceList: List<PregnantMomServiceEntity>) =
+        chattingRepository.insertPregnantMomServices(pregnantMomServiceList)
+
+    suspend fun insertChecks(checksList: List<ChecksEntity>) =
+        chattingRepository.insertChecks(checksList)
 
     fun getPregnantMomServiceFromApi() {
         viewModelScope.launch {

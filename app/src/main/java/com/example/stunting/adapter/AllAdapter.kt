@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stunting.database.no_api.bumil.BumilEntity
 import com.example.stunting.database.no_api.calon_pengantin.CalonPengantinEntity
 import com.example.stunting.database.no_api.remaja_putri.RemajaPutriEntity
 import com.example.stunting.R

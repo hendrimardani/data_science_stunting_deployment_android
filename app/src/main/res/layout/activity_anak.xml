@@ -74,35 +74,19 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_name_anak"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/til_nama_anak"
+                app:layout_constraintEnd_toStartOf="@id/s_nama_anak"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_anak"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <Spinner
+                android:id="@+id/s_nama_anak"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:hint="@string/hint_nama_anak"
-                android:textColorHint="?attr/colorTextHint"
-                app:hintTextColor="?attr/colorSecondary"
-                app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/red"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_spinner"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nama_anak"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_nama_anak"
-                app:layout_constraintTop_toTopOf="@id/iv_nama_anak"
-                app:shapeAppearance="@style/Rounded">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nama_anak"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toTopOf="@id/iv_nama_anak" />
 
             <ImageView
                 android:id="@+id/iv_jk_anak"
@@ -124,9 +108,9 @@
                 android:textColorHint="?attr/colorTextHint"
                 app:hintTextColor="?attr/colorSecondary"
                 app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_jk_anak"
                 app:layout_constraintStart_toEndOf="@id/iv_jk_anak"
                 app:layout_constraintTop_toTopOf="@id/iv_jk_anak"
@@ -138,6 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
+                    android:enabled="false"
                     android:textColor="?attr/colorText" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,36 +132,20 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_nik"
-                app:layout_constraintEnd_toStartOf="@id/til_nik_anak"
+                app:layout_constraintEnd_toStartOf="@id/s_nik_anak"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_jk_anak" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nik_anak"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <Spinner
+                android:id="@+id/s_nik_anak"
                 android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:hint="@string/hint_nik"
-                android:textColorHint="?attr/colorTextHint"
-                app:hintTextColor="?attr/colorSecondary"
-                app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/red"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_spinner"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nik_anak"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_nik_anak"
-                app:layout_constraintTop_toTopOf="@id/iv_nik_anak"
-                app:shapeAppearance="@style/Rounded">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nik_anak"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toTopOf="@id/iv_nik_anak" />
 
             <ImageView
                 android:id="@+id/iv_tgl_lahir_anak"
@@ -198,9 +167,9 @@
                 android:textColorHint="?attr/colorTextHint"
                 app:hintTextColor="?attr/colorSecondary"
                 app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_anak"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_tgl_lahir_anak"
@@ -217,6 +186,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:textColor="?attr/colorText"
+                    android:enabled="false"
                     android:inputType="datetime" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -240,9 +210,9 @@
                 android:textColorHint="?attr/colorTextHint"
                 app:hintTextColor="?attr/colorSecondary"
                 app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="0dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_umur_anak"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_umur_anak"
@@ -296,17 +266,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
-                android:id="@+id/iv_nama_ortu_anak"
+                android:id="@+id/iv_nama_bumil"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_orang_tua"
-                app:layout_constraintEnd_toStartOf="@id/til_nama_ortu_anak"
+                app:layout_constraintEnd_toStartOf="@id/til_nama_bumil"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_tinggi_anak" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_ortu_anak"
+                android:id="@+id/til_nama_bumil"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -318,10 +288,10 @@
                 app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
-                app:layout_constraintBottom_toBottomOf="@id/iv_nama_ortu_anak"
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_nama_ortu_anak"
-                app:layout_constraintTop_toTopOf="@id/iv_nama_ortu_anak"
+                app:layout_constraintStart_toEndOf="@id/iv_nama_bumil"
+                app:layout_constraintTop_toTopOf="@id/iv_nama_bumil"
                 app:shapeAppearance="@style/Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -333,18 +303,18 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                    android:id="@+id/btn_submit_anak"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                    app:strokeColor="@color/blueSecond"
-                    app:icon="@drawable/ic_send_to_mobile_24px"
-                    android:text="@string/kirim"
-                    android:paddingHorizontal="30dp"
-                    app:layout_constraintTop_toBottomOf="@id/iv_nama_ortu_anak"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_anak" />
+                android:id="@+id/btn_submit_anak"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                app:strokeColor="@color/blueSecond"
+                app:icon="@drawable/ic_send_to_mobile_24px"
+                android:text="@string/kirim"
+                android:paddingHorizontal="30dp"
+                app:layout_constraintTop_toBottomOf="@id/iv_nama_bumil"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_anak" />
 
             <Button
                 android:id="@+id/btn_tampil_data_anak"

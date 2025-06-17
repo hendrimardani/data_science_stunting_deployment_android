@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface BumilDao {
 
     @Insert
-    suspend fun insert(bumilEntity: BumilEntity)
+    suspend fun insertBumil(bumilEntity: BumilEntity)
 
     @Query("DELETE FROM `bumil-table`")
     suspend fun deleteAll()

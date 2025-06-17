@@ -586,6 +586,9 @@ class ChattingRepository(
         }
     }
 
+    suspend fun insertPregnantMomServices(pregnantMomServicesList: List<PregnantMomServiceEntity>) =
+        chattingDatabase.pregnantMomServiceDao().insertPregnantMomServices(pregnantMomServicesList)
+
     suspend fun addPregnantMomServiceByUserId(
         userId: Int, categoryServiceId: Int, catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String,
         tglPerkiraanLahir: String, umurKehamilan: String, statusGiziKesehatan: String
@@ -705,6 +708,9 @@ class ChattingRepository(
 
     fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
         chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId, categoryServiceId, searchQuery)
+
+    suspend fun insertChecks(checksList: List<ChecksEntity>) =
+        chattingDatabase.checksDao().insertChecks(checksList)
 
     suspend fun getChecksFromApi(): ResultState<List<DataChecksItem?>> {
         return try {

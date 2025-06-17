@@ -3,6 +3,7 @@ package com.example.stunting.ui.anak
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
+import com.example.stunting.ResultState
 import com.example.stunting.adapter.AnakAdapter
 import com.example.stunting.database.no_api.DatabaseApp
 import com.example.stunting.database.no_api.anak.AnakDao
@@ -34,6 +36,8 @@ import com.example.stunting.utils.Functions.setCalendarTglLahir
 import com.example.stunting.utils.Functions.showCustomeInfoDialog
 import com.example.stunting.utils.Functions.toastInfo
 import com.example.stunting.ml.ModelRegularizerCategorical
+import com.example.stunting.ui.MainActivity
+import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
@@ -60,6 +64,8 @@ class AnakActivity : AppCompatActivity() {
     private var _bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding? = null
     private val bindingAnakBottomSheetDialog get() = _bindingAnakBottomSheetDialog!!
 
+    private var userId: Int? = null
+    private var categoriServiceId: Int? = null
     var countItem = 0
     var classification = "NORMAL"
     var jkOutput = "Laki-laki"
@@ -74,7 +80,8 @@ class AnakActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Toolbar
+        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_ANAK_ACTIVITY, 0)!!
+        categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY, 0)
         setToolBar()
 
         binding.collapsingToolbarLayout
@@ -86,9 +93,6 @@ class AnakActivity : AppCompatActivity() {
         _bindingAnakBottomSheetDialog = DialogBottomSheetAnakBinding.inflate(layoutInflater)
         bindingAnakBottomSheetDialog.tvDataAnak.text = getString(R.string.list_data_anak)
 
-        // Call database
-        _anakDao = (application as DatabaseApp).dbApp.anakDao()
-
         // Set caledar and update in view result
         setCalendarTglLahir(binding.etTglLahirAnak)
 
@@ -97,37 +101,37 @@ class AnakActivity : AppCompatActivity() {
         }
 
         binding.btnSubmitAnak.setOnClickListener {
-            val nama = binding.etNamaAnak.text.toString()
-            val jk = binding.etJkAnak.text.toString()
-            val nik = binding.etNikAnak.text.toString()
-            val tglLahir = binding.etTglLahirAnak.text.toString()
-            val umur = binding.etUmurAnak.text.toString()
-            val tinggi = binding.etTinggiAnak.text.toString()
-            val namaOrtu = binding.etNamaOrtuAnak.text.toString()
-
-            // Check for rename 0 for male and 1 for female
-            if (jk == "0") jkOutput = "Laki-laki" else jkOutput = "Perempuan"
-
-            if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
-                umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() && namaOrtu.isNotEmpty()) {
-
-                // Checking if there is no contains 0 (laki-laki) or 1 (perempuan)
-                if (jk.contains("0") or jk.contains("1")) {
-                    // Get data for predictions
-                    val umurPred = umur.toFloat()
-                    val jkPred = jk.toFloat()
-                    val tinggiPred = tinggi.toFloat()
-
-                    // Prediction
-                    prediction(anakDao, nama, jk, nik, tglLahir, namaOrtu, umur, tinggi, umurPred, jkPred, tinggiPred)
-                } else toastInfo(
-                    this@AnakActivity, getString(R.string.title_code_gender_not_valid),
-                    getString(R.string.description_code_gender_not_valid), MotionToastStyle.ERROR
-                )
-            } else toastInfo(
-                this@AnakActivity, getString(R.string.title_input_failed),
-                getString(R.string.description_input_failed), MotionToastStyle.ERROR
-            )
+//            val nama = binding.etNamaAnak.text.toString()
+//            val jk = binding.etJkAnak.text.toString()
+//            val nik = binding.etNikAnak.text.toString()
+//            val tglLahir = binding.etTglLahirAnak.text.toString()
+//            val umur = binding.etUmurAnak.text.toString()
+//            val tinggi = binding.etTinggiAnak.text.toString()
+//            val namaOrtu = binding.etNamaOrtuAnak.text.toString()
+//
+//            // Check for rename 0 for male and 1 for female
+//            if (jk == "0") jkOutput = "Laki-laki" else jkOutput = "Perempuan"
+//
+//            if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+//                umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() && namaOrtu.isNotEmpty()) {
+//
+//                // Checking if there is no contains 0 (laki-laki) or 1 (perempuan)
+//                if (jk.contains("0") or jk.contains("1")) {
+//                    // Get data for predictions
+//                    val umurPred = umur.toFloat()
+//                    val jkPred = jk.toFloat()
+//                    val tinggiPred = tinggi.toFloat()
+//
+//                    // Prediction
+//                    prediction(anakDao, nama, jk, nik, tglLahir, namaOrtu, umur, tinggi, umurPred, jkPred, tinggiPred)
+//                } else toastInfo(
+//                    this@AnakActivity, getString(R.string.title_code_gender_not_valid),
+//                    getString(R.string.description_code_gender_not_valid), MotionToastStyle.ERROR
+//                )
+//            } else toastInfo(
+//                this@AnakActivity, getString(R.string.title_input_failed),
+//                getString(R.string.description_input_failed), MotionToastStyle.ERROR
+//            )
         }
 
         binding.btnTampilDataAnak.setOnClickListener {
@@ -481,8 +485,8 @@ class AnakActivity : AppCompatActivity() {
         )
 
         // Clear the text when data saved !!! (success)
-        binding.etNamaAnak.text!!.clear()
-        binding.etNikAnak.text!!.clear()
+//        binding.etNamaAnak.text!!.clear()
+//        binding.etNikAnak.text!!.clear()
         binding.etTglLahirAnak.text!!.clear()
         binding.etUmurAnak.text!!.clear()
         binding.etJkAnak.text!!.clear()
@@ -513,6 +517,8 @@ class AnakActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val EXTRA_USER_ID_TO_ANAK_ACTIVITY = "extra_user_id_to_anak_activity"
+        const val EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY = "extra_category_service_id_to_anak_activity"
         private const val NAME = "anak_data_"
     }
 }
