@@ -3,31 +3,41 @@ package com.example.stunting.ui.bumil
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
+import com.example.stunting.ResultState
 import com.example.stunting.adapter.BumilAdapter
 import com.example.stunting.database.no_api.bumil.BumilDao
 import com.example.stunting.database.no_api.bumil.BumilEntity
-import com.example.stunting.database.no_api.DatabaseApp
 import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
+import com.example.stunting.ui.MainActivity
+import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.Functions.calculateAge
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
 import com.example.stunting.utils.Functions.getDateTimePrimaryKey
@@ -53,8 +63,10 @@ import kotlin.math.abs
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityBumilBinding? = null
     private val binding get() = _binding!!
-    private var _bumilDao: BumilDao? = null
-    private val bumilDao get() = _bumilDao!!
+    private val viewModel by viewModels<BumilActivityViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     private var _bindingBumilBottomSheetDialog: DialogBottomSheetAllBinding? = null
     private val bindingBumilBottomSheetDialog get() = _bindingBumilBottomSheetDialog!!
     private var _cal: Calendar? = null
@@ -64,8 +76,12 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private var _dataSetListenerTglPerkiraanLahir: DatePickerDialog.OnDateSetListener? = null
     private val dataSetListenerTglPerkiraanLahir get() = _dataSetListenerTglPerkiraanLahir!!
 
-    var countItem = 0
-    var statusGiziRadioButton = "YA"
+    private var userId: Int? = null
+    private var categoriServiceId: Int? = null
+    private var catatan: String? = null
+    private var countItem = 0
+    private var statusGiziRadioButton = "YA"
+    private var namaBumil = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,13 +93,14 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, 0)!!
+        categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 0)
         setToolBar()
         collapsedHandlerToolbar()
 
         _bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
-
-        _bumilDao = (application as DatabaseApp).dbApp.bumilDao()
 
         setCalendarTglLahir(binding.etTglLahirBumil)
         setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
@@ -98,7 +115,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnSubmitBumil.setOnClickListener(this)
         binding.btnTampilDataBumil.setOnClickListener(this)
 
-        getAll(bumilDao)
+        getUserProfilePatient()
         setTglLahirBumil()
         setInputTextTanggalPerkiraanLahir()
         setInputTextUmurKehamilan()
@@ -257,25 +274,114 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun getUserProfilePatientByNamaBumil(namaBumil: String) {
+        viewModel.getUserProfilePatientByNamaBumil(namaBumil).observe(this) { userProfilePatient ->
+            binding.etNikBumil.setText(userProfilePatient.nikBumil)
+            binding.etTglLahirBumil.setText(convertDateFormat(userProfilePatient.tglLahirBumil!!))
+            binding.etUmurBumil.setText(userProfilePatient.umurBumil)
+        }
+    }
+
+    private fun convertDateFormat(dateFormat: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        // hasil: 2025/06/17
+        val outputFormat = SimpleDateFormat("yyyy/MM/dd", Locale("id"))
+        val date = inputFormat.parse(dateFormat)
+        val formattedDate = outputFormat.format(date)
+        return formattedDate
+    }
+
+    private fun getUserProfilePatient() {
+        val progressBar = SweetAlertDialog(this@BumilActivity, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserProfilePatientFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onBumilActivity getUserProfilePatient : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        spinnerNamaBumil()
+                        progressBar.dismiss()
+//                        Log.d(TAG, "onBumilActivity getUserProfilePatient : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@BumilActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun spinnerNamaBumil() {
+        val items = mutableListOf("Nama Bumil")
+
+        viewModel.getUserProfilePatientsFromLocal().observe(this) { userProfilePatientsList ->
+            userProfilePatientsList.forEach { item ->
+                items.add(item.namaBumil.toString())
+            }
+        }
+
+        val adapter = object: ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items) {
+            override fun isEnabled(position: Int): Boolean {
+                // Item di posisi 0 tidak bisa dipilih
+                return position != 0
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view as TextView
+
+                if (position == 0) {
+                    textView.setTextColor(getColor(R.color.buttonDisabledColor))
+                }
+                return view
+            }
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sNamaBumil.adapter = adapter
+
+        binding.sNamaBumil.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position != 0) {
+                    namaBumil = parent?.getItemAtPosition(position).toString()
+                    getUserProfilePatientByNamaBumil(namaBumil)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.et_tgl_lahir_bumil -> getDatePickerDialogTglLahir(this@BumilActivity)
             R.id.et_tgl_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
             R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
             R.id.btn_submit_bumil -> {
-                val nama = binding.etNamaBumil.text.toString()
                 val nik = binding.etNikBumil.text.toString()
                 val tglLahir = binding.etTglLahirBumil.text.toString()
                 val umur = binding.etUmurBumil.text.toString()
                 val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
-                val tanggalPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
+                val tglPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
                 val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
                 val statusGiziKesehatan = statusGiziRadioButton
 
-                if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
-                    umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tanggalPerkiraanLahir.isNotEmpty() &&
+                if (catatan == null) catatan = "Tidak ada"
+
+                if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+                    umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
                     umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
-                    addRecord(bumilDao, nama, nik, tglLahir, umur, hariPertamaHaidTerakhir, tanggalPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+                    addPregnantMomService(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
                 } else {
                     toastInfo(
                         this@BumilActivity, getString(R.string.title_input_failed),
@@ -295,6 +401,38 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun addPregnantMomService(
+        catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String, tglPerkiraanLahir: String,
+        umurKehamilan: String, statusGiziKesehatan: String
+    ) {
+        viewModel.addPregnantMomServiceByUserId(
+            userId!!, categoriServiceId!!, catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan
+        ).observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+//                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        toastInfo(
+                            this@BumilActivity, getString(R.string.title_saved_data),
+                            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
+                        )
+//                        Log.d(TAG, "onBumilActivity addPregnantMomService : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@BumilActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun setupListOfDataIntoRecyclerView(bumilList: ArrayList<BumilEntity>) {
         if (bumilList.isNotEmpty()) {
             val allAdapter = BumilAdapter(bumilList)
@@ -312,15 +450,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     .rvBottomSheet, null, countItem - 1)
         }
 //        Log.e("HASILNA", bumilList.toString())
-    }
-
-    private fun getAll(bumilDao: BumilDao) {
-        lifecycleScope.launch {
-            bumilDao.fetchAllBumil().collect {
-                val list = ArrayList(it)
-                setupListOfDataIntoRecyclerView(list)
-            }
-        }
     }
 
     private fun addRecord(bumilDao: BumilDao, nama: String, nik: String, tglLahir: String,
@@ -345,7 +474,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Clear the text when data saved !!! (success)
-        binding.etNamaBumil.text!!.clear()
+//        binding.etNamaBumil.text!!.clear()
         binding.etNikBumil.text!!.clear()
         binding.etTglLahirBumil.text!!.clear()
         binding.etUmurBumil.text!!.clear()
@@ -452,7 +581,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     this@BumilActivity, getString(R.string.title_export_success),
                     getString(R.string.description_export_success), MotionToastStyle.SUCCESS
                 )
-                exportDatabaseToCSV(bumilDao)
+//                exportDatabaseToCSV(bumilDao)
             }
             exportDialog.dismiss()
             // Goto link directory download
@@ -511,7 +640,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
-            deleteAllDates(bumilDao)
+//            deleteAllDates(bumilDao)
             // We will destroy activity
             finish()
             deleteDialog.dismiss()
@@ -526,13 +655,15 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         super.onDestroy()
         _binding = null
         _cal = null
-        _bumilDao = null
         _bindingBumilBottomSheetDialog = null
         _dataSetListenerTglPerkiraanLahir = null
         _dataSetListenerHariPertamaHaidTerakhir = null
     }
 
     companion object {
+        private val TAG = BumilActivity::class.java.simpleName
+        const val EXTRA_USER_ID_TO_BUMIL_ACTIVITY = "extra_user_id_to_bumil_activity"
+        const val EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY = "extra_category_service_id_to_bumil_activity"
         private const val NAME = "bumil_data_"
     }
 }

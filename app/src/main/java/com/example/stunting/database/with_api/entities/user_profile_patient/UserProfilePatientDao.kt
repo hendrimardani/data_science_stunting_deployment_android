@@ -30,6 +30,9 @@ interface UserProfilePatientDao {
         """)
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation>
 
+    @Query("SELECT * FROM user_profile_patient WHERE nama_bumil = :namaBumil")
+    fun getUserProfilePatientByNamaBumil(namaBumil: String): LiveData<UserProfilePatientEntity>
+
     @Query("SELECT * FROM user_profile_patient ORDER BY id_user_profile_patient ASC")
     fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>>
 

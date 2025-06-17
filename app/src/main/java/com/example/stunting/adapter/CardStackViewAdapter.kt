@@ -13,12 +13,14 @@ import com.example.stunting.databinding.ItemCardStackViewBinding
 import com.example.stunting.resouce_data.Services
 import com.example.stunting.ui.anak.AnakActivity
 import com.example.stunting.ui.bumil.BumilActivity
+import com.example.stunting.ui.bumil.BumilActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY
+import com.example.stunting.ui.bumil.BumilActivity.Companion.EXTRA_USER_ID_TO_BUMIL_ACTIVITY
 import com.example.stunting.ui.layanan_keluarga.LayananKeluargaActivity
 import com.example.stunting.ui.reamaja_putri.RemajaPutriActivity
 
-class CardStackViewAdapter: ListAdapter<Services, CardStackViewAdapter.MyViewHolder>(DIFF_CALLBACK){
+class CardStackViewAdapter(val userId: Int): ListAdapter<Services, CardStackViewAdapter.MyViewHolder>(DIFF_CALLBACK){
 
-    class MyViewHolder(private val binding: ItemCardStackViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(private val binding: ItemCardStackViewBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(services: Services) {
             val name = services.name
@@ -30,6 +32,8 @@ class CardStackViewAdapter: ListAdapter<Services, CardStackViewAdapter.MyViewHol
                 when (name) {
                     "Layanan Ibu Hamil" -> {
                         val intent = Intent(itemView.context, BumilActivity::class.java)
+                        intent.putExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, userId)
+                        intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 1)
                         itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
                     }
                     "Layanan Anak" -> {

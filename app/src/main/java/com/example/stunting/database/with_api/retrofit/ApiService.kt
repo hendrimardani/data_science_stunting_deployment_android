@@ -2,11 +2,13 @@ package com.example.stunting.database.with_api.retrofit
 
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
+import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
@@ -76,11 +78,17 @@ interface ApiService {
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
 
-    @GET("child_services")
-    suspend fun getAllChildServices(): Response<GetAllChildServicesResponse>
-
     @GET("pregnant_mom_services")
     suspend fun getAllPregnantMomServices(): Response<GetAllPregnantMomServicesResponse>
+
+    @POST("pregnant_mom_service/{user_id}")
+    suspend fun addPregnantMomServiceByUserId(
+        @Path("user_id") userId: Int,
+        @Body requestBody: AddingPregnantMomServiceRequestJSON
+    ): Response<AddingPregnantMomServiceResponse>
+
+    @GET("child_services")
+    suspend fun getAllChildServices(): Response<GetAllChildServicesResponse>
 
     @GET("checks")
     suspend fun getAllChecks(): Response<GetAllChecksResponse>

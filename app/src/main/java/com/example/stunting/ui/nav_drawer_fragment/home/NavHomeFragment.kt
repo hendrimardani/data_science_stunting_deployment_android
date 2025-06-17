@@ -43,7 +43,6 @@ class NavHomeFragment : Fragment() {
     private var userId: Int? = null
 
     lateinit var cardStackViewLayoutManager: CardStackLayoutManager
-    private val cardStackViewAdapter = CardStackViewAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,10 +56,11 @@ class NavHomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         userId = arguments?.getInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT)
-//        Log.d(TAG, "onNavHomeFragment id user : ${userId}")
-        setupCardStackView()
+        if (userId != null) {
+            val cardStackViewAdapter = CardStackViewAdapter(userId!!)
+            setupCardStackView(cardStackViewAdapter)
+        }
 
         // bottomSheetCoordinatorLayout
 //        setupBottomSheet()
@@ -73,7 +73,7 @@ class NavHomeFragment : Fragment() {
 //        navigation(userId)
     }
 
-    private fun setupCardStackView() {
+    private fun setupCardStackView(cardStackViewAdapter: CardStackViewAdapter) {
         val services = mapOf(
             "Layanan Ibu Hamil" to R.drawable.ic_bumil,
             "Layanan Anak" to R.drawable.ic_anak,

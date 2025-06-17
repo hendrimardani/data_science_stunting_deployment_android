@@ -318,20 +318,20 @@ class NavDrawerMainActivity : AppCompatActivity() {
         if (getExtraFragment == "LoginFragment") {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
-            sendDataToNavHomeFragment(userId)
+            sendDataToNavHomeFragment(userId!!)
 //            getUserProfileWithUserById(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
-            sendDataToNavHomeFragment(userId)
+            sendDataToNavHomeFragment(userId!!)
 //            getUserProfileWithUserById(userId!!)
         }
     }
 
-    private fun sendDataToNavHomeFragment(userId: Int?) {
+    private fun sendDataToNavHomeFragment(userId: Int) {
         val bundle = Bundle().apply {
-            putInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT, userId!!)
+            putInt(EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT, userId)
         }
         val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity)
         navController.navigate(R.id.nav_home, bundle)

@@ -76,35 +76,19 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/ic_name_bumil"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/til_nama_bumil"
+                app:layout_constraintEnd_toStartOf="@id/s_nama_bumil"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_bumil"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            <Spinner
+                android:id="@+id/s_nama_bumil"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:hint="@string/hint_nama"
-                android:textColorHint="?attr/colorTextHint"
-                app:hintTextColor="?attr/colorSecondary"
-                app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/red"
-                app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal"
+                android:background="@drawable/shape_spinner"
                 app:layout_constraintStart_toEndOf="@id/iv_nama_bumil"
                 app:layout_constraintTop_toTopOf="@id/iv_nama_bumil"
-                app:shapeAppearance="@style/Rounded">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nama_bumil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <ImageView
                 android:id="@+id/iv_nik_bumil"
@@ -140,6 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorText"
+                    android:enabled="false"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,6 +164,7 @@
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:textColor="?attr/colorText"
+                    android:enabled="false"
                     android:inputType="datetime" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,8 +202,8 @@
                     android:id="@+id/et_umur_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:textColor="?attr/colorText"
+                    android:enabled="false"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 

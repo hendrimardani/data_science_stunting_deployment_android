@@ -31,11 +31,13 @@ import com.example.stunting.database.with_api.entities.user_profile_patient.User
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
+import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateGroupByIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfilePatientByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
+import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
@@ -54,6 +56,7 @@ import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResp
 import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
 import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -582,6 +585,40 @@ class ChattingRepository(
         }
     }
 
+    suspend fun addPregnantMomServiceByUserId(
+        userId: Int, categoryServiceId: Int, catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String,
+        tglPerkiraanLahir: String, umurKehamilan: String, statusGiziKesehatan: String
+    ): ResultState<AddingPregnantMomServiceResponse?> {
+        return try {
+            val requestBody = AddingPregnantMomServiceRequestJSON(
+                categoryServiceId, catatan, namaBumil, hariPertamaHaidTerakhir,
+                tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+            val response = apiService.addPregnantMomServiceByUserId(userId, requestBody)
+
+            if (response.isSuccessful) {
+//                Log.e(TAG, "onChattingRepository addPregnantMomService Success ${response.code()} : ${response.body()}")
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBodyJson = response.errorBody()?.string()
+//                    Log.e(TAG, "onChattingRepository addPregnantMomService Error ${response.code()}: $errorBodyJson")
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
+
     fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
         chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId, categoryServiceId, searchQuery)
 
@@ -927,6 +964,9 @@ class ChattingRepository(
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
 
+    fun getUserProfilePatientByNamaBumil(namaBumil: String): LiveData<UserProfilePatientEntity> =
+        chattingDatabase.userProfilePatientDao().getUserProfilePatientByNamaBumil(namaBumil)
+
     fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientsFromLocal()
 
@@ -1225,7 +1265,7 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBodyJson = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBodyJson")
+//                    Log.e(TAG, "onChattingRepository register Error ${response.code()}: $errorBodyJson")
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")
                     ResultState.Error(message)

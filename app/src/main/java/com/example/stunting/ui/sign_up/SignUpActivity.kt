@@ -128,9 +128,7 @@ class SignUpActivity : AppCompatActivity() {
                 namaCabang = parent?.getItemAtPosition(position).toString()
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
         }
     }
 

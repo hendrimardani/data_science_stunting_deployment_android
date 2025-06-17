@@ -7,6 +7,5 @@ data class AddingChildrenPatientByUserPatientIdRequestJSON(
     @SerializedName("nik_anak") val nikAnak: String,
     @SerializedName("jenis_kelamin_anak") val jenisKelaminAnak: String,
     @SerializedName("tgl_lahir_anak") val tglLahirAnak: String,
-    @SerializedName("umur_anak") val umurAnak: String,
-
+    @SerializedName("umur_anak") val umurAnak: String
 )

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
+import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment
+import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment.Companion
 import com.example.stunting.utils.VectorDrawableTagItems
 import com.magicgoop.tagsphere.OnTagTapListener
 import com.magicgoop.tagsphere.item.TagItem
@@ -43,7 +46,9 @@ class NavHomePatientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT)
-        setupTagSphereView()
+        if (userPatientId != null) {
+            setupTagSphereView()
+        }
     }
 
     private fun getVectorDrawable(id: Int): Drawable? = ContextCompat.getDrawable(requireContext(), id)
