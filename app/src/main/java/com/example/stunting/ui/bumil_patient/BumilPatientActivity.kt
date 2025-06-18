@@ -2,14 +2,17 @@ package com.example.stunting.ui.bumil_patient
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +36,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+
 
 class BumilPatientActivity : AppCompatActivity() {
     private var _binding: ActivityBumilPatientBinding? = null
@@ -61,7 +65,6 @@ class BumilPatientActivity : AppCompatActivity() {
         categryServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY, 0)
 
         isConnected()
-        setupSwipeToRefresh()
         getChecksRelationByUserPatientIdCategoryServiceIdWithSearchBumil(userPatientId!!, categryServiceId!!, "")
         getTransactionCountByMonth()
         setupSearch()
@@ -153,13 +156,6 @@ class BumilPatientActivity : AppCompatActivity() {
             "11" -> "Nov"
             "12" -> "Des"
             else -> ""
-        }
-    }
-
-    private fun setupSwipeToRefresh() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            getChecksFromApi()
-            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 

@@ -43,6 +43,7 @@ import kotlin.math.max
 class ChatbotActivity : AppCompatActivity() {
     private var _binding: ActivityChatbotBinding? = null
     private val binding get() = _binding!!
+
     private var _messageDao: MessageChatbotDao? = null
     private val messageDao get() = _messageDao!!
 

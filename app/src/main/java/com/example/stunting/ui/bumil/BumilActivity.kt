@@ -158,33 +158,37 @@ class BumilActivity : AppCompatActivity() {
     }
 
     private fun btnTampilData() {
-        if (countItem != 0) showBottomSheetDialog() else
-            toastInfo(
-                this@BumilActivity, getString(R.string.title_show_data_failed),
-                getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
-            )
+        binding.btnTampilDataBumil.setOnClickListener {
+            if (countItem != 0) showBottomSheetDialog() else
+                toastInfo(
+                    this@BumilActivity, getString(R.string.title_show_data_failed),
+                    getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
+                )
+        }
     }
 
     private fun btnSubmit() {
-        val nik = binding.etNikBumil.text.toString()
-        val tglLahir = binding.etTglLahirBumil.text.toString()
-        val umur = binding.etUmurBumil.text.toString()
-        val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
-        val tglPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
-        val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
-        val statusGiziKesehatan = statusGiziRadioButton
+        binding.btnSubmitBumil.setOnClickListener {
+            val nik = binding.etNikBumil.text.toString()
+            val tglLahir = binding.etTglLahirBumil.text.toString()
+            val umur = binding.etUmurBumil.text.toString()
+            val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
+            val tglPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
+            val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
+            val statusGiziKesehatan = statusGiziRadioButton
 
-        if (catatan == null) catatan = "Tidak ada"
+            if (catatan == null) catatan = "Tidak ada"
 
-        if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
-            umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
-            umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
-            addPregnantMomServiceByUserId(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
-        } else {
-            toastInfo(
-                this@BumilActivity, getString(R.string.title_input_failed),
-                getString(R.string.description_input_failed), MotionToastStyle.ERROR
-            )
+            if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+                umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
+                umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
+                addPregnantMomServiceByUserId(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+            } else {
+                toastInfo(
+                    this@BumilActivity, getString(R.string.title_input_failed),
+                    getString(R.string.description_input_failed), MotionToastStyle.ERROR
+                )
+            }
         }
     }
 

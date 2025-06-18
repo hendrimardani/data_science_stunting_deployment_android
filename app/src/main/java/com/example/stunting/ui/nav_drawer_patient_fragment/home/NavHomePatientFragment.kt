@@ -1,13 +1,16 @@
 package com.example.stunting.ui.nav_drawer_patient_fragment.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,19 +22,24 @@ import com.example.stunting.ui.anak_patient.AnakPatientActivity.Companion.EXTRA_
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
-import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment
-import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment.Companion
+import com.example.stunting.ui.chatbot.ChatbotActivity
 import com.example.stunting.utils.VectorDrawableTagItems
 import com.magicgoop.tagsphere.OnTagTapListener
 import com.magicgoop.tagsphere.item.TagItem
+import com.skydoves.powermenu.MenuAnimation
+import com.skydoves.powermenu.PowerMenu
+import com.skydoves.powermenu.PowerMenuItem
 
 
 class NavHomePatientFragment : Fragment() {
     private var _binding: NavFragmentHomePatientBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var powerMenu: PowerMenu
+
     private var userPatientId: Int? = null
     private var categoryServiceId: Int? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +57,44 @@ class NavHomePatientFragment : Fragment() {
         if (userPatientId != null) {
             setupTagSphereView()
         }
+        setupPowerMenu()
+        binding.fabHome.setOnClickListener { view ->
+            powerMenu.showAsAnchorCenter(view)
+        }
+    }
+
+    private fun handleMenuClick(position: Int, item: PowerMenuItem) {
+        when (item.title) {
+            "Groupchat" -> {
+
+            }
+            "Chatbot" ->  {
+                val intent = Intent(requireActivity(), ChatbotActivity::class.java)
+                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
+            }
+        }
+    }
+
+    private fun setupPowerMenu() {
+        val listMenuItem = listOf(
+            PowerMenuItem("Groupchat", iconRes = R.drawable.ic_people_outline_24),
+            PowerMenuItem("Chatbot", iconRes = R.drawable.ic_child_care_24)
+        )
+        powerMenu = PowerMenu.Builder(requireActivity())
+            .addItemList(listMenuItem)
+            .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+            .setMenuRadius(10f) // sets the corner radius.
+            .setMenuShadow(10f) // sets the shadow.
+            .setTextGravity(Gravity.LEFT)
+            .setSelectedTextColor(Color.WHITE)
+            .setMenuColor(Color.WHITE)
+            .setMenuRadius(30f)
+            .setSelectedMenuColor(ContextCompat.getColor(requireActivity(), R.color.bluePrimary))
+            .setOnMenuItemClickListener { position, item ->
+                handleMenuClick(position, item)
+                powerMenu.dismiss()
+            }
+            .build()
     }
 
     private fun getVectorDrawable(id: Int): Drawable? = ContextCompat.getDrawable(requireContext(), id)

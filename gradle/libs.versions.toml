@@ -41,6 +41,7 @@ swipeRefreshLayoutVersion = "1.1.0"
 mpAndroidChartVersion = "v3.1.0"
 tapTargetViewVersion = "1.15.0"
 cardStackViewVersion = "v2.3.4"
+powerMenuVersion = "2.2.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -83,6 +84,7 @@ androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefre
 com-github-philjay-mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpAndroidChartVersion" }
 com-getkeepsafe-taptargetview = { module ="com.getkeepsafe.taptargetview:taptargetview", version.ref = "tapTargetViewVersion" }
 com-github-yuyakaido-cardStackView = { module = "com.github.yuyakaido:CardStackView", version.ref = "cardStackViewVersion" }
+com-github-skydoves-powermenu = { module = "com.github.skydoves:powermenu", version.ref = "powerMenuVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -549,7 +549,7 @@ class ChattingRepository(
                     ResultState.Unauthorized
                 } else {
                     val errorBodyJson = response.errorBody()?.string()
-                    Log.e(TAG, "onChattingRepository addUserByGroupId Error ${response.code()}: $errorBodyJson")
+//                    Log.e(TAG, "onChattingRepository addUserByGroupId Error ${response.code()}: $errorBodyJson")
                     // Ubah dari JSON string ke JSON
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")

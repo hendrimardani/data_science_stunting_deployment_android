@@ -1,13 +1,18 @@
 package com.example.stunting.ui.nav_drawer_patient_fragment
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -28,13 +33,14 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
 import com.example.stunting.databinding.ActivityNavDrawerMainPatientBinding
+import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT
 import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetView
+import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -45,6 +51,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     private val viewModel by viewModels<NavDrawerMainActivityPatientViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     private var userPatientId: Int? = null
     private var getExtraFragment: String? = null
     private var isTaptTargetViewActived: Boolean? = false
@@ -92,22 +99,92 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         getMenuNavigationView()
     }
 
-    private fun isTapTargetViewActived() {
-        TapTargetView.showFor(this,
-            TapTarget.forToolbarNavigationIcon(binding.appBarNavDrawerMainActivityPatient.toolbarPatient, "Navigation Drawer", "Daftar menu yang tersedia seperti profile, pengaturan.")
-                .outerCircleColor(R.color.bluePrimary)
-                .targetCircleColor(R.color.white)
-                .titleTextSize(20)
-                .textTypeface(Typeface.DEFAULT_BOLD)
-                .tintTarget(true)
-                .descriptionTextSize(15)
-                .cancelable(true),
-            object : TapTargetView.Listener() {
-                override fun onTargetClick(view: TapTargetView) {
-                    super.onTargetClick(view)
-                }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            val toolbar = binding.appBarNavDrawerMainActivityPatient.toolbarPatient
+            // Coba ambil view dari MenuItem
+            val aboutView = toolbar.findViewById<View>(R.id.menu_main_about)
+
+            if (aboutView != null) {
+                val sequence = TapTargetSequence(this)
+                    .targets(
+                        TapTarget.forToolbarNavigationIcon(
+                            toolbar,
+                            "Geser ke kanan atau di tap",
+                            "Daftar menu yang tersedia seperti profil, pengaturan."
+                        )
+                            .outerCircleColor(R.color.bluePrimary)
+                            .targetCircleColor(R.color.white)
+                            .titleTextSize(20)
+                            .descriptionTextSize(15)
+                            .textTypeface(Typeface.DEFAULT_BOLD)
+                            .tintTarget(true)
+                            .cancelable(true),
+
+                        TapTarget.forView(
+                            aboutView,
+                            "Tentang Pembuat Aplikasi",
+                            "Tap untuk melihat informasi tentang aplikasi."
+                        )
+                            .outerCircleColor(R.color.bluePrimary)
+                            .targetCircleColor(R.color.white)
+                            .titleTextSize(20)
+                            .descriptionTextSize(15)
+                            .tintTarget(true)
+                            .cancelable(true)
+                    )
+                    .listener(object : TapTargetSequence.Listener {
+                        override fun onSequenceFinish() { }
+
+                        override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) { }
+
+                        override fun onSequenceCanceled(lastTarget: TapTarget) { }
+                    })
+                sequence.start()
+            } else {
+                Log.e("TapTarget", "View dari menu_main_about tidak ditemukan.")
             }
-        )
+        }
+    }
+
+
+    private fun isTapTargetViewActived() {
+        val sequence = TapTargetSequence(this)
+            .targets(
+                TapTarget.forToolbarNavigationIcon(
+                    binding.appBarNavDrawerMainActivityPatient.toolbarPatient,
+                    "Navigation Drawer",
+                    "Daftar menu yang tersedia seperti profile, pengaturan."
+                )
+                    .outerCircleColor(R.color.bluePrimary)
+                    .targetCircleColor(R.color.white)
+                    .titleTextSize(20)
+                    .descriptionTextSize(15)
+                    .textTypeface(Typeface.DEFAULT_BOLD)
+                    .tintTarget(true)
+                    .cancelable(true),
+
+                TapTarget.forView(
+                    binding.root.findViewById(R.id.menu_main_about),
+                    "Tambah Data",
+                    "Tekan untuk menambahkan data baru ke sistem"
+                )
+                    .outerCircleColor(R.color.bluePrimary)
+                    .targetCircleColor(R.color.white)
+                    .titleTextSize(20)
+                    .descriptionTextSize(15)
+                    .tintTarget(true)
+                    .cancelable(true)
+            )
+            .listener(object : TapTargetSequence.Listener {
+                override fun onSequenceFinish() { }
+
+                override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) { }
+
+                override fun onSequenceCanceled(lastTarget: TapTarget) { }
+            })
+        sequence.start()
     }
 
     private fun getDataExtra() {
@@ -286,15 +363,57 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_nav_drawer_patient, menu)
-        return true
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController =
             findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_main_about -> customDialogAbout()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_about, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun customDialogAbout() {
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomAboutBinding.inflate(layoutInflater)
+
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        customDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogBinding.tvDescription.text = getString(R.string.description_about)
+        dialogBinding.ivLinkedin.setOnClickListener {
+            val url = getString(R.string.description_about_linkedIn)
+            linkToWebBrowser(url)
+        }
+        dialogBinding.ivWa.setOnClickListener {
+            val url = getString(R.string.description_about_wa)
+            linkToWebBrowser(url)
+        }
+        dialogBinding.ivEmail.setOnClickListener {
+            val url = getString(R.string.description_about_email)
+            linkToWebBrowser(url)
+        }
+        dialogBinding.ivIg.setOnClickListener {
+            val url = getString(R.string.description_about_ig)
+            linkToWebBrowser(url)
+        }
+        dialogBinding.tvOk.setOnClickListener { customDialog.dismiss() }
+        customDialog.show()
+    }
+
+    private fun linkToWebBrowser(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
     }
 
     companion object {

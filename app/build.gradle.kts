@@ -49,6 +49,7 @@ android {
 
 dependencies {
     // Ui
+    implementation(libs.com.github.skydoves.powermenu)
     implementation(libs.com.github.yuyakaido.cardStackView)
     implementation(libs.com.getkeepsafe.taptargetview)
     implementation(libs.com.github.philjay.mpandroidchart)
