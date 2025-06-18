@@ -286,7 +286,7 @@ class AnakActivity : AppCompatActivity() {
         var resultConvert = ""
         when (jenisKelamin) {
             "laki-laki" -> resultConvert = "0"
-            "perempuan" -> resultConvert = "0"
+            "perempuan" -> resultConvert = "1"
         }
         return resultConvert
     }
