@@ -103,10 +103,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             val toolbar = binding.appBarNavDrawerMainActivityPatient.toolbarPatient
-            // Coba ambil view dari MenuItem
-            val aboutView = toolbar.findViewById<View>(R.id.menu_main_about)
+            val aboutMenu = toolbar.findViewById<View>(R.id.menu_main_about)
 
-            if (aboutView != null) {
+            if (aboutMenu != null) {
                 val sequence = TapTargetSequence(this)
                     .targets(
                         TapTarget.forToolbarNavigationIcon(
@@ -123,7 +122,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                             .cancelable(true),
 
                         TapTarget.forView(
-                            aboutView,
+                            aboutMenu,
                             "Tentang Pembuat Aplikasi",
                             "Tap untuk melihat informasi tentang aplikasi."
                         )
@@ -143,7 +142,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     })
                 sequence.start()
             } else {
-                Log.e("TapTarget", "View dari menu_main_about tidak ditemukan.")
+//                Log.e("TapTarget", "View dari menu_main_about tidak ditemukan.")
             }
         }
     }
