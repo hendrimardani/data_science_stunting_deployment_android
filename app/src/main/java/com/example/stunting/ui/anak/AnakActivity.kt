@@ -27,17 +27,14 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.AnakAdapter
 import com.example.stunting.database.no_api.anak.AnakDao
-import com.example.stunting.database.no_api.anak.AnakEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.database.with_api.entities.child_service.ChildServiceEntity
-import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
 import com.example.stunting.databinding.ActivityAnakBinding
 import com.example.stunting.databinding.DialogBottomSheetAnakBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
-import com.example.stunting.utils.Functions.getDateTimePrimaryKey
 import com.example.stunting.utils.Functions.linkToDirectory
 import com.example.stunting.utils.Functions.setCalendarTglLahir
 import com.example.stunting.utils.Functions.showCustomeInfoDialog
@@ -46,7 +43,6 @@ import com.example.stunting.ml.ModelRegularizerCategorical
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.DataType
@@ -548,20 +544,15 @@ class AnakActivity : AppCompatActivity() {
 
             if (maxIndex == 0) {
                 classification = getString(R.string.classification_normal)
-                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification)
-                sweetAlertDialog(maxIndex, SweetAlertDialog.SUCCESS_TYPE)
+                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification, maxIndex)
             } else if (maxIndex == 1) {
                 classification = getString(R.string.classification_stunting_kurus)
-                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification)
-                sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
+                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification, maxIndex)
             } else if (maxIndex == 2) {
                 classification = getString(R.string.classification_stunting)
-                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification)
-                sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
+                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification, maxIndex)
             } else {
                 classification = getString(R.string.classification_stunting_tinggi)
-                addChildServiceByUserId(catatan, namaAnak, tinggiCm, classification)
-                sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
             }
             // Releases model resources if no longer used.
             model.close()
@@ -574,7 +565,7 @@ class AnakActivity : AppCompatActivity() {
         }
     }
 
-    private fun sweetAlertDialog(conditionStunting: Int, type: Int) {
+    private fun sweetAlertDialogHasilPemeriksaan(conditionStunting: Int, type: Int) {
         if (conditionStunting == 0 && type == 2) {
             // Normal
             val sweetAlertDialog = SweetAlertDialog(this@AnakActivity, type)
@@ -607,7 +598,7 @@ class AnakActivity : AppCompatActivity() {
     }
 
     private fun addChildServiceByUserId(
-        catatan: String, namaAnak: String, tinggiCm: String, hasilPemeriksaan: String
+        catatan: String, namaAnak: String, tinggiCm: String, hasilPemeriksaan: String, maxIndex: Int
     ) {
         val progressBar = SweetAlertDialog(this@AnakActivity, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
@@ -627,6 +618,11 @@ class AnakActivity : AppCompatActivity() {
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
+
+                        // Informasi
+                        if (maxIndex != 0) sweetAlertDialogHasilPemeriksaan(maxIndex, SweetAlertDialog.WARNING_TYPE)
+                        else sweetAlertDialogHasilPemeriksaan(maxIndex, SweetAlertDialog.SUCCESS_TYPE)
+
                         toastInfo(
                             this@AnakActivity, getString(R.string.title_saved_data),
                             getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
@@ -676,10 +672,6 @@ class AnakActivity : AppCompatActivity() {
             }
 
         }
-        toastInfo(
-            this@AnakActivity, getString(R.string.title_saved_data),
-            getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
-        )
 
         // Clear the text when data saved !!! (success)
         binding.etNikAnak.text!!.clear()
