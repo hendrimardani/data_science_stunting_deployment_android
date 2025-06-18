@@ -8,26 +8,26 @@ import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
-import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
+import com.example.stunting.database.with_api.response.AddingPregnantMomServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import kotlinx.coroutines.launch
 
-class BumilActivityViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
+class BumilViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
     // PregnantMomService
     private var _getPregnantMomServiceFromApiResult = MutableLiveData<ResultState<List<DataPregnantMomServicesItem?>>>()
-    // UserProfilePatient
-    private var _getUserProfilePatientFromApiResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()
-    val getUserProfilePatientFromApiResult = _getUserProfilePatientFromApiResult
     // Checks
     private var _getChecksFromApiResult = MutableLiveData<ResultState<List<DataChecksItem?>>>()
     val getChecksFromApiResult = _getChecksFromApiResult
+    // UserProfilePatient
+    private var _getUserProfilePatientFromApiResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()
+    val getUserProfilePatientFromApiResult = _getUserProfilePatientFromApiResult
 
     init {
-        getUserProfilePatientsFromApi()
         getChecksFromApi()
+        getUserProfilePatientsFromApi()
     }
 
     suspend fun insertPregnantMomServices(pregnantMomServiceList: List<PregnantMomServiceEntity>) =
@@ -59,7 +59,7 @@ class BumilActivityViewModel(private val chattingRepository: ChattingRepository)
     fun addPregnantMomServiceByUserId(
         userId: Int, categoryServiceId: Int, catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String,
         tglPerkiraanLahir: String, umurKehamilan: String, statusGiziKesehatan: String
-    ): LiveData<ResultState<AddingPregnantMomServiceResponse?>> = liveData {
+    ): LiveData<ResultState<AddingPregnantMomServiceByUserIdResponse?>> = liveData {
         emit(ResultState.Loading)
         emit(
             chattingRepository.addPregnantMomServiceByUserId(

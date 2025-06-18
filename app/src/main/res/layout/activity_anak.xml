@@ -132,20 +132,36 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_nik"
-                app:layout_constraintEnd_toStartOf="@id/s_nik_anak"
+                app:layout_constraintEnd_toStartOf="@id/til_nik_anak"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_jk_anak" />
 
-            <Spinner
-                android:id="@+id/s_nik_anak"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_nik_anak"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:background="@drawable/shape_spinner"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:hint="@string/hint_nik"
+                android:textColorHint="?attr/colorTextHint"
+                app:hintTextColor="?attr/colorSecondary"
+                app:boxStrokeColor="@color/box_stroke_color"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/red"
+                app:boxStrokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_nik_anak"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_nik_anak"
-                app:layout_constraintTop_toTopOf="@id/iv_nik_anak" />
+                app:layout_constraintTop_toTopOf="@id/iv_nik_anak"
+                app:shapeAppearance="@style/Rounded">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_nik_anak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/iv_tgl_lahir_anak"
@@ -295,7 +311,7 @@
                 app:shapeAppearance="@style/Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nama_ortu_anak"
+                    android:id="@+id/et_nama_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorText"

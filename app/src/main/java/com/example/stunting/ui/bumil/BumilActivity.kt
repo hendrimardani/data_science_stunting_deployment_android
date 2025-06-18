@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -48,7 +47,6 @@ import com.example.stunting.utils.Functions.showCustomeInfoDialog
 import com.example.stunting.utils.Functions.toastInfo
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToastStyle
 import java.io.File
@@ -65,7 +63,7 @@ import kotlin.math.abs
 class BumilActivity : AppCompatActivity(), View.OnClickListener {
     private var _binding: ActivityBumilBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<BumilActivityViewModel> {
+    private val viewModel by viewModels<BumilViewModel> {
         ViewModelFactory.getInstance(this)
     }
 
@@ -620,11 +618,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         viewExport.tvYes.setOnClickListener {
             // Export to CSV
             lifecycleScope.launch {
+                exportDatabaseToCSV()
                 toastInfo(
                     this@BumilActivity, getString(R.string.title_export_success),
                     getString(R.string.description_export_success), MotionToastStyle.SUCCESS
                 )
-//                exportDatabaseToCSV(bumilDao)
             }
             exportDialog.dismiss()
             // Goto link directory download
@@ -639,11 +637,11 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private suspend fun exportDatabaseToCSV(bumilDao: BumilDao) {
+    private suspend fun exportDatabaseToCSV() {
         // Output variabel fileDir is => /storage/emulated/0/Android/data/com.example.stunting/files/Download
         // val fileDir = "${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)}/"
 
-        var dataResult: ArrayList<List<String>> = ArrayList()
+        var dataResult: ArrayList<List<String?>> = ArrayList()
         val fileName = "$NAME${SimpleDateFormat("yyyyMMMdd_HHmmss").format(Date())}.csv"
         val fileDir = "/storage/emulated/0/Download/"
         try {
@@ -652,13 +650,17 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 listOf("tanggal", "Nama Bumil", "Tgl Lahir Bumil", "Umur Bumil (tahun)",
                     "Hari Pertama Haid Terakhir", "Tanggal Perkiraan Lahir Bumil", "Umur Kehamilan Bumil", "Status Gizi Kesehatan (YA/TIDAK)")
             )
-            bumilDao.fetchAllBumil().collect {
-                for (item in it) {
+            viewModel.getChecksRelationByUserIdCategoryServiceId(userId!!, categoriServiceId!!).observe(this) { checkRelationList ->
+                checkRelationList.forEach { item ->
+                    val userProfilePatientEntity = item.userProfilePatientEntity
+                    val pregnantMomServiceEntity = item.pregnantMomServiceEntity
+                    val checksEntity = item.checksEntity
+
                     dataResult.add(
                         listOf(
-                            item.tanggal, item.namaBumil, item.tglLahirBumil,
-                            item.umurBumil, item.hariPertamaHaidTerakhirBumil,
-                            item.tanggalPerkiraanLahirBumil, item.umurKehamilanBumil, item.statusGiziKesehatanBumil
+                            checksEntity.tglPemeriksaan, userProfilePatientEntity.namaBumil, userProfilePatientEntity.tglLahirBumil,
+                            userProfilePatientEntity.umurBumil, pregnantMomServiceEntity?.hariPertamaHaidTerakhir,
+                            pregnantMomServiceEntity?.tglPerkiraanLahir, pregnantMomServiceEntity?.umurKehamilan, pregnantMomServiceEntity?.statusGiziKesehatan
                         )
                     )
                     csvWriter().writeAll(dataResult, file.outputStream())

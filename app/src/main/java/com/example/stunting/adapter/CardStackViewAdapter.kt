@@ -38,6 +38,8 @@ class CardStackViewAdapter(val userId: Int): ListAdapter<Services, CardStackView
                     }
                     "Layanan Anak" -> {
                         val intent = Intent(itemView.context, AnakActivity::class.java)
+                        intent.putExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, userId)
+                        intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 2)
                         itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
                     }
                     "Layanan Remaja Putri" -> {

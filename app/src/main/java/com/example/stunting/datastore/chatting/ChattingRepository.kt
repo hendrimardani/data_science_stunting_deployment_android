@@ -3,7 +3,6 @@ package com.example.stunting.datastore.chatting
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.room.ColumnInfo
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.ChattingDatabase
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
@@ -12,74 +11,54 @@ import com.example.stunting.database.with_api.entities.checks.ChecksEntity
 import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.database.with_api.entities.child_service.ChildServiceEntity
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
-import com.example.stunting.database.with_api.entities.groups.GroupsEntity
-import com.example.stunting.database.with_api.entities.messages.MessagesEntity
-import com.example.stunting.database.with_api.entities.messages.MessagesRelation
-import com.example.stunting.database.with_api.entities.notifications.NotificationsEntity
 import com.example.stunting.database.with_api.entities.pregnant_mom_service.PregnantMomServiceEntity
-import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserGroupRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfileByIdRequestJSON
 import com.example.stunting.database.with_api.retrofit.ApiService
-import com.example.stunting.database.with_api.entities.user_group.UserGroupEntity
-import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
+import com.example.stunting.database.with_api.request_json.AddingChildServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
-import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceRequestJSON
+import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
-import com.example.stunting.database.with_api.request_json.UpdateGroupByIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfilePatientByIdRequestJSON
+import com.example.stunting.database.with_api.response.AddingChildServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
-import com.example.stunting.database.with_api.response.AddingMessageResponse
-import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
+import com.example.stunting.database.with_api.response.AddingPregnantMomServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DataBranchesItem
 import com.example.stunting.database.with_api.response.DataChecksItem
 import com.example.stunting.database.with_api.response.DataChildServicesItem
 import com.example.stunting.database.with_api.response.DataChildrenPatientByUserPatientIdItem
-import com.example.stunting.database.with_api.response.DataMessagesItem
+import com.example.stunting.database.with_api.response.DataChildrenPatientsItem
 import com.example.stunting.database.with_api.response.DataPregnantMomServicesItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
-import com.example.stunting.database.with_api.response.GetChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
-import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
-import com.example.stunting.database.with_api.response.UserGroupsItem
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.File
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 class ChattingRepository(
     private val chattingDatabase: ChattingDatabase,
@@ -586,28 +565,94 @@ class ChattingRepository(
         }
     }
 
-    suspend fun insertPregnantMomServices(pregnantMomServicesList: List<PregnantMomServiceEntity>) =
-        chattingDatabase.pregnantMomServiceDao().insertPregnantMomServices(pregnantMomServicesList)
+    fun getChildrenPatientByNamaAnak(namaAnak: String) = chattingDatabase.childrenPatientDao().getChildrenPatientByNamaAnak(namaAnak)
 
-    suspend fun addPregnantMomServiceByUserId(
-        userId: Int, categoryServiceId: Int, catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String,
-        tglPerkiraanLahir: String, umurKehamilan: String, statusGiziKesehatan: String
-    ): ResultState<AddingPregnantMomServiceResponse?> {
+    fun getChildrenPatientsFromLocal() = chattingDatabase.childrenPatientDao().getChildrenPatientsFromLocal()
+
+    suspend fun getChildrenPatientsFromApi(): ResultState<List<DataChildrenPatientsItem?>> {
         return try {
-            val requestBody = AddingPregnantMomServiceRequestJSON(
-                categoryServiceId, catatan, namaBumil, hariPertamaHaidTerakhir,
-                tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
-            val response = apiService.addPregnantMomServiceByUserId(userId, requestBody)
+            val response = apiService.getAllChildrenPatients()
+            if (response.isSuccessful) {
+                val data = response.body()?.dataChildrenPatients ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertChildrenPatientsToLocal(data)
+                }
+                ResultState.Success(data)
+            } else {
+                ResultState.Error("Gagal ambil data: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    // Menggunakan entitas pusat relasi
+    private suspend fun insertChildrenPatientsToLocal(dataChildrenPatientsItem: List<DataChildrenPatientsItem?>) {
+        val userProfilePatientsList = ArrayList<UserProfilePatientEntity>()
+        val childrenPatientsList = ArrayList<ChildrenPatientEntity>()
+
+        dataChildrenPatientsItem.forEach { item ->
+            val userProfilePatientEntity = item?.userProfilePatient
+
+            if (userProfilePatientEntity != null) {
+                userProfilePatientsList.add(
+                    UserProfilePatientEntity(
+                        id = userProfilePatientEntity.id,
+                        userPatientId = userProfilePatientEntity.userPatientId,
+                        branchId = userProfilePatientEntity.branchId,
+                        namaBumil = userProfilePatientEntity.namaBumil,
+                        nikBumil = userProfilePatientEntity.nikBumil,
+                        tglLahirBumil = userProfilePatientEntity.tglLahirBumil,
+                        umurBumil = userProfilePatientEntity.umurBumil,
+                        alamat = userProfilePatientEntity.alamat,
+                        namaAyah = userProfilePatientEntity.namaAyah,
+                        gambarProfile = userProfilePatientEntity.gambarProfile,
+                        gambarBanner = userProfilePatientEntity.gambarBanner,
+                        createdAt = userProfilePatientEntity.createdAt,
+                        updatedAt = userProfilePatientEntity.updatedAt
+                    )
+                )
+                childrenPatientsList.add(
+                    ChildrenPatientEntity(
+                        id = item.id,
+                        userPatientId = item.userPatientId,
+                        namaAnak = item.namaAnak,
+                        nikAnak = item.nikAnak,
+                        jenisKelaminAnak = item.jenisKelaminAnak,
+                        tglLahirAnak = item.tglLahirAnak,
+                        umurAnak = item.umurAnak,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.userProfilePatientDao().insertUserProfilePatients(userProfilePatientsList)
+            chattingDatabase.childrenPatientDao().insertChildrenPatients(childrenPatientsList)
+        }
+    }
+
+    suspend fun addChildServiceByUserId(
+        userId: Int, categoryServiceId: Int, catatan: String?, namaAnak: String, nikAnak: String,
+        jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String, tinggiCm: String, hasilPemeriksaan: String
+    ): ResultState<AddingChildServiceByUserIdResponse?> {
+        return try {
+            val requestBody = AddingChildServiceByUserIdRequestJSON(
+                categoryServiceId, catatan, namaAnak, nikAnak,
+                jenisKelaminAnak, tglLahirAnak, umurAnak, tinggiCm, hasilPemeriksaan
+            )
+            val response = apiService.addChildSericeByUserId(userId, requestBody)
 
             if (response.isSuccessful) {
-//                Log.e(TAG, "onChattingRepository addPregnantMomService Success ${response.code()} : ${response.body()}")
+//                Log.e(TAG, "onChattingRepository addChildServiceByUserId Success ${response.code()} : ${response.body()}")
                 ResultState.Success(response.body())
             } else {
                 if (response.code() == 401) {
                     ResultState.Unauthorized
                 } else {
                     val errorBodyJson = response.errorBody()?.string()
-//                    Log.e(TAG, "onChattingRepository addPregnantMomService Error ${response.code()}: $errorBodyJson")
+//                    Log.e(TAG, "onChattingRepository addChildServiceByUserId Error ${response.code()}: $errorBodyJson")
                     val jsonObject = JSONObject(errorBodyJson!!)
                     val message = jsonObject.getString("message")
                     ResultState.Error(message)
@@ -617,11 +662,46 @@ class ChattingRepository(
 //            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
             ResultState.Error("Exception: ${e.message}")
         } catch (e: Exception) {
-            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }
 
+    suspend fun insertPregnantMomServices(pregnantMomServicesList: List<PregnantMomServiceEntity>) =
+        chattingDatabase.pregnantMomServiceDao().insertPregnantMomServices(pregnantMomServicesList)
+
+    suspend fun addPregnantMomServiceByUserId(
+        userId: Int, categoryServiceId: Int, catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String,
+        tglPerkiraanLahir: String, umurKehamilan: String, statusGiziKesehatan: String
+    ): ResultState<AddingPregnantMomServiceByUserIdResponse?> {
+        return try {
+            val requestBody = AddingPregnantMomServiceByUserIdRequestJSON(
+                categoryServiceId, catatan, namaBumil, hariPertamaHaidTerakhir,
+                tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+            val response = apiService.addPregnantMomServiceByUserId(userId, requestBody)
+
+            if (response.isSuccessful) {
+//                Log.e(TAG, "onChattingRepository addPregnantMomServiceByUserId Success ${response.code()} : ${response.body()}")
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBodyJson = response.errorBody()?.string()
+//                    Log.e(TAG, "onChattingRepository addPregnantMomServiceByUserId Error ${response.code()}: $errorBodyJson")
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
 
     fun getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId: Int, categoryServiceId: Int, searchQuery: String) =
         chattingDatabase.checksDao().getChecksRelationByUserPatientIdCategoryServiceIdWithSearchAnak(userPatientId, categoryServiceId, searchQuery)

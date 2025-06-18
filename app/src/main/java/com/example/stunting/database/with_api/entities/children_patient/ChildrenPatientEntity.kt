@@ -20,7 +20,7 @@ import com.example.stunting.database.with_api.response.ChildrenPatient
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["user_patient_id"], unique = true)] // One-to-one: unique index
+    indices = [Index(value = ["id_children_patient"], unique = true)] // One-to-one: unique index
 )
 data class ChildrenPatientEntity(
     @PrimaryKey(autoGenerate = true)

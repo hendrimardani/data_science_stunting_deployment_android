@@ -1,20 +1,23 @@
 package com.example.stunting.database.with_api.retrofit
 
+import com.example.stunting.database.with_api.request_json.AddingChildServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingMessageRequestJSON
-import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceRequestJSON
+import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
+import com.example.stunting.database.with_api.response.AddingChildServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
-import com.example.stunting.database.with_api.response.AddingPregnantMomServiceResponse
+import com.example.stunting.database.with_api.response.AddingPregnantMomServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingUserByGroupIdResponse
 import com.example.stunting.database.with_api.response.AddingUserGroupResponse
 import com.example.stunting.database.with_api.response.DeleteUserByIdResponse
 import com.example.stunting.database.with_api.response.GetAllBranchesResponse
 import com.example.stunting.database.with_api.response.GetAllChecksResponse
 import com.example.stunting.database.with_api.response.GetAllChildServicesResponse
+import com.example.stunting.database.with_api.response.GetAllChildrenPatientsResponse
 import com.example.stunting.database.with_api.response.GetAllMessagesResponse
 import com.example.stunting.database.with_api.response.GetAllPregnantMomServicesResponse
 import com.example.stunting.database.with_api.response.GetAllUserGroupResponse
@@ -28,7 +31,6 @@ import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResp
 import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -78,17 +80,26 @@ interface ApiService {
         @Body addingUserByGroupIdRequestJSON: AddingUserByGroupIdRequestJSON
     ): Response<AddingUserByGroupIdResponse>
 
+    @POST("child_service/{user_id}")
+    suspend fun addChildSericeByUserId(
+        @Path("user_id") userId: Int,
+        @Body requestBody: AddingChildServiceByUserIdRequestJSON
+    ): Response<AddingChildServiceByUserIdResponse>
+
     @GET("pregnant_mom_services")
     suspend fun getAllPregnantMomServices(): Response<GetAllPregnantMomServicesResponse>
 
     @POST("pregnant_mom_service/{user_id}")
     suspend fun addPregnantMomServiceByUserId(
         @Path("user_id") userId: Int,
-        @Body requestBody: AddingPregnantMomServiceRequestJSON
-    ): Response<AddingPregnantMomServiceResponse>
+        @Body requestBody: AddingPregnantMomServiceByUserIdRequestJSON
+    ): Response<AddingPregnantMomServiceByUserIdResponse>
 
     @GET("child_services")
     suspend fun getAllChildServices(): Response<GetAllChildServicesResponse>
+
+    @GET("children_patients")
+    suspend fun getAllChildrenPatients(): Response<GetAllChildrenPatientsResponse>
 
     @GET("checks")
     suspend fun getAllChecks(): Response<GetAllChecksResponse>

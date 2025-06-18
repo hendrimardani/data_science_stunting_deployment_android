@@ -12,7 +12,11 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,7 +26,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.adapter.AnakAdapter
-import com.example.stunting.database.no_api.DatabaseApp
 import com.example.stunting.database.no_api.anak.AnakDao
 import com.example.stunting.database.no_api.anak.AnakEntity
 import com.example.stunting.databinding.ActivityAnakBinding
@@ -38,6 +41,7 @@ import com.example.stunting.utils.Functions.toastInfo
 import com.example.stunting.ml.ModelRegularizerCategorical
 import com.example.stunting.ui.MainActivity
 import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ViewModelFactory
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
@@ -59,16 +63,20 @@ import kotlin.math.abs
 class AnakActivity : AppCompatActivity() {
     private var _binding: ActivityAnakBinding? = null
     private val binding get() = _binding!!
-    private var _anakDao: AnakDao? = null
-    private val anakDao get() = _anakDao!!
+    private val viewModel by viewModels<AnakViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     private var _bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding? = null
     private val bindingAnakBottomSheetDialog get() = _bindingAnakBottomSheetDialog!!
 
     private var userId: Int? = null
     private var categoriServiceId: Int? = null
-    var countItem = 0
-    var classification = "NORMAL"
-    var jkOutput = "Laki-laki"
+
+    private var countItem = 0
+    private var classification = "NORMAL"
+    private var jkOutput = "Laki-laki"
+    private var namaAnak = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +90,8 @@ class AnakActivity : AppCompatActivity() {
         }
         userId = intent?.getIntExtra(EXTRA_USER_ID_TO_ANAK_ACTIVITY, 0)!!
         categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY, 0)
+
         setToolBar()
-
-        binding.collapsingToolbarLayout
-
-        // Collapsed Toolbar
         collapsedHandlerToolbar()
 
         // Binding AnakBottomSheetDialog for retrieve xml id
@@ -144,11 +149,113 @@ class AnakActivity : AppCompatActivity() {
                 )
         }
 
-        // Get all items
-        getAll(anakDao)
-
-        // Set inputText umur from calculate tgl lahir
+//        // Get all items
+//        getAll(anakDao)
+        getChecksFromApi()
+        getChildrenPatientsFromApiResult()
         setInputTextUmur()
+    }
+
+    private fun getChecksFromApi() {
+        viewModel.getChecksFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi error : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        viewModel.getChildrenPatientsFromApi()
+                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi success : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getChildrenPatientsFromApiResult() {
+        val progressBar = SweetAlertDialog(this@AnakActivity, SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getChildrenPatientsFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> progressBar.show()
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApiResult : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        spinnerNamaAnak()
+                        progressBar.dismiss()
+                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApiResult : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@AnakActivity, MainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun spinnerNamaAnak() {
+        val items = mutableListOf("Nama Anak")
+
+        viewModel.getChildrenPatientsFromLocal().observe(this) { childrenPatientsList ->
+            childrenPatientsList.forEach { item ->
+                items.add(item.namaAnak.toString())
+            }
+        }
+
+        val adapter = object: ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items) {
+            override fun isEnabled(position: Int): Boolean {
+                // Item di posisi 0 tidak bisa dipilih
+                return position != 0
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                val textView = view as TextView
+
+                if (position == 0) {
+                    textView.setTextColor(getColor(R.color.buttonDisabledColor))
+                }
+                return view
+            }
+        }
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sNamaAnak.adapter = adapter
+
+        binding.sNamaAnak.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position != 0) {
+                    namaAnak = parent?.getItemAtPosition(position).toString()
+                    getChildrenPatientByNamaAnak(namaAnak)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        }
+    }
+
+    private fun getChildrenPatientByNamaAnak(namaAnak: String) {
+        viewModel.getChildrenPatientByNamaAnak(namaAnak).observe(this) { childrenPatient ->
+            binding.etNikAnak.setText(childrenPatient.nikAnak)
+//            binding.etTglLahirBumil.setText(convertDateFormat(userProfilePatient.tglLahirBumil!!))
+//            binding.etUmurBumil.setText(userProfilePatient.umurBumil)
+        }
     }
 
     private fun setInputTextUmur() {
@@ -260,7 +367,7 @@ class AnakActivity : AppCompatActivity() {
                     this@AnakActivity, getString(R.string.title_export_success),
                     getString(R.string.description_export_success), MotionToastStyle.SUCCESS
                 )
-                exportDatabaseToCSV(this@AnakActivity, anakDao, NAME)
+//                exportDatabaseToCSV(this@AnakActivity, anakDao, NAME)
             }
             exportDialog.dismiss()
             // Goto link directory download
@@ -284,7 +391,7 @@ class AnakActivity : AppCompatActivity() {
 
         viewDelete.tvDescription.text = getString(R.string.description_delete_dialog)
         viewDelete.tvYes.setOnClickListener {
-            deleteAllDates(anakDao)
+//            deleteAllDates(anakDao)
             // We will destroy activity
             finish()
             deleteDialog.dismiss()
@@ -491,7 +598,7 @@ class AnakActivity : AppCompatActivity() {
         binding.etUmurAnak.text!!.clear()
         binding.etJkAnak.text!!.clear()
         binding.etTinggiAnak.text!!.clear()
-        binding.etNamaOrtuAnak.text!!.clear()
+//        binding.etNamaOrtuAnak.text!!.clear()
     }
 
     private fun setToolBar() {
@@ -513,10 +620,11 @@ class AnakActivity : AppCompatActivity() {
         super.onDestroy()
         _binding = null
         _bindingAnakBottomSheetDialog = null
-        _anakDao = null
+//        _anakDao = null
     }
 
     companion object {
+        private val TAG = AnakActivity::class.java.simpleName
         const val EXTRA_USER_ID_TO_ANAK_ACTIVITY = "extra_user_id_to_anak_activity"
         const val EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY = "extra_category_service_id_to_anak_activity"
         private const val NAME = "anak_data_"
