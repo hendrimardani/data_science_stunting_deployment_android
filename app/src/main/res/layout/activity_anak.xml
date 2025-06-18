@@ -281,43 +281,6 @@
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/iv_nama_bumil"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_orang_tua"
-                app:layout_constraintEnd_toStartOf="@id/til_nama_bumil"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_tinggi_anak" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_nama_bumil"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:hint="@string/hint_nama_ortu"
-                android:textColorHint="?attr/colorTextHint"
-                app:hintTextColor="?attr/colorSecondary"
-                app:boxStrokeColor="@color/box_stroke_color"
-                app:boxStrokeWidth="2dp"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/red"
-                app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_nama_bumil"
-                app:layout_constraintTop_toTopOf="@id/iv_nama_bumil"
-                app:shapeAppearance="@style/Rounded">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_nama_bumil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <Button
                 android:id="@+id/btn_submit_anak"
                 android:layout_width="130dp"
@@ -328,7 +291,7 @@
                 app:icon="@drawable/ic_send_to_mobile_24px"
                 android:text="@string/kirim"
                 android:paddingHorizontal="30dp"
-                app:layout_constraintTop_toBottomOf="@id/iv_nama_bumil"
+                app:layout_constraintTop_toBottomOf="@id/iv_tinggi_anak"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_tampil_data_anak" />
 

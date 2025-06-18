@@ -116,7 +116,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
 
         getChecksFromApi()
         getChecksRelationByUserIdCategoryServiceId(userId!!)
-        getUserProfilePatient()
+        getUserProfilePatientFromApi()
         setTglLahirBumil()
         setInputTextTanggalPerkiraanLahir()
         setInputTextUmurKehamilan()
@@ -292,7 +292,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         return formattedDate
     }
 
-    private fun getUserProfilePatient() {
+    private fun getUserProfilePatientFromApi() {
         val progressBar = SweetAlertDialog(this@BumilActivity, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
@@ -305,12 +305,12 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilActivity getUserProfilePatient : ${result.error}")
+//                        Log.d(TAG, "onBumilActivity getUserProfilePatientFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
                         spinnerNamaBumil()
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilActivity getUserProfilePatient : ${result.data}")
+//                        Log.d(TAG, "onBumilActivity getUserProfilePatientFromApi : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

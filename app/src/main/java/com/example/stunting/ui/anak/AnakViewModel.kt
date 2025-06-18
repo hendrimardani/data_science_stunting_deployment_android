@@ -29,7 +29,8 @@ class AnakViewModel(private val chattingRepository: ChattingRepository): ViewMod
         }
     }
 
-    fun getChildrenPatientByNamaAnak(namaAnak: String) = chattingRepository.getChildrenPatientByNamaAnak(namaAnak)
+    fun getChildrenPatientByNamaAnak(namaAnak: String) =
+        chattingRepository.getChildrenPatientByNamaAnak(namaAnak)
 
     fun getChildrenPatientsFromLocal() = chattingRepository.getChildrenPatientsFromLocal()
 
@@ -39,6 +40,8 @@ class AnakViewModel(private val chattingRepository: ChattingRepository): ViewMod
             _getChildrenPatientsFromApiResult.value = chattingRepository.getChildrenPatientsFromApi()
         }
     }
+
+//    fun addChildServiceByUserId()
 
     fun logout() {
         viewModelScope.launch {

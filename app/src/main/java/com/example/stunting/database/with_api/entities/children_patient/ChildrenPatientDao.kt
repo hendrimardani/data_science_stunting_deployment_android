@@ -12,15 +12,7 @@ import com.example.stunting.database.with_api.entities.user_profile_patient.User
 @Dao
 interface ChildrenPatientDao {
 
-//    @Transaction
-//    @Query("""
-//        SELECT * FROM children_patient
-//        INNER JOIN user_profile_patient ON user_profile_patient.user_patient_id = children_patient.user_patient_id
-//        WHERE user_patient_id = :userPatientId
-//    """)
-//    fun getChildrenPatientithUserProfileRelationByUserPatientIdFromLocal(userPatientId: Int): LiveData<ChildrenPatientWithUserProfilePatient>
-
-    @Query("SELECT * FROM children_patient WHERE nama_anak = :namaAnak")
+    @Query("SELECT * FROM children_patient WHERE nama_anak = :namaAnak ")
     fun getChildrenPatientByNamaAnak(namaAnak: String): LiveData<ChildrenPatientEntity>
 
     @Query("SELECT * FROM children_patient ORDER BY id_children_patient ASC")

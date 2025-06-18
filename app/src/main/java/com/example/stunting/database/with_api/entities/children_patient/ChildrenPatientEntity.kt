@@ -8,7 +8,6 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
-import com.example.stunting.database.with_api.response.ChildrenPatient
 
 @Entity(
     tableName = "children_patient",
@@ -20,7 +19,7 @@ import com.example.stunting.database.with_api.response.ChildrenPatient
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["id_children_patient"], unique = true)] // One-to-one: unique index
+    indices = [Index(value = ["id_children_patient"], unique = true)]
 )
 data class ChildrenPatientEntity(
     @PrimaryKey(autoGenerate = true)
@@ -33,15 +32,4 @@ data class ChildrenPatientEntity(
     @ColumnInfo(name = "umur_anak") val umurAnak: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: String? = null,
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
-)
-
-// One to one
-data class ChildrenPatientWithUserProfilePatient(
-    @Embedded val userProfilePatient: UserProfilePatientEntity,
-
-    @Relation(
-        parentColumn = "user_patient_id",
-        entityColumn = "user_patient_id"
-    )
-    val childrenPatient: ChildrenPatient?
 )

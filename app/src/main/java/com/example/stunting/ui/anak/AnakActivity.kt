@@ -57,6 +57,7 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.Date
+import java.util.Locale
 import kotlin.math.abs
 
 
@@ -105,40 +106,6 @@ class AnakActivity : AppCompatActivity() {
             getDatePickerDialogTglLahir(this@AnakActivity)
         }
 
-        binding.btnSubmitAnak.setOnClickListener {
-//            val nama = binding.etNamaAnak.text.toString()
-//            val jk = binding.etJkAnak.text.toString()
-//            val nik = binding.etNikAnak.text.toString()
-//            val tglLahir = binding.etTglLahirAnak.text.toString()
-//            val umur = binding.etUmurAnak.text.toString()
-//            val tinggi = binding.etTinggiAnak.text.toString()
-//            val namaOrtu = binding.etNamaOrtuAnak.text.toString()
-//
-//            // Check for rename 0 for male and 1 for female
-//            if (jk == "0") jkOutput = "Laki-laki" else jkOutput = "Perempuan"
-//
-//            if (nama.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
-//                umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty() && namaOrtu.isNotEmpty()) {
-//
-//                // Checking if there is no contains 0 (laki-laki) or 1 (perempuan)
-//                if (jk.contains("0") or jk.contains("1")) {
-//                    // Get data for predictions
-//                    val umurPred = umur.toFloat()
-//                    val jkPred = jk.toFloat()
-//                    val tinggiPred = tinggi.toFloat()
-//
-//                    // Prediction
-//                    prediction(anakDao, nama, jk, nik, tglLahir, namaOrtu, umur, tinggi, umurPred, jkPred, tinggiPred)
-//                } else toastInfo(
-//                    this@AnakActivity, getString(R.string.title_code_gender_not_valid),
-//                    getString(R.string.description_code_gender_not_valid), MotionToastStyle.ERROR
-//                )
-//            } else toastInfo(
-//                this@AnakActivity, getString(R.string.title_input_failed),
-//                getString(R.string.description_input_failed), MotionToastStyle.ERROR
-//            )
-        }
-
         binding.btnTampilDataAnak.setOnClickListener {
             // Data not empty
 //            Log.e("CEK DATANA", countItem.toString())
@@ -152,8 +119,9 @@ class AnakActivity : AppCompatActivity() {
 //        // Get all items
 //        getAll(anakDao)
         getChecksFromApi()
-        getChildrenPatientsFromApiResult()
+        getChildrenPatientsFromApi()
         setInputTextUmur()
+        btnSubmit()
     }
 
     private fun getChecksFromApi() {
@@ -162,11 +130,11 @@ class AnakActivity : AppCompatActivity() {
                 when (result) {
                     is ResultState.Loading -> { }
                     is ResultState.Error -> {
-                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi error : ${result.error}")
+//                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi error : ${result.error}")
                     }
                     is ResultState.Success -> {
-                        viewModel.getChildrenPatientsFromApi()
-                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi success : ${result.data}")
+                        viewModel.getPregnantMomServiceFromApi()
+//                        Log.d(TAG, "onAnakActivity from LoginFragment getChecksFromApi success : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -179,7 +147,39 @@ class AnakActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChildrenPatientsFromApiResult() {
+    private fun btnSubmit() {
+        binding.btnSubmitAnak.setOnClickListener {
+            val jk = binding.etJkAnak.text.toString()
+            val nik = binding.etNikAnak.text.toString()
+            val tglLahir = binding.etTglLahirAnak.text.toString()
+            val umur = binding.etUmurAnak.text.toString()
+            val tinggi = binding.etTinggiAnak.text.toString()
+
+            // Check for rename 0 for male and 1 for female
+            if (jk == "0") jkOutput = "laki-laki" else jkOutput = "perempuan"
+
+            if (namaAnak.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+                umur.isNotEmpty() && jk.isNotEmpty() && tinggi.isNotEmpty()) {
+
+                // Checking if there is no contains 0 (laki-laki) or 1 (perempuan)
+                if (jk.contains("0") or jk.contains("1")) {
+                    // Get data for predictions
+                    val umurPred = umur.toFloat()
+                    val jkPred = jk.toFloat()
+                    val tinggiPred = tinggi.toFloat()
+                    prediction(namaAnak, jk, nik, tglLahir, umur, tinggi, umurPred, jkPred, tinggiPred)
+                } else toastInfo(
+                    this@AnakActivity, getString(R.string.title_code_gender_not_valid),
+                    getString(R.string.description_code_gender_not_valid), MotionToastStyle.ERROR
+                )
+            } else toastInfo(
+                this@AnakActivity, getString(R.string.title_input_failed),
+                getString(R.string.description_input_failed), MotionToastStyle.ERROR
+            )
+        }
+    }
+
+    private fun getChildrenPatientsFromApi() {
         val progressBar = SweetAlertDialog(this@AnakActivity, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
@@ -192,12 +192,12 @@ class AnakActivity : AppCompatActivity() {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApiResult : ${result.error}")
+//                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApi : ${result.error}")
                     }
                     is ResultState.Success -> {
                         spinnerNamaAnak()
                         progressBar.dismiss()
-                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApiResult : ${result.data}")
+//                        Log.d(TAG, "onAnakActivity getChildrenPatientsFromApi : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -251,11 +251,30 @@ class AnakActivity : AppCompatActivity() {
     }
 
     private fun getChildrenPatientByNamaAnak(namaAnak: String) {
-        viewModel.getChildrenPatientByNamaAnak(namaAnak).observe(this) { childrenPatient ->
-            binding.etNikAnak.setText(childrenPatient.nikAnak)
-//            binding.etTglLahirBumil.setText(convertDateFormat(userProfilePatient.tglLahirBumil!!))
-//            binding.etUmurBumil.setText(userProfilePatient.umurBumil)
+        viewModel.getChildrenPatientByNamaAnak(namaAnak).observe(this) { childrenPatientEntity ->
+            binding.etJkAnak.setText(convertJenisKelaminToNumeric(childrenPatientEntity.jenisKelaminAnak!!))
+            binding.etNikAnak.setText(childrenPatientEntity.nikAnak)
+            binding.etTglLahirAnak.setText(convertDateFormat(childrenPatientEntity.tglLahirAnak!!))
+            binding.etUmurAnak.setText(childrenPatientEntity.umurAnak)
         }
+    }
+
+    private fun convertDateFormat(dateFormat: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        // hasil: 2025/06/17
+        val outputFormat = SimpleDateFormat("yyyy/MM/dd", Locale("id"))
+        val date = inputFormat.parse(dateFormat)
+        val formattedDate = outputFormat.format(date)
+        return formattedDate
+    }
+
+    private fun convertJenisKelaminToNumeric(jenisKelamin: String): String {
+        var resultConvert = ""
+        when (jenisKelamin) {
+            "laki-laki" -> resultConvert = "0"
+            "perempuan" -> resultConvert = "0"
+        }
+        return resultConvert
     }
 
     private fun setInputTextUmur() {
@@ -465,8 +484,8 @@ class AnakActivity : AppCompatActivity() {
     }
 
     private fun prediction(
-        anakDao: AnakDao, nama: String, jk: String, nik: String, tglLahir: String,
-        namaOrtu: String, umur: String, tinggi: String, umurFloat: Float, jkFloat: Float, tinggiFloat: Float
+        namaAnak: String, jk: String, nik: String, tglLahir: String,
+        umur: String, tinggi: String, umurFloat: Float, jkFloat: Float, tinggiFloat: Float
     ) {
         // Normalisasi data with formula => (Xi - Xmin) / (Xmax - Xmin)
         val umurNormalized = (umurFloat - 0f) / (60f - 0f)
@@ -503,22 +522,22 @@ class AnakActivity : AppCompatActivity() {
             if (maxIndex == 0) {
                 classification = getString(R.string.classification_normal)
                 // Add record
-                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification, getString(R.string.pencegahan_stunting_tidak_ada))
+                addRecord(namaAnak, nik, tglLahir, umur, jk, tinggi, classification, getString(R.string.pencegahan_stunting_tidak_ada))
                 sweetAlertDialog(maxIndex, SweetAlertDialog.SUCCESS_TYPE)
             } else if (maxIndex == 1) {
                 classification = getString(R.string.classification_stunting_kurus)
                 // Add record
-                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification, getString(R.string.pencegahan_stunting_kurus))
+                addRecord(namaAnak, nik, tglLahir, umur, jk, tinggi, classification, getString(R.string.pencegahan_stunting_kurus))
                 sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
             } else if (maxIndex == 2) {
                 classification = getString(R.string.classification_stunting)
                 // Add record
-                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification, getString(R.string.pencegahan_stunting))
+                addRecord(namaAnak, nik, tglLahir, umur, jk, tinggi, classification, getString(R.string.pencegahan_stunting))
                 sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
             } else {
                 classification = getString(R.string.classification_stunting_tinggi)
                 // Add record
-                addRecord(anakDao, nama, nik, tglLahir, umur, jk, tinggi, namaOrtu, classification, getString(R.string.pencegahan_stunting_tinggi))
+                addRecord(namaAnak, nik, tglLahir, umur, jk, tinggi, classification, getString(R.string.pencegahan_stunting_tinggi))
                 sweetAlertDialog(maxIndex, SweetAlertDialog.WARNING_TYPE)
             }
             // Releases model resources if no longer used.
@@ -565,27 +584,28 @@ class AnakActivity : AppCompatActivity() {
     }
 
     private fun addRecord(
-        anakDao: AnakDao, nama: String, nik: String, tglLahir: String, umur: String,
-        jk: String, tinggi: String, namaOrtu: String, hasil: String, pencegahanStunting: String
+        namaAnak: String, nik: String, tglLahir: String, umur: String,
+        jk: String, tinggi: String, hasil: String, pencegahanStunting: String
     ) {
         val date = getDateTimePrimaryKey()
 
-        lifecycleScope.launch {
-            anakDao.insert(
-                AnakEntity(
-                    tanggal = date,
-                    namaAnak = nama,
-                    nikAnak = nik,
-                    tglLahirAnak = tglLahir,
-                    umurAnak = umur,
-                    jkAnak = jk,
-                    tinggiAnak = tinggi,
-                    ortuAnak = namaOrtu,
-                    klasifikasiAnak = hasil,
-                    pencegahanStunting = pencegahanStunting
-                )
-            )
-        }
+
+//        lifecycleScope.launch {
+//            anakDao.insert(
+//                AnakEntity(
+//                    tanggal = date,
+//                    namaAnak = nama,
+//                    nikAnak = nik,
+//                    tglLahirAnak = tglLahir,
+//                    umurAnak = umur,
+//                    jkAnak = jk,
+//                    tinggiAnak = tinggi,
+//                    ortuAnak = namaOrtu,
+//                    klasifikasiAnak = hasil,
+//                    pencegahanStunting = pencegahanStunting
+//                )
+//            )
+//        }
         toastInfo(
             this@AnakActivity, getString(R.string.title_saved_data),
             getString(R.string.description_saved_data), MotionToastStyle.SUCCESS

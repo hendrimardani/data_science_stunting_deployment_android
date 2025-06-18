@@ -565,7 +565,8 @@ class ChattingRepository(
         }
     }
 
-    fun getChildrenPatientByNamaAnak(namaAnak: String) = chattingDatabase.childrenPatientDao().getChildrenPatientByNamaAnak(namaAnak)
+    fun getChildrenPatientByNamaAnak(namaAnak: String) =
+        chattingDatabase.childrenPatientDao().getChildrenPatientByNamaAnak(namaAnak)
 
     fun getChildrenPatientsFromLocal() = chattingDatabase.childrenPatientDao().getChildrenPatientsFromLocal()
 
