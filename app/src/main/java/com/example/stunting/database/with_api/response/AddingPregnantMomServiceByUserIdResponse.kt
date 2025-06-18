@@ -49,7 +49,7 @@ data class DataPregnantMomService(
 ) : Parcelable
 
 @Parcelize
-data class Checks(
+data class ChecksItem(
 
 	@field:SerializedName("user_patient_id")
 	val userPatientId: Int? = null,

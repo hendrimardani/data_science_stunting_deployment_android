@@ -93,13 +93,14 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, 0)!!
-        categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 0)
-        setToolBar()
-        collapsedHandlerToolbar()
-
         _bindingBumilBottomSheetDialog = DialogBottomSheetAllBinding.inflate(layoutInflater)
         bindingBumilBottomSheetDialog.tvListData.text = getString(R.string.list_data_bumil)
+
+        userId = intent?.getIntExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, 0)!!
+        categoriServiceId = intent?.getIntExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 0)
+
+        setToolBar()
+        collapsedHandlerToolbar()
 
         setCalendarTglLahir(binding.etTglLahirBumil)
         setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
@@ -382,7 +383,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
                     umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
                     umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
-                    addPregnantMomService(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+                    addPregnantMomServiceByUserId(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
                 } else {
                     toastInfo(
                         this@BumilActivity, getString(R.string.title_input_failed),
@@ -391,8 +392,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.btn_tampil_data_bumil -> {
-                // Data not empty
-//                Log.e("CEK DATANA", countItem.toString())
                 if (countItem != 0) showBottomSheetDialog() else
                     toastInfo(
                         this@BumilActivity, getString(R.string.title_show_data_failed),
@@ -425,7 +424,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun addPregnantMomService(
+    private fun addPregnantMomServiceByUserId(
         catatan: String?, namaBumil: String, hariPertamaHaidTerakhir: String, tglPerkiraanLahir: String,
         umurKehamilan: String, statusGiziKesehatan: String
     ) {
@@ -443,7 +442,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "onBumilActivity addPregnantMomService error: ${result.error}")
+//                        Log.d(TAG, "onBumilActivity addPregnantMomServiceByUserId error: ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
@@ -451,7 +450,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                             this@BumilActivity, getString(R.string.title_saved_data),
                             getString(R.string.description_saved_data), MotionToastStyle.SUCCESS
                         )
-//                        Log.d(TAG, "onBumilActivity addPregnantMomService success : ${result.data}")
+//                        Log.d(TAG, "onBumilActivity addPregnantMomServiceByUserId success : ${result.data}")
                         val checksEntity = result.data?.dataPregnantMomService?.checks
                         val pregnantMomServiceEntity = result.data?.dataPregnantMomService
 
@@ -500,7 +499,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getChecksRelationByUserIdCategoryServiceId(userId: Int) {
-        viewModel.getChecksRelationByUserIdCategoryServiceId(userId, categoriServiceId!!).observe(this) { checkRelationList ->
+        viewModel.getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId, categoriServiceId!!).observe(this) { checkRelationList ->
             if (checkRelationList.isNotEmpty()) {
                 setupListOfDataIntoRecyclerView(checkRelationList)
             }
@@ -650,7 +649,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
                 listOf("tanggal", "Nama Bumil", "Tgl Lahir Bumil", "Umur Bumil (tahun)",
                     "Hari Pertama Haid Terakhir", "Tanggal Perkiraan Lahir Bumil", "Umur Kehamilan Bumil", "Status Gizi Kesehatan (YA/TIDAK)")
             )
-            viewModel.getChecksRelationByUserIdCategoryServiceId(userId!!, categoriServiceId!!).observe(this) { checkRelationList ->
+            viewModel.getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId!!, categoriServiceId!!).observe(this) { checkRelationList ->
                 checkRelationList.forEach { item ->
                     val userProfilePatientEntity = item.userProfilePatientEntity
                     val pregnantMomServiceEntity = item.pregnantMomServiceEntity

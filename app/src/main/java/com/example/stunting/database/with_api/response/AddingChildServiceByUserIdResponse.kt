@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName
 @Parcelize
 data class AddingChildServiceByUserIdResponse(
 
-	@field:SerializedName("dataLogin")
-	val dataLogin: DataLoginItem? = null,
+	@field:SerializedName("dataChildService")
+	val dataChildService: DataChildService? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -18,57 +18,57 @@ data class AddingChildServiceByUserIdResponse(
 ) : Parcelable
 
 @Parcelize
-data class DataLoginUser(
+data class Checks(
 
-	@field:SerializedName("umur")
-	val umur: String? = null,
-
-	@field:SerializedName("gambar_banner")
-	val gambarBanner: String? = null,
-
-	@field:SerializedName("created_at")
-	val createdAt: String? = null,
-
-	@field:SerializedName("tgl_lahir")
-	val tglLahir: String? = null,
-
-	@field:SerializedName("alamat")
-	val alamat: String? = null,
-
-	@field:SerializedName("nik")
-	val nik: String? = null,
-
-	@field:SerializedName("nama")
-	val nama: String? = null,
+	@field:SerializedName("user_patient_id")
+	val userPatientId: Int? = null,
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String? = null,
 
+	@field:SerializedName("category_service_id")
+	val categoryServiceId: Int? = null,
+
 	@field:SerializedName("user_id")
 	val userId: Int? = null,
 
-	@field:SerializedName("branch_id")
-	val branchId: Int? = null,
+	@field:SerializedName("tgl_pemeriksaan")
+	val tglPemeriksaan: String? = null,
 
-	@field:SerializedName("gambar_profile")
-	val gambarProfile: String? = null,
+	@field:SerializedName("catatan")
+	val catatan: String? = null,
+
+	@field:SerializedName("created_at")
+	val createdAt: String? = null,
+
+	@field:SerializedName("children_patient_id")
+	val childrenPatientId: Int? = null,
 
 	@field:SerializedName("id")
-	val id: Int? = null,
-
-	@field:SerializedName("jenis_kelamin")
-	val jenisKelamin: String? = null
+	val id: Int? = null
 ) : Parcelable
 
 @Parcelize
-data class DataLoginItem(
+data class DataChildService(
 
-	@field:SerializedName("dataLoginUser")
-	val dataLoginUser: DataLoginUser? = null,
+	@field:SerializedName("pemeriksaan_id")
+	val pemeriksaanId: Int? = null,
 
-	@field:SerializedName("role")
-	val role: String? = null,
+	@field:SerializedName("hasil_pemeriksaan")
+	val hasilPemeriksaan: String? = null,
 
-	@field:SerializedName("token")
-	val token: String? = null
+	@field:SerializedName("tinggi_cm")
+	val tinggiCm: String? = null,
+
+	@field:SerializedName("checks")
+	val checks: Checks? = null,
+
+	@field:SerializedName("updated_at")
+	val updatedAt: String? = null,
+
+	@field:SerializedName("created_at")
+	val createdAt: String? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null
 ) : Parcelable

@@ -33,6 +33,7 @@ class BumilAdapter(val items: List<ChecksRelation>) : RecyclerView.Adapter<Bumil
         val item = items[position]
         val userProfilePatientEntity = item.userProfilePatientEntity
         val checkEntity = item.checksEntity
+
         holder.tgl.text = checkEntity.tglPemeriksaan
         holder.nik.text = userProfilePatientEntity.nikBumil
         holder.nama.text = userProfilePatientEntity.namaBumil

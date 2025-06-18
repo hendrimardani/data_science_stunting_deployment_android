@@ -564,6 +564,8 @@ class ChattingRepository(
             ResultState.Error("Unexpected error: ${e.message}")
         }
     }
+    fun getChecksRelationByUserIdCategoryServiceIdChildService(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>> =
+        chattingDatabase.checksDao().getChecksRelationByUserIdCategoryServiceIdChildService(userId, categoryServiceId)
 
     fun getChildrenPatientByNamaAnak(namaAnak: String) =
         chattingDatabase.childrenPatientDao().getChildrenPatientByNamaAnak(namaAnak)
@@ -634,14 +636,16 @@ class ChattingRepository(
         }
     }
 
+    suspend fun insertChildServices(childServicesList: List<ChildServiceEntity>) =
+        chattingDatabase.childServiceDao().insertChildServices(childServicesList)
+
     suspend fun addChildServiceByUserId(
-        userId: Int, categoryServiceId: Int, catatan: String?, namaAnak: String, nikAnak: String,
-        jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String, tinggiCm: String, hasilPemeriksaan: String
+        userId: Int, categoryServiceId: Int, catatan: String?, namaAnak: String,
+        tinggiCm: String, hasilPemeriksaan: String
     ): ResultState<AddingChildServiceByUserIdResponse?> {
         return try {
             val requestBody = AddingChildServiceByUserIdRequestJSON(
-                categoryServiceId, catatan, namaAnak, nikAnak,
-                jenisKelaminAnak, tglLahirAnak, umurAnak, tinggiCm, hasilPemeriksaan
+                categoryServiceId, catatan, namaAnak, tinggiCm, hasilPemeriksaan
             )
             val response = apiService.addChildSericeByUserId(userId, requestBody)
 
@@ -1055,8 +1059,8 @@ class ChattingRepository(
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
 
-    fun getChecksRelationByUserIdCategoryServiceId(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>> =
-        chattingDatabase.checksDao().getChecksRelationByUserIdCategoryServiceId(userId, categoryServiceId)
+    fun getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>> =
+        chattingDatabase.checksDao().getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId, categoryServiceId)
 
     fun getUserProfilePatientByNamaBumil(namaBumil: String): LiveData<UserProfilePatientEntity> =
         chattingDatabase.userProfilePatientDao().getUserProfilePatientByNamaBumil(namaBumil)

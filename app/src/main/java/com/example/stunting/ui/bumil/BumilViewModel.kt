@@ -30,12 +30,6 @@ class BumilViewModel(private val chattingRepository: ChattingRepository): ViewMo
         getUserProfilePatientsFromApi()
     }
 
-    suspend fun insertPregnantMomServices(pregnantMomServiceList: List<PregnantMomServiceEntity>) =
-        chattingRepository.insertPregnantMomServices(pregnantMomServiceList)
-
-    suspend fun insertChecks(checksList: List<ChecksEntity>) =
-        chattingRepository.insertChecks(checksList)
-
     fun getPregnantMomServiceFromApi() {
         viewModelScope.launch {
             _getPregnantMomServiceFromApiResult.value = ResultState.Loading
@@ -43,15 +37,21 @@ class BumilViewModel(private val chattingRepository: ChattingRepository): ViewMo
         }
     }
 
+    suspend fun insertPregnantMomServices(pregnantMomServiceList: List<PregnantMomServiceEntity>) =
+        chattingRepository.insertPregnantMomServices(pregnantMomServiceList)
+
+    fun getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId: Int, categoryServiceId: Int) =
+        chattingRepository.getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId, categoryServiceId)
+
+    suspend fun insertChecks(checksList: List<ChecksEntity>) =
+        chattingRepository.insertChecks(checksList)
+
     private fun getChecksFromApi() {
         viewModelScope.launch {
             _getChecksFromApiResult.value = ResultState.Loading
             _getChecksFromApiResult.value = chattingRepository.getChecksFromApi()
         }
     }
-
-    fun getChecksRelationByUserIdCategoryServiceId(userId: Int, categoryServiceId: Int) =
-        chattingRepository.getChecksRelationByUserIdCategoryServiceId(userId, categoryServiceId)
 
     fun getUserProfilePatientByNamaBumil(namaBumil: String) =
         chattingRepository.getUserProfilePatientByNamaBumil(namaBumil)

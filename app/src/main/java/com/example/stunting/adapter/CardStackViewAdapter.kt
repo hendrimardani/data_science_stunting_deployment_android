@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.databinding.ItemCardStackViewBinding
 import com.example.stunting.resouce_data.Services
 import com.example.stunting.ui.anak.AnakActivity
+import com.example.stunting.ui.anak.AnakActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY
+import com.example.stunting.ui.anak.AnakActivity.Companion.EXTRA_USER_ID_TO_ANAK_ACTIVITY
 import com.example.stunting.ui.bumil.BumilActivity
 import com.example.stunting.ui.bumil.BumilActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY
 import com.example.stunting.ui.bumil.BumilActivity.Companion.EXTRA_USER_ID_TO_BUMIL_ACTIVITY
@@ -38,8 +40,8 @@ class CardStackViewAdapter(val userId: Int): ListAdapter<Services, CardStackView
                     }
                     "Layanan Anak" -> {
                         val intent = Intent(itemView.context, AnakActivity::class.java)
-                        intent.putExtra(EXTRA_USER_ID_TO_BUMIL_ACTIVITY, userId)
-                        intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_ACTIVITY, 2)
+                        intent.putExtra(EXTRA_USER_ID_TO_ANAK_ACTIVITY, userId)
+                        intent.putExtra(EXTRA_CATEGORY_SERVICE_ID_TO_ANAK_ACTIVITY, 2)
                         itemView.context.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(itemView.context as Activity).toBundle())
                     }
                     "Layanan Remaja Putri" -> {

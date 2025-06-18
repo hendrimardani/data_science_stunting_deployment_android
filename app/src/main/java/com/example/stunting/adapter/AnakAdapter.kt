@@ -8,9 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stunting.database.no_api.anak.AnakEntity
 import com.example.stunting.R
+import com.example.stunting.database.with_api.entities.checks.ChecksRelation
 import com.example.stunting.databinding.ItemAnakAdapterBinding
 
-class AnakAdapter(val items: ArrayList<AnakEntity>) : RecyclerView.Adapter<AnakAdapter.ViewHolder>() {
+class AnakAdapter(val items: List<ChecksRelation>) : RecyclerView.Adapter<AnakAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemAnakAdapterBinding) : RecyclerView.ViewHolder(binding.root) {
         val llItemAnak = binding.llItemAnak
@@ -30,13 +31,16 @@ class AnakAdapter(val items: ArrayList<AnakEntity>) : RecyclerView.Adapter<AnakA
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        val childrenPatientEntity = item.childrenPatientEntity
+        val childServiceEntity = item.childServiceEntity
+        val checkEntity = item.checksEntity
 
-        holder.tglAnak.text = item.tanggal
-        holder.namaAnak.text = item.namaAnak
-        holder.klasifikasi.text = item.klasifikasiAnak
+        holder.tglAnak.text = checkEntity.tglPemeriksaan
+        holder.namaAnak.text = childrenPatientEntity.namaAnak
+        holder.klasifikasi.text = childServiceEntity?.hasilPemeriksaan
 
         // Change color text classification display
-        if (item.klasifikasiAnak == ContextCompat.getString(holder.itemView.context, R.string.classification_normal)) {
+        if (childServiceEntity?.hasilPemeriksaan == ContextCompat.getString(holder.itemView.context, R.string.classification_normal)) {
             holder.klasifikasi.setTextColor(Color.GREEN)
         } else holder.klasifikasi.setTextColor(Color.RED)
 
