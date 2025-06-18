@@ -60,13 +60,12 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
-class BumilActivity : AppCompatActivity(), View.OnClickListener {
+class BumilActivity : AppCompatActivity() {
     private var _binding: ActivityBumilBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<BumilViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     private var _bindingBumilBottomSheetDialog: DialogBottomSheetAllBinding? = null
     private val bindingBumilBottomSheetDialog get() = _bindingBumilBottomSheetDialog!!
     private var _cal: Calendar? = null
@@ -102,28 +101,94 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         setToolBar()
         collapsedHandlerToolbar()
 
-        setCalendarTglLahir(binding.etTglLahirBumil)
-        setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
-        setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
-
-        getRadioButtonValue(R.id.rg_bumil)
-
-        binding.etTglLahirBumil.setOnClickListener(this)
-        binding.etTglHariPertamaHaidTerakhirBumil.setOnClickListener(this)
-        binding.etTglPerkiraanLahirBumil.setOnClickListener(this)
-        binding.rgBumil.setOnClickListener(this)
-        binding.btnSubmitBumil.setOnClickListener(this)
-        binding.btnTampilDataBumil.setOnClickListener(this)
-
         getChecksFromApi()
         getChecksRelationByUserIdCategoryServiceId(userId!!)
         getUserProfilePatientFromApi()
-        setTglLahirBumil()
-        setInputTextTanggalPerkiraanLahir()
-        setInputTextUmurKehamilan()
+
+        setTglLahirBumilTextWatcher()
+        setInputTextTanggalPerkiraanLahirTextWatcher()
+        setInputTextUmurKehamilanTextWatcher()
+
+        setCalendarTglLahir()
+        setCalendarHariPertamaHaidTerakhir()
+        setCalendarTglPerkiraanLahir()
+
+        getRadioButtonStatusGiziValue()
+
+        btnTampilData()
+        btnSubmit()
     }
 
-    private fun setInputTextUmurKehamilan() {
+    private fun setCalendarTglLahir() {
+        setCalendarTglLahir(binding.etTglLahirBumil)
+        binding.etTglLahirBumil.setOnClickListener { getDatePickerDialogTglLahir(this@BumilActivity) }
+    }
+
+    private fun setCalendarHariPertamaHaidTerakhir() {
+        setCalendarHariPertamaHaidTerakhir(binding.etTglHariPertamaHaidTerakhirBumil)
+        binding.etTglHariPertamaHaidTerakhirBumil.setOnClickListener { getDatePickerDialogHariPertamaHaidTerakhir() }
+    }
+
+    private fun setCalendarTglPerkiraanLahir() {
+        setCalendarTglPerkiraanLahir(binding.etTglPerkiraanLahirBumil)
+        binding.etTglLahirBumil.setOnClickListener { getDatePickerDialogTglPerkiraanLahir() }
+    }
+
+    private fun getRadioButtonStatusGiziValue() {
+        val radioGroup = binding.rgBumil
+        // Get all the RadioButtons within the RadioGroup
+        val radioButtons = radioGroup.childCount
+
+        // Set a listener for each RadioButton
+        for (i in 0 until radioButtons) {
+            val radioButton = radioGroup.getChildAt(i) as RadioButton
+            radioButton.setOnCheckedChangeListener { button, isChecked ->
+                if (isChecked) {
+                    // Handle the selected RadioButton
+                    val selectedRadioButtonText = button.text.toString()
+                    if (selectedRadioButtonText == "YA") {
+                        statusGiziRadioButton = selectedRadioButtonText
+                    } else {
+                        statusGiziRadioButton = selectedRadioButtonText
+                    }
+//                    Log.e("Selected RadioButton:", selectedRadioButtonText)
+                }
+            }
+        }
+    }
+
+    private fun btnTampilData() {
+        if (countItem != 0) showBottomSheetDialog() else
+            toastInfo(
+                this@BumilActivity, getString(R.string.title_show_data_failed),
+                getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
+            )
+    }
+
+    private fun btnSubmit() {
+        val nik = binding.etNikBumil.text.toString()
+        val tglLahir = binding.etTglLahirBumil.text.toString()
+        val umur = binding.etUmurBumil.text.toString()
+        val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
+        val tglPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
+        val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
+        val statusGiziKesehatan = statusGiziRadioButton
+
+        if (catatan == null) catatan = "Tidak ada"
+
+        if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
+            umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
+            umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
+            addPregnantMomServiceByUserId(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
+        } else {
+            toastInfo(
+                this@BumilActivity, getString(R.string.title_input_failed),
+                getString(R.string.description_input_failed), MotionToastStyle.ERROR
+            )
+        }
+    }
+
+    private fun setInputTextUmurKehamilanTextWatcher() {
         // Ketika tiap sentuh inputText, inputText umur kehamilan akan terupdate
         binding.etTglHariPertamaHaidTerakhirBumil.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
@@ -168,7 +233,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
         return "$monthsPregnant bulan (${weeksPregnant} minggu)"
     }
 
-    private fun setInputTextTanggalPerkiraanLahir() {
+    private fun setInputTextTanggalPerkiraanLahirTextWatcher() {
         // Ketika tiap sentuh inputText, inputText tgl perkiraan lahir akan terupdate
         binding.etTglHariPertamaHaidTerakhirBumil.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
@@ -205,7 +270,7 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun setTglLahirBumil() {
+    private fun setTglLahirBumilTextWatcher() {
         binding.etTglLahirBumil.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
@@ -233,29 +298,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             } else {
                 // Jika masih expanded, sembunyikan judul
                 binding.collapsingToolbarLayout.title = ""
-            }
-        }
-    }
-
-    private fun getRadioButtonValue(bindingRadioGroup: Int) {
-        val radioGroup = findViewById<RadioGroup>(bindingRadioGroup)
-        // Get all the RadioButtons within the RadioGroup
-        val radioButtons = radioGroup.childCount
-
-        // Set a listener for each RadioButton
-        for (i in 0 until radioButtons) {
-            val radioButton = radioGroup.getChildAt(i) as RadioButton
-            radioButton.setOnCheckedChangeListener { button, isChecked ->
-                if (isChecked) {
-                    // Handle the selected RadioButton
-                    val selectedRadioButtonText = button.text.toString()
-                    if (selectedRadioButtonText == "YA") {
-                        statusGiziRadioButton = selectedRadioButtonText
-                    } else {
-                        statusGiziRadioButton = selectedRadioButtonText
-                    }
-//                    Log.e("Selected RadioButton:", selectedRadioButtonText)
-                }
             }
         }
     }
@@ -361,43 +403,6 @@ class BumilActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) { }
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.et_tgl_lahir_bumil -> getDatePickerDialogTglLahir(this@BumilActivity)
-            R.id.et_tgl_hari_pertama_haid_terakhir_bumil -> getDatePickerDialogHariPertamaHaidTerakhir()
-            R.id.et_tgl_perkiraan_lahir_bumil -> getDatePickerDialogTglPerkiraanLahir()
-            R.id.btn_submit_bumil -> {
-                val nik = binding.etNikBumil.text.toString()
-                val tglLahir = binding.etTglLahirBumil.text.toString()
-                val umur = binding.etUmurBumil.text.toString()
-                val hariPertamaHaidTerakhir = binding.etTglHariPertamaHaidTerakhirBumil.text.toString()
-                val tglPerkiraanLahir = binding.etTglPerkiraanLahirBumil.text.toString()
-                val umurKehamilan = binding.etUmurKehamilanBumil.text.toString()
-                val statusGiziKesehatan = statusGiziRadioButton
-
-                if (catatan == null) catatan = "Tidak ada"
-
-                if (namaBumil.isNotEmpty() && nik.isNotEmpty() && tglLahir.isNotEmpty() &&
-                    umur.isNotEmpty() && hariPertamaHaidTerakhir.isNotEmpty() && tglPerkiraanLahir.isNotEmpty() &&
-                    umurKehamilan.isNotEmpty() && statusGiziKesehatan.isNotEmpty()) {
-                    addPregnantMomServiceByUserId(catatan, namaBumil, hariPertamaHaidTerakhir, tglPerkiraanLahir, umurKehamilan, statusGiziKesehatan)
-                } else {
-                    toastInfo(
-                        this@BumilActivity, getString(R.string.title_input_failed),
-                        getString(R.string.description_input_failed), MotionToastStyle.ERROR
-                    )
-                }
-            }
-            R.id.btn_tampil_data_bumil -> {
-                if (countItem != 0) showBottomSheetDialog() else
-                    toastInfo(
-                        this@BumilActivity, getString(R.string.title_show_data_failed),
-                        getString(R.string.description_show_data_failed), MotionToastStyle.ERROR
-                    )
-            }
         }
     }
 

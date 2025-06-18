@@ -71,7 +71,6 @@ class AnakActivity : AppCompatActivity() {
     private val viewModel by viewModels<AnakViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     private var _bindingAnakBottomSheetDialog: DialogBottomSheetAnakBinding? = null
     private val bindingAnakBottomSheetDialog get() = _bindingAnakBottomSheetDialog!!
 
@@ -108,16 +107,15 @@ class AnakActivity : AppCompatActivity() {
         getChecksFromApi()
         getChecksRelationByUserIdCategoryServiceIdChildService(userId!!)
         getChildrenPatientsFromApi()
-        setInputTextUmur()
+
+        setInputTextUmurTextWatcher()
         btnTampilData()
         btnSubmit()
     }
 
     private fun setCalendarTglLahir() {
         setCalendarTglLahir(binding.etTglLahirAnak)
-        binding.etTglLahirAnak.setOnClickListener {
-            getDatePickerDialogTglLahir(this@AnakActivity)
-        }
+        binding.etTglLahirAnak.setOnClickListener { getDatePickerDialogTglLahir(this@AnakActivity) }
     }
 
     private fun getChecksFromApi() {
@@ -293,7 +291,7 @@ class AnakActivity : AppCompatActivity() {
         return resultConvert
     }
 
-    private fun setInputTextUmur() {
+    private fun setInputTextUmurTextWatcher() {
         // Ketika tiap sentuh inputText, inputText umur akan terupdate
         binding.etTglLahirAnak.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
