@@ -209,7 +209,7 @@
             <Spinner
                 android:id="@+id/s_cabang"
                 android:layout_width="230dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:background="@drawable/shape_spinner"
                 app:layout_constraintStart_toEndOf="@id/iv_cabang"

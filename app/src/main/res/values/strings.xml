@@ -185,7 +185,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home_patient">Home</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_drawer_main">NavigationDrawerMainActivity</string>
     <string name="menu_settings">Pengaturan</string>
@@ -235,9 +235,10 @@
     <string name="title_activity_nav_drawer_main_patient">NavDrawerMainActivityPatient</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_user_profile">User Profile</string>
     <string name="text_sedang_menyiapkan">SEDANG MENYIAPKAN...</string>
     <string name="text_layanan">Layanan</string>
     <string name="text_no">No</string>
     <string name="hint_text_cari">Cari...</string>
+    <string name="text_edit">Edit</string>
 </resources>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="@dimen/dimen_16"
+    android:elevation="5dp"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="420dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_nama_bumil"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_name_bumil"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_32"
+            android:layout_marginEnd="@dimen/dimen_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nama_bumil"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_nama_bumil"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:layout_constraintStart_toEndOf="@id/iv_nama_bumil"
+            app:layout_constraintTop_toTopOf="@id/iv_nama_bumil"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nama_bumil"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNamaEditText
+                android:id="@+id/tiet_nama_bumil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_nik_bumil"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_nik"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_nama_bumil" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nik_bumil"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_nik_bumil"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:hintTextColor="?attr/colorSecondary"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:layout_constraintStart_toEndOf="@id/iv_nik_bumil"
+            app:layout_constraintTop_toTopOf="@id/iv_nik_bumil"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nik_bumil"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNikEditText
+                android:id="@+id/tiet_nik_bumil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_tgl_lahir_bumil"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_tgl_lahir"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_nik_bumil"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_tgl_lahir_bumil"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_tgl_lahir"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_tgl_lahir_bumil"
+            app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_bumil"
+            app:layout_constraintBottom_toBottomOf="@id/iv_tgl_lahir_bumil"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_tgl_lahir_bumil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:inputType="datetime"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_umur_bumil"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_umur"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_tgl_lahir_bumil" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_umur_bumil"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_umur_bumil"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_umur_bumil"
+            app:layout_constraintTop_toTopOf="@id/iv_umur_bumil"
+            app:layout_constraintBottom_toBottomOf="@id/iv_umur_bumil"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_umur_bumil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_nama_ayah"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_nama_ayah"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_umur_bumil" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nama_ayah"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_nama_ayah"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_nama_ayah"
+            app:layout_constraintTop_toTopOf="@id/iv_nama_ayah"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nama_ayah"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNamaEditText
+                android:id="@+id/tiet_nama_ayah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_alamat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_alamat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_nama_ayah"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_alamat"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_alamat"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_alamat"
+            app:layout_constraintTop_toTopOf="@id/iv_alamat"
+            app:layout_constraintBottom_toBottomOf="@id/iv_alamat"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_alamat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="4"
+                android:inputType="textMultiLine"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_update"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/text_edit"
+            android:paddingHorizontal="50dp"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:enabled="false"
+            app:icon="@drawable/ic_edit_24"
+            app:layout_constraintTop_toBottomOf="@id/til_alamat"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
