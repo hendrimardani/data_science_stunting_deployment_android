@@ -175,12 +175,15 @@
                 app:layout_constraintStart_toStartOf="@id/iv_email"
                 app:layout_constraintEnd_toEndOf="@id/iv_email" />
 
-            <Spinner
-                android:id="@+id/s_cabang"
+            <TextView
+                android:id="@+id/tv_cabang"
                 android:layout_width="230dp"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
+                android:layout_height="40dp"
                 android:background="@drawable/shape_spinner"
+                android:text="@string/text_cabang"
+                android:textSize="18sp"
+                android:textColor="@color/gray"
+                android:paddingStart="@dimen/dimen_16"
                 app:layout_constraintStart_toEndOf="@id/iv_cabang"
                 app:layout_constraintTop_toTopOf="@id/iv_cabang"
                 app:layout_constraintBottom_toBottomOf="@id/iv_cabang"

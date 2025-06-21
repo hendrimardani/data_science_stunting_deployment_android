@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -16,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,13 +31,19 @@ import com.example.stunting.databinding.ActivitySignUpBinding
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.ui.chatbot.ChatbotActivity
 import com.example.stunting.utils.NetworkLiveData
+import com.skydoves.powermenu.MenuAnimation
+import com.skydoves.powermenu.PowerMenu
+import com.skydoves.powermenu.PowerMenuItem
 
 class SignUpActivity : AppCompatActivity() {
     private var _binding: ActivitySignUpBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var powerMenu: PowerMenu
     private lateinit var networkLiveData: NetworkLiveData
+
     private var sweetAlertDialog: SweetAlertDialog? = null
 
     private var namaCabang = ""
@@ -61,12 +70,19 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
                 animationStart()
                 textWatcher()
-                spinnerCabang()
+                setupPowerMenu()
+                setupCabangClicked()
                 signUpButton()
             } else {
                 showNoInternet(true)
                 Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun setupCabangClicked() {
+        binding.tvCabang.setOnClickListener { view ->
+            powerMenu.showAsDropDown(view)
         }
     }
 
@@ -89,43 +105,6 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun spinnerCabang() {
-        val items = mutableListOf("Pilih Cabang")
-
-        viewModel.getBranchesFromLocal().observe(this) { branchesList ->
-            branchesList.forEach { item ->
-                items.add(item.namaCabang.toString())
-            }
-        }
-
-        val adapter = object: ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items) {
-            override fun isEnabled(position: Int): Boolean {
-                // Item di posisi 0 tidak bisa dipilih
-                return position != 0
-            }
-
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getDropDownView(position, convertView, parent)
-                val textView = view as TextView
-
-                if (position == 0) {
-                    textView.setTextColor(getColor(R.color.buttonDisabledColor))
-                }
-                return view
-            }
-        }
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.sCabang.adapter = adapter
-
-        binding.sCabang.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                namaCabang = parent?.getItemAtPosition(position).toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
         }
     }
 
@@ -191,6 +170,35 @@ class SignUpActivity : AppCompatActivity() {
         binding.tietEmail.addTextChangedListener(textWatcher)
         binding.tietPassword.addTextChangedListener(textWatcher)
         binding.tietRepeatPassword.addTextChangedListener(textWatcher)
+    }
+
+
+    private fun setupPowerMenu() {
+        val listMenuItem = mutableListOf<PowerMenuItem>()
+
+        viewModel.getBranchesFromLocal().observe(this) { branchesList ->
+            branchesList.forEach { branchEntity ->
+                listMenuItem.add(
+                    PowerMenuItem(branchEntity.namaCabang)
+                )
+            }
+
+            powerMenu = PowerMenu.Builder(this)
+                .addItemList(listMenuItem)
+                .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+                .setMenuRadius(10f) // sets the corner radius.
+                .setMenuShadow(10f) // sets the shadow.
+                .setTextGravity(Gravity.LEFT)
+                .setSelectedTextColor(Color.WHITE)
+                .setMenuColor(Color.WHITE)
+                .setMenuRadius(30f)
+                .setSelectedMenuColor(ContextCompat.getColor(this, R.color.bluePrimary))
+                .setOnMenuItemClickListener { position, item ->
+                    binding.tvCabang.setText(item.title)
+                    powerMenu.dismiss()
+                }
+                .build()
+        }
     }
 
     private fun signUpButton() {
