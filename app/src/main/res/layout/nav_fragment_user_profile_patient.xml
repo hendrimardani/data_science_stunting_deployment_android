@@ -6,7 +6,7 @@
     android:elevation="5dp"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="420dp">
+    android:layout_height="470dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -237,6 +237,43 @@
                 android:textColor="?attr/colorText" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageView
+            android:id="@+id/iv_cabang"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_home_work_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_alamat" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_cabang"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_cabang"
+            android:textColorHint="?attr/colorTextHint"
+            android:layout_marginStart="@dimen/dimen_8"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_cabang"
+            app:layout_constraintTop_toTopOf="@id/iv_cabang"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cabang"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNamaEditText
+                android:id="@+id/tiet_cabang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_update"
             android:layout_width="150dp"
@@ -247,7 +284,7 @@
             android:layout_marginEnd="@dimen/dimen_16"
             android:enabled="false"
             app:icon="@drawable/ic_edit_24"
-            app:layout_constraintTop_toBottomOf="@id/til_alamat"
+            app:layout_constraintTop_toBottomOf="@id/til_cabang"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

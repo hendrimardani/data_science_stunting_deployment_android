@@ -348,7 +348,6 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
     private fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int) {
         viewModel.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
             .observe(this) { userProfilePatientsWithBranchRelationByIdFromLocal ->
-                Log.d(TAG, "onGetUserProfilePatientsWithBranchRelationByIdFromLocal : ${userProfilePatientsWithBranchRelationByIdFromLocal}")
                 val branchEntity = userProfilePatientsWithBranchRelationByIdFromLocal.branch
                 val userPatientEntity = userProfilePatientsWithBranchRelationByIdFromLocal.userProfilePatients
                 userPatientEntity.forEach { item ->

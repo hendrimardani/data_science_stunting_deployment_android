@@ -241,4 +241,5 @@
     <string name="text_no">No</string>
     <string name="hint_text_cari">Cari...</string>
     <string name="text_edit">Edit</string>
+    <string name="menu_home">Home</string>
 </resources>

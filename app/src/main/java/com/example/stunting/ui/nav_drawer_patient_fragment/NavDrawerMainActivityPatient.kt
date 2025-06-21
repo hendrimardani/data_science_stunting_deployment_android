@@ -82,7 +82,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         isTaptTargetViewActived = intent?.getBooleanExtra(EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, false)
 
         if (isTaptTargetViewActived!!) {
-            isTapTargetViewActived()
+
         }
 
         // Ubah warna teks logout
@@ -99,9 +99,10 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         getMenuNavigationView()
     }
 
+    // TapTargetView
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
+        if (hasFocus && isTaptTargetViewActived!!) {
             val toolbar = binding.appBarNavDrawerMainActivityPatient.toolbarPatient
             val aboutMenu = toolbar.findViewById<View>(R.id.menu_main_about)
 
@@ -145,45 +146,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //                Log.e("TapTarget", "View dari menu_main_about tidak ditemukan.")
             }
         }
-    }
-
-
-    private fun isTapTargetViewActived() {
-        val sequence = TapTargetSequence(this)
-            .targets(
-                TapTarget.forToolbarNavigationIcon(
-                    binding.appBarNavDrawerMainActivityPatient.toolbarPatient,
-                    "Navigation Drawer",
-                    "Daftar menu yang tersedia seperti profile, pengaturan."
-                )
-                    .outerCircleColor(R.color.bluePrimary)
-                    .targetCircleColor(R.color.white)
-                    .titleTextSize(20)
-                    .descriptionTextSize(15)
-                    .textTypeface(Typeface.DEFAULT_BOLD)
-                    .tintTarget(true)
-                    .cancelable(true),
-
-                TapTarget.forView(
-                    binding.root.findViewById(R.id.menu_main_about),
-                    "Tambah Data",
-                    "Tekan untuk menambahkan data baru ke sistem"
-                )
-                    .outerCircleColor(R.color.bluePrimary)
-                    .targetCircleColor(R.color.white)
-                    .titleTextSize(20)
-                    .descriptionTextSize(15)
-                    .tintTarget(true)
-                    .cancelable(true)
-            )
-            .listener(object : TapTargetSequence.Listener {
-                override fun onSequenceFinish() { }
-
-                override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) { }
-
-                override fun onSequenceCanceled(lastTarget: TapTarget) { }
-            })
-        sequence.start()
     }
 
     private fun getDataExtra() {

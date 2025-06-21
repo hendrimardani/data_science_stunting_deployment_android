@@ -24,6 +24,7 @@ import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Compani
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 
 class OpeningFragment : Fragment() {
@@ -102,6 +103,7 @@ class OpeningFragment : Fragment() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
         intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)
+        intent.putExtra(EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, false)
         startActivity(intent)
         requireActivity().finish()
     }
