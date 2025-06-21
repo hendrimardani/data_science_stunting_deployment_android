@@ -15,7 +15,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -36,8 +35,8 @@ import com.example.stunting.databinding.ActivityBumilBinding
 import com.example.stunting.databinding.DialogBottomSheetAllBinding
 import com.example.stunting.databinding.DialogCustomDeleteBinding
 import com.example.stunting.databinding.DialogCustomExportDataBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.Functions.calculateAge
 import com.example.stunting.utils.Functions.getDatePickerDialogTglLahir
@@ -361,8 +360,8 @@ class BumilActivity : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@BumilActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@BumilActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -424,8 +423,8 @@ class BumilActivity : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -498,8 +497,8 @@ class BumilActivity : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@BumilActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@BumilActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }

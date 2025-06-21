@@ -1349,10 +1349,10 @@ class ChattingRepository(
     }
 
     suspend fun register(
-        nama: String, email: String, role: String, namaCabang: String, password: String, repeatPassword: String
+        nama: String, email: String, namaCabang: String, password: String, repeatPassword: String
     ): ResultState<RegisterResponse?> {
         return try {
-            val requestBody = RegisterRequestJSON(nama, email, role, namaCabang, password, repeatPassword)
+            val requestBody = RegisterRequestJSON(nama, email, namaCabang, password, repeatPassword)
             val response = apiService.register(requestBody)
 
             if (response.isSuccessful) {

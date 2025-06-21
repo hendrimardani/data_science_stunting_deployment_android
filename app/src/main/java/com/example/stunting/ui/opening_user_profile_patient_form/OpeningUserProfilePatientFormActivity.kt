@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
@@ -23,8 +22,8 @@ import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
 import com.example.stunting.databinding.ActivityOpeningUserProfilePatientFormBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity
 import com.example.stunting.ui.opening_user_profile_patient_ready.OpeningUserProfilePatientReadyActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT_READY
@@ -135,8 +134,8 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -195,8 +194,8 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -371,8 +370,8 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@OpeningUserProfilePatientFormActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }

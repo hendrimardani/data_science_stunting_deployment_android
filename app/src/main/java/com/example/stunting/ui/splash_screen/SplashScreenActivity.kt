@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.stunting.R
 import com.example.stunting.databinding.ActivitySplashScreenBinding
-import com.example.stunting.ui.MainActivity
+import com.example.stunting.ui.ContainerMainActivity
 
 class SplashScreenActivity : AppCompatActivity() {
     private var _binding: ActivitySplashScreenBinding? = null
@@ -62,7 +62,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun goToMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, ContainerMainActivity::class.java))
         finish()
     }
 

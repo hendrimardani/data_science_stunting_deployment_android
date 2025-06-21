@@ -30,10 +30,10 @@ class SignUpViewModel(private val chattingRepository: ChattingRepository): ViewM
     }
 
     fun register(
-        nama: String, email: String, role: String, namaCabang: String, password: String, repeatPassword: String
+        nama: String, email: String, namaCabang: String, password: String, repeatPassword: String
     ): LiveData<ResultState<RegisterResponse?>> = liveData {
         emit(ResultState.Loading)
-        emit(chattingRepository.register(nama, email, role, namaCabang, password, repeatPassword))
+        emit(chattingRepository.register(nama, email, namaCabang, password, repeatPassword))
     }
 
     fun logout() {

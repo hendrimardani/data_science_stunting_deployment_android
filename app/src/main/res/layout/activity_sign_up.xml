@@ -80,8 +80,8 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_sign_up"
@@ -112,7 +112,7 @@
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
-                android:hint="@string/hint_nama_lengkap_sign_up"
+                android:hint="@string/text_nama_bumil"
                 android:textColorHint="?attr/colorTextHint"
                 app:hintTextColor="?attr/colorSecondary"
                 app:boxStrokeColor="@color/box_stroke_color"
@@ -137,7 +137,7 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_email_24"
                 app:layout_constraintStart_toStartOf="@id/iv_nama_lengkap"
-                app:layout_constraintEnd_toStartOf="@id/til_email"
+                app:layout_constraintEnd_toEndOf="iv_nama_lengkap"
                 app:layout_constraintTop_toBottomOf="@id/til_nama_lengkap" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -152,7 +152,7 @@
                 app:boxStrokeColor="@color/box_stroke_color"
                 app:boxStrokeWidth="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_email"
-                app:layout_constraintEnd_toEndOf="@id/til_nama_lengkap"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_email"
                 app:layout_constraintTop_toTopOf="@id/iv_email"
                 app:shapeAppearance="@style/Rounded">
@@ -166,45 +166,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
-                android:id="@+id/iv_role"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_lock_person_24"
-                app:layout_constraintTop_toBottomOf="@id/iv_email"
-                app:layout_constraintStart_toStartOf="@id/iv_email"
-                app:layout_constraintEnd_toEndOf="@id/iv_email" />
-
-            <RadioGroup
-                android:id="@+id/rg_role"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toEndOf="@id/iv_role"
-                app:layout_constraintTop_toTopOf="@id/iv_role"
-                app:layout_constraintBottom_toBottomOf="@id/iv_role">
-
-                <RadioButton
-                    android:id="@+id/rb_pasien"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:checked="true"
-                    android:text="@string/text_pasien" />
-
-                <RadioButton
-                    android:id="@+id/rb_pegawai"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/text_petugas" />
-            </RadioGroup>
-
-            <ImageView
                 android:id="@+id/iv_cabang"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_home_work_24"
-                app:layout_constraintTop_toBottomOf="@id/iv_role"
-                app:layout_constraintStart_toStartOf="@id/iv_role"
-                app:layout_constraintEnd_toEndOf="@id/iv_role" />
+                android:layout_marginTop="@dimen/dimen_8"
+                app:layout_constraintTop_toBottomOf="@id/iv_email"
+                app:layout_constraintStart_toStartOf="@id/iv_email"
+                app:layout_constraintEnd_toEndOf="@id/iv_email" />
 
             <Spinner
                 android:id="@+id/s_cabang"
@@ -214,7 +183,8 @@
                 android:background="@drawable/shape_spinner"
                 app:layout_constraintStart_toEndOf="@id/iv_cabang"
                 app:layout_constraintTop_toTopOf="@id/iv_cabang"
-                app:layout_constraintBottom_toBottomOf="@id/iv_cabang" />
+                app:layout_constraintBottom_toBottomOf="@id/iv_cabang"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_password"
@@ -238,7 +208,7 @@
                 app:boxStrokeColor="@color/box_stroke_color"
                 app:boxStrokeWidth="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_password"
-                app:layout_constraintEnd_toEndOf="@id/til_email"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_password"
                 app:layout_constraintTop_toTopOf="@id/iv_password"
                 app:shapeAppearance="@style/Rounded">
@@ -279,11 +249,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sign_up"
-                android:layout_width="match_parent"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/signup"
-                android:paddingHorizontal="50dp"
+                android:paddingHorizontal="40dp"
                 android:layout_marginStart="@dimen/dimen_32"
                 android:enabled="false"
                 style="@style/Widget.Material3.Button.OutlinedButton.Icon"

@@ -242,4 +242,6 @@
     <string name="hint_text_cari">Cari...</string>
     <string name="text_edit">Edit</string>
     <string name="menu_home">Home</string>
+    <string name="text_belum_punya_akun">Belum punya akun ?</string>
+    <string name="text_daftar_disini">daftar disini</string>
 </resources>

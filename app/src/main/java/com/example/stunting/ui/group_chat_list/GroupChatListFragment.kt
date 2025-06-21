@@ -1,18 +1,13 @@
 package com.example.stunting.ui.group_chat_list
 
-import android.app.Dialog
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,12 +16,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.MyDeskripsiGroupEditText.Companion.MAX_CHARACTER_DESKRIPSI_GROUP
 import com.example.stunting.MyNamaGroupEditText.Companion.MAX_CHARACTER_NAMA_GROUP
 import com.example.stunting.R
-import com.example.stunting.ResultState
 import com.example.stunting.adapter.GroupChatListAdapter
 import com.example.stunting.databinding.DialogCustomTambahGroupBinding
 import com.example.stunting.databinding.FragmentGroupChatListBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 
@@ -135,7 +127,7 @@ class GroupChatListFragment : Fragment() {
 //                    is ResultState.Unauthorized -> {
 //                        viewModel.logout()
 //                        val intent = Intent(requireActivity(), MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, LOGIN_FRAGMENT)
 //                        startActivity(intent)
 //                    }
 //                }
@@ -198,7 +190,7 @@ class GroupChatListFragment : Fragment() {
 //                            is ResultState.Unauthorized -> {
 //                                viewModel.logout()
 //                                val intent = Intent(requireActivity(), MainActivity::class.java)
-//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, LOGIN_FRAGMENT)
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, LOGIN_FRAGMENT)
 //                                startActivity(intent)
 //                            }
 //                        }

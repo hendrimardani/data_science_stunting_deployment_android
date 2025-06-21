@@ -26,8 +26,8 @@ import com.example.stunting.database.with_api.response.PasienUser
 import com.example.stunting.database.with_api.response.PetugasUser
 import com.example.stunting.databinding.FragmentLoginBinding
 import com.example.stunting.datastore.chatting.UserModel
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity
 import com.example.stunting.ui.opening_user_profile_patient.OpeningUserProfilePatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT
 import com.example.stunting.ui.ViewModelFactory
@@ -37,8 +37,7 @@ import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainActivity.Compani
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
-import com.example.stunting.ui.opening.OpeningFragment
-import com.example.stunting.ui.opening.OpeningFragment.Companion
+import com.example.stunting.ui.sign_up.SignUpActivity
 import com.example.stunting.utils.NetworkLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -72,6 +71,7 @@ class LoginFragment : Fragment() {
             if (isConnected) {
                 showNoInternet(false)
                 Toast.makeText(requireActivity(), getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
+                navToSignUpActivity()
                 animationStart()
                 textWatcher()
                 loginButton()
@@ -82,17 +82,23 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun getChildrenPatientByUserPatientId(userPatientId: Int) {
-        viewModel.getChildrenPatientByUserPatientId(userPatientId).observe(requireActivity()) { result ->
-            Log.d(TAG, "onGetChildrenPatientByUserPatientId result : ${result}")
+    private fun navToSignUpActivity() {
+        binding.tvDaftar.setOnClickListener {
+            val intent = Intent(requireActivity(), SignUpActivity::class.java)
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
+        }
+    }
+
+    private fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int) {
+        viewModel.getChildrenPatientByUserPatientIdFromApi(userPatientId).observe(requireActivity()) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> { }
                     is ResultState.Error -> { }
                     is ResultState.Success -> {
-                        if (result.data.size == 0) {
+                        if (result.data.isEmpty()) {
                             // Jika belum pernah tambah data anak
-//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId belum pernah tambah data anak success : ${result}")
+                            Log.d(TAG, "onGetChildrenPatientByUserPatientId belum pernah tambah data anak success : ${result}")
                             val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
                             intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -100,19 +106,19 @@ class LoginFragment : Fragment() {
                             requireActivity().finish()
                         } else {
                             // Jika sudah pernah tambah data anak
-//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
+                            Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
                             val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                             intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
                             intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)
-                            startActivity(intent)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
                             requireActivity().finish()
                         }
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(requireActivity(), ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -206,10 +212,10 @@ class LoginFragment : Fragment() {
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                            val intent = Intent(requireActivity(), ContainerMainActivity::class.java)
+                            intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                             startActivity(intent)
-                        }
+                        } 
                     }
                 }
             }
@@ -239,11 +245,11 @@ class LoginFragment : Fragment() {
                 sweetAlertDialog.setCancelable(false)
                 sweetAlertDialog.setConfirmText(getString(R.string.ok))
 
-                viewModel.saveSession(userModel!!)
                 sweetAlertDialog.setConfirmClickListener { dialog ->
+                    viewModel.saveSession(userModel!!)
                     dialog.dismiss()
 //                    Log.d(TAG, "onLoginSucces: ${pasienUser.namaBumil}")
-                    getChildrenPatientByUserPatientId(userPatientId!!)
+                    getChildrenPatientByUserPatientIdFromApi(userPatientId!!)
                 }
                 sweetAlertDialog.show()
             } else {
@@ -259,8 +265,8 @@ class LoginFragment : Fragment() {
                 sweetAlertDialog.setCancelable(false)
                 sweetAlertDialog.setConfirmText(getString(R.string.ok))
 
-                viewModel.saveSession(userModel!!)
                 sweetAlertDialog.setConfirmClickListener { dialog ->
+                    viewModel.saveSession(userModel!!)
                     dialog.dismiss()
 //                    Log.d(TAG, "onLoginSucces: ${petugasUser.nama}")
 

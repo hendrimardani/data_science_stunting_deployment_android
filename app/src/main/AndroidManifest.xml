@@ -58,7 +58,7 @@
             android:label="@string/title_activity_navigation_drawer_main"
             android:theme="@style/Theme.Stunting.NoActionBar" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.ContainerMainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.group_chat_list.GroupChatListActivity"

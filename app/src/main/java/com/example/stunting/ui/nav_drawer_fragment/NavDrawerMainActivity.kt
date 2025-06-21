@@ -13,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -37,15 +36,11 @@ import com.example.stunting.databinding.ActivityNavDrawerMainBinding
 import com.example.stunting.databinding.DialogBottomSheetFotoBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
-import com.example.stunting.ui.MainViewModel
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_fragment.home.NavHomeFragment.Companion.EXTRA_USER_ID_TO_NAV_HOME_FRAGMENT
 import com.example.stunting.utils.Functions.getImageUri
-import com.example.stunting.utils.Functions.observeOnce
-import com.example.stunting.utils.Functions.reduceFileImage
-import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -180,7 +175,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //                            is ResultState.Unauthorized -> {
 //                                viewModel.logout()
 //                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
-//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                                startActivity(intent)
 //                            }
 //                        }
@@ -222,7 +217,7 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //                            is ResultState.Unauthorized -> {
 //                                viewModel.logout()
 //                                val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
-//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                                startActivity(intent)
 //                            }
 //                        }
@@ -367,8 +362,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@NavDrawerMainActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@NavDrawerMainActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -391,8 +386,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
             sweetAlertDialog.setConfirmClickListener {
                 Toast.makeText(this, "Berhasil keluar akun", Toast.LENGTH_LONG).show()
                 viewModel.logout()
-                val intent = Intent(this@NavDrawerMainActivity , MainActivity::class.java)
-                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                val intent = Intent(this@NavDrawerMainActivity , ContainerMainActivity::class.java)
+                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@NavDrawerMainActivity).toBundle())
             }

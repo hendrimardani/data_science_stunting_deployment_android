@@ -1,8 +1,6 @@
 package com.example.stunting.ui.detail_group
 
-import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -23,31 +20,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.bumptech.glide.Glide
 import com.example.stunting.MyDeskripsiGroupEditText.Companion.MAX_CHARACTER_DESKRIPSI_GROUP
 import com.example.stunting.MyNamaGroupEditText.Companion.MAX_CHARACTER_NAMA_GROUP
 import com.example.stunting.R
-import com.example.stunting.ResultState
 import com.example.stunting.adapter.DetailGroupAnggotaAdapter
 import com.example.stunting.adapter.DetailGroupTambahAnggotaAdapter
 import com.example.stunting.adapter.Interface.OnItemInteractionListener
-import com.example.stunting.database.with_api.entities.groups.GroupsEntity
-import com.example.stunting.database.with_api.entities.user_group.UserGroupRelation
-import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithSelection
 import com.example.stunting.databinding.ActivityDetailGroupBinding
 import com.example.stunting.databinding.DialogBottomSheetFotoBinding
 import com.example.stunting.databinding.DialogCustomEditGroupBinding
 import com.example.stunting.databinding.DialogCustomTambahAnggotaBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.Functions.getImageUri
-import com.example.stunting.utils.Functions.observeOnce
-import com.example.stunting.utils.Functions.reduceFileImage
-import com.example.stunting.utils.Functions.uriToFile
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.io.File
 
 class DetailGroupActivity : AppCompatActivity() {
     private var _binding: ActivityDetailGroupBinding? = null
@@ -244,7 +230,7 @@ class DetailGroupActivity : AppCompatActivity() {
 //                            is ResultState.Unauthorized -> {
 //                                viewModel.logout()
 //                                val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                                startActivity(intent)
 //                            }
 //                        }
@@ -283,7 +269,7 @@ class DetailGroupActivity : AppCompatActivity() {
 //                        is ResultState.Unauthorized -> {
 //                            viewModel.logout()
 //                            val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                            intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                            startActivity(intent)
 //                        }
 //                    }
@@ -401,7 +387,7 @@ class DetailGroupActivity : AppCompatActivity() {
 //                    is ResultState.Unauthorized -> {
 //                        viewModel.logout()
 //                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                        startActivity(intent)
 //                    }
 //                }
@@ -524,7 +510,7 @@ class DetailGroupActivity : AppCompatActivity() {
 //                    is ResultState.Unauthorized -> {
 //                        viewModel.logout()
 //                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                        startActivity(intent)
 //                    }
 //                }
@@ -549,7 +535,7 @@ class DetailGroupActivity : AppCompatActivity() {
 //                    is ResultState.Unauthorized -> {
 //                        viewModel.logout()
 //                        val intent = Intent(this@DetailGroupActivity, MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                        startActivity(intent)
 //                    }
 //                }

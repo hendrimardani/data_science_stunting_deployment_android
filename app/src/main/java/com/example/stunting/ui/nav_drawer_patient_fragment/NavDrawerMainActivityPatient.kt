@@ -10,14 +10,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -35,8 +33,8 @@ import com.example.stunting.database.with_api.entities.user_profile_patient.User
 import com.example.stunting.databinding.ActivityNavDrawerMainPatientBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT
 import com.getkeepsafe.taptargetview.TapTarget
@@ -199,8 +197,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@NavDrawerMainActivityPatient, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@NavDrawerMainActivityPatient, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -221,8 +219,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@NavDrawerMainActivityPatient, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@NavDrawerMainActivityPatient, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -245,8 +243,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
             sweetAlertDialog.setConfirmClickListener {
                 Toast.makeText(this, "Berhasil keluar akun", Toast.LENGTH_LONG).show()
                 viewModel.logout()
-                val intent = Intent(this@NavDrawerMainActivityPatient , MainActivity::class.java)
-                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                val intent = Intent(this@NavDrawerMainActivityPatient , ContainerMainActivity::class.java)
+                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@NavDrawerMainActivityPatient).toBundle())
             }

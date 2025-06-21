@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class RegisterRequestJSON(
     val nama: String,
     val email: String,
-    val role: String,
     @SerializedName("nama_cabang") val namaCabang: String,
     val password: String,
     @SerializedName("repeat_password") val repeatPassword: String

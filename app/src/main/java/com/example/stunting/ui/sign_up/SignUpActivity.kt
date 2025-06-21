@@ -7,12 +7,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,8 +25,8 @@ import com.example.stunting.MyPasswordEditText.Companion.MIN_CHARACTER_PASSWORD
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.databinding.ActivitySignUpBinding
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
+import com.example.stunting.ui.ContainerMainActivity
+import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.utils.NetworkLiveData
 
@@ -39,7 +37,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var networkLiveData: NetworkLiveData
     private var sweetAlertDialog: SweetAlertDialog? = null
 
-    private var roleValueRadioButton = ""
     private var namaCabang = ""
 
     private val viewModel by viewModels<SignUpViewModel> {
@@ -64,8 +61,8 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
                 animationStart()
                 textWatcher()
-                signUpButton()
                 spinnerCabang()
+                signUpButton()
             } else {
                 showNoInternet(true)
                 Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
@@ -86,8 +83,8 @@ class SignUpActivity : AppCompatActivity() {
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
-                        val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                        val intent = Intent(this@SignUpActivity, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                         startActivity(intent)
                     }
                 }
@@ -200,11 +197,6 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnSignUp.setOnClickListener {
             val nama = binding.tietNama.text.toString().trim()
             val email = binding.tietEmail.text.toString().trim()
-            val roleSelectedId = binding.rgRole.checkedRadioButtonId
-            if (roleSelectedId != -1) {
-                val selectedRadioButton = findViewById<RadioButton>(roleSelectedId)
-                roleValueRadioButton = selectedRadioButton.text.toString()
-            }
             val password = binding.tietPassword.text.toString().trim()
             val repeatPassword = binding.tietRepeatPassword.text.toString().trim()
 
@@ -214,7 +206,7 @@ class SignUpActivity : AppCompatActivity() {
                 .progressHelper.barColor = Color.parseColor("#73D1FA")
             progressBar.setCancelable(false)
 
-            viewModel.register(nama, email, roleValueRadioButton, namaCabang, password, repeatPassword).observe(this) { result ->
+            viewModel.register(nama, email, namaCabang, password, repeatPassword).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is ResultState.Loading -> progressBar.show()
@@ -228,8 +220,8 @@ class SignUpActivity : AppCompatActivity() {
                         }
                         is ResultState.Unauthorized -> {
                             viewModel.logout()
-                            val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                            intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                            val intent = Intent(this@SignUpActivity, ContainerMainActivity::class.java)
+                            intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                             startActivity(intent)
                         }
                     }
@@ -254,8 +246,8 @@ class SignUpActivity : AppCompatActivity() {
 
             sweetAlertDialog!!.setConfirmClickListener { dialog ->
                 dialog.dismiss()
-                val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+                val intent = Intent(this@SignUpActivity, ContainerMainActivity::class.java)
+                intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
                 startActivity(intent)
                 finish()
             }

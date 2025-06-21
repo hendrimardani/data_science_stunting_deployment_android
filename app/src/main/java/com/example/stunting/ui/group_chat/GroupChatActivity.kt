@@ -3,12 +3,10 @@ package com.example.stunting.ui.group_chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -19,19 +17,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.stunting.R
-import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.GroupChatAdapter
 import com.example.stunting.databinding.ActivityGroupChatBinding
 import com.example.stunting.ui.detail_group.DetailGroupActivity
 import com.example.stunting.ui.detail_group.DetailGroupActivity.Companion.EXTRA_GROUP_ID_TO_DETAIL_GROUP_CHAT
 import com.example.stunting.ui.detail_group.DetailGroupActivity.Companion.EXTRA_USER_ID_TO_DETAIL_GROUP_CHAT
-import com.example.stunting.ui.MainActivity
-import com.example.stunting.ui.MainActivity.Companion.EXTRA_FRAGMENT_TO_MAIN_ACTIVITY
 import com.example.stunting.ui.MainViewModel
 import com.example.stunting.ui.ViewModelFactory
 import kotlin.math.max
@@ -110,7 +104,7 @@ class GroupChatActivity : AppCompatActivity() {
 //                    is ResultState.Unauthorized -> {
 //                        viewModel.logout()
 //                        val intent = Intent(this, MainActivity::class.java)
-//                        intent.putExtra(EXTRA_FRAGMENT_TO_MAIN_ACTIVITY, "LoginFragment")
+//                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
 //                        startActivity(intent)
 //                    }
 //                }

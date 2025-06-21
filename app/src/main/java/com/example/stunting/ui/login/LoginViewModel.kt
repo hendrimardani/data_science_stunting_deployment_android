@@ -12,7 +12,7 @@ import com.example.stunting.datastore.chatting.UserModel
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    fun getChildrenPatientByUserPatientId(userPatientId: Int):
+    fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int):
             LiveData<ResultState<List<DataChildrenPatientByUserPatientIdItem?>>> = liveData {
         emit(ResultState.Loading)
         emit(chattingRepository.getChildrenPatientByUserPatientIdFromApi(userPatientId))
