@@ -81,10 +81,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         getExtraFragment = intent.getStringExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT)
         isTaptTargetViewActived = intent?.getBooleanExtra(EXTRA_TAP_TARGET_VIEW_ACTIVED_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, false)
 
-        if (isTaptTargetViewActived!!) {
-
-        }
-
         // Ubah warna teks logout
         val menu = navView.menu
         val logoutItem = menu.findItem(R.id.nav_logout_patient)

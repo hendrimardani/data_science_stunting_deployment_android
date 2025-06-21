@@ -46,16 +46,15 @@ import com.google.gson.JsonObject
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<LoginViewModel> {
+        ViewModelFactory.getInstance(requireActivity())
+    }
 
     private lateinit var networkLiveData: NetworkLiveData
     private var sweetAlertDialog: SweetAlertDialog? = null
 
     private var userModel: UserModel? = null
     private val gson = Gson()
-    private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(requireActivity())
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,27 +84,30 @@ class LoginFragment : Fragment() {
 
     private fun getChildrenPatientByUserPatientId(userPatientId: Int) {
         viewModel.getChildrenPatientByUserPatientId(userPatientId).observe(requireActivity()) { result ->
+            Log.d(TAG, "onGetChildrenPatientByUserPatientId result : ${result}")
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> { }
-                    is ResultState.Error -> {
-                        // Jika belum pernah tambah data anak
-//                        Log.d(TAG, "onGetChildrenPatientByUserPatientId error : ${result.error}")
-                        val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
-                        intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
-                        requireActivity().finish()
-                    }
+                    is ResultState.Error -> { }
                     is ResultState.Success -> {
-                        // Jika sudah pernah tambah data anak
-//                        Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
-                        val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
-                        intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)
-                        startActivity(intent)
-                        requireActivity().finish()
+                        if (result.data.size == 0) {
+                            // Jika belum pernah tambah data anak
+//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId belum pernah tambah data anak success : ${result}")
+                            val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
+                            intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
+                            requireActivity().finish()
+                        } else {
+                            // Jika sudah pernah tambah data anak
+//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
+                            val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
+                            intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)
+                            startActivity(intent)
+                            requireActivity().finish()
+                        }
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

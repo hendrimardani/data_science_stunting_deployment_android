@@ -1012,7 +1012,7 @@ class ChattingRepository(
         return try {
             val response = apiService.getChildrenPatientByUserPatientId(userPatientId)
             if (response.isSuccessful) {
-                val data = response.body()?.dataChildrenPatientByUserPatientId ?: emptyList()
+                val data = response.body()?.dataChildrenPatientByUserPatientId!!
                 ResultState.Success(data)
             } else {
                 ResultState.Error("Gagal ambil data: ${response.message()}")
