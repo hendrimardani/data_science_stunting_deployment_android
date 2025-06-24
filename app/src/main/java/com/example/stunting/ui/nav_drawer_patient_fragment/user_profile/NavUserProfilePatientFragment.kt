@@ -1,6 +1,7 @@
 package com.example.stunting.ui.nav_drawer_patient_fragment.user_profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class NavUserProfilePatientFragment : Fragment() {
     private val viewModel by viewModels<NavUserProfilePatientViewModel> {
         ViewModelFactory.getInstance(requireActivity())
     }
+    private var userPatientId: Int? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = NavFragmentUserProfilePatientBinding.inflate(inflater, container, false)
@@ -22,8 +24,20 @@ class NavUserProfilePatientFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT)
+
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private val TAG = NavUserProfilePatientFragment::class.java.simpleName
+        const val EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT = "extra_user_patient_id_to_nav_user_profile_fragment"
     }
 }

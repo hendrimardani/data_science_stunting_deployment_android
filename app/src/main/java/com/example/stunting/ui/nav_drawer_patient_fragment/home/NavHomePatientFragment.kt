@@ -23,6 +23,9 @@ import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.chatbot.ChatbotActivity
+import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment
+import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion
+import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT
 import com.example.stunting.utils.VectorDrawableTagItems
 import com.magicgoop.tagsphere.OnTagTapListener
 import com.magicgoop.tagsphere.item.TagItem
@@ -58,6 +61,10 @@ class NavHomePatientFragment : Fragment() {
             setupTagSphereView()
         }
         setupPowerMenu()
+        setupFabButton()
+    }
+
+    private fun setupFabButton() {
         binding.fabHome.setOnClickListener { view ->
             powerMenu.showAsAnchorCenter(view)
         }

@@ -37,6 +37,7 @@ import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
@@ -233,6 +234,26 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         val home = menuView.findItem(R.id.nav_home_patient)
         val userProfile = menuView.findItem(R.id.nav_user_profile_patient)
         val logout = menuView.findItem(R.id.nav_logout_patient)
+
+        home.setOnMenuItemClickListener {
+            val bundle = Bundle().apply {
+                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT, userPatientId!!)
+            }
+            val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
+            navController.navigate(R.id.nav_home_patient, bundle)
+            Toast.makeText(this@NavDrawerMainActivityPatient, "TEST TEST HOME", Toast.LENGTH_LONG).show()
+            true
+        }
+
+        userProfile.setOnMenuItemClickListener {
+            val bundle = Bundle().apply {
+                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT, userPatientId!!)
+            }
+            val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
+            navController.navigate(R.id.nav_user_profile_patient, bundle)
+            Toast.makeText(this@NavDrawerMainActivityPatient, "TEST TEST USER PROFILE", Toast.LENGTH_LONG).show()
+            true
+        }
 
         logout.setOnMenuItemClickListener {
             val sweetAlertDialog = SweetAlertDialog(this@NavDrawerMainActivityPatient, SweetAlertDialog.WARNING_TYPE)
