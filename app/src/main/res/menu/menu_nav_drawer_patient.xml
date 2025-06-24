@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_home_24"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_settings_patient"
-            android:icon="@drawable/ic_menu_settings_24"
-            android:title="@string/menu_settings" />
+            android:id="@+id/nav_user_profile_patient"
+            android:icon="@drawable/ic_person_40"
+            android:title="@string/menu_user_profile" />
         <item
             android:id="@+id/nav_logout_patient"
             android:icon="@drawable/ic_menu_logout_24"

@@ -31,7 +31,6 @@ import com.example.stunting.databinding.ActivitySignUpBinding
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.chatbot.ChatbotActivity
 import com.example.stunting.utils.NetworkLiveData
 import com.skydoves.powermenu.MenuAnimation
 import com.skydoves.powermenu.PowerMenu
@@ -195,6 +194,7 @@ class SignUpActivity : AppCompatActivity() {
                 .setSelectedMenuColor(ContextCompat.getColor(this, R.color.bluePrimary))
                 .setOnMenuItemClickListener { position, item ->
                     binding.tvNamaCabang.setText(item.title)
+                    binding.tvNamaCabang.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.black))
                     powerMenu.dismiss()
                 }
                 .build()

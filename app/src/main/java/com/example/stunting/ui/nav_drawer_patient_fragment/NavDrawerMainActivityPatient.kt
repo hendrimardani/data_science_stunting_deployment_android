@@ -69,7 +69,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home_patient, R.id.nav_settings_patient
+                R.id.nav_home_patient, R.id.nav_user_profile_patient
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -231,7 +231,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     private fun getMenuNavigationView() {
         val menuView = binding.navView.menu
         val home = menuView.findItem(R.id.nav_home_patient)
-        val settings = menuView.findItem(R.id.nav_settings_patient)
+        val userProfile = menuView.findItem(R.id.nav_user_profile_patient)
         val logout = menuView.findItem(R.id.nav_logout_patient)
 
         logout.setOnMenuItemClickListener {
@@ -297,11 +297,11 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     }
 
     private fun setupAnimationRotationContent() {
-        val homeFragment = binding.appBarNavDrawerMainActivityPatient.contentNavDrawerMainActivityPatient.contentHome
+        val homeFragment = binding.appBarNavDrawerMainActivityPatient.contentNavDrawerMainActivityPatient.contentNavDrawerMainActivityPatient
 
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                val scaleFactor = 1 - (0.1f - slideOffset)
+                val scaleFactor = 1.1f - (0.1f - slideOffset)
                 val moveFactor = drawerView.width * slideOffset
                 homeFragment.apply {
                     scaleX = scaleFactor
