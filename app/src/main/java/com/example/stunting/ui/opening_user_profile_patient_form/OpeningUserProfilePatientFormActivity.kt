@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
@@ -129,7 +130,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
+                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
                         updateUserProfilePatientByIdFromApi(namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah)
                     }
                     is ResultState.Unauthorized -> {
@@ -161,11 +162,11 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-//                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
+                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-//                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
+                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
                         val updatedUserProfilePatient = result.data?.dataUpdateUserProfilePatientById?.get(0)
 
                         if (updatedUserProfilePatient != null) {

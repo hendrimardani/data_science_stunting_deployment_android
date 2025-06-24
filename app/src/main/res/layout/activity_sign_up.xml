@@ -176,7 +176,7 @@
                 app:layout_constraintEnd_toEndOf="@id/iv_email" />
 
             <TextView
-                android:id="@+id/tv_cabang"
+                android:id="@+id/tv_nama_cabang"
                 android:layout_width="230dp"
                 android:layout_height="40dp"
                 android:background="@drawable/shape_spinner"

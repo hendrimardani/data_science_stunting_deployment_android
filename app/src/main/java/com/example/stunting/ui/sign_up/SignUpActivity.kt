@@ -46,7 +46,6 @@ class SignUpActivity : AppCompatActivity() {
 
     private var sweetAlertDialog: SweetAlertDialog? = null
 
-    private var namaCabang = ""
 
     private val viewModel by viewModels<SignUpViewModel> {
         ViewModelFactory.getInstance(this)
@@ -81,7 +80,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun setupCabangClicked() {
-        binding.tvCabang.setOnClickListener { view ->
+        binding.tvNamaCabang.setOnClickListener { view ->
             powerMenu.showAsDropDown(view)
         }
     }
@@ -141,6 +140,7 @@ class SignUpActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val nama = binding.tietNama.text.toString().trim()
                 val email = binding.tietEmail.text.toString().trim()
+                val namaCabang = binding.tvNamaCabang.text
                 val password = binding.tietPassword.text.toString().trim()
                 val repeatPassword = binding.tietRepeatPassword.text.toString().trim()
 
@@ -194,7 +194,7 @@ class SignUpActivity : AppCompatActivity() {
                 .setMenuRadius(30f)
                 .setSelectedMenuColor(ContextCompat.getColor(this, R.color.bluePrimary))
                 .setOnMenuItemClickListener { position, item ->
-                    binding.tvCabang.setText(item.title)
+                    binding.tvNamaCabang.setText(item.title)
                     powerMenu.dismiss()
                 }
                 .build()
@@ -205,6 +205,7 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnSignUp.setOnClickListener {
             val nama = binding.tietNama.text.toString().trim()
             val email = binding.tietEmail.text.toString().trim()
+            val namaCabang = binding.tvNamaCabang.text.toString().trim()
             val password = binding.tietPassword.text.toString().trim()
             val repeatPassword = binding.tietRepeatPassword.text.toString().trim()
 
