@@ -257,7 +257,7 @@ class SignUpActivity : AppCompatActivity() {
                 dialog.dismiss()
                 val intent = Intent(this@SignUpActivity, ContainerMainActivity::class.java)
                 intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
-                startActivity(intent)
+                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(this@SignUpActivity).toBundle())
                 finish()
             }
             sweetAlertDialog!!.show()

@@ -961,29 +961,25 @@ class ChattingRepository(
             )
 
             if (response.isSuccessful) {
-//                Log.d(TAG, "onChattingRepository updateUserProfilePatientByIdFromApi Success ${response.code()}: $response")
-                val updatedUserProfileByIdList = response.body()?.dataUpdateUserProfilePatientById
-                val updatedUserProfileEntity = updatedUserProfileByIdList?.map { userProfilePatient ->
-                    UserProfilePatientEntity(
-                        id = userProfilePatient?.id,
-                        userPatientId = userProfilePatient?.userPatientId,
-                        branchId = userProfilePatient?.branchId,
-                        namaBumil = userProfilePatient?.namaBumil,
-                        nikBumil = userProfilePatient?.nikBumil,
-                        tglLahirBumil = userProfilePatient?.tglLahirBumil,
-                        umurBumil = userProfilePatient?.umurBumil,
-                        alamat = userProfilePatient?.alamat,
-                        namaAyah = userProfilePatient?.namaAyah,
-                        gambarProfile = userProfilePatient?.gambarProfile,
-                        gambarBanner = userProfilePatient?.gambarBanner,
-                        createdAt = userProfilePatient?.createdAt,
-                        updatedAt = userProfilePatient?.updatedAt
+                val dataUpdateUserProfilePatientById = response.body()?.dataUpdateUserProfilePatientById
+                if (dataUpdateUserProfilePatientById != null) {
+                    val updatedUserProfilePatientEntity = UserProfilePatientEntity(
+                        id = dataUpdateUserProfilePatientById.id,
+                        userPatientId = dataUpdateUserProfilePatientById.userPatientId,
+                        branchId = dataUpdateUserProfilePatientById.branchId,
+                        namaBumil = dataUpdateUserProfilePatientById.namaBumil,
+                        nikBumil = dataUpdateUserProfilePatientById.nikBumil,
+                        tglLahirBumil = dataUpdateUserProfilePatientById.tglLahirBumil,
+                        umurBumil = dataUpdateUserProfilePatientById.umurBumil,
+                        alamat = dataUpdateUserProfilePatientById.alamat,
+                        namaAyah = dataUpdateUserProfilePatientById.namaAyah,
+                        gambarProfile = dataUpdateUserProfilePatientById.gambarProfile,
+                        gambarBanner = dataUpdateUserProfilePatientById.gambarBanner,
+                        createdAt = dataUpdateUserProfilePatientById.createdAt,
+                        updatedAt = dataUpdateUserProfilePatientById.updatedAt
                     )
-                }
-
-                if (updatedUserProfileByIdList != null) {
                     withContext(Dispatchers.IO) {
-                        chattingDatabase.userProfilePatientDao().updateUserProfilePatientByIdFromLocal(updatedUserProfileEntity!!.get(0))
+                        chattingDatabase.userProfilePatientDao().updateUserProfilePatientByIdFromLocal(updatedUserProfilePatientEntity)
                     }
                 }
                 ResultState.Success(response.body())

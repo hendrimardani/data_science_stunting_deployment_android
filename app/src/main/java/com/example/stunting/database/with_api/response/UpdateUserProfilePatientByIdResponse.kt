@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class UpdateUserProfilePatientByIdResponse(
 
 	@field:SerializedName("dataUpdateUserProfilePatientById")
-	val dataUpdateUserProfilePatientById: List<DataUpdateUserProfilePatientByIdItem?>? = null,
+	val dataUpdateUserProfilePatientById: DataUpdateUserProfilePatientById? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -18,7 +18,7 @@ data class UpdateUserProfilePatientByIdResponse(
 ) : Parcelable
 
 @Parcelize
-data class DataUpdateUserProfilePatientByIdItem(
+data class DataUpdateUserProfilePatientById(
 
 	@field:SerializedName("tgl_lahir_bumil")
 	val tglLahirBumil: String? = null,

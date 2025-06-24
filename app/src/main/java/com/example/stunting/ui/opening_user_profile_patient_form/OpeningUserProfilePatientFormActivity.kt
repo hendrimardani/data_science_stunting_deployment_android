@@ -88,6 +88,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
             val namaAnak = binding.tietNamaAnak.text.toString().trim()
             val nikAnak = binding.tietNikAnak.text.toString().trim()
             val jenisKelaminAnakSelectedId = binding.rgJenisKelaminAnak.checkedRadioButtonId
+
             if (jenisKelaminAnakSelectedId != -1) {
                 val selectedRadioButton = findViewById<RadioButton>(jenisKelaminAnakSelectedId)
                 jenisKelaminAnakValueRadioButton = selectedRadioButton.text.toString()
@@ -130,7 +131,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
+//                        Log.d(TAG, "addChildrenPatientByIdFromApi : Success ${result.data}")
                         updateUserProfilePatientByIdFromApi(namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah)
                     }
                     is ResultState.Unauthorized -> {
@@ -162,29 +163,33 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     is ResultState.Loading -> progressBar.show()
                     is ResultState.Error -> {
                         progressBar.dismiss()
-                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
+//                        Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Error ${result.error}")
+                        sweetAlertDialog = SweetAlertDialog(this@OpeningUserProfilePatientFormActivity, SweetAlertDialog.ERROR_TYPE)
+                        sweetAlertDialog!!.setTitleText(getString(R.string.title_validation_error))
+                        sweetAlertDialog!!.setContentText(result.error)
+                        sweetAlertDialog!!.setCancelable(false)
+                        sweetAlertDialog!!.show()
                     }
                     is ResultState.Success -> {
                         progressBar.dismiss()
-                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
-                        val updatedUserProfilePatient = result.data?.dataUpdateUserProfilePatientById?.get(0)
-
-                        if (updatedUserProfilePatient != null) {
+//                            Log.d(TAG, "onUpdateUserProfilePatientByIdFromApi : Success ${result.data}")
+                        val dataUpdateUserProfilePatientById = result.data?.dataUpdateUserProfilePatientById
+                        if (dataUpdateUserProfilePatientById != null) {
                             viewModel.updateUserProfilePatientByIdFromLocal(
                                 UserProfilePatientEntity(
-                                    id = updatedUserProfilePatient.id,
-                                    userPatientId = updatedUserProfilePatient.userPatientId,
-                                    branchId = updatedUserProfilePatient.branchId,
-                                    namaBumil = updatedUserProfilePatient.namaBumil,
-                                    nikBumil = updatedUserProfilePatient.nikBumil,
-                                    tglLahirBumil = updatedUserProfilePatient.tglLahirBumil,
-                                    umurBumil = updatedUserProfilePatient.umurBumil,
-                                    alamat = updatedUserProfilePatient.alamat,
-                                    namaAyah = updatedUserProfilePatient.namaAyah,
-                                    gambarProfile = updatedUserProfilePatient.gambarProfile,
-                                    gambarBanner = updatedUserProfilePatient.gambarBanner,
-                                    createdAt = updatedUserProfilePatient.createdAt,
-                                    updatedAt = updatedUserProfilePatient.updatedAt
+                                    id = dataUpdateUserProfilePatientById.id,
+                                    userPatientId = dataUpdateUserProfilePatientById.userPatientId,
+                                    branchId = dataUpdateUserProfilePatientById.branchId,
+                                    namaBumil = dataUpdateUserProfilePatientById.namaBumil,
+                                    nikBumil = dataUpdateUserProfilePatientById.nikBumil,
+                                    tglLahirBumil = dataUpdateUserProfilePatientById.tglLahirBumil,
+                                    umurBumil = dataUpdateUserProfilePatientById.umurBumil,
+                                    alamat = dataUpdateUserProfilePatientById.alamat,
+                                    namaAyah = dataUpdateUserProfilePatientById.namaAyah,
+                                    gambarProfile = dataUpdateUserProfilePatientById.gambarProfile,
+                                    gambarBanner = dataUpdateUserProfilePatientById.gambarBanner,
+                                    createdAt = dataUpdateUserProfilePatientById.createdAt,
+                                    updatedAt = dataUpdateUserProfilePatientById.updatedAt
                                 )
                             )
                             val intent = Intent(this, OpeningUserProfilePatientReadyActivity::class.java)
