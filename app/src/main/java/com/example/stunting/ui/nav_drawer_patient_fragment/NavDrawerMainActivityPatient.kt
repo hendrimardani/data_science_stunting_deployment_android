@@ -241,17 +241,14 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
             }
             val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
             navController.navigate(R.id.nav_home_patient, bundle)
-            Toast.makeText(this@NavDrawerMainActivityPatient, "TEST TEST HOME", Toast.LENGTH_LONG).show()
             true
         }
-
         userProfile.setOnMenuItemClickListener {
             val bundle = Bundle().apply {
                 putInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT, userPatientId!!)
             }
             val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
             navController.navigate(R.id.nav_user_profile_patient, bundle)
-            Toast.makeText(this@NavDrawerMainActivityPatient, "TEST TEST USER PROFILE", Toast.LENGTH_LONG).show()
             true
         }
 

@@ -27,8 +27,33 @@ class NavUserProfilePatientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT)
+        getUserProfilePatientsWithBranchRelationByIdFromLocal()
+        getUserProfilePatientWithUserRelationByIdFromLocal()
+    }
 
+    private fun getUserProfilePatientsWithBranchRelationByIdFromLocal() {
+        viewModel.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId!!)
+            .observe(requireActivity()) { userProfilePatientsWithBranchRelation ->
+                val branch = userProfilePatientsWithBranchRelation.branch
+                binding.tietCabang.setText(branch.namaCabang)
+        }
+    }
 
+    private fun getUserProfilePatientWithUserRelationByIdFromLocal() {
+        viewModel.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId!!)
+                .observe(requireActivity()) { userProfilePatientWithUserRelation ->
+                val usersEntity = userProfilePatientWithUserRelation.users
+                val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
+
+                if (usersEntity != null && userProfilePatientEntity != null) {
+                    binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
+                    binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
+                    binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
+                    binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
+                    binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
+                    binding.tietAlamat.setText(userProfilePatientEntity.alamat)
+                }
+            }
     }
 
     override fun onDestroyView() {
