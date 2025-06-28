@@ -9,6 +9,7 @@ import com.example.stunting.ui.anak.AnakViewModel
 import com.example.stunting.ui.anak_patient.AnakPatientViewModel
 import com.example.stunting.ui.bumil.BumilViewModel
 import com.example.stunting.ui.bumil_patient.BumilPatientViewModel
+import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientViewModel
 import com.example.stunting.ui.login.LoginViewModel
 import com.example.stunting.ui.nav_drawer_fragment.NavDrawerMainViewModel
 import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatientViewModel
@@ -42,6 +43,9 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
             }
             modelClass.isAssignableFrom(NavDaftarAnakPatientViewModel::class.java) -> {
                 NavDaftarAnakPatientViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailAnakPatientViewModel::class.java) -> {
+                DetailAnakPatientViewModel(repository) as T
             }
 
             modelClass.isAssignableFrom(BumilPatientViewModel::class.java) -> {

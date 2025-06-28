@@ -16,8 +16,9 @@ import com.example.stunting.R
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
 import com.example.stunting.databinding.NavFragmentDaftarAnakPatientBinding
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.detail_anak_patient.DetailAnakPatient
-import com.example.stunting.ui.detail_anak_patient.DetailAnakPatient.Companion.EXTRA_CHILDREN_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY
+import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientActivity
+import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientActivity.Companion.EXTRA_CHILDREN_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY
+import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY
 
 
 class NavDaftarAnakPatientFragment : Fragment() {
@@ -81,7 +82,8 @@ class NavDaftarAnakPatientFragment : Fragment() {
                 setPadding(8, 8, 8, 8)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.stroke_orange_background)
                 setOnClickListener {
-                    val intent = Intent(requireActivity(), DetailAnakPatient::class.java)
+                    val intent = Intent(requireActivity(), DetailAnakPatientActivity::class.java)
+                    intent.putExtra(EXTRA_USER_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY, userPatientId)
                     intent.putExtra(EXTRA_CHILDREN_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY, item.id)
                     startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle())
                 }

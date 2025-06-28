@@ -235,7 +235,6 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setToolBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.title = getString(R.string.app_neural_network)

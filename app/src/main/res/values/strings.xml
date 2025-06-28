@@ -253,4 +253,5 @@
     <string name="text_header_tgl_lahir_anak">Tanggal Lahir</string>
     <string name="text_header_umur_anak">Umur</string>
     <string name="text_tambah_anak">Tambah Anak</string>
+    <string name="text_detail">Detail</string>
 </resources>

@@ -41,7 +41,6 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
     private val viewModel by viewModels<OpeningUserProfilePatientFormViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     private var sweetAlertDialog: SweetAlertDialog? = null
     private lateinit var cal: Calendar
     private var dataSetListenerTgllahirAnak: DatePickerDialog.OnDateSetListener? = null

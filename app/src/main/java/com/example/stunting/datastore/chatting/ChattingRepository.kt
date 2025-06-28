@@ -1004,6 +1004,10 @@ class ChattingRepository(
         }
     }
 
+    fun getChildrenPatientByIdUserPatientIdFromLocal(childrenPatientId: Int, userPatientId: Int):
+            LiveData<ChildrenPatientEntity> =
+        chattingDatabase.childrenPatientDao().getChildrenPatientByIdUserPatientIdFromLocal(childrenPatientId, userPatientId)
+
     fun getChildrenPatientByUserPatientIdFromLocal(userPatientId: Int): LiveData<List<ChildrenPatientEntity>> =
         chattingDatabase.childrenPatientDao().getChildrenPatientByUserPatientIdFromLocal(userPatientId)
 
