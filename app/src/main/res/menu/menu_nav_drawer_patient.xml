@@ -13,6 +13,18 @@
             android:icon="@drawable/ic_person_40"
             android:title="@string/menu_user_profile" />
         <item
+            android:id="@+id/nav_daftar_anak_patient"
+            android:icon="@drawable/ic_child_care_24"
+            android:title="@string/menu_daftar_anak" />
+        <item
+            android:id="@+id/nav_user_login_patient"
+            android:icon="@drawable/ic_admin_panel_settings_24"
+            android:title="@string/menu_user_login" />
+        <item
+            android:id="@+id/nav_pengaturan_patient"
+            android:icon="@drawable/ic_menu_settings_24"
+            android:title="@string/menu_pengaturan" />
+        <item
             android:id="@+id/nav_logout_patient"
             android:icon="@drawable/ic_menu_logout_24"
             android:title="@string/menu_logout" />

@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -36,8 +37,9 @@ import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT
-import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftarAnakPatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT
+import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
@@ -70,7 +72,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home_patient, R.id.nav_user_profile_patient
+                R.id.nav_home_patient, R.id.nav_user_profile_patient, R.id.nav_daftar_anak_patient,
+                R.id.nav_user_login_patient, R.id.nav_pengaturan_patient
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -88,6 +91,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         logoutItem.title = spannable
 
         setupAnimationRotationContent()
+        viewModel.getChildrenPatientByUserPatientIdFromApi(userPatientId!!)
         getUserProfiles()
         getUserProfilePatients()
         getDataExtra()
@@ -162,7 +166,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 
     private fun sendDataToNavHomePatientFragment(userPatientId: Int) {
         val bundle = Bundle().apply {
-            putInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT, userPatientId)
+            putInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT, userPatientId)
         }
         val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
         navController.navigate(R.id.nav_home_patient, bundle)
@@ -233,24 +237,40 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         val menuView = binding.navView.menu
         val home = menuView.findItem(R.id.nav_home_patient)
         val userProfile = menuView.findItem(R.id.nav_user_profile_patient)
+        val daftarAnak = menuView.findItem(R.id.nav_daftar_anak_patient)
+        val userLogin = menuView.findItem(R.id.nav_user_login_patient)
+        val pengaturan = menuView.findItem(R.id.nav_pengaturan_patient)
         val logout = menuView.findItem(R.id.nav_logout_patient)
 
         home.setOnMenuItemClickListener {
             val bundle = Bundle().apply {
-                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT, userPatientId!!)
+                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT, userPatientId!!)
             }
             val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
             navController.navigate(R.id.nav_home_patient, bundle)
-            true
+            false
         }
         userProfile.setOnMenuItemClickListener {
             val bundle = Bundle().apply {
-                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT, userPatientId!!)
+                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT, userPatientId!!)
             }
             val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
             navController.navigate(R.id.nav_user_profile_patient, bundle)
-            true
+            false
         }
+        daftarAnak.setOnMenuItemClickListener {
+            val bundle = Bundle().apply {
+                putInt(EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT, userPatientId!!)
+            }
+
+            val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
+            navController.navigate(R.id.nav_daftar_anak_patient, bundle)
+            false
+        }
+//        userLogin.setOnMenuItemClickListener {
+//
+//            true
+//        }
 
         logout.setOnMenuItemClickListener {
             val sweetAlertDialog = SweetAlertDialog(this@NavDrawerMainActivityPatient, SweetAlertDialog.WARNING_TYPE)

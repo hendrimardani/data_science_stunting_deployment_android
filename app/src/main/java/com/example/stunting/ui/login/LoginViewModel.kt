@@ -14,9 +14,9 @@ import kotlinx.coroutines.launch
 class LoginViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
     fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int):
             LiveData<ResultState<List<DataChildrenPatientByUserPatientIdItem?>>> = liveData {
-        emit(ResultState.Loading)
-        emit(chattingRepository.getChildrenPatientByUserPatientIdFromApi(userPatientId))
-    }
+                emit(ResultState.Loading)
+                emit(chattingRepository.getChildrenPatientByUserPatientIdFromApi(userPatientId))
+            }
 
     fun login(email: String, password: String): LiveData<ResultState<LoginResponse?>> = liveData {
         emit(ResultState.Loading)

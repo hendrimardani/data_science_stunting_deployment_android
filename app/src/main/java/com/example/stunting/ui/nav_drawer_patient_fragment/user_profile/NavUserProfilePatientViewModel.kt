@@ -2,13 +2,42 @@ package com.example.stunting.ui.nav_drawer_patient_fragment.user_profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
+import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
+import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
 import com.example.stunting.datastore.chatting.ChattingRepository
+import kotlinx.coroutines.launch
 
 class NavUserProfilePatientViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
+    fun updateUserProfilePatientByIdFromLocal(userProfilePatientEntity: UserProfilePatientEntity) {
+        viewModelScope.launch {
+            chattingRepository.updateUserProfilePatientByIdFromLocal(userProfilePatientEntity)
+        }
+    }
+
+    fun updateUserProfilePatientByIdFromApi(
+        userPatientId: Int, namaCabang: String, namaBumil: String, nikBumil: String, tglLahirBumil: String,
+        umurBumil: String, alamat: String, namaAyah: String
+    ): LiveData<ResultState<UpdateUserProfilePatientByIdResponse?>> = liveData {
+        emit(ResultState.Loading)
+        emit(
+            chattingRepository.updateUserProfilePatientByIdFromApi(
+                userPatientId, namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
+            )
+        )
+    }
+
     fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int) =
         chattingRepository.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId)
 
     fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int) =
         chattingRepository.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+
+    fun logout() {
+        viewModelScope.launch {
+            chattingRepository.logout()
+        }
+    }
 }

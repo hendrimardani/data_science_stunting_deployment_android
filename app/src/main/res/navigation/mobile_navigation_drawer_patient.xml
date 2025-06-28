@@ -22,4 +22,27 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_daftar_anak_patient"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftarAnakPatientFragment"
+        android:label="@string/menu_daftar_anak"
+        tools:layout="@layout/nav_fragment_daftar_anak_patient" >
+        <argument
+            android:name="userPatientId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_user_login_patient"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.user_login.NavUserLoginPatientFragment"
+        android:label="@string/menu_user_login"
+        tools:layout="@layout/nav_fragment_user_login_patient" />
+
+    <fragment
+        android:id="@+id/nav_pengaturan_patient"
+        android:name="com.example.stunting.ui.nav_drawer_patient_fragment.pengaturan.NavPengaturanPatientFragment"
+        android:label="@string/menu_pengaturan"
+        tools:layout="@layout/nav_fragment_pengaturan_patient" />
 </navigation>

@@ -98,7 +98,7 @@ class LoginFragment : Fragment() {
                     is ResultState.Success -> {
                         if (result.data.isEmpty()) {
                             // Jika belum pernah tambah data anak
-                            Log.d(TAG, "onGetChildrenPatientByUserPatientId belum pernah tambah data anak success : ${result}")
+//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId belum pernah tambah data anak success : ${result}")
                             val intent = Intent(requireActivity(), OpeningUserProfilePatientActivity::class.java)
                             intent.putExtra(EXTRA_USER_PATIENT_ID_TO_OPENING_USER_PROFILE_PATIENT, userPatientId)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -106,7 +106,7 @@ class LoginFragment : Fragment() {
                             requireActivity().finish()
                         } else {
                             // Jika sudah pernah tambah data anak
-                            Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
+//                            Log.d(TAG, "onGetChildrenPatientByUserPatientId success : ${result.data}")
                             val intent = Intent(requireActivity(), NavDrawerMainActivityPatient::class.java)
                             intent.putExtra(EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, TAG)
                             intent.putExtra(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, userModel)

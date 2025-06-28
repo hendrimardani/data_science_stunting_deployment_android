@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Stunting"
         tools:targetApi="31">
         <activity
+            android:name=".ui.detail_anak_patient.DetailAnakPatient"
+            android:exported="false" />
+        <activity
             android:name=".ui.remaja_putri.RemajaPutriActivity"
             android:exported="false" />
         <activity

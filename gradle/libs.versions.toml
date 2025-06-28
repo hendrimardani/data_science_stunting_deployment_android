@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.1"
+safeArgsKotlinVersion = "2.7.7"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
 junit = "4.13.2"
@@ -87,6 +88,7 @@ com-github-yuyakaido-cardStackView = { module = "com.github.yuyakaido:CardStackV
 com-github-skydoves-powermenu = { module = "com.github.skydoves:powermenu", version.ref = "powerMenuVersion" }
 
 [plugins]
+safeArgsKotlin = { id = 'androidx.navigation.safeargs.kotlin', version.ref = "safeArgsKotlinVersion" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

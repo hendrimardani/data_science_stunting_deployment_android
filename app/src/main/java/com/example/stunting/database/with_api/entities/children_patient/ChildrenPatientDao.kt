@@ -15,6 +15,9 @@ interface ChildrenPatientDao {
     @Query("SELECT * FROM children_patient WHERE nama_anak = :namaAnak ")
     fun getChildrenPatientByNamaAnak(namaAnak: String): LiveData<ChildrenPatientEntity>
 
+    @Query("SELECT * FROM children_patient WHERE user_patient_id = :userPatientId")
+    fun getChildrenPatientByUserPatientIdFromLocal(userPatientId: Int): LiveData<List<ChildrenPatientEntity>>
+
     @Query("SELECT * FROM children_patient ORDER BY id_children_patient ASC")
     fun getChildrenPatientsFromLocal(): LiveData<List<ChildrenPatientEntity>>
 

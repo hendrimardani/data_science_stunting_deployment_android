@@ -1004,17 +1004,47 @@ class ChattingRepository(
         }
     }
 
+    fun getChildrenPatientByUserPatientIdFromLocal(userPatientId: Int): LiveData<List<ChildrenPatientEntity>> =
+        chattingDatabase.childrenPatientDao().getChildrenPatientByUserPatientIdFromLocal(userPatientId)
+
     suspend fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int): ResultState<List<DataChildrenPatientByUserPatientIdItem?>> {
         return try {
             val response = apiService.getChildrenPatientByUserPatientId(userPatientId)
             if (response.isSuccessful) {
-                val data = response.body()?.dataChildrenPatientByUserPatientId!!
+                val data = response.body()?.dataChildrenPatientByUserPatientId ?: emptyList()
+                withContext(Dispatchers.IO) {
+                    insertChildrenPatientByUserPatientIdToLocal(data)
+                }
                 ResultState.Success(data)
             } else {
                 ResultState.Error("Gagal ambil data: ${response.message()}")
             }
         } catch (e: Exception) {
             ResultState.Error(e.message ?: "Unknown error")
+        }
+    }
+
+    private suspend fun insertChildrenPatientByUserPatientIdToLocal(dataChildrenPatientByUserPatientIdItemList: List<DataChildrenPatientByUserPatientIdItem?>) {
+        val childrenPatientList = ArrayList<ChildrenPatientEntity>()
+        dataChildrenPatientByUserPatientIdItemList.forEach { item ->
+            if (item != null) {
+                childrenPatientList.add(
+                    ChildrenPatientEntity(
+                        id = item.id,
+                        userPatientId = item.userPatientId,
+                        namaAnak = item.namaAnak,
+                        nikAnak = item.nikAnak,
+                        jenisKelaminAnak = item.jenisKelaminAnak,
+                        tglLahirAnak = item.tglLahirAnak,
+                        umurAnak = item.umurAnak,
+                        createdAt = item.createdAt,
+                        updatedAt = item.updatedAt
+                    )
+                )
+            }
+        }
+        withContext(Dispatchers.IO) {
+            chattingDatabase.childrenPatientDao().insertChildrenPatients(childrenPatientList)
         }
     }
 

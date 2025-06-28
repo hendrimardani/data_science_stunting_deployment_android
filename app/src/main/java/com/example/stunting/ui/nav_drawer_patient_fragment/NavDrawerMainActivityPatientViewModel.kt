@@ -4,12 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stunting.ResultState
+import com.example.stunting.database.with_api.response.DataChildrenPatientByUserPatientIdItem
 import com.example.stunting.database.with_api.response.DataUserProfilePatientsItem
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.datastore.chatting.ChattingRepository
 import kotlinx.coroutines.launch
 
 class NavDrawerMainActivityPatientViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
+    // ChildrenPatient
+    private var _getChildrenPatientByUserPatientIdFromApiResult = MutableLiveData<ResultState<List<DataChildrenPatientByUserPatientIdItem?>>>()
     // UserProfile
     private var _getUserProfilesFromApiResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
     val getUserProfilesFromApiResult = _getUserProfilesFromApiResult
@@ -21,6 +24,13 @@ class NavDrawerMainActivityPatientViewModel(private val chattingRepository: Chat
     init {
         getUserProfilesFromApi()
         getUserProfilePatientFromApi()
+    }
+
+    fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int) {
+        viewModelScope.launch {
+            _getChildrenPatientByUserPatientIdFromApiResult.value = ResultState.Loading
+            _getChildrenPatientByUserPatientIdFromApiResult.value = chattingRepository.getChildrenPatientByUserPatientIdFromApi(userPatientId)
+        }
     }
 
     private fun getUserProfilesFromApi() {

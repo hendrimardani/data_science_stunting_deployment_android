@@ -23,9 +23,6 @@ import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.chatbot.ChatbotActivity
-import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment
-import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion
-import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_FRAGMENT
 import com.example.stunting.utils.VectorDrawableTagItems
 import com.magicgoop.tagsphere.OnTagTapListener
 import com.magicgoop.tagsphere.item.TagItem
@@ -56,7 +53,7 @@ class NavHomePatientFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT)
+        userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT)
         if (userPatientId != null) {
             setupTagSphereView()
         }
@@ -178,6 +175,6 @@ class NavHomePatientFragment : Fragment() {
 
     companion object {
         private val TAG = NavHomePatientFragment::class.java.simpleName
-        const val EXTRA_USER_PATIENT_ID_TO_NAV_HOME_FRAGMENT = "extra_user_patient_id_to_nav_home_fragment"
+        const val EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT = "extra_user_patient_id_to_nav_home_patient_fragment"
     }
 }

@@ -123,9 +123,9 @@
                     android:id="@+id/et_nik_bumil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
                     android:enabled="false"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColor="?attr/colorText" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView

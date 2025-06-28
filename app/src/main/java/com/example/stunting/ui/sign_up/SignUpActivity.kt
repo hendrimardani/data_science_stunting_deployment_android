@@ -153,7 +153,7 @@ class SignUpActivity : AppCompatActivity() {
                 binding.btnSignUp.isEnabled = isNamaValid && isEmailValid &&
                         namaCabangIsNotEmpty && isPasswordValid && isRepeatPasswordValid
 
-                if (binding.btnSignUp.isEnabled == true) {
+                if (binding.btnSignUp.isEnabled) {
                     binding.btnSignUp.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(this@SignUpActivity, R.color.blueSecond))
                 } else {
                     binding.btnSignUp.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(this@SignUpActivity, R.color.buttonDisabledColor))

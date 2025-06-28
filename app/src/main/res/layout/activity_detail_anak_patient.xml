@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="5dp"
+    android:background="@drawable/shape"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="490dp">
+
+    <ImageView
+        android:id="@+id/iv_nama_anak"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_name_anak"
+        android:layout_marginStart="@dimen/dimen_32"
+        android:layout_marginTop="@dimen/dimen_32"
+        android:layout_marginEnd="@dimen/dimen_8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_nama_bumil"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:hint="@string/text_nama_anak"
+        android:textColorHint="?attr/colorTextHint"
+        android:layout_marginStart="@dimen/dimen_8"
+        app:hintTextColor="?attr/colorSecondary"
+        app:boxStrokeColor="@color/box_stroke_color"
+        app:boxStrokeWidth="2dp"
+        app:layout_constraintStart_toEndOf="@id/iv_nama_anak"
+        app:layout_constraintTop_toTopOf="@id/iv_nama_anak"
+        app:layout_constraintBottom_toBottomOf="@id/iv_nama_anak"
+        app:shapeAppearance="@style/Rounded">
+
+        <com.example.stunting.MyNamaEditText
+            android:id="@+id/tiet_nama_anak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="?attr/colorText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
