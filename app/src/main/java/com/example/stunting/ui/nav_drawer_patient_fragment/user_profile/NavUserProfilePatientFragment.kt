@@ -63,7 +63,7 @@ class NavUserProfilePatientFragment : Fragment() {
             .progressHelper.barColor = Color.parseColor("#73D1FA")
         progressBar.setCancelable(false)
 
-        viewModel.getUserProfilePatientsFromApiResult.observe(this) { result ->
+        viewModel.getUserProfilePatientsFromApiResult.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> {
