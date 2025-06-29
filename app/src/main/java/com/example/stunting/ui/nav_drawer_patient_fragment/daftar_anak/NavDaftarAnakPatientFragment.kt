@@ -29,10 +29,7 @@ class NavDaftarAnakPatientFragment : Fragment() {
     }
     private var userPatientId: Int? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = NavFragmentDaftarAnakPatientBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
@@ -46,7 +43,7 @@ class NavDaftarAnakPatientFragment : Fragment() {
 
     private fun getChildrenPatientByUserPatientIdFromLocal() {
         viewModel.getChildrenPatientByUserPatientIdFromLocal(userPatientId!!)
-            .observe(requireActivity()) { childrenPatientList ->
+            .observe(viewLifecycleOwner) { childrenPatientList ->
                 setupTableLayout(childrenPatientList)
             }
     }

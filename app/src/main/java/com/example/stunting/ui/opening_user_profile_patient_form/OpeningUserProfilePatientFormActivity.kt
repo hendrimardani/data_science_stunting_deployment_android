@@ -349,13 +349,13 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
     }
 
 
-    private fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int) {
-        viewModel.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+    private fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) {
+        viewModel.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId)
             .observe(this) { userProfilePatientsWithBranchRelationByIdFromLocal ->
                 val branchEntity = userProfilePatientsWithBranchRelationByIdFromLocal.branch
-                val userPatientEntity = userProfilePatientsWithBranchRelationByIdFromLocal.userProfilePatients
-                userPatientEntity.forEach { item ->
-                    binding.tietNamaBumil.setText(item?.namaBumil)
+                val userPatientEntity = userProfilePatientsWithBranchRelationByIdFromLocal.userProfilePatient
+                if (branchEntity != null) {
+                    binding.tietNamaBumil.setText(userPatientEntity.namaBumil)
                     binding.tietCabang.setText(branchEntity.namaCabang)
                 }
             }
@@ -371,7 +371,7 @@ class OpeningUserProfilePatientFormActivity : AppCompatActivity(), View.OnClickL
                     }
                     is ResultState.Success -> {
 //                        Log.d(TAG, "getUserProfilePatientsFromApi Success : ${result.data}")
-                        getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId!!)
+                        getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId!!)
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

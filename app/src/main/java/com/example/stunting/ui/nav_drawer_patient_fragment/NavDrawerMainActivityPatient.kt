@@ -30,7 +30,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.example.stunting.R
 import com.example.stunting.ResultState
-import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientRelation
 import com.example.stunting.databinding.ActivityNavDrawerMainPatientBinding
 import com.example.stunting.databinding.DialogCustomAboutBinding
 import com.example.stunting.datastore.chatting.UserModel
@@ -40,6 +40,7 @@ import com.example.stunting.ui.ViewModelFactory
 import com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftarAnakPatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT
+import com.example.stunting.utils.NetworkLiveData
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
@@ -52,7 +53,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     private val viewModel by viewModels<NavDrawerMainActivityPatientViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
+    private lateinit var networkLiveData: NetworkLiveData
     private var userPatientId: Int? = null
     private var getExtraFragment: String? = null
     private var isTaptTargetViewActived: Boolean? = false
@@ -91,11 +92,20 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         logoutItem.title = spannable
 
         setupAnimationRotationContent()
-        viewModel.getChildrenPatientByUserPatientIdFromApi(userPatientId!!)
-        getUserProfiles()
-        getUserProfilePatients()
-        getDataExtra()
-        getMenuNavigationView()
+
+        networkLiveData = NetworkLiveData(application)
+        networkLiveData.observe(this) { isConnected ->
+            if (isConnected) {
+                Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
+                getChildrenPatientByUserPatientIdFromApi()
+                getUserProfiles()
+                getUserProfilePatients()
+                getDataExtra()
+                getMenuNavigationView()
+            } else {
+                Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     // TapTargetView
@@ -152,7 +162,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
             userPatientId = intent.getIntExtra(
                 EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT, 0)
             sendDataToNavHomePatientFragment(userPatientId!!)
-            getUserProfilePatientWithUserById(userPatientId!!)
+            getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId!!)
         } else if (getExtraFragment == "OpeningFragment" || getExtraFragment == "LoginFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(
                 EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
@@ -160,7 +170,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //            Log.d(TAG, "onNavDrawerMainActivityPatient from OpeningActivity : ${userModel}")
             userPatientId = userModel.id.toInt()
             sendDataToNavHomePatientFragment(userPatientId!!)
-            getUserProfilePatientWithUserById(userPatientId!!)
+            getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId!!)
         }
     }
 
@@ -172,8 +182,31 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         navController.navigate(R.id.nav_home_patient, bundle)
     }
 
-    private fun getUserProfilePatientWithUserById(userPatientId: Int) {
-        viewModel.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId).observe(this) { userProfileWithUserRelation ->
+    private fun getChildrenPatientByUserPatientIdFromApi() {
+        viewModel.getChildrenPatientByUserPatientIdFromApi(userPatientId!!)
+        viewModel.getChildrenPatientByUserPatientIdFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> { }
+                    is ResultState.Error -> {
+//                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Error : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+//                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Success : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(this@NavDrawerMainActivityPatient, ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) {
+        viewModel.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId).observe(this) { userProfileWithUserRelation ->
 //            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
             if (userProfileWithUserRelation != null) {
                 getHeaderView(userProfileWithUserRelation)
@@ -262,7 +295,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
             val bundle = Bundle().apply {
                 putInt(EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT, userPatientId!!)
             }
-
             val navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer_main_activity_patient)
             navController.navigate(R.id.nav_daftar_anak_patient, bundle)
             false
@@ -292,7 +324,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getHeaderView(userProfilePatientWithUserRelation: UserProfilePatientWithUserRelation) {
+    private fun getHeaderView(userProfilePatientRelation: UserProfilePatientRelation) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
         val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)
@@ -302,7 +334,8 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
         val role = headerView.findViewById<TextView>(R.id.tv_role_nav_view)
 
-        val userProfile = userProfilePatientWithUserRelation?.userProfilePatient
+        val usersEntity = userProfilePatientRelation.users
+        val userProfileEntity = userProfilePatientRelation.userProfilePatient
 
 //        flProfile.setOnClickListener {
 //            isEditGambarProfile = true
@@ -314,9 +347,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //            showBottomSheetDialog()
 //        }
 
-        if (userProfile?.gambarProfile != null) {
+        if (userProfileEntity?.gambarProfile != null) {
             Glide.with(this)
-                .load(userProfile.gambarProfile)
+                .load(userProfileEntity.gambarProfile)
                 .into(civEditProfile)
         } else {
             Glide.with(this)
@@ -329,9 +362,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //            .load(urlBanner)
 //            .into(ivEditBanner)
 
-        name.text = userProfilePatientWithUserRelation.userProfilePatient?.namaBumil
-        email.text = userProfilePatientWithUserRelation.users.email
-        role.text = "Anda sebagai ${userProfilePatientWithUserRelation.users.role}"
+        name.text = userProfileEntity.namaBumil
+        email.text = usersEntity.email
+        role.text = "Anda sebagai ${userProfilePatientRelation.users.role}"
     }
 
     private fun setupAnimationRotationContent() {

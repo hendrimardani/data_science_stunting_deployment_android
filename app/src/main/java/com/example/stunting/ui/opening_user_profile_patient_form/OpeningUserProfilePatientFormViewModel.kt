@@ -52,8 +52,8 @@ class OpeningUserProfilePatientFormViewModel(private val chattingRepository: Cha
         )
     }
 
-    fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int) =
-        chattingRepository.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+    fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) =
+        chattingRepository.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId)
 
     private fun getUserProfilePatientsFromApi() {
         viewModelScope.launch {

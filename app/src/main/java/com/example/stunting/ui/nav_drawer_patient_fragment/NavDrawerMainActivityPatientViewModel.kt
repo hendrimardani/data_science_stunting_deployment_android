@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 class NavDrawerMainActivityPatientViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
     // ChildrenPatient
     private var _getChildrenPatientByUserPatientIdFromApiResult = MutableLiveData<ResultState<List<DataChildrenPatientByUserPatientIdItem?>>>()
+    val getChildrenPatientByUserPatientIdFromApiResult = _getChildrenPatientByUserPatientIdFromApiResult
     // UserProfile
     private var _getUserProfilesFromApiResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
     val getUserProfilesFromApiResult = _getUserProfilesFromApiResult
-
     // UserProfilePatient
     private var _getUserProfilePatientsFromApiResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()
     val getUserProfilePatientsFromApiResult = _getUserProfilePatientsFromApiResult
@@ -40,8 +40,8 @@ class NavDrawerMainActivityPatientViewModel(private val chattingRepository: Chat
         }
     }
 
-    fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int) =
-        chattingRepository.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId)
+    fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) =
+        chattingRepository.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId)
 
     private fun getUserProfilePatientFromApi() {
         viewModelScope.launch {

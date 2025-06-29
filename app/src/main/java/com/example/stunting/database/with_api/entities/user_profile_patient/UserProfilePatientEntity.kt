@@ -45,24 +45,8 @@ data class UserProfilePatientEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
 
-// One to one
-data class UserProfilePatientWithUserRelation(
-    @Embedded val users: UsersEntity,
-
-    @Relation(
-        parentColumn = "id_user",
-        entityColumn = "user_patient_id"
-    )
-    val userProfilePatient: UserProfilePatientEntity?
-)
-
-// Many to one
-data class UserProfilePatientsWithBranchRelation(
-    @Embedded val branch: BranchEntity,
-
-    @Relation(
-        parentColumn = "id_branch",
-        entityColumn = "branch_id"
-    )
-    val userProfilePatients: List<UserProfilePatientEntity?>
+data class UserProfilePatientRelation(
+    @Embedded(prefix = "b_") val branch: BranchEntity,
+    @Embedded(prefix = "u_") val users: UsersEntity,
+    @Embedded(prefix = "upp_") val userProfilePatient: UserProfilePatientEntity
 )

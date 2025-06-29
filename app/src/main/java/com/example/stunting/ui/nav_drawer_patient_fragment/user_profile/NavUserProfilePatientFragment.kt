@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -43,35 +44,27 @@ class NavUserProfilePatientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT)
-        getUserProfilePatientsWithBranchRelationByIdFromLocal()
-        getUserProfilePatientWithUserRelationByIdFromLocal()
-        textWatcher()
-        btnUpdate()
-    }
-
-    private fun getUserProfilePatientsWithBranchRelationByIdFromLocal() {
-        viewModel.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId!!)
-            .observe(requireActivity()) { userProfilePatientsWithBranchRelation ->
-                val branch = userProfilePatientsWithBranchRelation.branch
-                binding.tietCabang.setText(branch.namaCabang)
+        // Cek supaya menghindari terjadinya bug id
+        if (userPatientId != 0) {
+            getUserProfilePatientRelationByUserPatientIdFromLocal()
+            textWatcher()
+            btnUpdate()
         }
     }
 
-    private fun getUserProfilePatientWithUserRelationByIdFromLocal() {
-        viewModel.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId!!)
-                .observe(requireActivity()) { userProfilePatientWithUserRelation ->
-                val usersEntity = userProfilePatientWithUserRelation.users
-                val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
-
-                if (usersEntity != null && userProfilePatientEntity != null) {
+    private fun getUserProfilePatientRelationByUserPatientIdFromLocal() {
+        viewModel.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId!!)
+                .observe(viewLifecycleOwner) { userProfilePatientWithUserRelation ->
+                    val branchEntity = userProfilePatientWithUserRelation.branch
+                    val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
                     binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
                     binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
                     binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
                     binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
                     binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
                     binding.tietAlamat.setText(userProfilePatientEntity.alamat)
+                    binding.tietCabang.setText(branchEntity.namaCabang)
                 }
-            }
     }
 
     private fun textWatcher() {
@@ -143,7 +136,7 @@ class NavUserProfilePatientFragment : Fragment() {
 
         viewModel.updateUserProfilePatientByIdFromApi(
             userPatientId!!, namaCabang, namaBumil, nikBumil, tglLahirBumil, umurBumil, alamat, namaAyah
-        ).observe(requireActivity()) { result ->
+        ).observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
                     is ResultState.Loading -> progressBar.show()

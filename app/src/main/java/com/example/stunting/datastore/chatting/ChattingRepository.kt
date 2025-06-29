@@ -20,8 +20,7 @@ import com.example.stunting.database.with_api.retrofit.ApiService
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileEntity
 import com.example.stunting.database.with_api.entities.user_profile.UserProfileWithUserRelation
 import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientEntity
-import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientWithUserRelation
-import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientsWithBranchRelation
+import com.example.stunting.database.with_api.entities.user_profile_patient.UserProfilePatientRelation
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 import com.example.stunting.database.with_api.request_json.AddingChildServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
@@ -1083,11 +1082,8 @@ class ChattingRepository(
         }
     }
 
-    fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientWithUserRelation> =
-        chattingDatabase.userProfilePatientDao().getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId)
-
-    fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientsWithBranchRelation> =
-        chattingDatabase.userProfilePatientDao().getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+    fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int): LiveData<UserProfilePatientRelation> =
+        chattingDatabase.userProfilePatientDao().getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId)
 
     fun getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>> =
         chattingDatabase.checksDao().getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId, categoryServiceId)

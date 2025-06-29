@@ -29,11 +29,8 @@ class NavUserProfilePatientViewModel(private val chattingRepository: ChattingRep
         )
     }
 
-    fun getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId: Int) =
-        chattingRepository.getUserProfilePatientWithUserRelationByIdFromLocal(userPatientId)
-
-    fun getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId: Int) =
-        chattingRepository.getUserProfilePatientsWithBranchRelationByIdFromLocal(userPatientId)
+    fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) =
+        chattingRepository.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId)
 
     fun logout() {
         viewModelScope.launch {
