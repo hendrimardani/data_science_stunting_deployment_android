@@ -46,25 +46,65 @@ class NavUserProfilePatientFragment : Fragment() {
         userPatientId = arguments?.getInt(EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT)
         // Cek supaya menghindari terjadinya bug id
         if (userPatientId != 0) {
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                viewModel.getUserProfilePatientsFromApi()
+            }
+            getUserProfilePatientsFromApi()
             getUserProfilePatientRelationByUserPatientIdFromLocal()
             textWatcher()
             btnUpdate()
         }
     }
 
+    private fun getUserProfilePatientsFromApi() {
+        val progressBar = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
+        progressBar.setTitleText(getString(R.string.title_loading))
+        progressBar.setContentText(getString(R.string.description_loading))
+            .progressHelper.barColor = Color.parseColor("#73D1FA")
+        progressBar.setCancelable(false)
+
+        viewModel.getUserProfilePatientsFromApiResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is ResultState.Loading -> {
+                        progressBar.show()
+                        binding.swipeRefreshLayout.isRefreshing = true
+                    }
+                    is ResultState.Error -> {
+                        progressBar.dismiss()
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        Toast.makeText(requireContext(), getString(R.string.text_no_connected), Toast.LENGTH_LONG).show()
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.error}")
+                    }
+                    is ResultState.Success -> {
+                        progressBar.dismiss()
+                        binding.swipeRefreshLayout.isRefreshing = false
+//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.data}")
+                    }
+                    is ResultState.Unauthorized -> {
+                        viewModel.logout()
+                        val intent = Intent(requireContext(), ContainerMainActivity::class.java)
+                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
     private fun getUserProfilePatientRelationByUserPatientIdFromLocal() {
         viewModel.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId!!)
-                .observe(viewLifecycleOwner) { userProfilePatientWithUserRelation ->
-                    val branchEntity = userProfilePatientWithUserRelation.branch
-                    val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
-                    binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
-                    binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
-                    binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
-                    binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
-                    binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
-                    binding.tietAlamat.setText(userProfilePatientEntity.alamat)
-                    binding.tietCabang.setText(branchEntity.namaCabang)
-                }
+            .observe(viewLifecycleOwner) { userProfilePatientWithUserRelation ->
+                val branchEntity = userProfilePatientWithUserRelation.branch
+                val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
+                binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
+                binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
+                binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
+                binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
+                binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
+                binding.tietAlamat.setText(userProfilePatientEntity.alamat)
+                binding.tietCabang.setText(branchEntity.namaCabang)
+            }
     }
 
     private fun textWatcher() {

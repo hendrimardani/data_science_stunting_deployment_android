@@ -61,6 +61,6 @@ interface UserProfilePatientDao {
     @Query("SELECT * FROM user_profile_patient ORDER BY id_user_profile_patient ASC")
     fun getUserProfilePatientsFromLocal(): LiveData<List<UserProfilePatientEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserProfilePatients(userProfilePatient: List<UserProfilePatientEntity>)
 }

@@ -23,6 +23,7 @@ import com.example.stunting.ui.bumil_patient.BumilPatientActivity
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_CATEGORY_SERVICE_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.bumil_patient.BumilPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_BUMIL_PATIENT_ACTIVITY
 import com.example.stunting.ui.chatbot.ChatbotActivity
+import com.example.stunting.utils.NetworkLiveData
 import com.example.stunting.utils.VectorDrawableTagItems
 import com.magicgoop.tagsphere.OnTagTapListener
 import com.magicgoop.tagsphere.item.TagItem
@@ -36,7 +37,6 @@ class NavHomePatientFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var powerMenu: PowerMenu
-
     private var userPatientId: Int? = null
     private var categoryServiceId: Int? = null
 

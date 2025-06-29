@@ -175,7 +175,7 @@
     <string name="error_text_nama_validation">Harus minimal 3 karakter</string>
     <string name="error_text_password_validation">Harus minimal 6 karakter</string>
     <string name="text_connected">Internet Terhubung</string>
-    <string name="text_no_connected">Koneksi Internet Terputus</string>
+    <string name="text_no_connected">Tidak Ada Koneksi Internet</string>
     <string name="next_login">Lanjut login</string>
     <string name="text_no_internet">Ooopss... anda tidak terhubung ke internet.</string>
     <string name="title_activity_main">MainActivity</string>

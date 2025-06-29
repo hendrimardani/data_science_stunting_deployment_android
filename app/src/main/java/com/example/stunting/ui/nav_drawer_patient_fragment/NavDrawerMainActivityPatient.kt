@@ -91,21 +91,20 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         spannable.setSpan(ForegroundColorSpan(Color.RED), 0, spannable.length, 0)
         logoutItem.title = spannable
 
-        setupAnimationRotationContent()
-
         networkLiveData = NetworkLiveData(application)
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
-                Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
                 getChildrenPatientByUserPatientIdFromApi()
-                getUserProfiles()
-                getUserProfilePatients()
-                getDataExtra()
-                getMenuNavigationView()
+                getUserProfilesFromApi()
+                getUserProfilePatientsFromApi()
+                Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
             }
         }
+        setupAnimationRotationContent()
+        getDataExtra()
+        getMenuNavigationView()
     }
 
     // TapTargetView
@@ -190,9 +189,11 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     is ResultState.Loading -> { }
                     is ResultState.Error -> {
 //                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Error : ${result.error}")
+                        Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
                     }
                     is ResultState.Success -> {
 //                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Success : ${result.data}")
+                        Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()
@@ -214,7 +215,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         }
     }
 
-    private fun getUserProfilePatients() {
+    private fun getUserProfilePatientsFromApi() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         progressBar.setTitleText(getString(R.string.title_loading))
         progressBar.setContentText(getString(R.string.description_loading))
@@ -244,7 +245,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         }
     }
 
-    private fun getUserProfiles() {
+    private fun getUserProfilesFromApi() {
         viewModel.getUserProfilesFromApiResult.observe(this) { result ->
             if (result != null) {
                 when (result) {
