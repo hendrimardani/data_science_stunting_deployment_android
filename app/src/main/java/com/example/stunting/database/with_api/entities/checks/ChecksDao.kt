@@ -493,6 +493,6 @@ interface ChecksDao {
     """)
     fun getChecksRelationByUserIdCategoryServiceIdPregnantMomService(userId: Int, categoryServiceId: Int): LiveData<List<ChecksRelation>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChecks(checksList: List<ChecksEntity>)
 }

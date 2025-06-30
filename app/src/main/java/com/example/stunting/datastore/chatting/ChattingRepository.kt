@@ -26,6 +26,7 @@ import com.example.stunting.database.with_api.request_json.AddingChildServiceByU
 import com.example.stunting.database.with_api.request_json.AddingChildrenPatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingPregnantMomServiceByUserIdRequestJSON
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
+import com.example.stunting.database.with_api.request_json.UpdateChildrenpatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.request_json.UpdateUserProfilePatientByIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingChildServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
@@ -42,6 +43,7 @@ import com.example.stunting.database.with_api.response.DataUserProfilePatientsIt
 import com.example.stunting.database.with_api.response.DataUserProfilesItem
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
 import com.google.gson.GsonBuilder
@@ -1003,6 +1005,56 @@ class ChattingRepository(
         }
     }
 
+    suspend fun updateChildrenPatientByUserPatientIdFromLocal(
+        userPatientId: Int, namaAnak: String, nikAnak: String, jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
+    ) =
+        chattingDatabase.childrenPatientDao().updateChildrenPatientByUserPatientIdFromLocal(
+            userPatientId, namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
+        )
+
+    suspend fun updateChildrenPatientByUserPatientIdFromApi(
+        userPatientId: Int, namaAnak: String, nikAnak: String,
+        jenisKelaminAnak: String, tglLahirAnak: String, umurAnak: String
+    ): ResultState<UpdateChildrenPatientByUserPatientIdResponse?> {
+        return try {
+            val requestBodyJson = UpdateChildrenpatientByUserPatientIdRequestJSON(
+                namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
+            )
+            val response = apiService.updateChildrenPatientByUserPatientId(
+                userPatientId, requestBodyJson
+            )
+
+            if (response.isSuccessful) {
+                val dataUpdateChildrenPatienttByUserPatientId = response.body()?.dataUpdateChildrenPatienttByUserPatientId
+                if (dataUpdateChildrenPatienttByUserPatientId != null) {
+                    withContext(Dispatchers.IO) {
+                        chattingDatabase.childrenPatientDao().updateChildrenPatientByUserPatientIdFromLocal(
+                            userPatientId, namaAnak, nikAnak, jenisKelaminAnak, tglLahirAnak, umurAnak
+                        )
+                    }
+                }
+                ResultState.Success(response.body())
+            } else {
+                if (response.code() == 401) {
+                    ResultState.Unauthorized
+                } else {
+                    val errorBodyJson = response.errorBody()?.string()
+//                    Log.e(TAG, "onChattingRepository updateUserProfilePatientByIdFromApi Error ${response.code()}: $errorBodyJson")
+                    // Ubah dari JSON string ke JSON
+                    val jsonObject = JSONObject(errorBodyJson!!)
+                    val message = jsonObject.getString("message")
+                    ResultState.Error(message)
+                }
+            }
+        } catch (e: HttpException) {
+//            Log.e(TAG, "onChattingRepository Exception: ${e.message}", e)
+            ResultState.Error("Exception: ${e.message}")
+        } catch (e: Exception) {
+//            Log.e(TAG, "onChattingRepository General Exception: ${e.message}", e)
+            ResultState.Error("Unexpected error: ${e.message}")
+        }
+    }
+
     fun getChildrenPatientByIdUserPatientIdFromLocal(childrenPatientId: Int, userPatientId: Int):
             LiveData<ChildrenPatientEntity> =
         chattingDatabase.childrenPatientDao().getChildrenPatientByIdUserPatientIdFromLocal(childrenPatientId, userPatientId)
@@ -1152,6 +1204,7 @@ class ChattingRepository(
                         tglLahirBumil = item.tglLahirBumil,
                         umurBumil = item.umurBumil,
                         namaAyah = item.namaAyah,
+                        alamat = item.alamat,
                         gambarProfile = item.gambarProfile,
                         gambarBanner = item.gambarBanner,
                         createdAt = item.createdAt,

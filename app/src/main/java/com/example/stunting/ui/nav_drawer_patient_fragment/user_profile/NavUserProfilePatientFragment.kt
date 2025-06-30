@@ -25,6 +25,8 @@ import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NavUserProfilePatientFragment : Fragment() {
     private var _binding: NavFragmentUserProfilePatientBinding? = null
@@ -66,18 +68,13 @@ class NavUserProfilePatientFragment : Fragment() {
         viewModel.getUserProfilePatientsFromApiResult.observe(viewLifecycleOwner) { result ->
             if (result != null) {
                 when (result) {
-                    is ResultState.Loading -> {
-                        progressBar.show()
-                        binding.swipeRefreshLayout.isRefreshing = true
-                    }
+                    is ResultState.Loading -> binding.swipeRefreshLayout.isRefreshing = true
                     is ResultState.Error -> {
-                        progressBar.dismiss()
                         binding.swipeRefreshLayout.isRefreshing = false
                         Toast.makeText(requireContext(), getString(R.string.text_no_connected), Toast.LENGTH_LONG).show()
 //                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.error}")
                     }
                     is ResultState.Success -> {
-                        progressBar.dismiss()
                         binding.swipeRefreshLayout.isRefreshing = false
 //                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.data}")
                     }
@@ -97,13 +94,13 @@ class NavUserProfilePatientFragment : Fragment() {
             .observe(viewLifecycleOwner) { userProfilePatientWithUserRelation ->
                 val branchEntity = userProfilePatientWithUserRelation.branch
                 val userProfilePatientEntity = userProfilePatientWithUserRelation.userProfilePatient
-                binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
-                binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
-                binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
-                binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
-                binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
-                binding.tietAlamat.setText(userProfilePatientEntity.alamat)
-                binding.tietCabang.setText(branchEntity.namaCabang)
+                    binding.tietNamaBumil.setText(userProfilePatientEntity.namaBumil)
+                    binding.tietNikBumil.setText(userProfilePatientEntity.nikBumil)
+                    binding.tietTglLahirBumil.setText(userProfilePatientEntity.tglLahirBumil)
+                    binding.tietUmurBumil.setText(userProfilePatientEntity.umurBumil)
+                    binding.tietNamaAyah.setText(userProfilePatientEntity.namaAyah)
+                    binding.tietAlamat.setText(userProfilePatientEntity.alamat)
+                    binding.tietCabang.setText(branchEntity.namaCabang)
             }
     }
 
@@ -129,10 +126,19 @@ class NavUserProfilePatientFragment : Fragment() {
                         alamatIsNotEmpty && namaAyahIsValid
 
                 if (binding.btnUpdate.isEnabled) {
-                    binding.btnUpdate.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.blueSecond))
+                    binding.btnUpdate.strokeColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(requireActivity(), R.color.blueSecond)
+                        )
                 } else {
-                    binding.btnUpdate.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor))
-                    binding.btnUpdate.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.white))
+                    binding.btnUpdate.strokeColor =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(requireActivity(), R.color.buttonDisabledColor)
+                        )
+                    binding.btnUpdate.backgroundTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(requireActivity(), R.color.white)
+                        )
                 }
             }
 

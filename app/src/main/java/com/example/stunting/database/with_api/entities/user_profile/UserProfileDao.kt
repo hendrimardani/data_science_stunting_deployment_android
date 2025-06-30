@@ -21,6 +21,6 @@ interface UserProfileDao {
     @Query("SELECT * FROM user_profile ORDER BY id_user_profile ASC")
     fun getUserProfilesFromLocal(): LiveData<List<UserProfileEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserProfiles(userProfiles: List<UserProfileEntity>)
 }

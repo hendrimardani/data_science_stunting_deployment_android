@@ -17,6 +17,7 @@ import com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftar
 import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientViewModel
 import com.example.stunting.ui.opening_user_profile_patient_form.OpeningUserProfilePatientFormViewModel
 import com.example.stunting.ui.sign_up.SignUpViewModel
+import com.example.stunting.ui.tambah_anak_patient.TambahAnakPatientViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val repository: ChattingRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -47,6 +48,10 @@ class ViewModelFactory(private val repository: ChattingRepository) : ViewModelPr
             modelClass.isAssignableFrom(DetailAnakPatientViewModel::class.java) -> {
                 DetailAnakPatientViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(TambahAnakPatientViewModel::class.java) -> {
+                TambahAnakPatientViewModel(repository) as T
+            }
+
 
             modelClass.isAssignableFrom(BumilPatientViewModel::class.java) -> {
                 BumilPatientViewModel(repository) as T

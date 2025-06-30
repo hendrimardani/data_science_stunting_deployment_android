@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/shape"
+        android:elevation="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
+        <ImageView
+            android:id="@+id/iv_nama_anak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_32"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_name_anak"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nama_bumil"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:elevation="5dp"
+            android:hint="@string/text_nama_anak"
+            android:textColorHint="?attr/colorTextHint"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nama_anak"
+            app:layout_constraintStart_toEndOf="@id/iv_nama_anak"
+            app:layout_constraintTop_toTopOf="@id/iv_nama_anak"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNamaEditText
+                android:id="@+id/tiet_nama_anak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_nik_anak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_nik"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_nama_anak" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nik_anak"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:elevation="5dp"
+            android:hint="@string/text_nik_anak"
+            android:textColorHint="?attr/colorTextHint"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nik_anak"
+            app:layout_constraintStart_toEndOf="@id/iv_nik_anak"
+            app:layout_constraintTop_toTopOf="@id/iv_nik_anak"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.example.stunting.MyNikEditText
+                android:id="@+id/tiet_nik_anak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_jenis_kelamin_anak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_jk"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_nik_anak" />
+
+        <RadioGroup
+            android:id="@+id/rg_jenis_kelamin_anak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/iv_jenis_kelamin_anak"
+            app:layout_constraintStart_toEndOf="@id/iv_jenis_kelamin_anak"
+            app:layout_constraintTop_toTopOf="@id/iv_jenis_kelamin_anak">
+
+            <RadioButton
+                android:id="@+id/rb_laki_laki"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="@string/text_laki_laki" />
+
+            <RadioButton
+                android:id="@+id/rb_perempuan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/text_perempuan" />
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/iv_tgl_lahir_anak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_tgl_lahir"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_jenis_kelamin_anak" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_tgl_lahir_anak"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:elevation="5dp"
+            android:hint="@string/text_tgl_lahir_anak"
+            android:textColorHint="?attr/colorTextHint"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_tgl_lahir_anak"
+            app:layout_constraintTop_toTopOf="@id/iv_tgl_lahir_anak"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_tgl_lahir_anak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="datetime"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/iv_umur_anak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/dimen_32"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:src="@drawable/ic_umur"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_tgl_lahir_anak" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_umur_anak"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:hint="@string/text_umur_anak"
+            android:textColorHint="?attr/colorTextHint"
+            app:boxStrokeColor="@color/box_stroke_color"
+            app:boxStrokeWidth="0dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/red"
+            app:hintTextColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/iv_umur_anak"
+            app:layout_constraintTop_toTopOf="@id/iv_umur_anak"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_umur_anak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="text"
+                android:textColor="?attr/colorText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimen_64"
+            android:layout_marginTop="10dp"
+            android:enabled="false"
+            android:paddingHorizontal="90dp"
+            android:text="@string/text_tambah"
+            app:icon="@drawable/ic_add_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/til_umur_anak"
+            app:strokeColor="@color/gray" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

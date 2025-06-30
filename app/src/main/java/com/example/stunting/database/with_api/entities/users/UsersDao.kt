@@ -12,6 +12,6 @@ interface UsersDao {
     @Query("SELECT * FROM users ORDER BY id_user ASC")
     fun getUsers(): LiveData<List<UsersEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUsers(users: List<UsersEntity>)
 }

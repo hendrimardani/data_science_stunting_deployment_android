@@ -7,6 +7,6 @@ import androidx.room.OnConflictStrategy
 @Dao
 interface PregnantMomServiceDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPregnantMomServices(pregnantMomServices: List<PregnantMomServiceEntity>)
 }

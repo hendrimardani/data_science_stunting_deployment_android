@@ -11,33 +11,12 @@ import com.example.stunting.datastore.chatting.ChattingRepository
 import kotlinx.coroutines.launch
 
 class NavDrawerMainActivityPatientViewModel(private val chattingRepository: ChattingRepository): ViewModel() {
-    // ChildrenPatient
-    private var _getChildrenPatientByUserPatientIdFromApiResult = MutableLiveData<ResultState<List<DataChildrenPatientByUserPatientIdItem?>>>()
-    val getChildrenPatientByUserPatientIdFromApiResult = _getChildrenPatientByUserPatientIdFromApiResult
-    // UserProfile
-    private var _getUserProfilesFromApiResult = MutableLiveData<ResultState<List<DataUserProfilesItem?>>>()
-    val getUserProfilesFromApiResult = _getUserProfilesFromApiResult
     // UserProfilePatient
     private var _getUserProfilePatientsFromApiResult = MutableLiveData<ResultState<List<DataUserProfilePatientsItem?>>>()
     val getUserProfilePatientsFromApiResult = _getUserProfilePatientsFromApiResult
 
     init {
-        getUserProfilesFromApi()
         getUserProfilePatientFromApi()
-    }
-
-    fun getChildrenPatientByUserPatientIdFromApi(userPatientId: Int) {
-        viewModelScope.launch {
-            _getChildrenPatientByUserPatientIdFromApiResult.value = ResultState.Loading
-            _getChildrenPatientByUserPatientIdFromApiResult.value = chattingRepository.getChildrenPatientByUserPatientIdFromApi(userPatientId)
-        }
-    }
-
-    private fun getUserProfilesFromApi() {
-        viewModelScope.launch {
-            _getUserProfilesFromApiResult.value = ResultState.Loading
-            _getUserProfilesFromApiResult.value = chattingRepository.getUserProfilesFromApi()
-        }
     }
 
     fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) =

@@ -97,6 +97,9 @@ data class DataUserProfilePatientsItem(
 	@field:SerializedName("nama_ayah")
 	val namaAyah: String? = null,
 
+	@field:SerializedName("alamat")
+	val alamat: String? = null,
+
 	@field:SerializedName("nik_bumil")
 	val nikBumil: String? = null,
 

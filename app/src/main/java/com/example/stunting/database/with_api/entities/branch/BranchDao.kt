@@ -15,6 +15,6 @@ interface BranchDao {
     @Query("SELECT * FROM branch ORDER BY id_branch ASC")
     fun getBranches(): LiveData<List<BranchEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBranches(branches: List<BranchEntity>)
 }

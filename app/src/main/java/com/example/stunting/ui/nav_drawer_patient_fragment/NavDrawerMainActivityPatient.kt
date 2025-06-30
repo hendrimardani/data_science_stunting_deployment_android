@@ -37,6 +37,7 @@ import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
+import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY
 import com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftarAnakPatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT
@@ -94,8 +95,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         networkLiveData = NetworkLiveData(application)
         networkLiveData.observe(this) { isConnected ->
             if (isConnected) {
-                getChildrenPatientByUserPatientIdFromApi()
-                getUserProfilesFromApi()
                 getUserProfilePatientsFromApi()
                 Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
             } else {
@@ -181,31 +180,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         navController.navigate(R.id.nav_home_patient, bundle)
     }
 
-    private fun getChildrenPatientByUserPatientIdFromApi() {
-        viewModel.getChildrenPatientByUserPatientIdFromApi(userPatientId!!)
-        viewModel.getChildrenPatientByUserPatientIdFromApiResult.observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> { }
-                    is ResultState.Error -> {
-//                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Error : ${result.error}")
-                        Toast.makeText(this, getString(R.string.text_no_connected), Toast.LENGTH_SHORT).show()
-                    }
-                    is ResultState.Success -> {
-//                        Log.d(TAG, "getChildrenPatientByUserPatientIdFromApiResult Success : ${result.data}")
-                        Toast.makeText(this, getString(R.string.text_connected), Toast.LENGTH_SHORT).show()
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this@NavDrawerMainActivityPatient, ContainerMainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
-
     private fun getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId: Int) {
         viewModel.getUserProfilePatientRelationByUserPatientIdFromLocal(userPatientId).observe(this) { userProfileWithUserRelation ->
 //            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
@@ -233,28 +207,6 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
                     is ResultState.Success -> {
                         progressBar.dismiss()
 //                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfilePatients : ${result.data}")
-                    }
-                    is ResultState.Unauthorized -> {
-                        viewModel.logout()
-                        val intent = Intent(this@NavDrawerMainActivityPatient, ContainerMainActivity::class.java)
-                        intent.putExtra(EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY, "LoginFragment")
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getUserProfilesFromApi() {
-        viewModel.getUserProfilesFromApiResult.observe(this) { result ->
-            if (result != null) {
-                when (result) {
-                    is ResultState.Loading -> {  }
-                    is ResultState.Error -> {
-//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.error}")
-                    }
-                    is ResultState.Success -> {
-//                        Log.d(TAG, "onNavDrawerMainActivityPatient from LoginFragment getUserProfiles : ${result.data}")
                     }
                     is ResultState.Unauthorized -> {
                         viewModel.logout()

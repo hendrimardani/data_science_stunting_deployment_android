@@ -7,6 +7,6 @@ import androidx.room.OnConflictStrategy
 @Dao
 interface CategoryServiceDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategoryServices(categoryServices: List<CategoryServiceEntity>)
 }

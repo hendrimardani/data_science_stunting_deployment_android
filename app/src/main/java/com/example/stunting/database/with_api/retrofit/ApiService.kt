@@ -7,6 +7,7 @@ import com.example.stunting.database.with_api.request_json.AddingPregnantMomServ
 import com.example.stunting.database.with_api.request_json.AddingUserByGroupIdRequestJSON
 import com.example.stunting.database.with_api.request_json.LoginRequestJSON
 import com.example.stunting.database.with_api.request_json.RegisterRequestJSON
+import com.example.stunting.database.with_api.request_json.UpdateChildrenpatientByUserPatientIdRequestJSON
 import com.example.stunting.database.with_api.response.AddingChildServiceByUserIdResponse
 import com.example.stunting.database.with_api.response.AddingChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.AddingMessageResponse
@@ -26,6 +27,7 @@ import com.example.stunting.database.with_api.response.GetAllUserProfilesRespons
 import com.example.stunting.database.with_api.response.GetChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.LoginResponse
 import com.example.stunting.database.with_api.response.RegisterResponse
+import com.example.stunting.database.with_api.response.UpdateChildrenPatientByUserPatientIdResponse
 import com.example.stunting.database.with_api.response.UpdateGroupByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfileByIdResponse
 import com.example.stunting.database.with_api.response.UpdateUserProfilePatientByIdResponse
@@ -115,6 +117,12 @@ interface ApiService {
         @Path("user_patient_id") userPatientId: Int,
         @Part("dataJsonString") dataJsonString: RequestBody?
     ): Response<UpdateUserProfilePatientByIdResponse>
+
+    @PUT("children_patient/{user_patient_id}")
+    suspend fun updateChildrenPatientByUserPatientId(
+        @Path("user_patient_id") userPatientId: Int,
+        @Body requesttBody: UpdateChildrenpatientByUserPatientIdRequestJSON
+    ): Response<UpdateChildrenPatientByUserPatientIdResponse>
 
     @POST("children_patient/{user_patient_id}")
     suspend fun addChildrenPatientByUserPatientId(
