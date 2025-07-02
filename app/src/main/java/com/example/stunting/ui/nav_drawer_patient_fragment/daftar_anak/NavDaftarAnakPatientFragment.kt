@@ -14,7 +14,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.R
 import com.example.stunting.ResultState
 import com.example.stunting.database.with_api.entities.children_patient.ChildrenPatientEntity
@@ -66,6 +65,9 @@ class NavDaftarAnakPatientFragment : Fragment() {
     private fun getChildrenPatientByUserPatientIdFromLocal() {
         viewModel.getChildrenPatientByUserPatientIdFromLocal(userPatientId!!)
             .observe(viewLifecycleOwner) { childrenPatientList ->
+                if (childrenPatientList.size == 4) binding.clTambah.visibility = View.INVISIBLE
+                else binding.clTambah.visibility = View.INVISIBLE
+
                 setupTableLayout(childrenPatientList)
             }
     }
@@ -122,11 +124,19 @@ class NavDaftarAnakPatientFragment : Fragment() {
                 text = item.umurAnak
                 setPadding(8, 8, 64, 8)
             }
+            val layoutParams = TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT
+            ).apply {
+                // dalam pixel
+                bottomMargin = 16
+            }
             val editDataTextView = TextView(requireContext()).apply {
                 text = "Edit"
                 setTextColor(ContextCompat.getColor(context, R.color.orange))
                 setPadding(8, 8, 8, 8)
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.stroke_orange_background)
+                this.layoutParams = layoutParams
                 setOnClickListener {
                     val intent = Intent(requireActivity(), DetailAnakPatientActivity::class.java)
                     intent.putExtra(EXTRA_USER_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY, userPatientId)

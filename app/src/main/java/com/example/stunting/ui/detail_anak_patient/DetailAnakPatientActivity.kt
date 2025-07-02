@@ -8,10 +8,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.RadioButton
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.example.stunting.MyNamaEditText.Companion.MIN_CHARACTER_NAMA
@@ -22,9 +20,6 @@ import com.example.stunting.databinding.ActivityDetailAnakPatientBinding
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_ACTIVITY_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
-import com.example.stunting.ui.nav_drawer_patient_fragment.NavDrawerMainActivityPatient.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DRAWER_MAIN_ACTIVITY_PATIENT
 import com.google.android.material.snackbar.Snackbar
 
 class DetailAnakPatientActivity : AppCompatActivity() {
@@ -161,7 +156,7 @@ class DetailAnakPatientActivity : AppCompatActivity() {
 
     private fun setToolBar() {
         setSupportActionBar(binding.toolbar)
-        supportActionBar!!.title = getString(R.string.text_detail)
+        supportActionBar!!.title = getString(R.string.text_detail_anak)
         binding.toolbar.setTitleTextAppearance(this, R.style.Theme_Stunting)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

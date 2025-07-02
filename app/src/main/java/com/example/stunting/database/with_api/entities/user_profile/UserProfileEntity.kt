@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import com.example.stunting.database.with_api.entities.branch.BranchEntity
 import com.example.stunting.database.with_api.entities.users.UsersEntity
 
@@ -45,25 +44,10 @@ data class UserProfileEntity(
     @ColumnInfo(name = "updated_at") val updatedAt: String? = null
 )
 
-// One to one
+// Nama nya harus UserProfileWithUserRelation
 data class UserProfileWithUserRelation(
-    @Embedded val users: UsersEntity,
-
-    @Relation(
-        parentColumn = "id_user",
-        entityColumn = "user_id"
-    )
-    val userProfile: UserProfileEntity?
-)
-
-// One to many
-data class UserProfileWithBranchRelation(
-    @Embedded val branch: BranchEntity,
-
-    @Relation(
-        parentColumn = "id_branch",
-        entityColumn = "branch_id"
-    )
-    val userProfile: List<UserProfileEntity?>
+    @Embedded(prefix = "b_") val branch: BranchEntity,
+    @Embedded(prefix = "u_") val users: UsersEntity,
+    @Embedded(prefix = "up_") val userProfile: UserProfileEntity
 )
 

@@ -137,7 +137,7 @@ class MainViewModel(private val chattingRepository: ChattingRepository): ViewMod
         }
     }
 
-    fun getUserProfileWithUserById(userId: Int) = chattingRepository.getUserProfileWithUserById(userId)
+//    fun getUserProfileWithUserById(userId: Int) = chattingRepository.getUserProfileWithUserById(userId)
 
     fun saveSession(userModel: UserModel) {
         viewModelScope.launch {

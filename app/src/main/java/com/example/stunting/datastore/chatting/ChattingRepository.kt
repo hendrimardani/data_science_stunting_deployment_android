@@ -1311,11 +1311,9 @@ class ChattingRepository(
         }
     }
 
-    fun getUserProfileWithUserById(userId: Int): LiveData<UserProfileWithUserRelation> =
-        chattingDatabase.userProfileDao().getUserProfileWithUserById(userId)
+    fun getUserProfileRelationByUserIdFromLocal(userId: Int): LiveData<UserProfileWithUserRelation> =
+        chattingDatabase.userProfileDao().getUserProfileRelationByUserIdFromLocal(userId)
 
-    fun getUserProfileWithUserRelationFromLocal(): LiveData<List<UserProfileWithUserRelation>> =
-        chattingDatabase.userProfileDao().getUserProfileWithUserRelationFromLocal()
 
     fun getUserProfilesFromLocal(): LiveData<List<UserProfileEntity>> =
         chattingDatabase.userProfileDao().getUserProfilesFromLocal()

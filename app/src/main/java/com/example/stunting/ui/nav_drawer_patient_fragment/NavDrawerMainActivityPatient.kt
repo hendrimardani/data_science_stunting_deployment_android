@@ -37,7 +37,6 @@ import com.example.stunting.datastore.chatting.UserModel
 import com.example.stunting.ui.ContainerMainActivity
 import com.example.stunting.ui.ContainerMainActivity.Companion.EXTRA_FRAGMENT_TO_CONTAINER_MAIN_ACTIVITY
 import com.example.stunting.ui.ViewModelFactory
-import com.example.stunting.ui.detail_anak_patient.DetailAnakPatientActivity.Companion.EXTRA_USER_PATIENT_ID_TO_DETAIL_ANAK_PATIENT_ACTIVITY
 import com.example.stunting.ui.nav_drawer_patient_fragment.daftar_anak.NavDaftarAnakPatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_DAFTAR_ANAK_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.home.NavHomePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_HOME_PATIENT_FRAGMENT
 import com.example.stunting.ui.nav_drawer_patient_fragment.user_profile.NavUserProfilePatientFragment.Companion.EXTRA_USER_PATIENT_ID_TO_NAV_USER_PROFILE_PATIENT_FRAGMENT
@@ -102,6 +101,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
             }
         }
         setupAnimationRotationContent()
+        getUserProfilePatientsFromApi()
         getDataExtra()
         getMenuNavigationView()
     }
@@ -288,7 +288,7 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
         val role = headerView.findViewById<TextView>(R.id.tv_role_nav_view)
 
         val usersEntity = userProfilePatientRelation.users
-        val userProfileEntity = userProfilePatientRelation.userProfilePatient
+        val userProfilePatientEntity = userProfilePatientRelation.userProfilePatient
 
 //        flProfile.setOnClickListener {
 //            isEditGambarProfile = true
@@ -300,9 +300,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //            showBottomSheetDialog()
 //        }
 
-        if (userProfileEntity?.gambarProfile != null) {
+        if (userProfilePatientEntity.gambarProfile != null) {
             Glide.with(this)
-                .load(userProfileEntity.gambarProfile)
+                .load(userProfilePatientEntity.gambarProfile)
                 .into(civEditProfile)
         } else {
             Glide.with(this)
@@ -315,9 +315,9 @@ class NavDrawerMainActivityPatient : AppCompatActivity() {
 //            .load(urlBanner)
 //            .into(ivEditBanner)
 
-        name.text = userProfileEntity.namaBumil
+        name.text = userProfilePatientEntity.namaBumil
         email.text = usersEntity.email
-        role.text = "Anda sebagai ${userProfilePatientRelation.users.role}"
+        role.text = "Anda sebagai ${usersEntity?.role}"
     }
 
     private fun setupAnimationRotationContent() {

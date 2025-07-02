@@ -16,15 +16,60 @@
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_deskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/shape"
+                android:layout_marginTop="@dimen/dimen_8"
+                android:elevation="5dp"
+                android:layout_marginHorizontal="@dimen/dimen_8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_warning_yellow"
+                    android:layout_marginStart="170dp"
+                    app:layout_constraintEnd_toStartOf="@id/tv_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_info"
+                    android:textSize="@dimen/dimen_16"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/dimen_8"
+                    app:layout_constraintStart_toEndOf="@id/iv_warning"
+                    app:layout_constraintTop_toTopOf="@id/iv_warning"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_warning" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anda hanya boleh mememasukan maksimal 4 anak"
+                    android:textSize="@dimen/dimen_16"
+                    app:layout_constraintTop_toBottomOf="@id/tv_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_tambah"
                 android:layout_width="190dp"
                 android:layout_height="50dp"
                 android:background="@drawable/shape_blue_primary"
                 android:elevation="5dp"
-                android:layout_marginTop="@dimen/dimen_16"
                 android:layout_marginStart="@dimen/dimen_8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintBottom_toBottomOf="@id/til_cari"
+                app:layout_constraintTop_toTopOf="@id/til_cari">
 
                 <ImageView
                     android:id="@+id/iv_add"
@@ -57,13 +102,14 @@
                 android:hint="@string/hint_text_cari"
                 android:textColorHint="?attr/colorTextHint"
                 android:layout_marginTop="@dimen/dimen_8"
+                android:layout_marginEnd="@dimen/dimen_8"
                 app:boxStrokeColor="@color/box_stroke_color"
                 app:boxStrokeWidth="2dp"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/red"
                 app:hintTextColor="?attr/colorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cl_deskripsi"
                 app:shapeAppearance="@style/Rounded">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -80,6 +126,7 @@
                 android:background="@drawable/shape"
                 android:elevation="5dp"
                 android:layout_marginTop="@dimen/dimen_8"
+                android:layout_marginHorizontal="@dimen/dimen_8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_cari">

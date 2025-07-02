@@ -17,6 +17,9 @@ class NavDrawerMainViewModel(private val chattingRepository: ChattingRepository)
         getUserProfilesFromApi()
     }
 
+    fun getUserProfileRelationByUserIdFromLocal(userId: Int) =
+        chattingRepository.getUserProfileRelationByUserIdFromLocal(userId)
+
     private fun getUserProfilesFromApi() {
         viewModelScope.launch {
             _getUserProfilesFromApiResult.value = ResultState.Loading

@@ -1,5 +1,6 @@
 package com.example.stunting.ui.nav_drawer_fragment
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -314,13 +315,13 @@ class NavDrawerMainActivity : AppCompatActivity() {
             userId = intent.getIntExtra(EXTRA_USER_ID_TO_NAV_DRAWER_MAIN_ACTIVITY, 0)
 //            Log.d(TAG, "onNavDrawerMainActivity userId from LoginFragment : ${userId}")
             sendDataToNavHomeFragment(userId!!)
-//            getUserProfileWithUserById(userId!!)
+            getUserProfileRelationByUserIdFromLocal(userId!!)
         } else if (getExtraFragment == "OpeningFragment") {
             val userModel = intent.getParcelableExtra<UserModel>(EXTRA_USER_MODEL_TO_NAV_DRAWER_MAIN_ACTIVITY)!!
 //            Log.d(TAG, "onNavDrawerMainActivity from OpeningActivity : ${userModel}")
             userId = userModel.id.toInt()
             sendDataToNavHomeFragment(userId!!)
-//            getUserProfileWithUserById(userId!!)
+            getUserProfileRelationByUserIdFromLocal(userId!!)
         }
     }
 
@@ -332,14 +333,14 @@ class NavDrawerMainActivity : AppCompatActivity() {
         navController.navigate(R.id.nav_home, bundle)
     }
 
-//    private fun getUserProfileWithUserById(userId: Int) {
-//        viewModel.getUserProfileWithUserById(userId).observe(this) { userProfileWithUserRelation ->
-////            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
-//            if (userProfileWithUserRelation != null) {
-//                getHeaderView(userProfileWithUserRelation)
-//            }
-//        }
-//    }
+    private fun getUserProfileRelationByUserIdFromLocal(userId: Int) {
+        viewModel.getUserProfileRelationByUserIdFromLocal(userId).observe(this) { userProfileRelation ->
+//            Log.d(TAG, "onNavDrawerMainActivity getUserProfileWithUserById() : ${userProfileWithUserRelation.userProfile}")
+            if (userProfileRelation != null) {
+                getHeaderView(userProfileRelation)
+            }
+        }
+    }
 
     private fun getUserProfiles() {
         val progressBar = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
@@ -396,7 +397,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getHeaderView(userProfileWithUserRelation: UserProfileWithUserRelation?) {
+    @SuppressLint("SetTextI18n")
+    private fun getHeaderView(userProfileRelation: UserProfileWithUserRelation?) {
         // Index 0 karena hanya ada satu header
         val headerView = binding.navView.getHeaderView(0)
         val flProfile = headerView.findViewById<FrameLayout>(R.id.fl_profile)
@@ -406,7 +408,8 @@ class NavDrawerMainActivity : AppCompatActivity() {
         val email = headerView.findViewById<TextView>(R.id.tv_email_nav_view)
         val role = headerView.findViewById<TextView>(R.id.tv_role_nav_view)
 
-        val userProfile = userProfileWithUserRelation?.userProfile
+        val usersEntity = userProfileRelation?.users
+        val userProfileEntity = userProfileRelation?.userProfile
 
         flProfile.setOnClickListener {
             isEditGambarProfile = true
@@ -418,9 +421,9 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //            showBottomSheetDialog()
 //        }
 
-        if (userProfile?.gambarProfile != null) {
+        if (userProfileEntity?.gambarProfile != null) {
             Glide.with(this)
-                .load(userProfile.gambarProfile)
+                .load(userProfileEntity.gambarProfile)
                 .into(civEditProfile)
         } else {
             Glide.with(this)
@@ -433,9 +436,9 @@ class NavDrawerMainActivity : AppCompatActivity() {
 //            .load(urlBanner)
 //            .into(ivEditBanner)
 
-        name.text = userProfileWithUserRelation?.userProfile?.nama.toString()
-        email.text = userProfileWithUserRelation?.users?.email.toString()
-        role.text = "Anda sebagai ${userProfileWithUserRelation?.users?.role.toString()}"
+        name.text = userProfileEntity?.nama
+        email.text = usersEntity?.email
+        role.text = "Anda sebagai ${usersEntity?.role}"
     }
 
     override fun onSupportNavigateUp(): Boolean {
